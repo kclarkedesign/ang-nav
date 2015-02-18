@@ -358,6 +358,10 @@
 			var amountOfBlankSpace = Math.ceil(heightDiff / heightOfResultBox);
 			numOfDefaultRows += amountOfBlankSpace;
 			classInfoIndex = numOfDefaultRows * numberOfResultsPerRow;
+		}else{
+			//very small resolutions
+			var numberOfResultsPerRow = _this.gridColCount;
+			classInfoIndex = numOfDefaultRows * numberOfResultsPerRow;
 		}
 		return classInfoIndex;
 	};
@@ -402,7 +406,13 @@
 				image = image.substring(image.indexOf('/'));
 			}
 			var startDate;
-			var begDate = new Date(parseInt(arr.FirstDate.substr(6)));
+			var begDate = arr.NextPerformanceDateTime;
+			if (begDate === null){
+				begDate = arr.FirstDate;
+			}
+			begDate = new Date(parseInt(begDate.substr(6)));
+
+			//var begDate = new Date(parseInt(arr.FirstDate.substr(6)));
 			var multDates = arr.IsMultipleDatesTimes;
 			if (multDates){
 				startDate = "Multiple dates/times";
@@ -435,6 +445,7 @@
 				sortDate2 = begDate;
 				//10 is an arbirtary number to set the secondary sorting
 				sortDate1 = begDate.setFullYear(yearNumber + 10);
+				startDate = "";
 			}else{
 				sortDate1 = begDate;
 				sortDate2 = "";
