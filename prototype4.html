@@ -6,7 +6,7 @@
 		<link href="http://www.92y.org/_ui/uptown/css/textref.ashx?k=1b_n4uSJkq4T0lUMXTQZt2BXOcI_BY51PL_lW0MD0VPMShJH5BOahlC4m9Wt-fOa9Z5Gx_JCoIC40WqxTfM33D06jSdAmQLSIPhFwPMMY4JqzUQim1hr2OUY-yqlgg9nT6ZnpSH0CbTDhDrtmj3bJOc0eRDNB1wI8Ylp0cI_xqXFrkWl3tdQvA.." rel="Stylesheet" type="text/css" media="screen" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<!--begin df-->
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
 		<script src="src/isotope.pkgd.js"></script>
 		<script src="src/angular-isotope.min.js"></script>
 		<script src="src/cells-by-row.js"></script>
@@ -1357,25 +1357,6 @@ padding-right: 0;
 		</script>
 		<!-- Multiselect script -->
 		<script type="text/javascript">
-		var reduceAndRefresh = function (_scope, levelId, levelArray){
-			_scope.navListCtrl.reduceList(levelId, levelArray);
-			_scope.$apply();
-			$(window).scrollTop(0);
-		}
-
-		var resizeColumnCount = function (_scope){
-			var bodyWidth = $("body").width();
-			var leftSideWidth = $("#filter-container").width();
-			var rightSideWidth = bodyWidth - leftSideWidth;
-			_scope.navListCtrl.gridColCount = Math.floor(rightSideWidth / 310);
-
-			var heightOfExpandedFormWithTwoRowsOfResults = $('input#heightOfExpandedFormWithTwoRowsOfResults');
-			_scope.classInfoIndex = _scope.navListCtrl.getRowSpace(heightOfExpandedFormWithTwoRowsOfResults.val());
-
-			$("#Container").width(rightSideWidth);
-		}
-
-
 			$jq(document).ready(function() {
 				resizeColumnCount(angular.element($('body')).scope());
 				//this is to prevent fouc 
@@ -1385,6 +1366,9 @@ padding-right: 0;
 				$jq('.singleselect').multiselect({
 					buttonWidth: '170px',
 					onChange: function(option, checked) {
+						if ($("#animationComplete").val() === "false"){
+							return;
+						}
 						setTransitionSpeed();
 
 						var scope = angular.element(option).scope();
@@ -1404,6 +1388,9 @@ padding-right: 0;
 					numberDisplayed: 2,
 					// df
 					onChange: function(option, checked) {
+						if ($("#animationComplete").val() === "false"){
+							return;
+						}
 						setTransitionSpeed();
 
 						var scope = angular.element(option).scope();
@@ -1436,6 +1423,9 @@ padding-right: 0;
 					numberDisplayed: 2,
 					includeSelectAllIfMoreThan: 5,
 					onChange: function (option, checked) {
+						if ($("#animationComplete").val() === "false"){
+							return;
+						}
 						setTransitionSpeed();
 
 						var scope = angular.element(option).scope();
@@ -1457,6 +1447,9 @@ padding-right: 0;
 					nonSelectedText: 'All',
 					numberDisplayed: 2,
 					onChange: function (option, checked) {
+						if ($("#animationComplete").val() === "false"){
+							return;
+						}
 						setTransitionSpeed();
 
 						var scope = angular.element(option).scope();
@@ -1786,16 +1779,44 @@ padding-right: 0;
 			$('#isoContainer').isotope({ transitionDuration: '.7s' });
 			$('#isoContainer').isotope( 'once', 'layoutComplete', function( isoInstance, laidOutItems ) {
 				isoInstance.options.transitionDuration = '0';
+				$("#animationComplete").val("true");
 			});
+			$("#animationComplete").val("false");
+		}
+		var resetAniComHiddenField = function (_scope) {
+			if (_scope.navListCtrl.onscreenFirstResults.length === 0){
+				$("#animationComplete").val("true");
+			}
+		}
+		var reduceAndRefresh = function (_scope, levelId, levelArray){
+			_scope.navListCtrl.reduceList(levelId, levelArray);
+			_scope.$apply();
+			resetAniComHiddenField(_scope);
+			$(window).scrollTop(0);
+		}
+		var resizeColumnCount = function (_scope){
+			var bodyWidth = $("body").width();
+			var leftSideWidth = $("#filter-container").width();
+			var rightSideWidth = bodyWidth - leftSideWidth;
+			_scope.navListCtrl.gridColCount = Math.floor(rightSideWidth / 310);
+
+			var heightOfExpandedFormWithTwoRowsOfResults = $('input#heightOfExpandedFormWithTwoRowsOfResults');
+			_scope.classInfoIndex = _scope.navListCtrl.getRowSpace(heightOfExpandedFormWithTwoRowsOfResults.val());
+
+			$("#Container").width(rightSideWidth);
 		}
 
 		$(document).ready(function () {
+			$("#animationComplete").val("true");
+
 			$jqe.easing.def = "easeInOutCirc";
 			$jqe("#info-btn").click(function () {
 				$jqe("#info-block").slideToggle();
 			});
 			$jqe(".selections a").click(function () {
-
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
 				setTransitionSpeed();
 
 				//add check class to main interest selection
@@ -1817,6 +1838,7 @@ padding-right: 0;
 									var scope = angular.element(selection).scope();
 									scope.navListCtrl.getAllLevelOne(clickedText);
 									scope.$apply();
+									resetAniComHiddenField(scope);
 								});
 							});
 							//this is to prevent fouc 
@@ -1841,12 +1863,16 @@ padding-right: 0;
 							var scope = angular.element(selection).scope();
 							scope.navListCtrl.getAllLevelOne(clickedText);
 							scope.$apply();
+							resetAniComHiddenField(scope);
 						}
 					});
 				});
 			});
 
 			$jqe(".Reset:button").click(function() {
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
 				setTransitionSpeed();
 
 				if($jqe("#adultBtn").hasClass("selected")) {
@@ -2022,8 +2048,10 @@ padding-right: 0;
 		$(document).ready(function() {
 			var heading = $('#accordion li .row-heading', $(this));
 			heading.click(function(){
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
 				setTransitionSpeed();
-
 				var _this = $(this);
 				var updateResults = true;
 				if (_this.hasClass("check")){
@@ -2055,11 +2083,16 @@ padding-right: 0;
 						scope.$apply();
 						reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
 						DisplayAds(scope);
+					}else{
+						$("#animationComplete").val("true");
 					}
 				});
 				$jqe('#accordion li .row-heading').not($jqe(this)).next().slideUp();
 			});
 			$('.allHeading').click(function (){
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
 				setTransitionSpeed();
 
 				var _this = $(this);
@@ -2184,7 +2217,10 @@ $(document).on('click','.showMore',function(){
 		$jqe(document).ready(function () {
 			//Third Level and below Accordion
 			$jqe('input[type="checkbox"].specificItem').click(function (event) {
-				setTransitionSpeed();
+				if ($("#animationComplete").val() === "false"){
+					event.preventDefault();
+					return;
+				}
 
 				var _this = $jqe(this);
 				var thisLabel = _this.siblings('label');
@@ -2244,6 +2280,7 @@ $(document).on('click','.showMore',function(){
 					event.preventDefault();
 				}else{
 					if (_this[0].id.length > 0){
+						setTransitionSpeed();
 						var scope = angular.element(_this).scope();
 						var levelArray;
 						if (parentUl.hasClass("level-four")){
@@ -2419,22 +2456,6 @@ $(document).on('click','.showMore',function(){
 							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
 							<div class="row-dropdown">
 								<div id="kidOptions" style="display:none;">
-
-
-
-<!--                 	<div class="row-heading-alt">Select Age Range</div>
-                    <select class="kidAges" multiple="multiple">
-                        <option value="newborn-5 years">Newborn-5</option>
-                        <option value="6-12 years">6-12 years</option>
-                        <option value="teens">Teens</option>
-                        <option value="multigenerational">Multigenerational</option>
-                    </select> -->
-
-
-
-
-
-
  									<ul class="">
 										<li>
 											<div class="checkbox">
@@ -5013,6 +5034,7 @@ $(document).on('click','.showMore',function(){
 								</ul>
 							</li>
 							<input type="hidden" id="heightOfExpandedFormWithTwoRowsOfResults" ng-value="845" />
+							<input type="hidden" id="animationComplete" />
 						</ul>
 					</nav>
 				</fieldset>

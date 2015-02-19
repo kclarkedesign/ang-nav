@@ -239,27 +239,27 @@
 		var level2DrilledDown = [];
 		var level1DrilledDown = [];
 
-        var nodeReducedArray = [];
-        _.forEach(_this.nodeIdArray, function (sub) {
-            _.forEach(_scope.clickedItems, function (arr) {
-                if (arr.id === sub) {
-                    var nodeId = arr.id;
-                    if (_this.isActualNumber(nodeId)) {
-                        var reducedArray = _.filter(arrayToTest, {
-                            'NodeID': nodeId
-                        });
-                        nodeReducedArray = nodeReducedArray.concat(reducedArray);
-                        level4DrilledDown.push(arr.level4);
-                        level3DrilledDown.push(arr.level3);
-                        level2DrilledDown.push(arr.level2);
-                        level1DrilledDown.push(arr.level1);
-                    }
-                }
-            });
-        });
-        if (nodeReducedArray.length > 0){
-            combinedReducedArray = combinedReducedArray.concat(nodeReducedArray);
-        }
+		var nodeReducedArray = [];
+		_.forEach(_this.nodeIdArray, function (sub) {
+			_.forEach(_scope.clickedItems, function (arr) {
+				if (arr.id === sub) {
+					var nodeId = arr.id;
+					if (_this.isActualNumber(nodeId)) {
+						var reducedArray = _.filter(arrayToTest, {
+							'NodeID': nodeId
+						});
+						nodeReducedArray = nodeReducedArray.concat(reducedArray);
+						level4DrilledDown.push(arr.level4);
+						level3DrilledDown.push(arr.level3);
+						level2DrilledDown.push(arr.level2);
+						level1DrilledDown.push(arr.level1);
+					}
+				}
+			});
+		});
+		if (nodeReducedArray.length > 0){
+			combinedReducedArray = combinedReducedArray.concat(nodeReducedArray);
+		}
 
 		var levelsDrilledDown = [level1DrilledDown, level2DrilledDown, level3DrilledDown, level4DrilledDown]
 		var levels = ['level1', 'level2', 'level3', 'level4'];
