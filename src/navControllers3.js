@@ -80,6 +80,7 @@
 		_this.l3SubInterestArray = { name: 'level3', arr: [] };
 		_this.l4SubInterestArray = { name: 'level4', arr: [] };
 		_this.levelArrays = [_this.l1SubInterestArray, _this.l2SubInterestArray, _this.l3SubInterestArray, _this.l4SubInterestArray];
+		_this.queryWord = '';
 	};
 	NavListController.prototype.clearResults = function () {
 		var _this = this;
@@ -210,6 +211,21 @@
 				_this.clearResults();
 			}
 			combinedLengths += _this.itemTypeSelected.length;
+		}
+
+		if (_this.queryWord.length > 0) {
+			if (combinedLengths > 0) {
+				arrayToTest = combinedReducedArray.slice();
+			}
+			combinedReducedArray = [];
+			combinedReducedArray = _.filter(arrayToTest, function (arr) {
+				var pattern = new RegExp(_this.queryWord, "i");
+				return pattern.test(arr.Teachers) || pattern.test(arr.Title) || pattern.test(arr.KeyWord.toString());
+			});
+			if (combinedReducedArray.length === 0) {
+				_this.clearResults();
+			}
+			combinedLengths ++;
 		}
 
 		if (!_.isUndefined(nodeId)){
@@ -452,6 +468,10 @@
 			}
 			var shortDescription = arr.ShortDesc;
 			var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
+			var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
+				return arr.Instructor_name.replace(/\s{2,}/g, ' ');
+			});
+			var teachers = instructors.toString();
 			var classInfoObj = {
 				Title: arr.Title,
 				KeyWord: keyWords,
@@ -464,7 +484,8 @@
 				SortDate2: sortDate2,
 				Url: arr.URL,
 				Warning: warning,
-				ItemType: itemType
+				ItemType: itemType,
+				Teachers: teachers
 			};
 			classInfoObjArray.push(classInfoObj);
 		});
