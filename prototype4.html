@@ -2081,7 +2081,6 @@ padding-right: 0;
 				if ($("#animationComplete").val() === "false"){
 					return;
 				}
-				setTransitionSpeed();
 				var _this = $(this);
 				var updateResults = true;
 				if (_this.hasClass("check")){
@@ -2107,14 +2106,13 @@ padding-right: 0;
 				}
 				_this.next().slideToggle(function () {
 					if (updateResults){
+						setTransitionSpeed();
 						var headingId = _this[0].id;
 						var scope = angular.element(_this).scope();
 						scope.navListCtrl.clearResults();
 						scope.$apply();
 						reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
 						DisplayAds(scope);
-					}else{
-						$("#animationComplete").val("true");
 					}
 				});
 				$jqe('#accordion li .row-heading').not($jqe(this)).next().slideUp();
@@ -2171,27 +2169,32 @@ padding-right: 0;
 					var scope = angular.element(_this).scope();
 					scope.navListCtrl.clearResults();
 					scope.$apply();
-					ulLevel.find('input[type="checkbox"]').each(function (){
+					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
 						var checkboxId = _this[0].id;
 						if (scope.navListCtrl.isActualNumber(checkboxId)){
 							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
-								reduceAndRefresh(scope, parseInt(checkboxId));
+								scope.navListCtrl.reduceList(parseInt(checkboxId));
 							}
 						}else{
 							var thisLabel = _this.siblings('label');
 							var checkedText = thisLabel.attr('for');
 							if (ulLevel.hasClass("level-three")){
 								if (_.contains(scope.navListCtrl.l3SubInterestArray.arr, checkedText)){
-									reduceAndRefresh(scope, checkedText, scope.navListCtrl.l3SubInterestArray);
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterestArray);
 								}
 							}else{
 								if (_.contains(scope.navListCtrl.l4SubInterestArray.arr, checkedText)){
-									reduceAndRefresh(scope, checkedText, scope.navListCtrl.l4SubInterestArray);
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterestArray);
 								}
 							}
 						}
 					});
+					if (numcheckboxes.length > 0){
+						scope.$apply();
+						resetAniComHiddenField(scope);
+						$(window).scrollTop(0);
+					}
 					if (isChecked){
 						if (ulLevel.hasClass("level-three")){
 							var heading = _this.closest("div.row-section").prev().text();
