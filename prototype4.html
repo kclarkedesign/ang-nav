@@ -1483,6 +1483,35 @@ padding-right: 0;
 					var scope = angular.element($('body')).scope();
 					resizeColumnCount(scope);
 				});
+				var lastSearchValue = '';
+				var checkSearchValue;
+				var textSearchBox;
+				$jq("#searchText").on('change keyup paste blur', function () {
+					textSearchBox = $(this);
+    				if (textSearchBox.val() !== lastSearchValue) {
+    					lastSearchValue = textSearchBox.val();
+    				}
+    				if (_.isUndefined(checkSearchValue)) {
+						checkSearchValue = setTimeout(function (){ 
+							queryByWords(textSearchBox); 
+							checkSearchValue = undefined; 
+						}, 2000);
+    				}
+				});
+
+				var queryByWords = function (textbox){
+					if ($("#animationComplete").val() === "false"){
+						return;
+					}
+					setTransitionSpeed();
+
+					var scope = angular.element(textbox).scope();
+					scope.navListCtrl.clearResults();
+					scope.$apply();
+					scope.navListCtrl.queryWord = textbox.val();
+					reduceAndRefresh(scope);
+				};
+
 				//end df
 			});
 		</script>
@@ -5128,7 +5157,7 @@ $(document).on('click','.showMore',function(){
                     <div class="row-heading">Filter by Name</div>
                     <form>
                         <!-- start df -->
-                        <input ng-model="searchText" type="search" class="defaultText" title="Filter Your Results by Course Title, Instructor or Keyword">
+                        <input id="searchText" type="search" class="defaultText" title="Filter Your Results by Course Title, Instructor or Keyword">
                         <!-- end df -->
                     </form>
                 </div>
@@ -5141,7 +5170,7 @@ $(document).on('click','.showMore',function(){
 					<span>No items were found matching the selected filters</span>
 				</div>
 				<div infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
-					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults | filter:searchText" class="itemBox mixFirst" isotope-item>
+					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
 						<div><a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank"><img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" /></a></div>
 						<div class="classTitle">{{classInfo.Title}}</div>
 						<div class="classDate">{{classInfo.FriendlyDate}}</div>
