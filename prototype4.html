@@ -2084,7 +2084,11 @@ padding-right: 0;
 				var _this = $(this);
 				var updateResults = true;
 				if (_this.hasClass("check")){
-					var levelThree = _this.next().children('.level-three');
+					if (_this.hasClass("L3")){
+						var levelThree = _this.next().children('.level-four');	
+					}else{
+						var levelThree = _this.next().children('.level-three');	
+					}
 					var isChildLevelVisible = levelThree.is(':visible');
 					if (isChildLevelVisible){
 						var allChecked = levelThree.find('.allHeading').hasClass("check");
@@ -2111,12 +2115,19 @@ padding-right: 0;
 						var scope = angular.element(_this).scope();
 						scope.navListCtrl.clearResults();
 						scope.$apply();
-						reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
+						if (_this.hasClass("L3")){
+							reduceAndRefresh(scope, headingId, scope.navListCtrl.l3SubInterestArray);
+						}else{
+							reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
+						}
 						DisplayAds(scope);
 					}
 				});
 				$jqe('#accordion li .row-heading').not($jqe(this)).next().slideUp();
 			});
+
+
+
 			$('.allHeading').click(function (){
 				if ($("#animationComplete").val() === "false"){
 					return;
@@ -2129,7 +2140,7 @@ padding-right: 0;
 				var rowSection = _this.closest('.row-section');
 				if (isChecked){
 					_this.removeClass("check");
-					if (ulLevel.hasClass("level-three")){
+					if (ulLevel.hasClass("level-three") || _this.hasClass("L3")){
 						rowSection.slideToggle();
 						rowSection.prev().removeClass("check");
 					}else{
@@ -2149,7 +2160,7 @@ padding-right: 0;
 					ulLevel.find('input[type="checkbox"]:checked').each(function (){
 						$(this).prop('checked', false);
 					});
-					if (ulLevel.hasClass("level-three")){
+					if (ulLevel.hasClass("level-three") || _this.hasClass("L3")){
 						$("ul.level-four.collapsed, ul.level-five.collapsed", "#accordion").each(function (){
 							var _this = $(this);
 							if (_this.is(':visible')){
@@ -2200,7 +2211,6 @@ padding-right: 0;
 							var heading = _this.closest("div.row-section").prev().text();
 							reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterestArray);
 							DisplayAds(scope);
-
 						}else if (ulLevel.hasClass("level-four")){
 							var heading = _this.closest("ul")[0].id;
 							reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterestArray);
@@ -3922,41 +3932,13 @@ $(document).on('click','.showMore',function(){
 								<!-- School of the Arts -->
 								<ul class="level-two">
 									<li class="">
-										<div class="row-heading" id="Art">Art</div>
+										<!-- <div class="row-heading" id="Art">Art</div> -->
+										<div class="row-heading L3" id="studioArtSOA">Studio Art</div>
 										<div class="row-section collapsed">
-											<ul class="level-three">
-												<li class="has-child">
-													<div class="allHeading">All</div>
-												</li>
-												<li class="has-child">
-													<div class="checkbox">
-														<input class="specificItem" id="studioArtSOA" type="checkbox" name="studioArtSOA" value=".chk_0_studio">
-														<label for="studioArtSOA">Studio Art</label>
-													</div>
-												</li>
-												<li class="has-child">
-													<div class="checkbox">
-														<input class="specificItem" id="ceramicsSOA" type="checkbox" name="ceramicsSOA" value=".chk_1_ceramics">
-														<label for="ceramicsSOA">Ceramics</label>
-													</div>
-												</li>
-												<li class="has-child">
-													<div class="checkbox">
-														<input class="specificItem" type="checkbox" id="jewelrySOA" name="jewelrySOA" value=".chk_2_jewelry">
-														<label for="jewelrySOA">Jewelry</label>
-													</div>
-												</li>
-												<li class="has-child">
-													<div class="checkbox">
-														<input class="specificItem" type="checkbox" id="artAppreciationSOA" name="artAppreciationSOA" value="Art Appreciation">
-														<label for="artAppreciationSOA">Art Appreciation</label>
-													</div>
-												</li>
-											</ul>
 											<!-- HTML Level Four Children : Studio Art -->
-											<ul id="studioArtSOA" class="level-four collapsed sa">
+											<ul id="studioArtSOA" class="level-four sa">
 												<li class="has-child">
-													<div class="allHeading">All</div>
+													<div class="allHeading L3">All</div>
 												</li>
 												<li>
 														<div class="checkbox">
@@ -4035,12 +4017,6 @@ $(document).on('click','.showMore',function(){
 														<label for="chk_0_studio">Intermediate/Advanced</label>
 													</div>
 												</li>
-												<!--<li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Collage Workshops</label>
-														</div>
-												</li> df-->
 												<li>
 													<div class="checkbox">
 														<!-- df -->
@@ -4198,10 +4174,16 @@ $(document).on('click','.showMore',function(){
 												</li>
 											</ul>
 											<!-- End Level-Five Children : Watercolor -->
+										</div>
+									</li>
+
+									<li class="">
+										<div class="row-heading L3" id="ceramicsSOA">Ceramics</div>
+										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Ceramics -->
-											<ul id="ceramicsSOA" class="level-four collapsed ceramics">
+											<ul id="ceramicsSOA" class="level-four ceramics">
 												<li class="has-child">
-													<div class="allHeading">All</div>
+													<div class="allHeading L3">All</div>
 												</li>
 												<li>
 													<div class="checkbox">
@@ -4311,10 +4293,16 @@ $(document).on('click','.showMore',function(){
 												</li>
 											</ul>
 											<!-- End Level-Five Children : Wheel -->
+										</div>
+									</li>
+
+									<li class="">
+										<div class="row-heading L3" id="jewelrySOA">Jewelry</div>
+										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Jewelry -->
-											<ul id="jewelrySOA" class="level-four collapsed jewelry">
+											<ul id="jewelrySOA" class="level-four jewelry">
 												<li class="has-child">
-													<div class="allHeading">All</div>
+													<div class="allHeading L3">All</div>
 												</li>
 												<li>
 													<div class="checkbox">
@@ -4358,12 +4346,6 @@ $(document).on('click','.showMore',function(){
 														<label for="chk_0_studio">Wax Carving</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="creatingAcollectionSOA" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Creating a Collection</label>
-														</div>
-												</li> -->
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="19708" name="chk_0_studio" value=".chk_0_studio">
@@ -4406,162 +4388,17 @@ $(document).on('click','.showMore',function(){
 														<label for="chk_0_studio">Jewelry II</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Jewelry III</label>
-														</div>
-												</li> -->
 											</ul>
-											<!-- End Level-Four Children : Jewelry -->
-											<!-- HTML Level Five Children : Beading -->
-											<!--                   <ul id="beadingSOA" class="level-five collapsed jewelry beading">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Beading -->
-											<!-- HTML Level Five Children : Classical Goldsmithing -->
-											<!--                   <ul id="classicalGoldsmithingSOA" class="level-five collapsed jewelry classicalGoldsmithing">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Classical Goldsmithing -->
-											<!-- HTML Level Five Children : Enameling -->
-											<!--                   <ul id="enamelingSOA" class="level-five collapsed jewelry enameling">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Enameling -->
-											<!-- HTML Level Five Children : Silversmithing -->
-											<!--                   <ul id="silversmithingSOA" class="level-five collapsed jewelry silversmithing">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Advanced</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Judaica Intermediate</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Judaica Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Silversmithing -->
-											<!-- HTML Level Five Children : Wax Carving -->
-											<!--                   <ul id="waxCarvingSOA" class="level-five collapsed jewelry waxCarving">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Wax Carving -->
-											<!-- HTML Level Five Children : Fine Jewelry & Stonesetting -->
-											<!--                   <ul id="fineJewelryStonesettingSOA" class="level-five collapsed jewelry fineJewelryStonesetting">
-													<li class="has-child">
-																<div class="allHeading">All</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Beginner</label>
-															</div>
-													</li>
-													<li>
-															<div class="checkbox">
-																	<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																	<label for="chk_0_studio">Intermediate/Advanced</label>
-															</div>
-													</li>
-											</ul> -->
-											<!-- End Level-Five Children : Fine Jewelry & Stonesetting -->
+										</div>
+									</li>
+
+									<li class="">
+										<div class="row-heading L3" id="artAppreciationSOA">Art Talks and Tours</div>
+										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Art Appreciation -->
-											<ul id="artAppreciationSOA" class="level-four collapsed artAppreciation">
+											<ul id="artAppreciationSOA" class="level-four artAppreciation">
 												<li class="has-child">
-													<div class="allHeading">All</div>
+													<div class="allHeading L3">All</div>
 												</li>
 												<li>
 													<div class="checkbox">
@@ -4597,6 +4434,8 @@ $(document).on('click','.showMore',function(){
 											<!-- End Level-Four Children : Art Appreciation -->
 										</div>
 									</li>
+
+
 									<!-- Music -->
 									<li class="">
 										<div class="row-heading" id="Music">Music</div>
