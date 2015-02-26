@@ -627,6 +627,10 @@ left: -999em;*/
 		background: transparent;
 		border-radius: 3px;
 	}
+	.checkbox.arrow:after {
+		content: "\25BC";
+		color: black;
+	}
 	.checkbox label:after {
 		content: "\2713";
 		position: absolute;
@@ -1837,6 +1841,18 @@ padding-right: 0;
 		$(document).ready(function () {
 			$("#animationComplete").val("true");
 
+			$("input:checkbox.specificItem").each(function (){
+				var $this = $(this);
+				var _scope = angular.element($this).scope();
+				var checkboxId = $(this)[0].id;
+				if (!_scope.navListCtrl.isActualNumber(checkboxId)){
+					var parentDiv = $this.closest("div.checkbox");
+					parentDiv.addClass("arrow");
+				}
+			});
+
+
+
 			$jqe.easing.def = "easeInOutCirc";
 			$jqe("#info-btn").click(function () {
 				$jqe("#info-block").slideToggle();
@@ -2047,25 +2063,17 @@ padding-right: 0;
 					//}
 					anythingSelected = true;
 				}
-				if (_.contains(_scope.navListCtrl.l2SubInterestArray.arr, 'Art')){
-					var subArtsSelected = 0;
-					if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'studioArtSOA')){
-						filterString += ', .studioArt';
-						subArtsSelected++;
-					}
-					if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'ceramicsSOA')){
-						filterString += ', .ceramics';
-						subArtsSelected++;
-					}
-					if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'jewelrySOA')){
-						filterString += ', .jewelry';
-						subArtsSelected++;
-					}
-					anythingSelected = subArtsSelected;
-					if (!subArtsSelected){
-						filterString += ', .Art';
-						anythingSelected = true;
-					}
+				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'studioArtSOA')){
+					filterString += ', .studioArt';
+					anythingSelected = true;
+				}
+				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'ceramicsSOA')){
+					filterString += ', .ceramics';
+					anythingSelected = true;
+				}
+				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'jewelrySOA')){
+					filterString += ', .jewelry';
+					anythingSelected = true;
 				}
 				var $container = $('#promo-item-container');
 				if (!anythingSelected){
@@ -4456,24 +4464,12 @@ $(document).on('click','.showMore',function(){
 														<label for="chk_1_ceramics">School Concerts</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_2_jewelry" name="chk_2_jewelry" value=".chk_2_jewelry">
-																<label for="chk_2_jewelry">High School Guitar Day</label>
-														</div>
-												</li>
-												-->                    <li>
+                   								<li>
 													<div class="checkbox">
 														<input class="specificItem" id="18405" type="checkbox" name="chk_3_art" value="Art Appreciation">
 														<label for="chk_3_art">Pre-Instrumental Programming</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-																<label for="chk_3_art">Dalcroze</label>
-														</div>
-												</li> -->
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" id="3534" type="checkbox" name="chk_3_art" value="Art Appreciation">
@@ -4504,18 +4500,6 @@ $(document).on('click','.showMore',function(){
 														<label for="chk_3_art">Music Appreciation</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-																<label for="chk_3_art">Instrument studies</label>
-														</div>
-												</li>
-												<li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-																<label for="chk_3_art">Vocal Studies</label>
-														</div>
-												</li> -->
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" id="3535" type="checkbox" name="chk_3_art" value="Art Appreciation">
