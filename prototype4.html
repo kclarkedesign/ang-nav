@@ -281,14 +281,6 @@ left: -999em;*/
   	padding: 4px;
   	cursor: pointer;
   }
-/*DF  .row-heading-alt {
-  	display: inline-block;
-  	font-size: 14px;
-  	font-weight: bold;
-  	margin: 8px 0 0;
-  	text-transform: uppercase;
-  	padding: 4px;
-  }*/
   .row-heading.check {
   	color: #B61A2E;
   }
@@ -613,7 +605,7 @@ left: -999em;*/
 	}
 	.checkbox label {
 	}
-	.checkbox label:before, .checkbox label:after {
+/*	.checkbox label:before, .checkbox label:after {
 		content: '';
 		display: block;
 		position: absolute;
@@ -626,13 +618,19 @@ left: -999em;*/
 		margin-left: 10px;
 		background: transparent;
 		border-radius: 3px;
-	}
-	.checkbox.arrow:after {
-		content: "\25BC";
+	}*/
+	.checkbox label.hasChildren:after {
+		content: "\25BC"; /* down-arrow*/
 		color: black;
 	}
-	.checkbox label:after {
-		content: "\2713";
+	.clearLink {
+		position: relative;
+		z-index: 0;
+		font-size: 16px;
+		cursor: pointer;
+	}
+	.checkbox label.noChildren:after {
+		content: "\2612";  /* ballot-box x */
 		position: absolute;
 		top: 5px;
 		right: 4px;
@@ -643,6 +641,7 @@ left: -999em;*/
 		opacity: 0;
 		pointer-events: none;
 		font-size: 16px;
+		color: black;
 	}
 	.allHeading {
 		border: none;
@@ -662,20 +661,23 @@ left: -999em;*/
 		color: #B61A2E;
 	}
 	.allHeading.check:after {
-		content: "\2713";
+		content: "\2612";
 		padding-left: 3px;
+		font-size: 16px;
 	}
+	/* todo:  make checkmarks into x's and have them clear everything and below when clicked */
 	.row-heading.check:after {
-		content: "\2713";
+		content: "\2612";
 		padding-left: 3px;
+		font-size: 16px;
 	}
 	.selections a.check {
 		background-color: #AAD6FC;
 	}
-	.checkbox input:checked ~ label:after {
+	.checkbox input:checked ~ label.noChildren:after {
 		opacity: 1;
 	}
-	.checkbox input:focus ~ label:before {
+	.checkbox input:focus ~ label.noChildren:before {
 		background: transparent;
 	}
 /**
@@ -685,7 +687,6 @@ left: -999em;*/
  /*begin df */
 	.container {
 		min-height: 900px;
-		/*text-align: justify;*/
 		position: relative;
 		width: 940px;
     	left: 33%;
@@ -1845,12 +1846,14 @@ padding-right: 0;
 				var $this = $(this);
 				var _scope = angular.element($this).scope();
 				var checkboxId = $(this)[0].id;
+				var chkLabel = $(this).next();
 				if (!_scope.navListCtrl.isActualNumber(checkboxId)){
-					var parentDiv = $this.closest("div.checkbox");
-					parentDiv.addClass("arrow");
+					chkLabel.addClass("hasChildren");
+					$('<span class="clearLink">&#x2612;</span>').insertAfter(chkLabel);
+				}else{
+					chkLabel.addClass("noChildren");
 				}
 			});
-
 
 
 			$jqe.easing.def = "easeInOutCirc";
@@ -2135,7 +2138,6 @@ padding-right: 0;
 			});
 
 
-
 			$('.allHeading').click(function (){
 				if ($("#animationComplete").val() === "false"){
 					return;
@@ -2155,6 +2157,8 @@ padding-right: 0;
 						var ulLevelId = ulLevel[0].id;
 						var parentCheckbox = rowSection.find("input[name='"+ ulLevelId +"']");
 						parentCheckbox.prop('checked', false);
+						var parentLl = parentCheckbox.closest("li");
+						parentLl.find("span.clearLink").css('color', '').css('z-index', '0');
 						var parentUl = parentCheckbox.closest("ul");
 						var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 						if (interestsChecked.length === 0){
@@ -2230,37 +2234,107 @@ padding-right: 0;
 				}
 			});
 
+			$(".clearLink").on("click", function (){
+				var _this = $(this);
+				var parentLi = _this.closest("li");
+				var checkbox = parentLi.find('input[type="checkbox"]');
+				if (checkbox[0].checked){
 
-$(document).on('click','.showMore',function(){
-    var $showMore = $(this).parent(".getMore");
-    var $wrapper = $showMore.next(".contentWrap");
-	var $classTitle = $showMore.prevAll(".classTitle");
-	var $classDate = $showMore.prevAll(".classDate");
-	var $warning = $showMore.prevAll(".warning");
-    var $content = $wrapper.find("div");
-	var titleHeight = $classTitle.height();
-	var warnHeight = $warning.height();
-	$wrapper.children(".shortDescription").css("height", 210 - titleHeight - warnHeight+"px");
-    if($wrapper.css("bottom") == "144px") {
-        $wrapper.animate({bottom: "5px"});
-        $classTitle.animate({bottom: "0"});
-        $classDate.animate({bottom: "0"});
-        $warning.animate({bottom: "0"});
-        $content.slideUp(function () {
-        	$showMore.html($showMore.html().replace("Show Less ▼", "Show More ▲"));
-        });
-    } else {
-    	$wrapper.css( "bottom", "5px" );
-        $wrapper.animate({bottom: "144px"});
-        $classTitle.animate({bottom: "144px"});
-        $classDate.animate({bottom: "144px"});
-        $warning.animate({bottom: "144px"});
-        $content.slideDown(function () {
-        	$showMore.html($showMore.html().replace("Show More ▲", "Show Less ▼"));
-        });
-    }
-    return false;
-});
+					var checkboxId = checkbox[0].id;
+
+					var rowSection = _this.closest('.row-section');
+					var allHeading = rowSection.find("ul#"+ checkboxId).find(".allHeading");
+
+					var ulLevel = allHeading.closest("ul");
+
+					var ulLevelId = ulLevel[0].id;
+					var parentCheckbox = rowSection.find("input[name='"+ ulLevelId +"']");
+					parentCheckbox.prop('checked', false);
+					var parentUl = parentCheckbox.closest("ul");
+					var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
+					if (interestsChecked.length === 0){
+						parentUl.find('.allHeading').addClass("check");
+					}
+
+					allHeading.addClass("check");
+					ulLevel.find('input[type="checkbox"]:checked').each(function (){
+						$(this).prop('checked', false);
+					});
+					if (ulLevel.hasClass("level-three") || allHeading.hasClass("L3")){
+						$("ul.level-four.collapsed, ul.level-five.collapsed", "#accordion").each(function (){
+							var _this = $(this);
+							if (_this.is(':visible')){
+								_this.slideToggle();
+							}
+						});
+					}else if (ulLevel.hasClass("level-four")){
+						$("ul.level-five.collapsed", "#accordion").each(function (){
+							var _this = $(this);
+							if (_this.is(':visible')){
+								_this.slideToggle();
+							}
+						});
+					}
+
+					var scope = angular.element(_this).scope();
+					scope.navListCtrl.clearResults();
+					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
+						var _this = $(this);
+						var checkboxId = _this[0].id;
+						if (scope.navListCtrl.isActualNumber(checkboxId)){
+							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
+								scope.navListCtrl.reduceList(parseInt(checkboxId));
+							}
+						}else{
+							var thisLabel = _this.siblings('label');
+							var checkedText = thisLabel.attr('for');
+							if (ulLevel.hasClass("level-three")){
+								if (_.contains(scope.navListCtrl.l3SubInterestArray.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterestArray);
+								}
+							}else{
+								if (_.contains(scope.navListCtrl.l4SubInterestArray.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterestArray);
+								}
+							}
+						}
+					});
+
+					specificItemClick(checkbox, true);
+				}
+
+			});
+
+			$(document).on('click','.showMore',function(){
+				var $showMore = $(this).parent(".getMore");
+				var $wrapper = $showMore.next(".contentWrap");
+				var $classTitle = $showMore.prevAll(".classTitle");
+				var $classDate = $showMore.prevAll(".classDate");
+				var $warning = $showMore.prevAll(".warning");
+				var $content = $wrapper.find("div");
+				var titleHeight = $classTitle.height();
+				var warnHeight = $warning.height();
+				$wrapper.children(".shortDescription").css("height", 210 - titleHeight - warnHeight+"px");
+				if($wrapper.css("bottom") == "144px") {
+					$wrapper.animate({bottom: "5px"});
+					$classTitle.animate({bottom: "0"});
+					$classDate.animate({bottom: "0"});
+					$warning.animate({bottom: "0"});
+					$content.slideUp(function () {
+						$showMore.html($showMore.html().replace("Show Less ▼", "Show More ▲"));
+					});
+				} else {
+					$wrapper.css( "bottom", "5px" );
+					$wrapper.animate({bottom: "144px"});
+					$classTitle.animate({bottom: "144px"});
+					$classDate.animate({bottom: "144px"});
+					$warning.animate({bottom: "144px"});
+					$content.slideDown(function () {
+						$showMore.html($showMore.html().replace("Show More ▲", "Show Less ▼"));
+					});
+				}
+				return false;
+			});
 
 		});
 		</script>
@@ -2268,99 +2342,114 @@ $(document).on('click','.showMore',function(){
 		$jqe(document).ready(function () {
 			//Third Level and below Accordion
 			$jqe('input[type="checkbox"].specificItem').click(function (event) {
-				if ($("#animationComplete").val() === "false"){
-					event.preventDefault();
-					return;
-				}
+				specificItemClick($jqe(this), false);
+			});
+		});
 
-				var _this = $jqe(this);
-				var thisLabel = _this.siblings('label');
-				var checkedText = thisLabel.attr('for');
-				var parentUl = _this.closest("ul");
-				var levelThreeClicked = false;
-				if (parentUl.hasClass("level-three")){
-					levelThreeClicked = true;
-				}
-				var preventDefault = false;
-				if (_this.is(":checked")){
-					parentUl.find(".allHeading").removeClass("check");
-					var rowSection = _this.closest('.row-section');
-					rowSection.find("ul#"+ checkedText).find(".allHeading").addClass("check");
-					parentUl.find(".activeInterest").removeClass("activeInterest");
-					thisLabel.addClass("activeInterest");
-				}else{
-					var rowSection = _this.closest('.row-section');
-					var rowUl = rowSection.find("ul#"+ checkedText);
-					if (parentUl.hasClass("level-five") || (parentUl.hasClass("level-four") && rowUl.length === 0) || (parentUl.hasClass("level-three") && rowUl.length === 0)){
-						if (rowUl.length > 0){
-							var rowUlinterestsChecked = rowUl.find('input[type="checkbox"]:checked');
-							if (rowUlinterestsChecked.length === 0){
-								rowUl.find('.allHeading').addClass("check");
-							}else{
-								preventDefault = true;
-							}
+		var specificItemClick = function (_this, closeChild) {
+			if ($("#animationComplete").val() === "false"){
+				event.preventDefault();
+				return;
+			}
+			var thisLabel = _this.siblings('label');
+			var checkedText = thisLabel.attr('for');
+			var parentUl = _this.closest("ul");
+			var levelThreeClicked = false;
+			if (parentUl.hasClass("level-three")){
+				levelThreeClicked = true;
+			}
+			var preventDefault = false;
+			var parentLl = _this.closest("li");
+			if (_this.is(":checked")){
+				parentUl.find(".allHeading").removeClass("check");
+				var rowSection = _this.closest('.row-section');
+				rowSection.find("ul#"+ checkedText).find(".allHeading").addClass("check");
+				parentUl.find(".activeInterest").removeClass("activeInterest");
+				thisLabel.addClass("activeInterest");
+				// if (!thisLabel.hasClass("hasChildren")){
+				// 	thisLabel.addClass("noChildren");
+				// }
+				parentLl.find('span.clearLink').css('color', 'black').css('z-index', '5');
+			}else{
+				var rowSection = _this.closest('.row-section');
+				var rowUl = rowSection.find("ul#"+ checkedText);
+				if (parentUl.hasClass("level-five") || (parentUl.hasClass("level-four") && rowUl.length === 0) || (parentUl.hasClass("level-three") && rowUl.length === 0)){
+					if (rowUl.length > 0){
+						var rowUlinterestsChecked = rowUl.find('input[type="checkbox"]:checked');
+						if (rowUlinterestsChecked.length === 0){
+							rowUl.find('.allHeading').addClass("check");
+						}else{
+							preventDefault = true;
 						}
-						if (!preventDefault){
+					}
+					if (!preventDefault){
+						var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
+						if (interestsChecked.length === 0){
+							parentUl.find('.allHeading').addClass("check");
+						}
+						parentUl.find(".activeInterest").removeClass("activeInterest");
+						parentLl.find('span.clearLink').css('color', '').css('z-index', '0');
+						// if (!thisLabel.hasClass("hasChildren")){
+						// 	thisLabel.removeClass("noChildren");
+						// }
+					}
+				}else{
+					var allChecked = rowUl.find('.allHeading').hasClass("check");
+					if (!allChecked){
+						preventDefault = true;
+					}else{
+						if (rowUl.is(":visible") || closeChild){
+							rowUl.find('.allHeading').removeClass("check");
 							var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 							if (interestsChecked.length === 0){
 								parentUl.find('.allHeading').addClass("check");
 							}
 							parentUl.find(".activeInterest").removeClass("activeInterest");
-						}
-					}else{
-						var allChecked = rowUl.find('.allHeading').hasClass("check");
-						if (!allChecked){
-							preventDefault = true;
+							parentLl.find('span.clearLink').css('color', '').css('z-index', '0');
+							// if (!thisLabel.hasClass("hasChildren")){
+							// 	thisLabel.removeClass("noChildren");
+							// }
 						}else{
-							if (rowUl.is(":visible")){
-								rowUl.find('.allHeading').removeClass("check");
-								var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
-								if (interestsChecked.length === 0){
-									parentUl.find('.allHeading').addClass("check");
-								}
-								parentUl.find(".activeInterest").removeClass("activeInterest");
-							}else{
-								preventDefault = true;
-							}
+							preventDefault = true;
 						}
 					}
 				}
-				if (preventDefault){
-					parentUl.find(".activeInterest").removeClass("activeInterest");
-					thisLabel.addClass("activeInterest");
-					event.preventDefault();
-				}else{
-					if (_this[0].id.length > 0){
-						setTransitionSpeed();
-						var scope = angular.element(_this).scope();
-						var levelArray;
-						if (parentUl.hasClass("level-four")){
-							levelArray = scope.navListCtrl.l4SubInterestArray;
-						}else if (parentUl.hasClass("level-three")){
-							levelArray = scope.navListCtrl.l3SubInterestArray;
-						}
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						var thisId = _this[0].id;
-						if (scope.navListCtrl.isActualNumber(thisId)){
-							thisId = parseInt(thisId);
-						}
-						reduceAndRefresh(scope, thisId, levelArray);
-						DisplayAds(scope);
+			}
+			if (preventDefault){
+				parentUl.find(".activeInterest").removeClass("activeInterest");
+				thisLabel.addClass("activeInterest");
+				event.preventDefault();
+			}else{
+				if (_this[0].id.length > 0){
+					setTransitionSpeed();
+					var scope = angular.element(_this).scope();
+					var levelArray;
+					if (parentUl.hasClass("level-four")){
+						levelArray = scope.navListCtrl.l4SubInterestArray;
+					}else if (parentUl.hasClass("level-three")){
+						levelArray = scope.navListCtrl.l3SubInterestArray;
 					}
+					scope.navListCtrl.clearResults();
+					scope.$apply();
+					var thisId = _this[0].id;
+					if (scope.navListCtrl.isActualNumber(thisId)){
+						thisId = parseInt(thisId);
+					}
+					reduceAndRefresh(scope, thisId, levelArray);
+					DisplayAds(scope);
 				}
-				if (!parentUl.hasClass("level-five")){
-					var rowSection = _this.closest(".row-section");
-					rowSection.find(levelThreeClicked ? "ul.level-four.collapsed, ul.level-five.collapsed" : "ul.level-five.collapsed").each(function (){
-						var _this = $jqe(this);
-						var childUL = _this.attr("id");
-						if ((_this.is(':visible') && childUL !== checkedText) || (childUL === checkedText)){
-							_this.slideToggle();
-						}
-					});
-				}
-			});
-		});
+			}
+			if (!parentUl.hasClass("level-five")){
+				var rowSection = _this.closest(".row-section");
+				rowSection.find(levelThreeClicked ? "ul.level-four.collapsed, ul.level-five.collapsed" : "ul.level-five.collapsed").each(function (){
+					var _this = $jqe(this);
+					var childUL = _this.attr("id");
+					if ((_this.is(':visible') && childUL !== checkedText) || (childUL === checkedText && (!closeChild || (closeChild && _this.is(':visible'))))){
+						_this.slideToggle();
+					}
+				});
+			}
+		}
 		</script>
 		<!-- end df -->
 		<script>
