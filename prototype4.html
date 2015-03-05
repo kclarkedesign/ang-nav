@@ -5,7 +5,6 @@
 		<title>92Y | Funnel Filter</title>
 		<link href="http://www.92y.org/_ui/uptown/css/textref.ashx?k=1b_n4uSJkq4T0lUMXTQZt2BXOcI_BY51PL_lW0MD0VPMShJH5BOahlC4m9Wt-fOa9Z5Gx_JCoIC40WqxTfM33D06jSdAmQLSIPhFwPMMY4JqzUQim1hr2OUY-yqlgg9nT6ZnpSH0CbTDhDrtmj3bJOc0eRDNB1wI8Ylp0cI_xqXFrkWl3tdQvA.." rel="Stylesheet" type="text/css" media="screen" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<!--begin df-->
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
 		<script src="src/isotope.pkgd.js"></script>
 		<script src="src/angular-isotope.min.js"></script>
@@ -14,21 +13,14 @@
 		<script src="src/ng-infinite-scroll.min.js" type="text/javascript"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.0/lodash.min.js"></script>
 		<script src="src/navControllers3.js" type="text/javascript"></script>
-		<script type="text/javascript" src="http://www.92y.org/_ui/shared/js/2013Update/TravelingCart.js"></script>
-		<script type="text/javascript" src="http://www.92y.org/_ui/shared/js/2013Update/CloseFlyouts.js"></script>
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 		<script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
-		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/docs/js/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/docs/js/bootstrap-3.2.0.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
 		<script type="text/javascript" src="http://www.92y.org/92StreetY/media/MEDIA/Javascript/jquery-ui.js"></script>
-		<!--end df-->
 		<link rel="stylesheet" type="text/css" href="http://www.92y.org/92StreetY/media/MICROSITES/CSS/HorizontalNav.css" />
-		<!--<link rel="stylesheet" type="text/css" href="http://www.92y.org/92StreetY/media/MEDIA/CSS/jquery-ui.css" />
-		<link rel="stylesheet" type="text/css" href="http://www.92y.org/92StreetY/media/MEDIA/CSS/jquery-ui-structure.css" />-->
-		<!-- Include Twitter Bootstrap: -->
-		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/docs/css/bootstrap-3.2.0.min.css" type="text/css"/>
-		<!-- Include the plugin's CSS : -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css"/>
 		<style>
 fieldset#searchbox {
@@ -37,9 +29,6 @@ fieldset#searchbox {
 html, form {
 	height: auto;
 }
-    /*    body {
-			height: 1200px;
-			}*/
 			#mainnavigation {
 				border-top: 2px solid #d3d3d4;
 				border-bottom: 1px solid #d3d3d4;
@@ -118,8 +107,6 @@ html, form {
 				box-sizing: inherit;
 			}
 			button.filter.active {
-/*background: #68b8c4;
-color: #fff;*/
 }
 btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	outline: thin dotted;
@@ -133,7 +120,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	background: #000000;
 }
 #kidOptions label.checkbox {
-	/*DF*/
 	color: #fff;
 }
 #kidOptions .checkbox {
@@ -160,7 +146,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	padding: 6px 20px 6px 10px;
 }
 #interest {
-	/* overflow: hidden; */
 	padding: 2px 0 0 0;
 	width: 515px;
 	margin: 0;
@@ -173,7 +158,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	display: inline-block;
 }
 #kidOptions .btn-group {
-	background: none repeat scroll 0 0 transparent;/*margin-left: -13px;*/
+	background: none repeat scroll 0 0 transparent;
 }
 .tip {
 	background: none repeat scroll 0 0 #efefef;
@@ -194,7 +179,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 }
 #filter-container {
 	margin: 0 auto;
-	/*padding: 2px 0 6px;*/
 	width: 100%;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -206,10 +190,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 }
 .collapsed {
 	display: none;
-}
-.filter-row div.checkbox input {
-/*position: absolute;
-left: -999em;*/
 }
 .filter-row li {
 	list-style-type: none;
@@ -231,7 +211,6 @@ left: -999em;*/
 	overflow: hidden;
 }
 .filter-grid .has-subnav {
-	/*float: left;*/
 	margin: 0 0 3px;
 	padding: 0;
 	width: 100%;
@@ -246,15 +225,9 @@ left: -999em;*/
 	line-height: 22px;
 	font-weight: bold;
 	padding: 14px 0 4px;
-	/* text-align: center; */
 	background: transparent;
 	color: #000;
 }
-/*.level-2 label
-.level-3 label
-.level-4 label {
-  padding: 0 0 0 5px;
-  }*/
 
   #accordion .level-three, #accordion .level-four, #accordion .level-five {
   	padding-left: 9px;
@@ -297,7 +270,6 @@ left: -999em;*/
   }
   .row-dropdown {
   	width: 19.333%;
-  	/*float: left;*/
   	text-align: center;
   }
   #sideOptions .row-dropdown {
@@ -307,15 +279,12 @@ left: -999em;*/
   }
   .age-range {
   	border-bottom: none;
-  	/*border-right: 1px solid #ccc;*/
-  	/*margin-bottom: 110px;*/
   	margin-bottom: 9px;
   	padding: 0;
   	display: inline-block;
   	width: 100%;
   }
   .age-range li {
-  	/*width: 100%;*/
   	width: auto;
   	margin: 0 0 1px 0;
   }
@@ -335,13 +304,11 @@ left: -999em;*/
   .mainOptions {
   	display: block;
   	width: 100%;
-  	/*height: 68px;*/
   }
   .mainOptions .btn, #sideOptions .btn {
   	margin: 0;
   }
   .mainOptions .row-heading, #sideOptions .row-heading {
-  	/* width: 90px; */
   	display: inline;
   }
   #sideOptions .row-heading {
@@ -357,8 +324,6 @@ left: -999em;*/
   	background: #fff;
   	position: fixed;
   	z-index: 3;
-  	/* overflow: hidden; */
-  	/* clear: both; */
   	left: 33%;
   }
   .sideOptions .age-range {
@@ -366,9 +331,6 @@ left: -999em;*/
   	padding: 0;
   	width: 31%;
   	text-align: left;
-  }
-  .sideOptions .row-heading {
-  	/*color: #fff;*/
   }
   #sideOptions li {
   	margin: 0;
@@ -395,8 +357,6 @@ left: -999em;*/
   	margin: 6px 0 0 0;
   	color: #515151;
   	position: relative;
-  	/* left: 0; */
-  	/* top: 0; */
   	background: #E6E6E6;
   	padding: 6px;
   	width: 100%;
@@ -529,7 +489,6 @@ left: -999em;*/
  }
  .controls {
  	background: #f5f5f5;
- 	/* padding: 1% 0 0; */
  	z-index: 4;
  	position: fixed;
  	overflow-y: auto;
@@ -539,27 +498,7 @@ left: -999em;*/
  	left: 0;
  	border-right: 1px solid #CCC;
  }
-/*fieldset{
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 1em 0 0;
-  background: #666;
-  padding: .5em;
-  border-radius: 3px;
-  }*/
 
-  /*.checkbox {
-  	display: block;
-  	position: relative;
-  	border: 1px solid #C1C1C1;
-  	border-radius: 6px;
-  	cursor: pointer;
-  	font-size: 10.5px;
-  	margin: 3px 0;
-  	padding: 0 0.5em;
-  	overflow: hidden;
-	background: #fff;
-	}*/
 	.checkbox {
 		border: none;
 		border-radius: 0;
@@ -568,7 +507,6 @@ left: -999em;*/
 		float: left;
 		font-size: 12px;
 		margin: 3px 0;
-		/*overflow: hidden;*/
 		padding: 0.6em 0.8em;
 		position: relative;
 		width: 100%;
@@ -595,6 +533,10 @@ left: -999em;*/
 	input[type="checkbox"]:checked+label {
 		color: #4DA1ED;
 	}
+	input[type="checkbox"]:checked~span {
+		color: #4DA1ED;
+		z-index: 5;
+	}
 	.checkbox label {
 		display: inline-block;
 		vertical-align: top;
@@ -605,20 +547,6 @@ left: -999em;*/
 	}
 	.checkbox label {
 	}
-/*	.checkbox label:before, .checkbox label:after {
-		content: '';
-		display: block;
-		position: absolute;
-	}
-	.checkbox label:before, checkbox label:after, checkbox label:focus {
-		right: 0;
-		top: 0;
-		width: 5px;
-		height: 18px;
-		margin-left: 10px;
-		background: transparent;
-		border-radius: 3px;
-	}*/
 	.checkbox label.hasChildren:after {
 		content: "\25BC"; /* down-arrow*/
 		color: black;
@@ -628,6 +556,14 @@ left: -999em;*/
 		z-index: 0;
 		font-size: 16px;
 		cursor: pointer;
+	}
+	.clearMains {
+		position: relative;
+		z-index: 0;
+		font-size: 16px;
+		cursor: pointer;
+		opacity: 0;
+		right: -4px;
 	}
 	.checkbox label.noChildren:after {
 		content: "\2612";  /* ballot-box x */
@@ -641,7 +577,6 @@ left: -999em;*/
 		opacity: 0;
 		pointer-events: none;
 		font-size: 16px;
-		color: black;
 	}
 	.allHeading {
 		border: none;
@@ -657,16 +592,10 @@ left: -999em;*/
 		color: #000;
 		text-align: left;
 	}
-	.allHeading.check {
+	.allHeading.check{
 		color: #B61A2E;
 	}
 	.allHeading.check:after {
-		content: "\2612";
-		padding-left: 3px;
-		font-size: 16px;
-	}
-	/* todo:  make checkmarks into x's and have them clear everything and below when clicked */
-	.row-heading.check:after {
 		content: "\2612";
 		padding-left: 3px;
 		font-size: 16px;
@@ -684,7 +613,6 @@ left: -999em;*/
  * Container/Target Styles
  */
 
- /*begin df */
 	.container {
 		min-height: 900px;
 		position: relative;
@@ -718,27 +646,7 @@ left: -999em;*/
  		margin: 1% 0 1% 0;
  		background: transparent;
  	}
-/*
-.container .mix.green {
-	background: #a6e6a7;
-}
-.container .mix.blue {
-	background: #6bd2e8;
-}
-.container .mix.circle {
-	border-radius: 999px;
-}
-.container .mix.triangle {
-	width: 0;
-	height: 0;
-	border: 50px solid transparent;
-	border-top-color: #68b8c4;
-	border-left-color: #68b8c4;
-}
-.container .mix.sm {
-	width: 50px;
-	height: 50px;
-	}*/
+
 	.itemBox { 
 		margin-bottom: 20px;
 	}
@@ -841,23 +749,17 @@ transition: .1s linear;
 	}
 	.defaultText { width: 300px; }
 	.defaultTextActive { color: #a1a1a1; }
-  /* end df */
 
 /**
  * Fail message styles
  */
  .container .fail-message {
- 	/*position: absolute; df*/
  	top: 0;
  	left: 0;
  	bottom: 0;
  	right: 0;
  	text-align: center;
- 	/*opacity: 0; df*/
  	pointer-events: none;
-	/*-webkit-transition: 150ms;
-	-moz-transition: 150ms;
-	transition: 150ms; df*/
 }
 .container .fail-message:before {
 	content: '';
@@ -888,10 +790,6 @@ transition: .1s linear;
 .accordion-content.default {
 	display: block;
 }
-/*.interest-title,
-.has-subnav {
-	display: none;
-	} */
 	ul {
 		overflow: hidden;
 		margin: 0;
@@ -926,9 +824,6 @@ transition: .1s linear;
 		border: none;
 		float: left;
 		position: relative;
-	/*-webkit-transition: all linear .2s;
-	-moz-transition: all linear .2s;
-	transition: all linear .2s;*/
 }
 button#adultBtn:hover, button#kidBtn:hover {
 	background: #000;
@@ -939,7 +834,10 @@ button#adultBtn.selected, button#kidBtn.selected {
 }
 input[type="checkbox"]:checked+label.activeInterest {
 	color: #B61A2E;
-	/*font-weight: bold;*/
+}
+input[type="checkbox"]:checked~span.activeInterest {
+	color: #B61A2E;
+	z-index: 5;
 }
 button#adultBtn:focus, button#kidBtn:focus {
 	color: #fff;
@@ -974,7 +872,6 @@ fieldset#interest-areas {
  	*/
  	#filter-search {
  		display: inline-block;
- 		/*float: right;*/
  		text-align:center;
  		margin-left: 10px;
  	}
@@ -992,7 +889,6 @@ fieldset#interest-areas {
  		border: 1px solid #4EA2EE;
  		padding: 4px 25px;
  		background: #4EA2EE;
- 		/* text-indent: -999px; */
  		margin: 0;
  		height: 21px;
  		position: relative;
@@ -1111,7 +1007,6 @@ fieldset#interest-areas {
  		text-transform: uppercase;
  		font-size: 12px;
  		padding: 11px 0;
- 		/*background: #ccc;*/
  		cursor: pointer;
  	}
  	#utility-bar {
@@ -1446,7 +1341,6 @@ padding-right: 0;
 					},
 					checkboxName: 'slicerDayOfWeek'
 				});
-				//begin df
 				$jq('.kidAges').multiselect({
 					buttonWidth: '172px',
 					nonSelectedText: 'All',
@@ -1470,20 +1364,7 @@ padding-right: 0;
 					},
 					checkboxName: 'ageRanges'
 				});
-				$jq(".defaultText").focus(function (srcc){
-					if ($jq(this).val() == $jq(this)[0].title){
-						$jq(this).removeClass("defaultTextActive");
-						$jq(this).val("");
-					}
-				});
-				$jq(".defaultText").blur(function (){
-					if ($jq(this).val() == ""){
-						$jq(this).addClass("defaultTextActive");
-						$jq(this).val($jq(this)[0].title);
-					}
-				});
-			
-				$jq(".defaultText").blur();
+
 				$jq(window).resize(function() {
 					var scope = angular.element($('body')).scope();
 					resizeColumnCount(scope);
@@ -1515,8 +1396,6 @@ padding-right: 0;
 					scope.navListCtrl.queryWord = textbox.val();
 					reduceAndRefresh(scope);
 				};
-
-				//end df
 			});
 		</script>
 		<!-- Mix it Up Button script -->
@@ -1524,116 +1403,98 @@ padding-right: 0;
 		// To keep our code clean and modular, all custom functionality will be contained inside a single object literal called "buttonFilter".
 		var buttonFilter = {
 			
-		// Declare any variables we will need as properties of the object
-		
-		$filters: null,
-		$reset: null,
-		groups: [],
-		outputArray: [],
-		outputString: '',
-		
-		// The "init" method will run on document ready and cache any jQuery objects we will need.
-		
-		init: function(){
-		var self = this; // As a best practice, in each method we will asign "this" to the variable "self" so that it remains scope-agnostic. We will use it to refer to the parent "buttonFilter" object so that we can share methods and properties between all parts of the object.
-		
-		self.$filters = $('#Filters');
-		self.$reset = $('.Reset');
-		self.$container = $('#Container');
-		
-		self.$filters.find('fieldset').each(function(){
-			self.groups.push({
-				$buttons: $(this).find('.filter'),
-				active: ''
-			});
-		});
-		
-		self.bindHandlers();
-		},
-		// The "bindHandlers" method will listen for whenever a button is clicked.
-		
-		bindHandlers: function(){
-			var self = this;
+			// Declare any variables we will need as properties of the object
 			
-		// Handle filter clicks
-		
-		self.$filters.on('click', '.filter', function(e){
-			e.preventDefault();
+			$filters: null,
+			$reset: null,
+			groups: [],
+			outputArray: [],
+			outputString: '',
 			
-			var $button = $(this);
+			// The "init" method will run on document ready and cache any jQuery objects we will need.
 			
-		// If the button is active, remove the active class, else make active and deactivate others.
-		
-		$button.hasClass('active') ?
-		$button.removeClass('active') :
-		$button.addClass('active').siblings('.filter').removeClass('active');
-		
-		self.parseFilters();
-		});
-		
-		// Handle reset click
-		
-		self.$reset.on('click', function(e){
-			e.preventDefault();
+			init: function(){
+				var self = this; // As a best practice, in each method we will asign "this" to the variable "self" so that it remains scope-agnostic. We will use it to refer to the parent "buttonFilter" object so that we can share methods and properties between all parts of the object.
+				
+				self.$filters = $('#Filters');
+				self.$reset = $('.Reset');
+				self.$container = $('#Container');
+				
+				self.$filters.find('fieldset').each(function(){
+					self.groups.push({
+						$buttons: $(this).find('.filter'),
+						active: ''
+					});
+				});
+				
+				self.bindHandlers();
+			},
+			// The "bindHandlers" method will listen for whenever a button is clicked.
 			
-			self.$filters.find('.filter').removeClass('active');
+			bindHandlers: function(){
+				var self = this;
+				
+				// Handle filter clicks
+				
+				self.$filters.on('click', '.filter', function(e){
+					e.preventDefault();
+					
+					var $button = $(this);
+					
+					// If the button is active, remove the active class, else make active and deactivate others.
+					
+					$button.hasClass('active') ?
+					$button.removeClass('active') :
+					$button.addClass('active').siblings('.filter').removeClass('active');
+					
+					self.parseFilters();
+				});
+				
+				// Handle reset click
+				
+				self.$reset.on('click', function(e){
+					e.preventDefault();
+					
+					self.$filters.find('.filter').removeClass('active');
+					
+					self.parseFilters();
+				});
+			},
+			// The parseFilters method checks which filters are active in each group:
 			
-			self.parseFilters();
-		});
-		},
-		// The parseFilters method checks which filters are active in each group:
-		
-		parseFilters: function(){
-			var self = this;
+			parseFilters: function(){
+				var self = this;
+				
+				// loop through each filter group and grap the active filter from each one.
+				
+				for(var i = 0, group; group = self.groups[i]; i++){
+					group.active = group.$buttons.filter('.active').attr('data-filter') || '';
+				}
+				
+				self.concatenate();
+			},
+			// The "concatenate" method will crawl through each group, concatenating filters as desired:
 			
-		// loop through each filter group and grap the active filter from each one.
-		
-		for(var i = 0, group; group = self.groups[i]; i++){
-			group.active = group.$buttons.filter('.active').attr('data-filter') || '';
-		}
-		
-		self.concatenate();
-		},
-		// The "concatenate" method will crawl through each group, concatenating filters as desired:
-		
-		concatenate: function(){
-			var self = this;
+			concatenate: function(){
+				var self = this;
+				
+				self.outputString = ''; // Reset output string
 			
-		self.outputString = ''; // Reset output string
-		
-		for(var i = 0, group; group = self.groups[i]; i++){
-			self.outputString += group.active;
-		}
-		
-		// If the output string is empty, show all rather than none:
-		
-		!self.outputString.length && (self.outputString = 'all');
-		
-		console.log(self.outputString);
-		
-		// ^ we can check the console here to take a look at the filter string that is produced
-		
-		// Send the output string to MixItUp via the 'filter' method:
-		// df
-		// if(self.$container.mixItUp('isLoaded')){
-				// 	self.$container.mixItUp('filter', self.outputString);
-		// }
-		}
+				for(var i = 0, group; group = self.groups[i]; i++){
+					self.outputString += group.active;
+				}
+			
+				// If the output string is empty, show all rather than none:
+				
+				!self.outputString.length && (self.outputString = 'all');
+			}
 		};
 		// On document ready, initialise our code.
 		$(function(){
 			
-		// Initialize buttonFilter code
+			// Initialize buttonFilter code
 		
-		buttonFilter.init();
-		
-		// Instantiate MixItUp
-		// df
-		//   $('#Container').mixItUp({
-				//   	controls: {
-		//       enable: false // we won't be needing these
-		//   }
-		// });
+			buttonFilter.init();
 		});
 		</script>
 		<!-- Mix it Up Checkbox script -->
@@ -1641,146 +1502,124 @@ padding-right: 0;
 		// To keep our code clean and modular, all custom functionality will be contained inside a single object literal called "checkboxFilter".
 		var checkboxFilter = {
 			
-		// Declare any variables we will need as properties of the object
-		
-		$filters: null,
-		$reset: null,
-		groups: [],
-		outputArray: [],
-		outputString: '',
-		
-		// The "init" method will run on document ready and cache any jQuery objects we will need.
-		
-		init: function(){
-		var self = this; // As a best practice, in each method we will asign "this" to the variable "self" so that it remains scope-agnostic. We will use it to refer to the parent "checkboxFilter" object so that we can share methods and properties between all parts of the object.
-		
-		self.$filters = $('#Filters');
-		self.$reset = $('.Reset');
-		self.$container = $('#Container');
-		
-		self.$filters.find('fieldset').each(function(){
-			self.groups.push({
-				$inputs: $(this).find('input'),
-				active: [],
-				tracker: false
-			});
-		});
-		
-		self.bindHandlers();
-		},
-		// The "bindHandlers" method will listen for whenever a form value changes.
-		
-		bindHandlers: function(){
-			var self = this;
+			// Declare any variables we will need as properties of the object
 			
-			self.$filters.on('change', function(){
-				self.parseFilters();
-			});
+			$filters: null,
+			$reset: null,
+			groups: [],
+			outputArray: [],
+			outputString: '',
 			
-			self.$reset.on('click', function(e){
-				e.preventDefault();
-				self.$filters[0].reset();
-				self.parseFilters();
-			});
-		},
-		
-		// The parseFilters method checks which filters are active in each group:
-		
-		parseFilters: function(){
-			var self = this;
+			// The "init" method will run on document ready and cache any jQuery objects we will need.
 			
-		// loop through each filter group and add active filters to arrays
-		
-		for(var i = 0, group; group = self.groups[i]; i++){
-		group.active = []; // reset arrays
-		group.$inputs.each(function(){
-			$(this).is(':checked') && group.active.push(this.value);
-		});
-		group.active.length && (group.tracker = 0);
-		}
-		
-		self.concatenate();
-		},
-		// The "concatenate" method will crawl through each group, concatenating filters as desired:
-		
-		concatenate: function(){
-			var self = this,
-			cache = '',
-			crawled = false,
-			checkTrackers = function(){
-				var done = 0;
+			init: function(){
+				var self = this; // As a best practice, in each method we will asign "this" to the variable "self" so that it remains scope-agnostic. We will use it to refer to the parent "checkboxFilter" object so that we can share methods and properties between all parts of the object.
+				
+				self.$filters = $('#Filters');
+				self.$reset = $('.Reset');
+				self.$container = $('#Container');
+				
+				self.$filters.find('fieldset').each(function(){
+					self.groups.push({
+						$inputs: $(this).find('input'),
+						active: [],
+						tracker: false
+					});
+				});
+				
+				self.bindHandlers();
+			},
+			// The "bindHandlers" method will listen for whenever a form value changes.
+			
+			bindHandlers: function(){
+				var self = this;
+				
+				self.$filters.on('change', function(){
+					self.parseFilters();
+				});
+				
+				self.$reset.on('click', function(e){
+					e.preventDefault();
+					self.$filters[0].reset();
+					self.parseFilters();
+				});
+			},
+			
+			// The parseFilters method checks which filters are active in each group:
+			
+			parseFilters: function(){
+				var self = this;
+				
+				// loop through each filter group and add active filters to arrays
 				
 				for(var i = 0, group; group = self.groups[i]; i++){
-					(group.tracker === false) && done++;
+					group.active = []; // reset arrays
+					group.$inputs.each(function(){
+						$(this).is(':checked') && group.active.push(this.value);
+					});
+					group.active.length && (group.tracker = 0);
 				}
-				return (done < self.groups.length);
+				
+				self.concatenate();
 			},
-			crawl = function(){
-				for(var i = 0, group; group = self.groups[i]; i++){
-					group.active[group.tracker] && (cache += group.active[group.tracker]);
-					if(i === self.groups.length - 1){
-						self.outputArray.push(cache);
-						cache = '';
-						updateTrackers();
-					}
-				}
-			},
-			updateTrackers = function(){
-				for(var i = self.groups.length - 1; i > -1; i--){
-					var group = self.groups[i];
-					if(group.active[group.tracker + 1]){
-						group.tracker++;
-						break;
-					} else if(i > 0){
-						group.tracker && (group.tracker = 0);
-					} else {
-						crawled = true;
-					}
-				}
-			};
+			// The "concatenate" method will crawl through each group, concatenating filters as desired:
 			
-		self.outputArray = []; // reset output array
-		do{
-			crawl();
-		}
-		while(!crawled && checkTrackers());
-		self.outputString = self.outputArray.join();
-		
-		// If the output string is empty, show all rather than none:
-		
-		!self.outputString.length && (self.outputString = 'all');
-		
-		//console.log(self.outputString);
-		
-		// ^ we can check the console here to take a look at the filter string that is produced
-		
-		// Send the output string to MixItUp via the 'filter' method:
-		// df
-		// if(self.$container.mixItUp('isLoaded')){
-				// 	self.$container.mixItUp('filter', self.outputString);
-		// }
-		}
+			concatenate: function(){
+				var self = this,
+				cache = '',
+				crawled = false,
+				checkTrackers = function(){
+					var done = 0;
+					
+					for(var i = 0, group; group = self.groups[i]; i++){
+						(group.tracker === false) && done++;
+					}
+					return (done < self.groups.length);
+				},
+				crawl = function(){
+					for(var i = 0, group; group = self.groups[i]; i++){
+						group.active[group.tracker] && (cache += group.active[group.tracker]);
+						if(i === self.groups.length - 1){
+							self.outputArray.push(cache);
+							cache = '';
+							updateTrackers();
+						}
+					}
+				},
+				updateTrackers = function(){
+					for(var i = self.groups.length - 1; i > -1; i--){
+						var group = self.groups[i];
+						if(group.active[group.tracker + 1]){
+							group.tracker++;
+							break;
+						} else if(i > 0){
+							group.tracker && (group.tracker = 0);
+						} else {
+							crawled = true;
+						}
+					}
+				};
+				
+			self.outputArray = []; // reset output array
+			do{
+				crawl();
+			}
+			while(!crawled && checkTrackers());
+				self.outputString = self.outputArray.join();
+				
+				// If the output string is empty, show all rather than none:
+				
+				!self.outputString.length && (self.outputString = 'all');
+			
+			}
 		};
 		// On document ready, initialise our code.
 		$(function(){
 			
-		// Initialize checkboxFilter code
+			// Initialize checkboxFilter code
+			
+			checkboxFilter.init();
 		
-		checkboxFilter.init();
-		
-		// Instantiate MixItUp
-		// df
-		//   $('#Container').mixItUp({
-				//   	controls: {
-		//       enable: false, // we won't be needing these
-		//       toggleLogic: 'and'
-		//   },
-		//   animation: {
-				//   	duration: 350,
-				//   	effects: 'fade stagger(16ms) translateZ(-480px)',
-				//   	easing: 'cubic-bezier(0.55, 0.085, 0.68, 0.53)'
-		//   },
-		// });
 		});
 		</script>
 		<!-- ScrollTo Script -->
@@ -1855,6 +1694,11 @@ padding-right: 0;
 				}
 			});
 
+			$("div.row-heading").each(function (){
+				var $this = $(this);
+				$('<span class="clearMains">&#x2612;</span>').appendTo($this);
+			});
+
 
 			$jqe.easing.def = "easeInOutCirc";
 			$jqe("#info-btn").click(function () {
@@ -1924,9 +1768,7 @@ padding-right: 0;
 
 				if($jqe("#adultBtn").hasClass("selected")) {
 					$jqe("fieldset").children(".row-section").hide();
-					//$jqe("#kidOptions").hide();
 					$jqe(".filter-grid div.row-section").slideUp();
-					//$jqe("#interest-areas").slideUp();
 					$jqe("#interest-lists .collapsed").slideUp();
 					$jqe(".row-heading","#accordion").removeClass('check');
 					$jqe(".selections.adults-sel a").slideDown();
@@ -2043,7 +1885,7 @@ padding-right: 0;
 		});
 		});
 		</script>
-		<!-- start df -->
+
 		<script type="text/javascript">
 		function DisplayAds(_scope){
 			if (_.contains(_scope.navListCtrl.l1SubInterestArray.arr, 'School of the Arts')){
@@ -2055,15 +1897,7 @@ padding-right: 0;
 				}
 				if (_.contains(_scope.navListCtrl.l2SubInterestArray.arr, 'Music')){
 					var musicChecked = $("div#Music").next().find('input[type="checkbox"].specificItem:checked');
-					// if (musicChecked.length > 0){
-					// 	if (_.contains(_scope.navListCtrl.nodeIdArray, 3534)){
-					// 		filterString += ', .instruct';
-					// 	}else{
-					// 		filterString += ', .Music:not(.instruct)'
-					// 	}
-					// }else{
-						filterString += ', .Music';	
-					//}
+					filterString += ', .Music';	
 					anythingSelected = true;
 				}
 				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'studioArtSOA')){
@@ -2095,34 +1929,15 @@ padding-right: 0;
 				var _this = $(this);
 				var updateResults = true;
 				if (_this.hasClass("check")){
-					if (_this.hasClass("L3")){
-						var levelThree = _this.next().children('.level-four');	
-					}else{
-						var levelThree = _this.next().children('.level-three');	
-					}
-					var isChildLevelVisible = levelThree.is(':visible');
-					if (isChildLevelVisible){
-						var allChecked = levelThree.find('.allHeading').hasClass("check");
-						if (allChecked){
-							_this.removeClass("check");
-							levelThree.find('.allHeading').removeClass("check");
-						}else{
-							var interestsChecked = levelThree.find('input[type="checkbox"]:checked');
-							if (interestsChecked.length > 0){
-								updateResults = false;
-							}
-						}
-					}else{
-						updateResults = false;
-					}
+					updateResults = false;
 				}else{
-					_this.addClass("check");
+					_this.addClass("check").find('span.clearMains').css('opacity', '1').css('z-index', '5');
 					_this.next().find(".allHeading").addClass("check");
 				}
 				_this.next().slideToggle(function () {
 					if (updateResults){
 						setTransitionSpeed();
-						var headingId = _this[0].id;
+						var headingId = _this.prop('id');
 						var scope = angular.element(_this).scope();
 						scope.navListCtrl.clearResults();
 						scope.$apply();
@@ -2137,6 +1952,96 @@ padding-right: 0;
 				$jqe('#accordion li .row-heading').not($jqe(this)).next().slideUp();
 			});
 
+			$(".clearMains").on("click", function (event){
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
+				setTransitionSpeed();
+
+				var _this = $(this);
+				var scope = angular.element(_this).scope();
+				scope.navListCtrl.clearResults();
+				scope.$apply();
+
+				var parentDiv = _this.parent();
+				var parentDivId = parentDiv.prop('id');
+				var rowSection = parentDiv.next();
+				var ulLevel = rowSection.find('ul#'+ parentDivId);
+
+				rowSection.slideUp();
+
+				ulLevel.find('input[type="checkbox"]:checked').each(function (){
+					var $this = $(this);
+					$this.prop('checked', false);
+					$this.closest("div").find("span.clearLink").removeClass("activeInterest");
+					var checkboxId = $this.prop('id');
+					if (scope.navListCtrl.isActualNumber(checkboxId)){
+						_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkboxId));
+
+					}else{
+
+						var childUl = $("ul#"+ checkboxId);
+						if (!_.isUndefined(childUl)){
+							childUl.find('input[type="checkbox"]:checked').each(function (){
+								var $this = $(this);
+								$this.prop('checked', false);
+								var checkId =  $this.prop('id');
+								$this.closest("div").find("span.clearLink").removeClass("activeInterest");
+								_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkId));
+							});
+
+							if (childUl.hasClass("level-five")){
+								_.pull(scope.navListCtrl.l4SubInterestArray.arr, checkboxId);
+							}else{
+								_.pull(scope.navListCtrl.l3SubInterestArray.arr, checkboxId);
+							}
+							
+						}
+						childUl.css("display", "");
+					}
+				});
+				ulLevel.css("display", "");
+				
+				parentDiv.removeClass("check").find('span.clearMains').css('opacity', '0').css('z-index', '-1');
+				var levelThree;
+				if (parentDiv.hasClass("L3")){
+					levelThree = parentDiv.next().children('.level-four');
+					var heading = levelThree.prop("id");
+					reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterestArray);
+				}else{
+					levelThree = parentDiv.next().children('.level-three');
+					var heading = levelThree.prop("id");
+					reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterestArray);
+				}
+				levelThree.find('.allHeading').removeClass("check");
+				DisplayAds(scope);
+
+				event.stopPropagation();
+			});
+
+			var uncheckAllChildren = function (ulLevel) {
+				var scope = angular.element(ulLevel).scope();
+				ulLevel.find('input[type="checkbox"]:checked').each(function (){
+					var $this = $(this);
+					$this.prop('checked', false);
+					$this.closest("div").find("span.clearLink").removeClass("activeInterest");
+					var childId = $this.prop('id');
+					if (scope.navListCtrl.isActualNumber(childId)){
+						_.pull(scope.navListCtrl.nodeIdArray, parseInt(childId));
+					}else{
+						var childUl = $("ul#"+ childId);
+						if (!_.isUndefined(childUl)){
+							if (childUl.hasClass('level-four')){
+								_.pull(scope.navListCtrl.l3SubInterestArray.arr, childId);
+							}else if (childUl.hasClass('level-five')){
+								_.pull(scope.navListCtrl.l4SubInterestArray.arr, childId);
+							}
+							uncheckAllChildren(childUl);
+						}
+					}
+				});
+				scope.navListCtrl.reduceList();
+			}
 
 			$('.allHeading').click(function (){
 				if ($("#animationComplete").val() === "false"){
@@ -2148,30 +2053,31 @@ padding-right: 0;
 				var isChecked = _this.hasClass("check");
 				var ulLevel = _this.closest("ul");
 				var rowSection = _this.closest('.row-section');
+				var scope = angular.element(_this).scope();
+				scope.navListCtrl.clearResults();
+				scope.$apply();
 				if (isChecked){
-					_this.removeClass("check");
 					if (ulLevel.hasClass("level-three") || _this.hasClass("L3")){
 						rowSection.slideToggle();
-						rowSection.prev().removeClass("check");
+						rowSection.prev().removeClass("check").find('span.clearMains').css('opacity', '0').css('z-index', '-1');
 					}else{
 						var ulLevelId = ulLevel[0].id;
 						var parentCheckbox = rowSection.find("input[name='"+ ulLevelId +"']");
 						parentCheckbox.prop('checked', false);
 						var parentLl = parentCheckbox.closest("li");
-						parentLl.find("span.clearLink").css('color', '').css('z-index', '0');
+						parentLl.find("span.clearLink").removeClass("activeInterest");
 						var parentUl = parentCheckbox.closest("ul");
 						var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 						if (interestsChecked.length === 0){
 							parentUl.find('.allHeading').addClass("check");
 						}
 						ulLevel.slideToggle();
-						ulLevel.prev().removeClass("check")
+						ulLevel.prev().removeClass("check");
 					}
 				}else{
 					_this.addClass("check");
-					ulLevel.find('input[type="checkbox"]:checked').each(function (){
-						$(this).prop('checked', false);
-					});
+					uncheckAllChildren(ulLevel);
+
 					if (ulLevel.hasClass("level-three") || _this.hasClass("L3")){
 						$("ul.level-four.collapsed, ul.level-five.collapsed", "#accordion").each(function (){
 							var _this = $(this);
@@ -2188,13 +2094,12 @@ padding-right: 0;
 						});
 					}
 				}
+
 				if (ulLevel.hasClass("level-three") || ulLevel.hasClass("level-four") || ulLevel.hasClass("level-five")){
-					var scope = angular.element(_this).scope();
-					scope.navListCtrl.clearResults();
-					scope.$apply();
+
 					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
-						var checkboxId = _this[0].id;
+						var checkboxId = _this.prop('id');
 						if (scope.navListCtrl.isActualNumber(checkboxId)){
 							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
 								scope.navListCtrl.reduceList(parseInt(checkboxId));
@@ -2234,20 +2139,21 @@ padding-right: 0;
 				}
 			});
 
-			$(".clearLink").on("click", function (){
+
+			$(".clearLink").on("click", function (event){
+				if ($("#animationComplete").val() === "false"){
+					return;
+				}
+
 				var _this = $(this);
 				var parentLi = _this.closest("li");
 				var checkbox = parentLi.find('input[type="checkbox"]');
-				if (checkbox[0].checked){
-
-					var checkboxId = checkbox[0].id;
-
+				if (checkbox.prop("checked")){
+					var checkboxId = checkbox.prop('id');
 					var rowSection = _this.closest('.row-section');
 					var allHeading = rowSection.find("ul#"+ checkboxId).find(".allHeading");
-
 					var ulLevel = allHeading.closest("ul");
-
-					var ulLevelId = ulLevel[0].id;
+					var ulLevelId = ulLevel.prop('id');
 					var parentCheckbox = rowSection.find("input[name='"+ ulLevelId +"']");
 					parentCheckbox.prop('checked', false);
 					var parentUl = parentCheckbox.closest("ul");
@@ -2255,7 +2161,6 @@ padding-right: 0;
 					if (interestsChecked.length === 0){
 						parentUl.find('.allHeading').addClass("check");
 					}
-
 					allHeading.addClass("check");
 					ulLevel.find('input[type="checkbox"]:checked').each(function (){
 						$(this).prop('checked', false);
@@ -2267,7 +2172,7 @@ padding-right: 0;
 								_this.slideToggle();
 							}
 						});
-					}else if (ulLevel.hasClass("level-four")){
+					}else if (ulLevel.hasClass("level-four") || ulLevel.hasClass("level-five")){
 						$("ul.level-five.collapsed", "#accordion").each(function (){
 							var _this = $(this);
 							if (_this.is(':visible')){
@@ -2275,12 +2180,11 @@ padding-right: 0;
 							}
 						});
 					}
-
 					var scope = angular.element(_this).scope();
 					scope.navListCtrl.clearResults();
 					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
-						var checkboxId = _this[0].id;
+						var checkboxId = _this.prop('id');
 						if (scope.navListCtrl.isActualNumber(checkboxId)){
 							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
 								scope.navListCtrl.reduceList(parseInt(checkboxId));
@@ -2299,10 +2203,8 @@ padding-right: 0;
 							}
 						}
 					});
-
-					specificItemClick(checkbox, true);
+					specificItemClick(checkbox, true, event);
 				}
-
 			});
 
 			$(document).on('click','.showMore',function(){
@@ -2337,18 +2239,19 @@ padding-right: 0;
 			});
 
 		});
+
 		</script>
 		<script type="text/javascript">
 		$jqe(document).ready(function () {
 			//Third Level and below Accordion
 			$jqe('input[type="checkbox"].specificItem').click(function (event) {
-				specificItemClick($jqe(this), false);
+				specificItemClick($jqe(this), false, event);
 			});
 		});
 
-		var specificItemClick = function (_this, closeChild) {
+		var specificItemClick = function (_this, closeChild, _event) {
 			if ($("#animationComplete").val() === "false"){
-				event.preventDefault();
+				_event.preventDefault();
 				return;
 			}
 			var thisLabel = _this.siblings('label');
@@ -2366,10 +2269,7 @@ padding-right: 0;
 				rowSection.find("ul#"+ checkedText).find(".allHeading").addClass("check");
 				parentUl.find(".activeInterest").removeClass("activeInterest");
 				thisLabel.addClass("activeInterest");
-				// if (!thisLabel.hasClass("hasChildren")){
-				// 	thisLabel.addClass("noChildren");
-				// }
-				parentLl.find('span.clearLink').css('color', 'black').css('z-index', '5');
+				parentLl.find('span.clearLink').addClass("activeInterest");
 			}else{
 				var rowSection = _this.closest('.row-section');
 				var rowUl = rowSection.find("ul#"+ checkedText);
@@ -2388,10 +2288,7 @@ padding-right: 0;
 							parentUl.find('.allHeading').addClass("check");
 						}
 						parentUl.find(".activeInterest").removeClass("activeInterest");
-						parentLl.find('span.clearLink').css('color', '').css('z-index', '0');
-						// if (!thisLabel.hasClass("hasChildren")){
-						// 	thisLabel.removeClass("noChildren");
-						// }
+						parentLl.find('span.clearLink').removeClass("activeInterest");
 					}
 				}else{
 					var allChecked = rowUl.find('.allHeading').hasClass("check");
@@ -2405,10 +2302,7 @@ padding-right: 0;
 								parentUl.find('.allHeading').addClass("check");
 							}
 							parentUl.find(".activeInterest").removeClass("activeInterest");
-							parentLl.find('span.clearLink').css('color', '').css('z-index', '0');
-							// if (!thisLabel.hasClass("hasChildren")){
-							// 	thisLabel.removeClass("noChildren");
-							// }
+							parentLl.find('span.clearLink').removeClass("activeInterest");
 						}else{
 							preventDefault = true;
 						}
@@ -2418,7 +2312,8 @@ padding-right: 0;
 			if (preventDefault){
 				parentUl.find(".activeInterest").removeClass("activeInterest");
 				thisLabel.addClass("activeInterest");
-				event.preventDefault();
+				parentLl.find('span.clearLink').addClass("activeInterest");
+				_event.preventDefault();
 			}else{
 				if (_this[0].id.length > 0){
 					setTransitionSpeed();
@@ -2436,7 +2331,7 @@ padding-right: 0;
 						thisId = parseInt(thisId);
 					}
 					reduceAndRefresh(scope, thisId, levelArray);
-					DisplayAds(scope);
+					DisplayAds(scope);	
 				}
 			}
 			if (!parentUl.hasClass("level-five")){
@@ -2451,7 +2346,7 @@ padding-right: 0;
 			}
 		}
 		</script>
-		<!-- end df -->
+
 		<script>
 		$(document).ready(function() {
 			//KIDS age range controls
@@ -2578,7 +2473,7 @@ padding-right: 0;
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-	<!-- df -->
+
 	<body ng-controller="NavListController as navListCtrl">
 		<div style="">
 			<div class="checkbox" style="display:none;">
@@ -2640,32 +2535,30 @@ padding-right: 0;
 							<div class="toggle_bar">SELECT AN INTEREST <span>&#9660;</span></div>
 							<div class="selection-container">
 								<!-- Adults -->
-								<!-- begin df -->
 								<div class="selections adults-sel">
 									<a>Talks</a>
-									<a>Continuing Education & Enrichment</a>
-									<a>Parenting & Early Childhood</a>
+									<a>Continuing Education &amp; Enrichment</a>
+									<a>Parenting &amp; Early Childhood</a>
 								</div>
 								<div class="selections adults-sel">
-									<a>Health & Fitness</a>
+									<a>Health &amp; Fitness</a>
 									<a>Jewish Life</a>
-									<a>Concerts & Performances</a>
+									<a>Concerts &amp; Performances</a>
 								</div>
 								<div class="selections adults-sel">
 									<a>School of the Arts</a>
 									<a>Literary</a>
 								</div>
-								<!-- end df -->
 								<!-- 0-5, 6-12, Teen Selections -->
 								<div class="selections kids-sel">
 									<a class="teens-sel collapsed">Talks</a>
-									<a class="zero-five-sel six-twelve-sel collapsed">Camps & After School</a>
-									<a class="zero-five-sel multigen-sel collapsed">Parenting & Early Childhood</a>
-									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">Health & Fitness</a>
+									<a class="zero-five-sel six-twelve-sel collapsed">Camps &amp; After School</a>
+									<a class="zero-five-sel multigen-sel collapsed">Parenting &amp; Early Childhood</a>
+									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">Health &amp; Fitness</a>
 								</div>
 								<div class="selections kids-sel">
 									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">Jewish Life</a>
-									<a class="zero-five-sel six-twelve-sel teens-sel collapsed">Concerts & Performances</a>
+									<a class="zero-five-sel six-twelve-sel teens-sel collapsed">Concerts &amp; Performances</a>
 									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">School of the Arts</a>
 								</div>
 								<div class="selections kids-sel">
@@ -2678,7 +2571,7 @@ padding-right: 0;
 							<!-- Camps & After School -->
 							<li class="has-subnav collapse zero-five-sel six-twelve-sel">
 								<div id="" class="interest-title camps-heading">
-									<span>Camps & After School</span>
+									<span>Camps &amp; After School</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
@@ -2716,7 +2609,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_2_jewelry" name="chk_2_jewelry" value=".chk_2_jewelry">
-														<label for="chk_2_jewelry">Art & Dance Intensives</label>
+														<label for="chk_2_jewelry">Art &amp; Dance Intensives</label>
 													</div>
 												</li>
 											</ul>
@@ -2776,7 +2669,7 @@ padding-right: 0;
 								<!-- Arts & Entertainment-->
 								<ul class="level-two">
 									<li class="">
-										<div class="row-heading">Arts & Entertainment</div>
+										<div class="row-heading">Arts &amp; Entertainment</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -2806,7 +2699,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-														<label for="chk_3_art">TV & Media</label>
+														<label for="chk_3_art">TV &amp; Media</label>
 													</div>
 												</li>
 												<li>
@@ -2858,7 +2751,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Life & Style -->
-										<div class="row-heading">Life & Style</div>
+										<div class="row-heading">Life &amp; Style</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -2870,7 +2763,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_1_class" name="chk_1_class" value="Class and 92Y Concert Combo Packages">
-														<label for="chk_1_class">Food Talks & Tastings w/ Kitchen Arts & Letters</label>
+														<label for="chk_1_class">Food Talks &amp; Tastings w/ Kitchen Arts &amp; Letters</label>
 													</div>
 												</li>
 												<li>
@@ -2918,13 +2811,13 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Business & Finance -->
-										<div class="row-heading">Business & Finance</div>
+										<div class="row-heading">Business &amp; Finance</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Business & Finance</label>
+														<label for="chk_0_literature">Business &amp; Finance</label>
 													</div>
 												</li>
 											</ul>
@@ -2932,7 +2825,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Science & Technology -->
-										<div class="row-heading">Science & Technology</div>
+										<div class="row-heading">Science &amp; Technology</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -2946,7 +2839,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- History & Culture -->
-										<div class="row-heading">History & Culture</div>
+										<div class="row-heading">History &amp; Culture</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -2978,7 +2871,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Politics & Current Events -->
-										<div class="row-heading">Politics & Current Events</div>
+										<div class="row-heading">Politics &amp; Current Events</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3015,7 +2908,7 @@ padding-right: 0;
 							
 							<li class="has-subnav collapse">
 								<div id="" class="interest-title conEd-heading">
-									<span>Continuing Education & Enrichment</span>
+									<span>Continuing Education &amp; Enrichment</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
@@ -3023,7 +2916,7 @@ padding-right: 0;
 								<!-- Food & Wine-->
 								<ul class="level-two">
 									<li class="">
-										<div class="row-heading">Food & Wine</div>
+										<div class="row-heading">Food &amp; Wine</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3041,7 +2934,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_2_jewelry" name="chk_2_jewelry" value=".chk_2_jewelry">
-														<label for="chk_2_jewelry">Food Talks & Tastings</label>
+														<label for="chk_2_jewelry">Food Talks &amp; Tastings</label>
 													</div>
 												</li>
 												<li>
@@ -3105,7 +2998,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Film & Theater -->
-										<div class="row-heading">Film & Theater</div>
+										<div class="row-heading">Film &amp; Theater</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3117,7 +3010,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_1_class" name="chk_1_class" value="Class and 92Y Concert Combo Packages">
-														<label for="chk_1_class">Tv & Media</label>
+														<label for="chk_1_class">Tv &amp; Media</label>
 													</div>
 												</li>
 											</ul>
@@ -3125,7 +3018,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Personal & Professional Growth -->
-										<div class="row-heading">Personal & Professional Growth</div>
+										<div class="row-heading">Personal &amp; Professional Growth</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3157,13 +3050,13 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Games & Crafts -->
-										<div class="row-heading">Games & Crafts</div>
+										<div class="row-heading">Games &amp; Crafts</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Games & Crafts</label>
+														<label for="chk_0_literature">Games &amp; Crafts</label>
 													</div>
 												</li>
 											</ul>
@@ -3243,7 +3136,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Tours & Excursions -->
-										<div class="row-heading">Tours & Excursions</div>
+										<div class="row-heading">Tours &amp; Excursions</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3267,13 +3160,13 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Museum & Gallery Tours</label>
+														<label for="chk_0_literature">Museum &amp; Gallery Tours</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Art Tours & Travel</label>
+														<label for="chk_0_literature">Art Tours &amp; Travel</label>
 													</div>
 												</li>
 											</ul>
@@ -3360,7 +3253,7 @@ padding-right: 0;
 							
 							<li class="has-subnav collapse zero-five-sel">
 								<div id="" class="interest-title parenting-heading">
-									<span>Parenting & Early Childhood</span>
+									<span>Parenting &amp; Early Childhood</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
@@ -3479,7 +3372,7 @@ padding-right: 0;
 							
 							<li class="has-subnav collapse zero-five-sel six-twelve-sel">
 								<div id="" class="interest-title arts-heading">
-									<span>Health & Fitness</span>
+									<span>Health &amp; Fitness</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
@@ -3529,7 +3422,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-														<label for="chk_3_art">Pre-Natal & Post-Partum Classes</label>
+														<label for="chk_3_art">Pre-Natal &amp; Post-Partum Classes</label>
 													</div>
 												</li>
 												<li>
@@ -3541,7 +3434,7 @@ padding-right: 0;
 												<li class="multigen-sel">
 													<div class="checkbox">
 														<input type="checkbox" id="chk_3_art" name="chk_3_art" value="Art Appreciation">
-														<label for="chk_3_art">Young Children & New Moms</label>
+														<label for="chk_3_art">Young Children &amp; New Moms</label>
 													</div>
 												</li>
 											</ul>
@@ -3569,7 +3462,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">American Red Cross : Infant & Preschool</label>
+														<label for="chk_0_literature">American Red Cross : Infant &amp; Preschool</label>
 													</div>
 												</li>
 												<li>
@@ -3662,7 +3555,7 @@ padding-right: 0;
 									</li>
 									<li>
 										<!-- Holidays, Observances & Events -->
-										<div class="row-heading">Holidays, Observances & Events</div>
+										<div class="row-heading">Holidays, Observances &amp; Events</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -3686,7 +3579,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Tradition & Innovation</label>
+														<label for="chk_0_literature">Tradition &amp; Innovation</label>
 													</div>
 												</li>
 												<li>
@@ -3756,7 +3649,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_literature" name="chk_0_literature" value="Literature">
-														<label for="chk_0_literature">Jewish Life Cycle Event Coaching & Counseling</label>
+														<label for="chk_0_literature">Jewish Life Cycle Event Coaching &amp; Counseling</label>
 													</div>
 												</li>
 											</ul>
@@ -3769,7 +3662,7 @@ padding-right: 0;
 							
 							<li class="has-subnav collapse zero-five-sel six-twelve-sel">
 								<div id="" class="interest-title arts-heading">
-									<span>Concerts & Performances</span>
+									<span>Concerts &amp; Performances</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
@@ -3796,7 +3689,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-														<label for="jazzPopular">Jazz & Popular</label>
+														<label for="jazzPopular">Jazz &amp; Popular</label>
 													</div>
 												</li>
 												<li>
@@ -3941,7 +3834,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Lyrics & Lyricists</label>
+														<label for="chk_0_studio">Lyrics &amp; Lyricists</label>
 													</div>
 												</li>
 											</ul>
@@ -4029,7 +3922,6 @@ padding-right: 0;
 								<!-- School of the Arts -->
 								<ul class="level-two">
 									<li class="">
-										<!-- <div class="row-heading" id="Art">Art</div> -->
 										<div class="row-heading L3" id="studioArtSOA">Studio Art</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Studio Art -->
@@ -4038,27 +3930,25 @@ padding-right: 0;
 													<div class="allHeading L3">All</div>
 												</li>
 												<li>
-														<div class="checkbox">
-																<input class="specificItem" id="25818" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Art After Hours</label>
-														</div>
-												</li>
-												<li>
 													<div class="checkbox">
-														<input class="specificItem" id="3552" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Cartooning & Illustration</label>
+														<input class="specificItem" id="25818" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
+														<label for="chk_0_studio">Art After Hours</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
+														<input class="specificItem" id="3552" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
+														<label for="chk_0_studio">Cartooning &amp; Illustration</label>
+													</div>
+												</li>
+												<li>
+													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="collageMixedMediaPrintmaking" name="collageMixedMediaPrintmaking" value=".chk_0_studio">
 														<label for="collageMixedMediaPrintmaking">Collage, Mixed Media, Printmaking</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" type="checkbox" id="drawingSOA" name="drawingSOA" value=".chk_0_studio">
 														<label for="drawingSOA">Drawing</label>
 													</div>
@@ -4102,23 +3992,20 @@ padding-right: 0;
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="19598" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Beginner/Intermediate</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="19599" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Intermediate/Advanced</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="3554" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Collage & Mixed Media Combo</label>
+														<label for="chk_0_studio">Collage &amp; Mixed Media Combo</label>
 													</div>
 												</li>
 											</ul>
@@ -4130,35 +4017,30 @@ padding-right: 0;
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="19600" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Beginner</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="25684" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Technique Specific Drawing</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="25691" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Figure/Portrait Drawing</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="3557" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Drawing Workshops</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
-														<!-- df -->
 														<input class="specificItem" id="9561" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
 														<label for="chk_0_studio">Drawing Combo Classes</label>
 													</div>
@@ -4198,7 +4080,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" id="19603" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Intermediate, Advanced & Technique Specific</label>
+														<label for="chk_0_studio">Intermediate, Advanced &amp; Technique Specific</label>
 													</div>
 												</li>
 												<li>
@@ -4291,7 +4173,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="handbuildingSOA" name="handbuildingSOA" value=".chk_0_studio">
-														<label for="handbuildingSOA">Handbuilding & Wheel</label>
+														<label for="handbuildingSOA">Handbuilding &amp; Wheel</label>
 													</div>
 												</li>
 												<li>
@@ -4303,7 +4185,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" id="21267" type="checkbox" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">DIY & Technique Specific</label>
+														<label for="chk_0_studio">DIY &amp; Technique Specific</label>
 													</div>
 												</li>
 												<li>
@@ -4446,7 +4328,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="19708" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Fine Jewelry & Stonesetting</label>
+														<label for="chk_0_studio">Fine Jewelry &amp; Stonesetting</label>
 													</div>
 												</li>
 												<li>
@@ -4490,7 +4372,7 @@ padding-right: 0;
 									</li>
 
 									<li class="">
-										<div class="row-heading L3" id="artAppreciationSOA">Art Talks and Tours</div>
+										<div class="row-heading L3" id="artAppreciationSOA">Art Talks &amp; Tours</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Art Appreciation -->
 											<ul id="artAppreciationSOA" class="level-four artAppreciation">
@@ -4506,7 +4388,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="19569" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Museum & Gallery Tours</label>
+														<label for="chk_0_studio">Museum &amp; Gallery Tours</label>
 													</div>
 												</li>
 												<li>
@@ -4518,13 +4400,13 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="3546" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Art Travel & Tours</label>
+														<label for="chk_0_studio">Art Travel &amp; Tours</label>
 													</div>
 												</li>
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="3716" name="chk_0_studio" value=".chk_0_studio">
-														<label for="chk_0_studio">Architecture & Design</label>
+														<label for="chk_0_studio">Architecture &amp; Design</label>
 													</div>
 												</li>
 											</ul>
@@ -4537,7 +4419,7 @@ padding-right: 0;
 									<li class="">
 										<div class="row-heading" id="Music">Music</div>
 										<div class="row-section collapsed">
-											<ul class="level-three">
+											<ul class="level-three" id="Music">
 												<li class="has-child">
 													<div class="allHeading">All</div>
 												</li>
@@ -4620,7 +4502,7 @@ padding-right: 0;
 									<li class="">
 										<div class="row-heading" id="Dance">Dance</div>
 										<div class="row-section collapsed">
-											<ul class="level-three">
+											<ul class="level-three" id="Dance">
 												<li class="has-child">
 													<div class="allHeading">All</div>
 												</li>
@@ -4633,7 +4515,7 @@ padding-right: 0;
 												<li class="has-child">
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="performancesEventsSOA" name="performancesEventsSOA" value=".chk_0_studio">
-														<label for="performancesEventsSOA">Performances & Events</label>
+														<label for="performancesEventsSOA">Performances &amp; Events</label>
 													</div>
 												</li>
 											</ul>
@@ -4678,12 +4560,7 @@ padding-right: 0;
 														<label for="danceTherapySOA">Dance Therapy</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Therapy Sessions</label>
-														</div>
-												</li> -->
+
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="3596" name="chk_0_studio" value=".chk_0_studio">
@@ -4702,12 +4579,7 @@ padding-right: 0;
 														<label for="chk_0_studio">Hula</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input class="specificItem" type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Isadora Duncan</label>
-														</div>
-												</li> -->
+
 												<li>
 													<div class="checkbox">
 														<input class="specificItem" type="checkbox" id="3602" name="chk_0_studio" value=".chk_0_studio">
@@ -4805,12 +4677,6 @@ padding-right: 0;
 														<label for="chk_0_studio">Special Dance Events</label>
 													</div>
 												</li>
-												<!--                     <li>
-														<div class="checkbox">
-																<input type="checkbox" id="chk_0_studio" name="chk_0_studio" value=".chk_0_studio">
-																<label for="chk_0_studio">Annual Children and Teens Dance Concert</label>
-														</div>
-												</li> -->
 											</ul>
 											<!-- End Level-Four Children : Techniques -->
 											<!-- HTML Level Five Children : Dance Education Laboratory (DEL) -->
@@ -4894,7 +4760,7 @@ padding-right: 0;
 								<!-- Readings & Literary Events -->
 								<ul class="level-two">
 									<li class="">
-										<div class="row-heading">Readings & Literary Events</div>
+										<div class="row-heading">Readings &amp; Literary Events</div>
 										<div class="row-section collapsed">
 											<ul>
 												<li>
@@ -4906,7 +4772,7 @@ padding-right: 0;
 												<li>
 													<div class="checkbox">
 														<input type="checkbox" id="chk_1_ceramics" name="chk_1_ceramics" value=".chk_1_ceramics">
-														<label for="chk_1_ceramics">Books & Bagels</label>
+														<label for="chk_1_ceramics">Books &amp; Bagels</label>
 													</div>
 												</li>
 												<li>
@@ -5070,16 +4936,14 @@ padding-right: 0;
                     </select>
                 </div>
                 <div id="filter-search">
-                    <div class="row-heading">Filter by Name</div>
+                    <div class="row-heading">Filter Your Results by Course Title, Instructor or Keyword</div>
                     <form>
-                        <!-- start df -->
-                        <input id="searchText" type="search" class="defaultText" title="Filter Your Results by Course Title, Instructor or Keyword">
-                        <!-- end df -->
+                        <input id="searchText" type="search" class="defaultText">
                     </form>
                 </div>
             </div>
         </div>
-		<!-- begin df -->
+
 		<div id="Container" class="container">
 			<div ng-show="navListCtrl.appStarted" id="tiles">
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
@@ -5097,6 +4961,6 @@ padding-right: 0;
 				</div>
 			</div>
 		</div>
-		<!-- end df -->
+
 	</body>
 </html>

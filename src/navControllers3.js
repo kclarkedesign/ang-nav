@@ -238,6 +238,17 @@
 			}else{
 				if (_.contains(levelArray.arr, nodeId)){
 					_.pull(levelArray.arr, nodeId);
+
+					var whereObj = new Object;
+					whereObj[levelArray.name] = nodeId;
+
+					var levelChildren = _.where(_scope.clickedItems, whereObj);
+					_.forEach(levelChildren, function(arr) {
+						var childId = arr.id;
+						if (_.contains(_this.nodeIdArray, childId)){
+							_.pull(_this.nodeIdArray, childId);
+						}
+					});
 				}else{
 					levelArray.arr.push(nodeId);
 				}
