@@ -515,6 +515,28 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		background: #000;
 		color: #fff;
 	}
+
+	#kidOptions .checkbox label:after {
+		content: "\2713";
+		position: absolute;
+		top: 5px;
+		right: 4px;
+		width: 5px;
+		height: 18px;
+		border-radius: 2px;
+		background: transparent;
+		opacity: 0;
+		pointer-events: none;
+		font-size: 16px;
+	}
+
+	#kidOptions .checkbox input:checked ~ label:after {
+		opacity: 1;
+	}
+	#kidOptions .checkbox input:focus ~ label:before {
+		background: transparent;
+	}
+
 	.radio, .checkbox {
 		min-height: 1px;
 	}
@@ -1638,7 +1660,7 @@ padding-right: 0;
 				$('input[type="checkbox"].specificItem:checked').prop('checked', false);
 				$(".row-heading","#accordion").removeClass('check');
 				$(".allHeading","#accordion").removeClass('check');
-				var scope = angular.element(this).scope();
+				var scope = angular.element($(this)).scope();
 				scope.navListCtrl.clearArrays();
 				scope.navListCtrl.clearResults();
 				scope.$apply();
@@ -2169,14 +2191,14 @@ padding-right: 0;
 						$("ul.level-four.collapsed, ul.level-five.collapsed", "#accordion").each(function (){
 							var _this = $(this);
 							if (_this.is(':visible')){
-								_this.slideToggle();
+								_this.slideUp();
 							}
 						});
 					}else if (ulLevel.hasClass("level-four") || ulLevel.hasClass("level-five")){
 						$("ul.level-five.collapsed", "#accordion").each(function (){
 							var _this = $(this);
 							if (_this.is(':visible')){
-								_this.slideToggle();
+								_this.slideUp();
 							}
 						});
 					}
@@ -2250,29 +2272,39 @@ padding-right: 0;
 		});
 
 		var specificItemClick = function (_this, closeChild, _event) {
-			if ($("#animationComplete").val() === "false"){
-				_event.preventDefault();
-				return;
-			}
 			var thisLabel = _this.siblings('label');
 			var checkedText = thisLabel.attr('for');
 			var parentUl = _this.closest("ul");
-			var levelThreeClicked = false;
-			if (parentUl.hasClass("level-three")){
-				levelThreeClicked = true;
-			}
+
 			var preventDefault = false;
 			var parentLl = _this.closest("li");
+			var rowSection = _this.closest('.row-section');
+
+			if (parentUl.hasClass("level-three")){
+				rowSection.find("ul.level-four.collapsed:visible, ul.level-five.collapsed:visible").each(function (){
+					var thisRow = $jqe(this);
+					if (thisRow.prop("id") !== checkedText){
+						thisRow.slideUp();	
+					}
+				});
+			}else if (parentUl.hasClass("level-four")){
+				rowSection.find("ul.level-five.collapsed:visible").each(function (){
+					var thisRow = $jqe(this);
+					if (thisRow.prop("id") !== checkedText){
+						thisRow.slideUp();	
+					}
+				});
+			}
+
+			var rowUl = rowSection.find("ul#"+ checkedText);
 			if (_this.is(":checked")){
+				rowUl.slideDown();
 				parentUl.find(".allHeading").removeClass("check");
-				var rowSection = _this.closest('.row-section');
-				rowSection.find("ul#"+ checkedText).find(".allHeading").addClass("check");
+				rowUl.find(".allHeading").addClass("check");
 				parentUl.find(".activeInterest").removeClass("activeInterest");
 				thisLabel.addClass("activeInterest");
 				parentLl.find('span.clearLink').addClass("activeInterest");
 			}else{
-				var rowSection = _this.closest('.row-section');
-				var rowUl = rowSection.find("ul#"+ checkedText);
 				if (parentUl.hasClass("level-five") || (parentUl.hasClass("level-four") && rowUl.length === 0) || (parentUl.hasClass("level-three") && rowUl.length === 0)){
 					if (rowUl.length > 0){
 						var rowUlinterestsChecked = rowUl.find('input[type="checkbox"]:checked');
@@ -2296,6 +2328,7 @@ padding-right: 0;
 						preventDefault = true;
 					}else{
 						if (rowUl.is(":visible") || closeChild){
+							rowUl.slideUp();
 							rowUl.find('.allHeading').removeClass("check");
 							var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 							if (interestsChecked.length === 0){
@@ -2310,6 +2343,7 @@ padding-right: 0;
 				}
 			}
 			if (preventDefault){
+				rowUl.slideToggle();
 				parentUl.find(".activeInterest").removeClass("activeInterest");
 				thisLabel.addClass("activeInterest");
 				parentLl.find('span.clearLink').addClass("activeInterest");
@@ -2333,16 +2367,6 @@ padding-right: 0;
 					reduceAndRefresh(scope, thisId, levelArray);
 					DisplayAds(scope);	
 				}
-			}
-			if (!parentUl.hasClass("level-five")){
-				var rowSection = _this.closest(".row-section");
-				rowSection.find(levelThreeClicked ? "ul.level-four.collapsed, ul.level-five.collapsed" : "ul.level-five.collapsed").each(function (){
-					var _this = $jqe(this);
-					var childUL = _this.attr("id");
-					if ((_this.is(':visible') && childUL !== checkedText) || (childUL === checkedText && (!closeChild || (closeChild && _this.is(':visible'))))){
-						_this.slideToggle();
-					}
-				});
 			}
 		}
 		</script>
