@@ -57,6 +57,7 @@
 			teens : false,
 			multigenerational : false
 		};
+		_this.scope.animationSpeed;
 
 		//debug in view
 		_this.log = function (variable) {
@@ -332,6 +333,7 @@
 		var _scope = _this.scope;
 		var onscreenResultsArrayLength = _this.onscreenFirstResults.length;
 		if (onscreenResultsArrayLength > 0) {
+			_scope.animationSpeed = '0';
 			var arrDiff = _this.editClassInfoArray.length - onscreenResultsArrayLength;
 			if (arrDiff !== 0) {
 				var indexNo = arrDiff > _scope.classInfoIndex ? _scope.classInfoIndex : arrDiff;
@@ -669,6 +671,22 @@
 					};
 				}
 			});
+		}
+		return {
+			link: link
+		};
+	});
+
+
+	navApp.directive('setIsoSpeed', function () {
+		function link(scope, element) {
+			var initialDuration = '.7s';
+			element.isotope({ transitionDuration: initialDuration });
+			scope.animationSpeed = initialDuration;
+			scope.$watch('animationSpeed', function() {
+				console.log(scope.animationSpeed);
+				element.isotope({ transitionDuration: scope.animationSpeed });
+			}); 
 		}
 		return {
 			link: link

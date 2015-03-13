@@ -1279,6 +1279,7 @@ padding-right: 0;
 		</script>
 		<!-- Multiselect script -->
 		<script type="text/javascript">
+		var animationInterval = '.7s';
 			$jq(document).ready(function() {
 				resizeColumnCount(angular.element($('body')).scope());
 				//this is to prevent fouc 
@@ -1288,19 +1289,18 @@ padding-right: 0;
 				$jq('.singleselect').multiselect({
 					buttonWidth: '170px',
 					onChange: function(option, checked) {
-						if ($("#animationComplete").val() === "false"){
-							return;
-						}
-						setTransitionSpeed();
-
-						var scope = angular.element(option).scope();
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						var optionValue = option[0].value;
-						if (checked){
-							scope.navListCtrl.itemTypeSelected = optionValue;
-						}
-						reduceAndRefresh(scope);
+						_.defer(function () {
+							var scope = angular.element(option).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
+							scope.navListCtrl.clearResults();
+							scope.$apply();
+							var optionValue = option[0].value;
+							if (checked){
+								scope.navListCtrl.itemTypeSelected = optionValue;
+							}
+							reduceAndRefresh(scope);
+						});
 					},
 					checkboxName: 'slicerItemType'
 				});
@@ -1308,23 +1308,21 @@ padding-right: 0;
 					buttonWidth: '170px',
 					nonSelectedText: 'All',
 					numberDisplayed: 2,
-					// df
 					onChange: function(option, checked) {
-						if ($("#animationComplete").val() === "false"){
-							return;
-						}
-						setTransitionSpeed();
-
-						var scope = angular.element(option).scope();
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						var optionValue = option[0].value;
-						if (checked){
-							scope.navListCtrl.timeOfDaySelected.push(optionValue);
-						}else{
-							scope.navListCtrl.timeOfDaySelected = _.pull(scope.navListCtrl.timeOfDaySelected, optionValue);
-						}
-						reduceAndRefresh(scope);
+						_.defer(function () {
+							var scope = angular.element(option).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
+							scope.navListCtrl.clearResults();
+							scope.$apply();
+							var optionValue = option[0].value;
+							if (checked){
+								scope.navListCtrl.timeOfDaySelected.push(optionValue);
+							}else{
+								scope.navListCtrl.timeOfDaySelected = _.pull(scope.navListCtrl.timeOfDaySelected, optionValue);
+							}
+							reduceAndRefresh(scope);
+						});
 					},
 					checkboxName: 'slicerTimeOfDay'
 				});
@@ -1345,21 +1343,20 @@ padding-right: 0;
 					numberDisplayed: 2,
 					includeSelectAllIfMoreThan: 5,
 					onChange: function (option, checked) {
-						if ($("#animationComplete").val() === "false"){
-							return;
-						}
-						setTransitionSpeed();
-
-						var scope = angular.element(option).scope();
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						var optionValue = option[0].value;
-						if (checked){
-							scope.navListCtrl.dayOfWeekSelected.push(optionValue);
-						}else{
-							scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
-						}
-						reduceAndRefresh(scope);
+						_.defer(function () {
+							var scope = angular.element(option).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
+							scope.navListCtrl.clearResults();
+							scope.$apply();
+							var optionValue = option[0].value;
+							if (checked){
+								scope.navListCtrl.dayOfWeekSelected.push(optionValue);
+							}else{
+								scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
+							}
+							reduceAndRefresh(scope);
+						});
 					},
 					checkboxName: 'slicerDayOfWeek'
 				});
@@ -1368,21 +1365,20 @@ padding-right: 0;
 					nonSelectedText: 'All',
 					numberDisplayed: 2,
 					onChange: function (option, checked) {
-						if ($("#animationComplete").val() === "false"){
-							return;
-						}
-						setTransitionSpeed();
-
-						var scope = angular.element(option).scope();
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						var optionValue = option[0].value;
-						if (checked){
-							scope.navListCtrl.dayOfWeekSelected.push(optionValue);
-						}else{
-							scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
-						}
-						reduceAndRefresh(scope);
+						_.defer(function () {
+							var scope = angular.element(option).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
+							scope.navListCtrl.clearResults();
+							scope.$apply();
+							var optionValue = option[0].value;
+							if (checked){
+								scope.navListCtrl.dayOfWeekSelected.push(optionValue);
+							}else{
+								scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
+							}
+							reduceAndRefresh(scope);
+						});
 					},
 					checkboxName: 'ageRanges'
 				});
@@ -1407,16 +1403,15 @@ padding-right: 0;
     				}
 				});
 				var queryByWords = function (textbox){
-					if ($("#animationComplete").val() === "false"){
-						return;
-					}
-					setTransitionSpeed();
-
-					var scope = angular.element(textbox).scope();
-					scope.navListCtrl.clearResults();
-					scope.$apply();
-					scope.navListCtrl.queryWord = textbox.val();
-					reduceAndRefresh(scope);
+					_.defer(function () {
+						var scope = angular.element(textbox).scope();
+						scope.animationSpeed = animationInterval;
+						scope.$apply();
+						scope.navListCtrl.clearResults();
+						scope.$apply();
+						scope.navListCtrl.queryWord = textbox.val();
+						reduceAndRefresh(scope);
+					});
 				};
 			});
 		</script>
@@ -1669,23 +1664,9 @@ padding-right: 0;
 		</script>
 		<!--Various Button Actions-->
 		<script>
-		var setTransitionSpeed = function (){
-			$('#isoContainer').isotope({ transitionDuration: '.7s' });
-			$('#isoContainer').isotope( 'once', 'layoutComplete', function( isoInstance, laidOutItems ) {
-				isoInstance.options.transitionDuration = '0';
-				$("#animationComplete").val("true");
-			});
-			$("#animationComplete").val("false");
-		}
-		var resetAniComHiddenField = function (_scope) {
-			if (_scope.navListCtrl.onscreenFirstResults.length === 0){
-				$("#animationComplete").val("true");
-			}
-		}
 		var reduceAndRefresh = function (_scope, levelId, levelArray){
 			_scope.navListCtrl.reduceList(levelId, levelArray);
 			_scope.$apply();
-			resetAniComHiddenField(_scope);
 			$(window).scrollTop(0);
 		}
 		var resizeColumnCount = function (_scope){
@@ -1701,8 +1682,6 @@ padding-right: 0;
 		}
 
 		$(document).ready(function () {
-			$("#animationComplete").val("true");
-
 			$("input:checkbox.specificItem").each(function (){
 				var $this = $(this);
 				var _scope = angular.element($this).scope();
@@ -1727,11 +1706,6 @@ padding-right: 0;
 				$jqe("#info-block").slideToggle();
 			});
 			$jqe(".selections a").click(function () {
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
-				setTransitionSpeed();
-
 				//add check class to main interest selection
 				var selection = $(this);		
 				selection.addClass('check');
@@ -1749,9 +1723,10 @@ padding-right: 0;
 								$jqe('.sideOptions').slideDown(function () {
 									$("body").scrollTop(0);
 									var scope = angular.element(selection).scope();
+									scope.animationSpeed = animationInterval;
+									scope.$apply();
 									scope.navListCtrl.getAllLevelOne(clickedText);
 									scope.$apply();
-									resetAniComHiddenField(scope);
 								});
 							});
 							//this is to prevent fouc 
@@ -1774,25 +1749,21 @@ padding-right: 0;
 							}
 							$("body").scrollTop(0);
 							var scope = angular.element(selection).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
 							scope.navListCtrl.getAllLevelOne(clickedText);
 							scope.$apply();
-							resetAniComHiddenField(scope);
 						}
 					});
 				});
 			});
 
 			$jqe(".Reset:button").click(function() {
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
-				setTransitionSpeed();
-
 				if($jqe("#adultBtn").hasClass("selected")) {
 					$jqe("fieldset").children(".row-section").hide();
 					$jqe(".filter-grid div.row-section").slideUp();
 					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".row-heading","#accordion").removeClass('check');
+					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.adults-sel a").slideDown();
 				}
 				if($jqe("#kidBtn").hasClass("selected")) {
@@ -1800,7 +1771,7 @@ padding-right: 0;
 					$jqe("fieldset").children(".row-section").hide();
 					$jqe(".filter-grid div.row-section").slideUp();
 					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".row-heading","#accordion").removeClass('check');
+					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.kids-sel a").slideDown();
 				}
 				var _this = $(this);
@@ -1824,6 +1795,8 @@ padding-right: 0;
 				$jqe('#searchText').val("");
 
 				var scope = angular.element(_this).scope();
+				scope.animationSpeed = animationInterval;
+				scope.$apply();
 				scope.navListCtrl.clearResults();
 
 				while(scope.navListCtrl.l2SubInterestArray.arr.length > 0) {
@@ -1852,18 +1825,18 @@ padding-right: 0;
 			});
 			$jqe("#adultBtn").click(function() {
 				var kidsOptions = $('input[type="checkbox"]', '#kidOptions');
-					kidsOptions.prop('checked', false);
-					$jqe("#kidOptions").hide();
-					$jqe("#adultBtn").addClass('selected');
-					$jqe("#kidBtn").removeClass('selected');
-					$jqe(".selections:has('.zero-five-sel'), .selections:has('.six-twelve-sel')", "#accordion").hide();
-					$jqe(".selections.adults-sel", "#accordion").slideDown();
-					$jqe("#interest-areas").slideDown();
-					$jqe(".selection-container").slideDown();
-					$jqe("li.has-subnav ").slideUp();
-					if( $jqe('#adultBtn').hasClass('selected')) {
-						return false;
-					}
+				kidsOptions.prop('checked', false);
+				$jqe("#kidOptions").hide();
+				$jqe("#adultBtn").addClass('selected');
+				$jqe("#kidBtn").removeClass('selected');
+				$jqe(".selections:has('.zero-five-sel'), .selections:has('.six-twelve-sel')", "#accordion").hide();
+				$jqe(".selections.adults-sel", "#accordion").slideDown();
+				$jqe("#interest-areas").slideDown();
+				$jqe(".selection-container").slideDown();
+				$jqe("li.has-subnav ").slideUp();
+				if( $jqe('#adultBtn').hasClass('selected')) {
+					return false;
+				}
 			});
 			$jqe("#kidBtn").click(function() {
 				$jqe("#kidOptions").show();
@@ -1945,9 +1918,6 @@ padding-right: 0;
 		$(document).ready(function() {
 			var heading = $('#accordion li .row-heading', $(this));
 			heading.click(function(){
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
 				var _this = $(this);
 				var updateResults = true;
 				if (_this.hasClass("check")){
@@ -1958,30 +1928,31 @@ padding-right: 0;
 				}
 				_this.next().slideToggle(function () {
 					if (updateResults){
-						setTransitionSpeed();
 						var headingId = _this.prop('id');
-						var scope = angular.element(_this).scope();
-						scope.navListCtrl.clearResults();
-						scope.$apply();
-						if (_this.hasClass("L3")){
-							reduceAndRefresh(scope, headingId, scope.navListCtrl.l3SubInterestArray);
-						}else{
-							reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
-						}
-						DisplayAds(scope);
+						_.defer(function(){
+							var scope = angular.element(_this).scope();
+							scope.animationSpeed = animationInterval;
+							_.defer(function(){scope.$apply();});
+							scope.$apply();
+							scope.navListCtrl.clearResults();
+							scope.$apply();
+							if (_this.hasClass("L3")){
+								reduceAndRefresh(scope, headingId, scope.navListCtrl.l3SubInterestArray);
+							}else{
+								reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
+							}
+							DisplayAds(scope);
+						});
 					}
 				});
 				$jqe('#accordion li .row-heading').not($jqe(this)).next().slideUp();
 			});
 
 			$(".clearMains").on("click", function (event){
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
-				setTransitionSpeed();
-
 				var _this = $(this);
 				var scope = angular.element(_this).scope();
+				scope.animationSpeed = animationInterval;
+				scope.$apply();
 				scope.navListCtrl.clearResults();
 				scope.$apply();
 
@@ -1999,9 +1970,7 @@ padding-right: 0;
 					var checkboxId = $this.prop('id');
 					if (scope.navListCtrl.isActualNumber(checkboxId)){
 						_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkboxId));
-
 					}else{
-
 						var childUl = $("ul#"+ checkboxId);
 						if (!_.isUndefined(childUl)){
 							childUl.find('input[type="checkbox"]:checked').each(function (){
@@ -2011,13 +1980,11 @@ padding-right: 0;
 								$this.closest("div").find("span.clearLink").removeClass("activeInterest");
 								_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkId));
 							});
-
 							if (childUl.hasClass("level-five")){
 								_.pull(scope.navListCtrl.l4SubInterestArray.arr, checkboxId);
 							}else{
 								_.pull(scope.navListCtrl.l3SubInterestArray.arr, checkboxId);
 							}
-							
 						}
 						childUl.css("display", "");
 					}
@@ -2066,16 +2033,13 @@ padding-right: 0;
 			}
 
 			$('.allHeading').click(function (){
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
-				setTransitionSpeed();
-
 				var _this = $(this);
 				var isChecked = _this.hasClass("check");
 				var ulLevel = _this.closest("ul");
 				var rowSection = _this.closest('.row-section');
 				var scope = angular.element(_this).scope();
+				scope.animationSpeed = animationInterval;
+				scope.$apply();
 				scope.navListCtrl.clearResults();
 				scope.$apply();
 				if (isChecked){
@@ -2118,7 +2082,6 @@ padding-right: 0;
 				}
 
 				if (ulLevel.hasClass("level-three") || ulLevel.hasClass("level-four") || ulLevel.hasClass("level-five")){
-
 					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
 						var checkboxId = _this.prop('id');
@@ -2142,7 +2105,6 @@ padding-right: 0;
 					});
 					if (numcheckboxes.length > 0){
 						scope.$apply();
-						resetAniComHiddenField(scope);
 						$(window).scrollTop(0);
 					}
 					if (isChecked){
@@ -2161,12 +2123,7 @@ padding-right: 0;
 				}
 			});
 
-
 			$(".clearLink").on("click", function (event){
-				if ($("#animationComplete").val() === "false"){
-					return;
-				}
-
 				var _this = $(this);
 				var parentLi = _this.closest("li");
 				var checkbox = parentLi.find('input[type="checkbox"]');
@@ -2350,7 +2307,6 @@ padding-right: 0;
 				_event.preventDefault();
 			}else{
 				if (_this[0].id.length > 0){
-					setTransitionSpeed();
 					var scope = angular.element(_this).scope();
 					var levelArray;
 					if (parentUl.hasClass("level-four")){
@@ -2358,6 +2314,8 @@ padding-right: 0;
 					}else if (parentUl.hasClass("level-three")){
 						levelArray = scope.navListCtrl.l3SubInterestArray;
 					}
+					scope.animationSpeed = animationInterval;
+					scope.$apply();
 					scope.navListCtrl.clearResults();
 					scope.$apply();
 					var thisId = _this[0].id;
@@ -4869,7 +4827,7 @@ padding-right: 0;
 								</ul>
 							</li>
 							<input type="hidden" id="heightOfExpandedFormWithTwoRowsOfResults" ng-value="845" />
-							<input type="hidden" id="animationComplete" />
+							<!-- <input type="hidden" id="animationComplete" /> -->
 						</ul>
 					</nav>
 				</fieldset>
@@ -4973,7 +4931,7 @@ padding-right: 0;
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
 				</div>
-				<div infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
+				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
 						<div><a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank"><img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" /></a></div>
 						<div class="classTitle">{{classInfo.Title}}</div>
