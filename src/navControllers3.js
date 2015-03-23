@@ -58,6 +58,7 @@
 			multigenerational : false
 		};
 		_this.scope.animationSpeed;
+		_this.breadCrumbs = [];
 
 		//debug in view
 		_this.log = function (variable) {
@@ -95,7 +96,7 @@
 		var allKeys = _this.classKeys.concat(_this.eventKeys);
 		_this.l1SubInterestArray.arr = [];
 
-		var interestItems = _.where(_scope.clickedItems, { 'level1': interest });
+		var interestItems = _.filter(_scope.clickedItems, 'level1', interest );
 		_.forEach(interestItems, function (arr) {
 			var nodeId = arr.id;
 			if (_this.isActualNumber(nodeId)) {
@@ -240,10 +241,7 @@
 				if (_.contains(levelArray.arr, nodeId)){
 					_.pull(levelArray.arr, nodeId);
 
-					var whereObj = new Object;
-					whereObj[levelArray.name] = nodeId;
-
-					var levelChildren = _.where(_scope.clickedItems, whereObj);
+					var levelChildren = _.filter(_scope.clickedItems, levelArray.name, nodeId);
 					_.forEach(levelChildren, function(arr) {
 						var childId = arr.id;
 						if (_.contains(_this.nodeIdArray, childId)){

@@ -389,6 +389,10 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	background: #000;
   	color: #fff;
   }
+	button.Reset:before {
+		content: "\2612";
+		margin-right: 4px;
+	}
   ul li {
   	display: inline-block;
   	list-style-type: none;
@@ -808,6 +812,19 @@ transition: .1s linear;
 	opacity: 1;
 	pointer-events: auto;
 }
+div#trail {
+	color: black;
+	margin-bottom: 12px;
+}
+span.crumbs {
+	margin: 0 8px;
+	cursor: pointer;
+	font-weight: 700;
+  	background: #ccc;
+  	padding: 2px 6px 2px;
+  	border-radius: 8px;
+  	font-size: 12px;
+}
 .toggle {
 	cursor: pointer;
 }
@@ -1178,7 +1195,7 @@ End NAV Example CSS
 ****/
 @media (max-width: 1960px) {
 	#resetButton {
-		display: block;
+		display: inline-block;
 		position: relative;
 		margin-left: 0;
 		margin-top: 10px;
@@ -1426,7 +1443,7 @@ padding-right: 0;
 				textSearchBox.val('');
 				queryByWords(textSearchBox);
 			});
-			
+
 			var queryByWords = function (textbox){
 				_.defer(function () {
 					var scope = angular.element(textbox).scope();
@@ -1826,6 +1843,7 @@ padding-right: 0;
 				scope.animationSpeed = animationInterval;
 				scope.$apply();
 				scope.navListCtrl.clearResults();
+				scope.navListCtrl.breadCrumbs = [];
 
 				while(scope.navListCtrl.l2SubInterestArray.arr.length > 0) {
 				  	scope.navListCtrl.l2SubInterestArray.arr.pop();
@@ -1969,6 +1987,10 @@ padding-right: 0;
 							}else{
 								reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
 							}
+							var crumbText = _this.text();
+							var getLastChar = /(.){1}$/;
+							var crumbX = getLastChar.exec(crumbText);
+							scope.navListCtrl.breadCrumbs.push({ id: headingId, text: crumbText.replace(crumbX[0], " "+ crumbX[0]) });
 							DisplayAds(scope);
 						});
 					}
@@ -1978,14 +2000,30 @@ padding-right: 0;
 
 			$(".clearMains").on("click", function (event){
 				var _this = $(this);
-				var scope = angular.element(_this).scope();
+				var parentDiv = _this.parent();
+				uncheckMains(parentDiv);
+				event.stopPropagation();
+			});
+
+			$("body").on("click", "span.crumbs",  function (){
+				var _this = $(this);
+				var spanClasses = _this.prop("class");
+				var crumbId = spanClasses.replace("crumbs", "").trim();
+				var parentDiv = $("div#"+ crumbId);
+				uncheckMains(parentDiv);
+			});
+
+			var uncheckMains = function (parentDiv) {
+				var scope = angular.element(parentDiv).scope();
 				scope.animationSpeed = animationInterval;
 				scope.$apply();
 				scope.navListCtrl.clearResults();
 				scope.$apply();
 
-				var parentDiv = _this.parent();
 				var parentDivId = parentDiv.prop('id');
+
+				scope.navListCtrl.breadCrumbs = _.reject(scope.navListCtrl.breadCrumbs, {'id': parentDivId});
+
 				var rowSection = parentDiv.next();
 				var ulLevel = rowSection.find('ul#'+ parentDivId);
 
@@ -2032,9 +2070,8 @@ padding-right: 0;
 				}
 				levelThree.find('.allHeading').removeClass("check");
 				DisplayAds(scope);
+			}
 
-				event.stopPropagation();
-			});
 
 			var uncheckAllChildren = function (ulLevel) {
 				var scope = angular.element(ulLevel).scope();
@@ -4958,6 +4995,9 @@ padding-right: 0;
 			<div ng-show="navListCtrl.appStarted" id="tiles">
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
+				</div>
+				<div id="trail" ng-show="navListCtrl.l1SubInterestArray.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterestArray.arr[0]}}  
+					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
