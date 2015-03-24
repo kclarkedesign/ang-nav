@@ -121,85 +121,18 @@
 		var arrayToTest = _this.origClassInfoArray.slice();
 		var combinedReducedArray = [];
 		var combinedLengths = 0;
-		_this.clearResults();
 
 		if (_scope.ageRanges.adults){
-			combinedReducedArray = _.filter(arrayToTest, function (arr) {
-				var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-					return kw.toLowerCase();
-				});
-				return _.contains(keywordLowerCase, 'adults');
-			});
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
-			combinedLengths++;
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('adults', arrayToTest));
 		}else if (_scope.ageRanges.kids){
-			if (_scope.ageRanges['newborn-5 years'] || _scope.ageRanges.allKids){
-				var combinedReducedArray1 = _.filter(arrayToTest, function (arr) {
-					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-						return kw.toLowerCase();
-					});
-					return _.contains(keywordLowerCase, 'newborn-5 years');
-				});
-				combinedReducedArray.push.apply(combinedReducedArray, combinedReducedArray1);
-			}						
-			if (_scope.ageRanges['6-12 years'] || _scope.ageRanges.allKids){
-				var combinedReducedArray2 = _.filter(arrayToTest, function (arr) {
-					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-						return kw.toLowerCase();
-					});
-					return _.contains(keywordLowerCase, '6-12 years');
-				});
-				combinedReducedArray.push.apply(combinedReducedArray, combinedReducedArray2);
-			}						
-			if (_scope.ageRanges.teens || _scope.ageRanges.allKids){
-				var combinedReducedArray3 = _.filter(arrayToTest, function (arr) {
-					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-						return kw.toLowerCase();
-					});
-					return _.contains(keywordLowerCase, 'teens');
-				});
-				combinedReducedArray.push.apply(combinedReducedArray, combinedReducedArray3);
-			}						
-			if (_scope.ageRanges.multigenerational || _scope.ageRanges.allKids){
-				var combinedReducedArray4 = _.filter(arrayToTest, function (arr) {
-					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-						return kw.toLowerCase();
-					});
-					return _.contains(keywordLowerCase, 'multigenerational');
-				});
-				combinedReducedArray.push.apply(combinedReducedArray, combinedReducedArray4);
-			}
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
-			combinedLengths++;
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('newborn-5 years', arrayToTest));
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('6-12 years', arrayToTest));
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('teens', arrayToTest));
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('multigenerational', arrayToTest));
 		}
-
-		if (_this.dayOfWeekSelected.length > 0) {
-			if (combinedLengths > 0) {
-				arrayToTest = combinedReducedArray.slice();
-			}
-			combinedReducedArray = [];
-			reduceByTimePeriod(_this.dayOfWeekSelected, arrayToTest, combinedReducedArray);
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
-			combinedLengths += _this.dayOfWeekSelected.length;
-		}
-
-		if (_this.timeOfDaySelected.length > 0) {
-			if (combinedLengths > 0) {
-				arrayToTest = combinedReducedArray.slice();
-			}
-			combinedReducedArray = [];
-			reduceByTimePeriod(_this.timeOfDaySelected, arrayToTest, combinedReducedArray);
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
-			combinedLengths += _this.timeOfDaySelected.length;
-		}
+		combinedLengths++;
+		combinedLengths = _this.reduceByTimePeriod(_this.dayOfWeekSelected, arrayToTest, combinedReducedArray, combinedLengths);
+		combinedLengths = _this.reduceByTimePeriod(_this.timeOfDaySelected, arrayToTest, combinedReducedArray, combinedLengths);
 
 		if (_this.itemTypeSelected !== 'all') {
 			if (combinedLengths > 0) {
@@ -209,9 +142,6 @@
 			combinedReducedArray = _.filter(arrayToTest, function (arr) {
 				return arr.ItemType.toLowerCase() === _this.itemTypeSelected.toLowerCase();
 			});
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
 			combinedLengths += _this.itemTypeSelected.length;
 		}
 
@@ -224,9 +154,6 @@
 				var pattern = new RegExp(_this.queryWord, "i");
 				return pattern.test(arr.Teachers) || pattern.test(arr.Title) || pattern.test(arr.KeyWord.toString());
 			});
-			if (combinedReducedArray.length === 0) {
-				_this.clearResults();
-			}
 			combinedLengths ++;
 		}
 
@@ -312,12 +239,10 @@
 				combinedReducedArray = combinedReducedArray.concat(levelReducedArray);
 			}
 		}
-
-		if (combinedReducedArray.length === 0) {
-			_this.clearResults();
-		}else{
+		if (combinedReducedArray.length > 0) {
 			combinedLengths++;	
 		}
+		_this.clearResults();
 
 		var combinedLength = combinedReducedArray.length + combinedLengths;
 		_this.unsortedEditClassInfoArray = combinedLength > 0 ? combinedReducedArray.slice() : arrayToTest.slice();
@@ -326,6 +251,45 @@
 		_this.onscreenFirstResults = _this.onscreenFirstResults.concat(_this.editClassInfoArray.slice(0, _scope.classInfoIndex));
 		_this.appStarted = true;
 	};
+	NavListController.prototype.reduceByTimePeriod = function (timePeriodSelected, arrayToTest, combinedReducedArray, combinedLengths) {
+		if (timePeriodSelected.length > 0){
+			var _this = this;
+			if (combinedLengths > 0) {
+				//this will change the array yet still keep the passed-in reference
+				arrayToTest.length = 0;
+				arrayToTest.push.apply(arrayToTest, combinedReducedArray);
+			}
+			combinedReducedArray.length = 0;
+			_.forEach(timePeriodSelected, function (slicer) {
+				var reducedArray = _.filter(arrayToTest, function (arr) {
+					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
+						return kw.toLowerCase();
+					});
+					return _.contains(keywordLowerCase, slicer);
+				});
+				_.forEach(reducedArray, function (arr) {
+					if (!_.contains(combinedReducedArray, arr)) {
+						combinedReducedArray.push(arr);
+					}
+				});
+			});
+			combinedLengths += timePeriodSelected.length;
+		}
+		return combinedLengths;
+	};
+	NavListController.prototype.filterByAge = function (ageRange, arrayToTest) {
+		var _this = this;
+		var _scope = _this.scope;
+		if (_scope.ageRanges[ageRange] || _scope.ageRanges.allKids){
+			var filteredReducedArray = _.filter(arrayToTest, function (arr) {
+				var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
+					return kw.toLowerCase();
+				});
+				return _.contains(keywordLowerCase, ageRange);
+			});
+			return filteredReducedArray;
+		}
+	}
 	NavListController.prototype.loadMore = function () {
 		var _this = this;
 		var _scope = _this.scope;
@@ -393,115 +357,81 @@
 		return classInfoIndex;
 	};
 
-	var reduceByTimePeriod = function (timePeriodSelected, arrayToTest, combinedReducedArray) {
-		_.forEach(timePeriodSelected, function (slicer) {
-			var reducedArray = _.filter(arrayToTest, function (arr) {
-				var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-					return kw.toLowerCase();
-				});
-				return _.contains(keywordLowerCase, slicer);
-			});
-			_.forEach(reducedArray, function (arr) {
-				if (!_.contains(combinedReducedArray, arr)) {
-					combinedReducedArray.push(arr);
-				}
-			});
-		});
-	};
-
 	var addToArray = function (nodeId, filteredNavs) {
 		var classInfoObjArray = [];
-		var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
-		var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-
 		_.forEach(filteredNavs, function (arr) {
-			var prodNo = arr.prod_season_no === 0 ? arr.PackageNo : arr.ProdSeasonNo;
-			var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
-			var itemTypes = _.remove(keyWords, function (n) { 
-				return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
-			});
-			var itemType;
-			if (itemTypes.length > 0){
-				itemType = itemTypes[0];
-			}else{
-				itemType = "";
-			}
-			var image = arr.MainImage;
-			if (image.length === 0) {
-				image = '/_ui/uptown/img/default_lrg_516x311.jpg';
-			} else {
-				image = image.substring(image.indexOf('/'));
-			}
-			var startDate;
-			var begDate = arr.NextPerformanceDateTime;
-			if (begDate === null){
-				begDate = arr.FirstDate;
-			}
-			begDate = new Date(parseInt(begDate.substr(6)));
-
-			//var begDate = new Date(parseInt(arr.FirstDate.substr(6)));
-			var multDates = arr.IsMultipleDatesTimes;
-			if (multDates){
-				startDate = "Multiple dates/times";
-			}else{
-				var dayNumber = begDate.getDate();
-				var monthNameIndex = begDate.getMonth();
-				var dayNameIndex = begDate.getDay();
-				var yearNumber = begDate.getFullYear();
-
-				var dateHour = begDate.getHours();
-				var ampm = dateHour < 12 ? "AM" : "PM";
-				if (dateHour == 0){
-					dateHour = 12;
-				}
-				if (dateHour > 12){
-					dateHour = dateHour - 12;
-				}
-				var timeMinute = begDate.getMinutes()
-				if (timeMinute > 0){
-					var dateMinute = ":"+ timeMinute;
-				}else{
-					var dateMinute = "";
-				}
-				startDate = dayAbbr[dayNameIndex] +", "+ monthAbbr[monthNameIndex] +" " + dayNumber +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
-			}
-			var sortDate1 = "";
-			var sortDate2 = "";
-			var warning = arr.ProdStatus;
-			if (begDate < new Date() || warning.length > 0){
-				sortDate2 = begDate;
-				//10 is an arbirtary number to set the secondary sorting
-				sortDate1 = begDate.setFullYear(yearNumber + 10);
-				startDate = "";
-			}else{
-				sortDate1 = begDate;
-				sortDate2 = "";
-			}
-			var shortDescription = arr.ShortDesc;
-			var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
-			var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
-				return arr.Instructor_name.replace(/\s{2,}/g, ' ');
-			});
-			var teachers = instructors.toString();
-			var classInfoObj = {
-				Title: arr.Title,
-				KeyWord: keyWords,
-				ProdNo: prodNo,
-				NodeID: nodeId,
-				Desc: shortDesc,
-				Img: image,
-				FriendlyDate: startDate,
-				SortDate1: sortDate1,
-				SortDate2: sortDate2,
-				Url: arr.URL,
-				Warning: warning,
-				ItemType: itemType,
-				Teachers: teachers
-			};
+			var classInfoObj = formatDataFromJson(arr, nodeId);
 			classInfoObjArray.push(classInfoObj);
 		});
 		return classInfoObjArray;
 	};
+
+	var formatDataFromJson = function (arr, nodeId){
+		var prodNo = arr.prod_season_no === 0 ? arr.PackageNo : arr.ProdSeasonNo;
+		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
+		var itemTypes = _.remove(keyWords, function (n) { 
+			return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
+		});
+		var itemType = itemTypes.length > 0 ? itemTypes[0] : "";
+		var mainImage = arr.MainImage;
+		var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
+		var startDate;
+		var begDate = arr.NextPerformanceDateTime || arr.FirstDate;
+		begDate = new Date(parseInt(begDate.substr(6)));
+		var yearNumber = begDate.getFullYear();
+
+		var multDates = arr.IsMultipleDatesTimes;
+		if (multDates){
+			startDate = "Multiple dates/times";
+		}else{
+			var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+			var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+			var dateHour = begDate.getHours();
+			var ampm = dateHour < 12 ? "AM" : "PM";
+			if (dateHour == 0){
+				dateHour = 12;
+			}
+			if (dateHour > 12){
+				dateHour = dateHour - 12;
+			}
+			var dateMinute = begDate.getMinutes() > 0 ? ":"+ begDate.getMinutes() : "";
+			startDate = dayAbbr[begDate.getDay()] +", "+ monthAbbr[begDate.getMonth()] +" " + begDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
+		}
+		var sortDate1 = "";
+		var sortDate2 = "";
+		var warning = arr.ProdStatus;
+		if (begDate < new Date() || warning.length > 0){
+			sortDate2 = begDate;
+			//10 is an arbirtary number to set the secondary sorting
+			sortDate1 = begDate.setFullYear(yearNumber + 10);
+			startDate = "";
+		}else{
+			sortDate1 = begDate;
+			sortDate2 = "";
+		}
+		var shortDescription = arr.ShortDesc;
+		var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
+		var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
+			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
+		});
+		var teachers = instructors.toString();
+		var classInfoObj = {
+			Title: arr.Title,
+			KeyWord: keyWords,
+			ProdNo: prodNo,
+			NodeID: nodeId,
+			Desc: shortDesc,
+			Img: image,
+			FriendlyDate: startDate,
+			SortDate1: sortDate1,
+			SortDate2: sortDate2,
+			Url: arr.URL,
+			Warning: warning,
+			ItemType: itemType,
+			Teachers: teachers
+		};
+		return classInfoObj;
+	}
 
 	var filterList = function (navArr, foundClassKeywordsArray) {
 		var filteredNavs = _.filter(navArr, function (navs) {
@@ -682,7 +612,7 @@
 			element.isotope({ transitionDuration: initialDuration });
 			scope.animationSpeed = initialDuration;
 			scope.$watch('animationSpeed', function() {
-				console.log(scope.animationSpeed);
+				//console.log(scope.animationSpeed);
 				element.isotope({ transitionDuration: scope.animationSpeed });
 			}); 
 		}
