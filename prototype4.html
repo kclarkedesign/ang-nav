@@ -1685,9 +1685,11 @@ padding-right: 0;
 		<script>
 		$(document).ready(function (){
 			$("#adultBtn, #kidBtn").click(function (){
+				var scope = angular.element($(this)).scope();
+				scope.animationSpeed = animationInterval;
+				scope.$apply();
 				$("ul.level-four.collapsed:visible, ul.level-five.collapsed:visible", "#accordion").slideToggle();
 				$(".row-section:visible").slideToggle();
-				$('html, body').animate({ scrollTop: $("#Filters").offset().top }, 1000);
 				$jq('.singleselect').multiselect('deselectAll', false);
 				$jq('.singleselect').multiselect('updateButtonText');
 				$jq('.selectAll').multiselect('deselectAll', false);
@@ -1697,7 +1699,6 @@ padding-right: 0;
 				$('input[type="checkbox"].specificItem:checked').prop('checked', false);
 				$(".row-heading","#accordion").removeClass('check');
 				$(".allHeading","#accordion").removeClass('check');
-				var scope = angular.element($(this)).scope();
 				scope.navListCtrl.clearArrays();
 				scope.navListCtrl.clearResults();
 				scope.$apply();
