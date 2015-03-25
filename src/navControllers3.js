@@ -71,18 +71,19 @@
 		_this.editClassInfoArray = [];
 		_this.unsortedEditClassInfoArray = [];
 		_this.undedupedEditClassInfoArray = [];
-		_this.dayOfWeekSelected = [];
-		_this.timeOfDaySelected = [];
-		_this.itemTypeSelected = 'all';
+		_this.dayOfWeekSelected = { name: 'dayOfWeek', value: [] };
+		_this.timeOfDaySelected = { name: 'timeOfDay', value: [] };
+		_this.itemTypeSelected = { name: 'itemType', value: 'all' };
+		_this.queryWordTyped = { name: 'queryWord', value: '' };
+		_this.slicerArray = [_this.dayOfWeekSelected, _this.timeOfDaySelected, _this.itemTypeSelected, _this.queryWordTyped];
 		_this.clearResults();
 		_this.appStarted = false;
 		_this.nodeIdArray = [];
-		_this.l1SubInterestArray = { name: 'level1', arr: [] };
-		_this.l2SubInterestArray = { name: 'level2', arr: [] };
-		_this.l3SubInterestArray = { name: 'level3', arr: [] };
-		_this.l4SubInterestArray = { name: 'level4', arr: [] };
-		_this.levelArrays = [_this.l1SubInterestArray, _this.l2SubInterestArray, _this.l3SubInterestArray, _this.l4SubInterestArray];
-		_this.queryWord = '';
+		_this.l1SubInterest = { name: 'level1', arr: [] };
+		_this.l2SubInterest = { name: 'level2', arr: [] };
+		_this.l3SubInterest = { name: 'level3', arr: [] };
+		_this.l4SubInterest = { name: 'level4', arr: [] };
+		_this.levelArrays = [_this.l1SubInterest, _this.l2SubInterest, _this.l3SubInterest, _this.l4SubInterest];
 	};
 	NavListController.prototype.clearResults = function () {
 		var _this = this;
@@ -94,7 +95,7 @@
 		var _scope = _this.scope;
 		_this.origClassInfoArray = [];
 		var allKeys = _this.classKeys.concat(_this.eventKeys);
-		_this.l1SubInterestArray.arr = [];
+		_this.l1SubInterest.arr = [];
 
 		var interestItems = _.filter(_scope.clickedItems, 'level1', interest );
 		_.forEach(interestItems, function (arr) {
@@ -109,8 +110,8 @@
 				var classInfoObjArray = addToArray(nodeId, filteredNavs);
 				_this.origClassInfoArray = _this.origClassInfoArray.concat(classInfoObjArray);
 			}
-			if (!_.contains(_this.l1SubInterestArray.arr, interest)){
-				_this.l1SubInterestArray.arr.push(interest);
+			if (!_.contains(_this.l1SubInterest.arr, interest)){
+				_this.l1SubInterest.arr.push(interest);
 			}
 		});
 		_this.reduceList();
@@ -120,42 +121,19 @@
 		var _scope = _this.scope;
 		var arrayToTest = _this.origClassInfoArray.slice();
 		var combinedReducedArray = [];
-		var combinedLengths = 0;
-
-		if (_scope.ageRanges.adults){
-			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('adults', arrayToTest));
-		}else if (_scope.ageRanges.kids){
+			
+		if (_scope.ageRanges.kids){
 			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('newborn-5 years', arrayToTest));
 			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('6-12 years', arrayToTest));
 			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('teens', arrayToTest));
 			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('multigenerational', arrayToTest));
+		}else{
+			combinedReducedArray.push.apply(combinedReducedArray, _this.filterByAge('adults', arrayToTest));
 		}
-		combinedLengths++;
-		combinedLengths = _this.reduceByTimePeriod(_this.dayOfWeekSelected, arrayToTest, combinedReducedArray, combinedLengths);
-		combinedLengths = _this.reduceByTimePeriod(_this.timeOfDaySelected, arrayToTest, combinedReducedArray, combinedLengths);
-
-		if (_this.itemTypeSelected !== 'all') {
-			if (combinedLengths > 0) {
-				arrayToTest = combinedReducedArray.slice();
-			}
-			combinedReducedArray = [];
-			combinedReducedArray = _.filter(arrayToTest, function (arr) {
-				return arr.ItemType.toLowerCase() === _this.itemTypeSelected.toLowerCase();
-			});
-			combinedLengths += _this.itemTypeSelected.length;
-		}
-
-		if (_this.queryWord.length > 0) {
-			if (combinedLengths > 0) {
-				arrayToTest = combinedReducedArray.slice();
-			}
-			combinedReducedArray = [];
-			combinedReducedArray = _.filter(arrayToTest, function (arr) {
-				var pattern = new RegExp(_this.queryWord, "i");
-				return pattern.test(arr.Teachers) || pattern.test(arr.Title) || pattern.test(arr.KeyWord.toString());
-			});
-			combinedLengths ++;
-		}
+		var combinedLengths = 1;
+		_.forEach(_this.slicerArray, function (arr) {
+			combinedLengths = _this.reduceBySlicer(arr, arrayToTest, combinedReducedArray, combinedLengths);
+		});
 
 		if (!_.isUndefined(nodeId)){
 			if (_this.isActualNumber(nodeId)){
@@ -180,7 +158,6 @@
 				}
 			}
 		}
-
 		var origArrayToTest = [];
 		if (combinedLengths > 0) {
 			arrayToTest = combinedReducedArray.slice();
@@ -251,8 +228,10 @@
 		_this.onscreenFirstResults = _this.onscreenFirstResults.concat(_this.editClassInfoArray.slice(0, _scope.classInfoIndex));
 		_this.appStarted = true;
 	};
-	NavListController.prototype.reduceByTimePeriod = function (timePeriodSelected, arrayToTest, combinedReducedArray, combinedLengths) {
-		if (timePeriodSelected.length > 0){
+	NavListController.prototype.reduceBySlicer = function (slicer, arrayToTest, combinedReducedArray, combinedLengths) {
+		var slicerValue = slicer.value;
+		var slicerName = slicer.name;
+		if ((slicerName === "itemType" && slicerValue !== 'all') || (slicerName !== "itemType" && slicerValue.length > 0)){
 			var _this = this;
 			if (combinedLengths > 0) {
 				//this will change the array yet still keep the passed-in reference
@@ -260,12 +239,29 @@
 				arrayToTest.push.apply(arrayToTest, combinedReducedArray);
 			}
 			combinedReducedArray.length = 0;
-			_.forEach(timePeriodSelected, function (slicer) {
+			if (slicerName === "itemType" || slicerName === "queryWord"){
+				//convert string to array so forEach doesn't split string
+				slicerValue = [slicerValue];
+			}
+			_.forEach(slicerValue, function (slc) {
 				var reducedArray = _.filter(arrayToTest, function (arr) {
-					var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
-						return kw.toLowerCase();
-					});
-					return _.contains(keywordLowerCase, slicer);
+					var returnValue;
+					switch (slicerName) {
+						case "itemType":
+							returnValue = arr.ItemType.toLowerCase() === slc.toLowerCase();
+							break;
+						case "queryWord":
+							var pattern = new RegExp(slc, "i");
+							returnValue = pattern.test(arr.Teachers) || pattern.test(arr.Title) || pattern.test(arr.KeyWord.toString());
+							break;
+						default:
+							var keywordLowerCase = _.map(arr.KeyWord, function (kw) {
+								return kw.toLowerCase();
+							});
+							returnValue = _.contains(keywordLowerCase, slc);
+							break;
+					}
+					return returnValue;
 				});
 				_.forEach(reducedArray, function (arr) {
 					if (!_.contains(combinedReducedArray, arr)) {
@@ -273,7 +269,7 @@
 					}
 				});
 			});
-			combinedLengths += timePeriodSelected.length;
+			combinedLengths += slicerValue.length;
 		}
 		return combinedLengths;
 	};
@@ -309,32 +305,37 @@
 	NavListController.prototype.setAgeRange = function (age) {
 		var _this = this;
 		var _scope = _this.scope;
-		if (age === "adults"){
-			_scope.ageRanges[age] = true;
-			_scope.ageRanges.kids = false;
-			_scope.ageRanges.allKids = false;
-			_scope.ageRanges['newborn-5 years'] = false;
-			_scope.ageRanges['6-12 years'] = false;
-			_scope.ageRanges.teens = false;
-			_scope.ageRanges.multigenerational = false;
-		}else if (age === "kids"){
-			_scope.ageRanges[age] = true;
-			_scope.ageRanges.adults = false;
-		}else if (age === "allKids"){
-			_scope.ageRanges[age] = !_scope.ageRanges[age];
-			_scope.ageRanges['newborn-5 years'] = false;
-			_scope.ageRanges['6-12 years'] = false;
-			_scope.ageRanges.teens = false;
-			_scope.ageRanges.multigenerational = false;
-			_scope.ageRanges.adults = false;
-			_scope.ageRanges.kids = true;
-		}else{
-			_scope.ageRanges[age] = !_scope.ageRanges[age];
-			if (_scope.ageRanges['newborn-5 years'] === false && _scope.ageRanges['6-12 years'] === false && _scope.ageRanges.teens === false && _scope.ageRanges.multigenerational === false){
-				_scope.ageRanges.allKids = true;
-			}else{
+		switch (age) {
+			case "adults":
+				_scope.ageRanges[age] = true;
+				_scope.ageRanges.kids = false;
 				_scope.ageRanges.allKids = false;
-			}
+				_scope.ageRanges['newborn-5 years'] = false;
+				_scope.ageRanges['6-12 years'] = false;
+				_scope.ageRanges.teens = false;
+				_scope.ageRanges.multigenerational = false;
+				break;
+			case "kids":
+				_scope.ageRanges[age] = true;
+				_scope.ageRanges.adults = false;
+				break;
+			case "allKids":
+				_scope.ageRanges[age] = !_scope.ageRanges[age];
+				_scope.ageRanges['newborn-5 years'] = false;
+				_scope.ageRanges['6-12 years'] = false;
+				_scope.ageRanges.teens = false;
+				_scope.ageRanges.multigenerational = false;
+				_scope.ageRanges.adults = false;
+				_scope.ageRanges.kids = true;
+				break;
+			default:
+				_scope.ageRanges[age] = !_scope.ageRanges[age];
+				if (_scope.ageRanges['newborn-5 years'] === false && _scope.ageRanges['6-12 years'] === false && _scope.ageRanges.teens === false && _scope.ageRanges.multigenerational === false){
+					_scope.ageRanges.allKids = true;
+				}else{
+					_scope.ageRanges.allKids = false;
+				}
+				break;
 		}
 	};
 	NavListController.prototype.getRowSpace = function (heightOfExpandedFormWithTwoRowsOfResults) {

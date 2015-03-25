@@ -1322,7 +1322,7 @@ padding-right: 0;
 						scope.$apply();
 						var optionValue = option[0].value;
 						if (checked){
-							scope.navListCtrl.itemTypeSelected = optionValue;
+							scope.navListCtrl.itemTypeSelected.value = optionValue;
 						}
 						reduceAndRefresh(scope);
 					});
@@ -1342,9 +1342,9 @@ padding-right: 0;
 						scope.$apply();
 						var optionValue = option[0].value;
 						if (checked){
-							scope.navListCtrl.timeOfDaySelected.push(optionValue);
+							scope.navListCtrl.timeOfDaySelected.value.push(optionValue);
 						}else{
-							scope.navListCtrl.timeOfDaySelected = _.pull(scope.navListCtrl.timeOfDaySelected, optionValue);
+							scope.navListCtrl.timeOfDaySelected.value = _.pull(scope.navListCtrl.timeOfDaySelected.value, optionValue);
 						}
 						reduceAndRefresh(scope);
 					});
@@ -1376,9 +1376,9 @@ padding-right: 0;
 						scope.$apply();
 						var optionValue = option[0].value;
 						if (checked){
-							scope.navListCtrl.dayOfWeekSelected.push(optionValue);
+							scope.navListCtrl.dayOfWeekSelected.value.push(optionValue);
 						}else{
-							scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
+							scope.navListCtrl.dayOfWeekSelected.value = _.pull(scope.navListCtrl.dayOfWeekSelected.value, optionValue);
 						}
 						reduceAndRefresh(scope);
 					});
@@ -1398,9 +1398,9 @@ padding-right: 0;
 						scope.$apply();
 						var optionValue = option[0].value;
 						if (checked){
-							scope.navListCtrl.dayOfWeekSelected.push(optionValue);
+							scope.navListCtrl.dayOfWeekSelected.value.push(optionValue);
 						}else{
-							scope.navListCtrl.dayOfWeekSelected = _.pull(scope.navListCtrl.dayOfWeekSelected, optionValue);
+							scope.navListCtrl.dayOfWeekSelected.value = _.pull(scope.navListCtrl.dayOfWeekSelected.value, optionValue);
 						}
 						reduceAndRefresh(scope);
 					});
@@ -1451,7 +1451,7 @@ padding-right: 0;
 					scope.$apply();
 					scope.navListCtrl.clearResults();
 					scope.$apply();
-					scope.navListCtrl.queryWord = textbox.val();
+					scope.navListCtrl.queryWordTyped.value = textbox.val();
 					reduceAndRefresh(scope);
 				});
 			};
@@ -1846,26 +1846,26 @@ padding-right: 0;
 				scope.navListCtrl.clearResults();
 				scope.navListCtrl.breadCrumbs = [];
 
-				while(scope.navListCtrl.l2SubInterestArray.arr.length > 0) {
-				  	scope.navListCtrl.l2SubInterestArray.arr.pop();
+				while(scope.navListCtrl.l2SubInterest.arr.length > 0) {
+				  	scope.navListCtrl.l2SubInterest.arr.pop();
 				}
-				while(scope.navListCtrl.l3SubInterestArray.arr.length > 0) {
-					scope.navListCtrl.l3SubInterestArray.arr.pop();
+				while(scope.navListCtrl.l3SubInterest.arr.length > 0) {
+					scope.navListCtrl.l3SubInterest.arr.pop();
 				}
-				while(scope.navListCtrl.l4SubInterestArray.arr.length > 0) {
-					scope.navListCtrl.l4SubInterestArray.arr.pop();
+				while(scope.navListCtrl.l4SubInterest.arr.length > 0) {
+					scope.navListCtrl.l4SubInterest.arr.pop();
 				}
 				while(scope.navListCtrl.nodeIdArray.length > 0) {
 					scope.navListCtrl.nodeIdArray.pop();
 				}
-				while(scope.navListCtrl.dayOfWeekSelected.length > 0) {
-					scope.navListCtrl.dayOfWeekSelected.pop();
+				while(scope.navListCtrl.dayOfWeekSelected.value.length > 0) {
+					scope.navListCtrl.dayOfWeekSelected.value.pop();
 				}
-				while(scope.navListCtrl.timeOfDaySelected.length > 0) {
-					scope.navListCtrl.timeOfDaySelected.pop();
+				while(scope.navListCtrl.timeOfDaySelected.value.length > 0) {
+					scope.navListCtrl.timeOfDaySelected.value.pop();
 				}
-				scope.navListCtrl.itemTypeSelected = 'all';
-				scope.navListCtrl.queryWord = '';
+				scope.navListCtrl.itemTypeSelected.value = 'all';
+				scope.navListCtrl.queryWordTyped.value = '';
 
 				scope.$apply();
 				reduceAndRefresh(scope);
@@ -1930,27 +1930,27 @@ padding-right: 0;
 
 		<script type="text/javascript">
 		function DisplayAds(_scope){
-			if (_.contains(_scope.navListCtrl.l1SubInterestArray.arr, 'School of the Arts')){
+			if (_.contains(_scope.navListCtrl.l1SubInterest.arr, 'School of the Arts')){
 				var filterString = '.rk-program, .SOA';
 				var anythingSelected = false;
-				if (_.contains(_scope.navListCtrl.l2SubInterestArray.arr, 'Dance')){
+				if (_.contains(_scope.navListCtrl.l2SubInterest.arr, 'Dance')){
 					filterString += ', .Dance';
 					anythingSelected = true;
 				}
-				if (_.contains(_scope.navListCtrl.l2SubInterestArray.arr, 'Music')){
+				if (_.contains(_scope.navListCtrl.l2SubInterest.arr, 'Music')){
 					var musicChecked = $("div#Music").next().find('input[type="checkbox"].specificItem:checked');
 					filterString += ', .Music';	
 					anythingSelected = true;
 				}
-				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'studioArtSOA')){
+				if (_.contains(_scope.navListCtrl.l3SubInterest.arr, 'studioArtSOA')){
 					filterString += ', .studioArt';
 					anythingSelected = true;
 				}
-				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'ceramicsSOA')){
+				if (_.contains(_scope.navListCtrl.l3SubInterest.arr, 'ceramicsSOA')){
 					filterString += ', .ceramics';
 					anythingSelected = true;
 				}
-				if (_.contains(_scope.navListCtrl.l3SubInterestArray.arr, 'jewelrySOA')){
+				if (_.contains(_scope.navListCtrl.l3SubInterest.arr, 'jewelrySOA')){
 					filterString += ', .jewelry';
 					anythingSelected = true;
 				}
@@ -1984,9 +1984,9 @@ padding-right: 0;
 							scope.navListCtrl.clearResults();
 							scope.$apply();
 							if (_this.hasClass("L3")){
-								reduceAndRefresh(scope, headingId, scope.navListCtrl.l3SubInterestArray);
+								reduceAndRefresh(scope, headingId, scope.navListCtrl.l3SubInterest);
 							}else{
-								reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterestArray);
+								reduceAndRefresh(scope, headingId, scope.navListCtrl.l2SubInterest);
 							}
 							var crumbText = _this.text();
 							var getLastChar = /(.){1}$/;
@@ -2048,9 +2048,9 @@ padding-right: 0;
 								_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkId));
 							});
 							if (childUl.hasClass("level-five")){
-								_.pull(scope.navListCtrl.l4SubInterestArray.arr, checkboxId);
+								_.pull(scope.navListCtrl.l4SubInterest.arr, checkboxId);
 							}else{
-								_.pull(scope.navListCtrl.l3SubInterestArray.arr, checkboxId);
+								_.pull(scope.navListCtrl.l3SubInterest.arr, checkboxId);
 							}
 						}
 						childUl.css("display", "");
@@ -2063,11 +2063,11 @@ padding-right: 0;
 				if (parentDiv.hasClass("L3")){
 					levelThree = parentDiv.next().children('.level-four');
 					var heading = levelThree.prop("id");
-					reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterestArray);
+					reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterest);
 				}else{
 					levelThree = parentDiv.next().children('.level-three');
 					var heading = levelThree.prop("id");
-					reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterestArray);
+					reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterest);
 				}
 				levelThree.find('.allHeading').removeClass("check");
 				DisplayAds(scope);
@@ -2087,9 +2087,9 @@ padding-right: 0;
 						var childUl = $("ul#"+ childId);
 						if (!_.isUndefined(childUl)){
 							if (childUl.hasClass('level-four')){
-								_.pull(scope.navListCtrl.l3SubInterestArray.arr, childId);
+								_.pull(scope.navListCtrl.l3SubInterest.arr, childId);
 							}else if (childUl.hasClass('level-five')){
-								_.pull(scope.navListCtrl.l4SubInterestArray.arr, childId);
+								_.pull(scope.navListCtrl.l4SubInterest.arr, childId);
 							}
 							uncheckAllChildren(childUl);
 						}
@@ -2159,12 +2159,12 @@ padding-right: 0;
 							var thisLabel = _this.siblings('label');
 							var checkedText = thisLabel.attr('for');
 							if (ulLevel.hasClass("level-three")){
-								if (_.contains(scope.navListCtrl.l3SubInterestArray.arr, checkedText)){
-									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterestArray);
+								if (_.contains(scope.navListCtrl.l3SubInterest.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterest);
 								}
 							}else{
-								if (_.contains(scope.navListCtrl.l4SubInterestArray.arr, checkedText)){
-									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterestArray);
+								if (_.contains(scope.navListCtrl.l4SubInterest.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterest);
 								}
 							}
 						}
@@ -2176,14 +2176,14 @@ padding-right: 0;
 					if (isChecked){
 						if (ulLevel.hasClass("level-three")){
 							var heading = _this.closest("div.row-section").prev().text();
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterestArray);
+							reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterest);
 							DisplayAds(scope);
 						}else if (ulLevel.hasClass("level-four")){
 							var heading = _this.closest("ul")[0].id;
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterestArray);
+							reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterest);
 						}else{
 							var heading = _this.closest("ul")[0].id;
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l4SubInterestArray);
+							reduceAndRefresh(scope, heading, scope.navListCtrl.l4SubInterest);
 						}
 					}
 				}
@@ -2238,12 +2238,12 @@ padding-right: 0;
 							var thisLabel = _this.siblings('label');
 							var checkedText = thisLabel.attr('for');
 							if (ulLevel.hasClass("level-three")){
-								if (_.contains(scope.navListCtrl.l3SubInterestArray.arr, checkedText)){
-									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterestArray);
+								if (_.contains(scope.navListCtrl.l3SubInterest.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l3SubInterest);
 								}
 							}else{
-								if (_.contains(scope.navListCtrl.l4SubInterestArray.arr, checkedText)){
-									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterestArray);
+								if (_.contains(scope.navListCtrl.l4SubInterest.arr, checkedText)){
+									scope.navListCtrl.reduceList(checkedText, scope.navListCtrl.l4SubInterest);
 								}
 							}
 						}
@@ -2376,9 +2376,9 @@ padding-right: 0;
 					var scope = angular.element(_this).scope();
 					var levelArray;
 					if (parentUl.hasClass("level-four")){
-						levelArray = scope.navListCtrl.l4SubInterestArray;
+						levelArray = scope.navListCtrl.l4SubInterest;
 					}else if (parentUl.hasClass("level-three")){
-						levelArray = scope.navListCtrl.l3SubInterestArray;
+						levelArray = scope.navListCtrl.l3SubInterest;
 					}
 					scope.animationSpeed = animationInterval;
 					scope.$apply();
@@ -4997,7 +4997,7 @@ padding-right: 0;
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
 				</div>
-				<div id="trail" ng-show="navListCtrl.l1SubInterestArray.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterestArray.arr[0]}}  
+				<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
 					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
