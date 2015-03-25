@@ -392,7 +392,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	color: #fff;
   }
 	button.Reset:before {
-		content: "\e646";
+		content: "\f00d";
 		margin-right: 4px;
 	}
   ul li {
@@ -465,7 +465,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	font-weight: 300;
  	margin: 0;
  	color: #464646;
- 	font-size: 12px;
+ 	font-size: 14px;
  }
  label.multiselect-group {
  	color: #000;
@@ -576,7 +576,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	.checkbox label {
 	}
 	.checkbox label.hasChildren:after {
-		content: "\f107"; /* down-arrow*/
+		content: "\f0dd"; /* sort-desc*/
 		color: black;
 	}
 	.clearLink {
@@ -622,7 +622,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		float: left;
 		font-size: 12px;
 		margin: 3px 0;
-		padding: 0.6em 0.8em;
+		padding: 0.7em 0.8em;
 		position: relative;
 		width: 44px;
 		color: #000;
@@ -1140,7 +1140,7 @@ box-sizing: border-box;
  	***************************/
 
  	/* THEMIFY */
- 	.clearBox, .clearMains, .Reset:before  {
+ 	/*.clearBox, .clearMains   {
  		 -moz-osx-font-smoothing: grayscale;
     	font-family: "themify";
     	font-style: normal;
@@ -1148,18 +1148,30 @@ box-sizing: border-box;
     	font-weight: normal;
     	line-height: 1;
     	text-transform: none;
- 	}
+ 	}*/
+
  	/* FontAwesome */
  	.allHeading.check:after,
  	.clearLink,
+ 	.clearBox, 
+ 	.clearMains,
+ 	span.crumbs,
  	.checkbox label.hasChildren:after,
- 	.checkbox label.noChildren:after {
+ 	.checkbox label.noChildren:after,
+ 	.Reset:before {
  		font-family:'FontAwesome';
 		font:normal normal normal 14px/1 FontAwesome;
-		font-size:inherit;
+		/*font-size:inherit;*/
 		text-rendering:auto;
 		-webkit-font-smoothing:antialiased;
 		-moz-osx-font-smoothing:grayscale
+ 	}
+	.noChildren:after,
+ 	.hasChildren:after {
+ 		padding: 0 2px 0 5px;
+ 	}
+ 	.clearLink {
+ 		  
  	}
 
 
@@ -1279,7 +1291,7 @@ padding-right: 0;
 		text-align: center;
 	}
 	.checkbox label {
-		text-align: center;
+		/*text-align: center;*/
 	}
 
 	.has-subnav ul {
@@ -1770,9 +1782,9 @@ padding-right: 0;
 			$("div.row-heading").each(function (){
 				var $this = $(this);
 				if ($this.hasClass('search')){
-					$('<span class="clearBox">&#58950;</span>').appendTo($this);
+					$('<span class="clearBox">&#61453;</span>').appendTo($this);
 				}else{
-					$('<span class="clearMains">&#58950;</span>').appendTo($this);	
+					$('<span class="clearMains">&#61453;</span>').appendTo($this);	
 				}
 			});
 
