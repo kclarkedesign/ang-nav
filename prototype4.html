@@ -19,6 +19,8 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
 		<script type="text/javascript" src="http://www.92y.org/92StreetY/media/MEDIA/Javascript/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/css/font-awesome.css" />
+  		<link rel="stylesheet" href="/css/themify-icons.css" />
 		<link rel="stylesheet" type="text/css" href="http://www.92y.org/92StreetY/media/MICROSITES/CSS/HorizontalNav.css" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css"/>
@@ -279,7 +281,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   }
   .age-range {
   	border-bottom: none;
-  	margin-bottom: 9px;
+  	margin-bottom: 14px;
   	padding: 0;
   	display: inline-block;
   	width: 100%;
@@ -390,7 +392,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	color: #fff;
   }
 	button.Reset:before {
-		content: "\2612";
+		content: "\e646";
 		margin-right: 4px;
 	}
   ul li {
@@ -511,7 +513,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		float: left;
 		font-size: 12px;
 		margin: 3px 0;
-		padding: 0.6em 0.8em;
+		padding: 0.6em 0.6em;
 		position: relative;
 		width: 100%;
 	}
@@ -574,7 +576,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	.checkbox label {
 	}
 	.checkbox label.hasChildren:after {
-		content: "\25BC"; /* down-arrow*/
+		content: "\f107"; /* down-arrow*/
 		color: black;
 	}
 	.clearLink {
@@ -600,10 +602,10 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		right: -4px;
 	}
 	.checkbox label.noChildren:after {
-		content: "\2612";  /* ballot-box x */
-		position: absolute;
+		content: "\f00d";  /* close x font-awesome */
+		/*position: absolute;
 		top: 5px;
-		right: 4px;
+		right: 4px;*/
 		width: 5px;
 		height: 18px;
 		border-radius: 2px;
@@ -630,7 +632,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		color: #B61A2E;
 	}
 	.allHeading.check:after {
-		content: "\2612";
+		content: "\f00d"; /* close x font-awesome */
 		padding-left: 3px;
 		font-size: 16px;
 	}
@@ -1133,6 +1135,33 @@ box-sizing: border-box;
  	.activeFamily {
  		display:block;
  	}
+
+ 	/** FOR ICON FONTS 
+ 	***************************/
+
+ 	/* THEMIFY */
+ 	.clearBox, .clearMains, .Reset:before  {
+ 		 -moz-osx-font-smoothing: grayscale;
+    	font-family: "themify";
+    	font-style: normal;
+    	font-variant: normal;
+    	font-weight: normal;
+    	line-height: 1;
+    	text-transform: none;
+ 	}
+ 	/* FontAwesome */
+ 	.allHeading.check:after,
+ 	.clearLink,
+ 	.checkbox label.hasChildren:after,
+ 	.checkbox label.noChildren:after {
+ 		font-family:'FontAwesome';
+		font:normal normal normal 14px/1 FontAwesome;
+		font-size:inherit;
+		text-rendering:auto;
+		-webkit-font-smoothing:antialiased;
+		-moz-osx-font-smoothing:grayscale
+ 	}
+
 
 /****
 
@@ -1732,7 +1761,7 @@ padding-right: 0;
 				var chkLabel = $(this).next();
 				if (!_scope.navListCtrl.isActualNumber(checkboxId)){
 					chkLabel.addClass("hasChildren");
-					$('<span class="clearLink">&#x2612;</span>').insertAfter(chkLabel);
+					$('<span class="clearLink">&#61453;</span>').insertAfter(chkLabel);
 				}else{
 					chkLabel.addClass("noChildren");
 				}
@@ -1741,9 +1770,9 @@ padding-right: 0;
 			$("div.row-heading").each(function (){
 				var $this = $(this);
 				if ($this.hasClass('search')){
-					$('<span class="clearBox">&#x2612;</span>').appendTo($this);
+					$('<span class="clearBox">&#58950;</span>').appendTo($this);
 				}else{
-					$('<span class="clearMains">&#x2612;</span>').appendTo($this);	
+					$('<span class="clearMains">&#58950;</span>').appendTo($this);	
 				}
 			});
 
@@ -1892,7 +1921,6 @@ padding-right: 0;
 				$jqe(".selections.adults-sel", "#accordion").hide();
 				$jqe("#interest-areas").slideUp();
 				$jqe("li.has-subnav").slideUp();
-				$jqe( "#all-ages" ).trigger( "click" );
 				if( $jqe("#kidBtn").hasClass('selected')) {
 						return false;
 				}
