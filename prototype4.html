@@ -373,13 +373,14 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	border-radius: 8px;
   	font-size: 12px;
   }
-  button.Reset:hover {
+  button.Reset:hover,
+  .crumbs:hover {
   	background: #000;
   	color: #fff;
   }
-	button.Reset:before {
+	button.Reset:after {
 		content: "\f00d";
-		margin-right: 4px;
+		margin-left: 4px;
 	}
   ul li {
   	display: inline-block;
@@ -624,6 +625,9 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		content: "\f00d"; /* close x font-awesome */
 		padding-left: 3px;
 		font-size: 16px;
+	}
+	.currentInterest {
+		border-radius: 8px;
 	}
 	.selections a.check {
 		background-color: #AAD6FC;
@@ -1152,7 +1156,7 @@ box-sizing: border-box;
  	#kidOptions .checkbox label:after,
  	.checkbox label.hasChildren:after,
  	.checkbox label.noChildren:after,
- 	.Reset:before {
+ 	.Reset:after {
  		font-family:'FontAwesome';
 		font:normal normal normal 14px/1 FontAwesome;
 		/*font-size:inherit;*/
@@ -2389,6 +2393,7 @@ padding-right: 0;
 						var rowUlinterestsChecked = rowUl.find('input[type="checkbox"]:checked');
 						if (rowUlinterestsChecked.length === 0){
 							rowUl.find('.allHeading').addClass("check");
+							parentUl.find(".currentInterest").removeClass("currentInterest");
 						}else{
 							preventDefault = true;
 						}
@@ -2397,10 +2402,11 @@ padding-right: 0;
 						var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 						if (interestsChecked.length === 0){
 							parentUl.find('.allHeading').addClass("check");
+							parentUl.find(".currentInterest").removeClass("currentInterest");
 						}
 						parentUl.find(".activeInterest").removeClass("activeInterest");
 						parentLl.find('span.clearLink').removeClass("activeInterest");
-						thisLabel.parent(".checkbox").removeClass("currentInterest");
+						parentUl.find(".currentInterest").removeClass("currentInterest");
 					}
 				}else{
 					var allChecked = rowUl.find('.allHeading').hasClass("check");
@@ -2410,13 +2416,14 @@ padding-right: 0;
 						if (rowUl.is(":visible") || closeChild){
 							rowUl.slideUp();
 							rowUl.find('.allHeading').removeClass("check");
+							rowUl.find(".currentInterest").removeClass("currentInterest");
 							var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 							if (interestsChecked.length === 0){
 								parentUl.find('.allHeading').addClass("check");
 							}
 							parentUl.find(".activeInterest").removeClass("activeInterest");
 							parentLl.find('span.clearLink').removeClass("activeInterest");
-							thisLabel.parent(".checkbox").removeClass("currentInterest");
+							parentUl.find(".currentInterest").removeClass("currentInterest");
 						}else{
 							preventDefault = true;
 						}
@@ -2426,7 +2433,9 @@ padding-right: 0;
 			if (preventDefault){
 				rowUl.slideToggle();
 				parentUl.find(".activeInterest").removeClass("activeInterest");
+				parentUl.find(".currentInterest").removeClass("currentInterest");
 				thisLabel.addClass("activeInterest");
+				thisLabel.parent(".checkbox").addClass("currentInterest");
 				parentLl.find('span.clearLink').addClass("activeInterest");
 				_event.preventDefault();
 			}else{
