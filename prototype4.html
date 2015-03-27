@@ -4,21 +4,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>92Y | Funnel Filter</title>
 		<link href="http://www.92y.org/_ui/uptown/css/textref.ashx?k=1b_n4uSJkq4T0lUMXTQZt2BXOcI_BY51PL_lW0MD0VPMShJH5BOahlC4m9Wt-fOa9Z5Gx_JCoIC40WqxTfM33D06jSdAmQLSIPhFwPMMY4JqzUQim1hr2OUY-yqlgg9nT6ZnpSH0CbTDhDrtmj3bJOc0eRDNB1wI8Ylp0cI_xqXFrkWl3tdQvA.." rel="Stylesheet" type="text/css" media="screen" />
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
-		<script src="src/isotope.pkgd.js"></script>
-		<script src="src/angular-isotope.min.js"></script>
-		<script src="src/cells-by-row.js"></script>
-<!-- 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-animate.js"></script> -->
-		<script src="src/ng-infinite-scroll.min.js" type="text/javascript"></script>
-		<script src="//cdn.jsdelivr.net/lodash/3.5.0/lodash.compat.min.js"></script>
-		<script src="src/navControllers3.js" type="text/javascript"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-		<script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
-		<script type="text/javascript" src="http://www.92y.org/92StreetY/media/MEDIA/Javascript/jquery-ui.js"></script>
 		<link rel="stylesheet" href="/css/font-awesome.css" />
   		<link rel="stylesheet" href="/css/themify-icons.css" />
 		<link rel="stylesheet" type="text/css" href="http://www.92y.org/92StreetY/media/MICROSITES/CSS/HorizontalNav.css" />
@@ -121,16 +106,15 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	height: 41px;
 	background: #000000;
 }
+#kidOptions ul {
+	text-align: center;
+}
 #kidOptions label.checkbox {
 	color: #fff;
 }
 #kidOptions .checkbox {
 	padding: 0.20em 0.7em 0.20em 0.5em;
 	
-}
-#kidOptions .checkbox label:after {
-	top: 1px;
-	right: 2px;
 }
 #kidOptions button.btn, .row-dropdown button.btn {
 	border-top: none;
@@ -146,6 +130,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 }
 #kidOptions .multiselect-container>li>a>label, .multiselect-container>li>a>label.radio, .multiselect-container>li>a>label.checkbox {
 	padding: 6px 20px 6px 10px;
+	font-size: 12px;
 }
 #interest {
 	padding: 2px 0 0 0;
@@ -195,7 +180,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 }
 .filter-row li {
 	list-style-type: none;
-	float: left;
+	/*float: left;*/
 	margin: 0 6px 0 0;
 }
 .centerContainer {
@@ -289,6 +274,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   .age-range li {
   	width: auto;
   	margin: 0 0 1px 0;
+  	display: inline-block;
   }
   #kidOptions .age-range li {
   	margin: 2px 0 0 0;
@@ -511,9 +497,9 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		cursor: pointer;
 		display: inline-block;
 		float: left;
-		font-size: 12px;
+		font-size: 6px;
 		margin: 3px 0;
-		padding: 0.6em 0.6em;
+		padding: 0.8em 0.3em;
 		position: relative;
 		width: 100%;
 	}
@@ -523,10 +509,10 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	}
 
 	#kidOptions .checkbox label:after {
-		content: "\2713";
+		content: "\f00c";
 		position: absolute;
-		top: 5px;
-		right: 4px;
+		top: 2px;
+		right: 1px;
 		width: 5px;
 		height: 18px;
 		border-radius: 2px;
@@ -577,7 +563,8 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	}
 	.checkbox label.hasChildren:after {
 		content: "\f0dd"; /* sort-desc*/
-		color: black;
+		top: -2px;
+  		position: relative;
 	}
 	.clearLink {
 		position: relative;
@@ -615,21 +602,23 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		font-size: 16px;
 	}
 	.allHeading {
-		border: none;
-		border-radius: 0;
+		border: 1px solid #fff;
+		border-radius: 8px;
 		cursor: pointer;
 		display: inline-block;
 		float: left;
-		font-size: 12px;
+		font-size: 14px;
 		margin: 3px 0;
-		padding: 0.7em 0.8em;
+		padding: 0.4em 0.4em;
 		position: relative;
 		width: 44px;
 		color: #000;
-		text-align: left;
+		text-align: center;
 	}
-	.allHeading.check{
+	.allHeading.check,
+	.currentInterest{
 		color: #B61A2E;
+		border: 1px solid;
 	}
 	.allHeading.check:after {
 		content: "\f00d"; /* close x font-awesome */
@@ -826,6 +815,10 @@ span.crumbs {
   	padding: 2px 6px 2px;
   	border-radius: 8px;
   	font-size: 12px;
+  	display: inline-block;
+}
+span.crumbs:after {
+	content: "\f00d";  /* close x font-awesome */
 }
 .toggle {
 	cursor: pointer;
@@ -849,14 +842,14 @@ span.crumbs {
 	}
 	.has-subnav ul {
 		clear: both;
-		padding: 6px 0 6px 2px;
+		padding: 6px 0 10px 2px;
 	}
 	/**** New Styles ****/
 
 	.age-range #kidOptions li .checkbox,
 	.age-range #kidOptions li.active .checkbox {
 		font-weight: bold;
-		font-size: 12px;
+		font-size: 14px;
 	}
 	.age-range #kidOptions li.active .checkbox, 
 	#sideOptions li.active, 
@@ -1155,7 +1148,8 @@ box-sizing: border-box;
  	.clearLink,
  	.clearBox, 
  	.clearMains,
- 	span.crumbs,
+ 	span.crumbs:after,
+ 	#kidOptions .checkbox label:after,
  	.checkbox label.hasChildren:after,
  	.checkbox label.noChildren:after,
  	.Reset:before {
@@ -1168,10 +1162,10 @@ box-sizing: border-box;
  	}
 	.noChildren:after,
  	.hasChildren:after {
- 		padding: 0 2px 0 5px;
+ 		padding: 0 2px 0 4px;
  	}
  	.clearLink {
- 		  
+
  	}
 
 
@@ -1334,6 +1328,21 @@ padding-right: 0;
 	
 }
 </style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+		<script src="src/isotope.pkgd.js"></script>
+		<script src="src/angular-isotope.min.js"></script>
+		<script src="src/cells-by-row.js"></script>
+<!-- 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-animate.js"></script> -->
+		<script src="src/ng-infinite-scroll.min.js" type="text/javascript"></script>
+		<script src="//cdn.jsdelivr.net/lodash/3.5.0/lodash.compat.min.js"></script>
+		<script src="src/navControllers3.js" type="text/javascript"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+		<script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://davidstutz.github.io/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+		<script type="text/javascript" src="http://www.92y.org/92StreetY/media/MEDIA/Javascript/jquery-ui.js"></script>
 		<script type='text/javascript'>
 			//For Bootstrap Multiselect
 			var $jq = jQuery.noConflict();
@@ -1850,6 +1859,7 @@ padding-right: 0;
 					$jqe("fieldset").children(".row-section").hide();
 					$jqe(".filter-grid div.row-section").slideUp();
 					$jqe("#interest-lists .collapsed").slideUp();
+					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
 					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.adults-sel a").slideDown();
 				}
@@ -1858,6 +1868,7 @@ padding-right: 0;
 					$jqe("fieldset").children(".row-section").hide();
 					$jqe(".filter-grid div.row-section").slideUp();
 					$jqe("#interest-lists .collapsed").slideUp();
+					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
 					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.kids-sel a").slideDown();
 				}
@@ -1922,6 +1933,7 @@ padding-right: 0;
 				$jqe("#interest-areas").slideDown();
 				$jqe(".selection-container").slideDown();
 				$jqe("li.has-subnav ").slideUp();
+				$jqe("#utility-bar").slideUp();
 				if( $jqe('#adultBtn').hasClass('selected')) {
 					return false;
 				}
@@ -1933,6 +1945,7 @@ padding-right: 0;
 				$jqe(".selections.adults-sel", "#accordion").hide();
 				$jqe("#interest-areas").slideUp();
 				$jqe("li.has-subnav").slideUp();
+				$jqe("#utility-bar").slideUp();
 				if( $jqe("#kidBtn").hasClass('selected')) {
 						return false;
 				}
@@ -2031,7 +2044,7 @@ padding-right: 0;
 							var crumbText = _this.text();
 							var getLastChar = /(.){1}$/;
 							var crumbX = getLastChar.exec(crumbText);
-							scope.navListCtrl.breadCrumbs.push({ id: headingId, text: crumbText.replace(crumbX[0], " "+ crumbX[0]) });
+							scope.navListCtrl.breadCrumbs.push({ id: headingId, text: crumbText.replace(crumbX[0], " ") });
 							DisplayAds(scope);
 						});
 					}
@@ -2292,6 +2305,7 @@ padding-right: 0;
 				}
 			});
 
+
 			$(document).on('click','.showMore',function(){
 				var $showMore = $(this).parent(".getMore");
 				var $wrapper = $showMore.next(".contentWrap");
@@ -2365,7 +2379,9 @@ padding-right: 0;
 				parentUl.find(".allHeading").removeClass("check");
 				rowUl.find(".allHeading").addClass("check");
 				parentUl.find(".activeInterest").removeClass("activeInterest");
+				parentUl.find(".currentInterest").removeClass("currentInterest");
 				thisLabel.addClass("activeInterest");
+				thisLabel.parent(".checkbox").addClass("currentInterest");
 				parentLl.find('span.clearLink').addClass("activeInterest");
 			}else{
 				if (parentUl.hasClass("level-five") || (parentUl.hasClass("level-four") && rowUl.length === 0) || (parentUl.hasClass("level-three") && rowUl.length === 0)){
@@ -2384,6 +2400,7 @@ padding-right: 0;
 						}
 						parentUl.find(".activeInterest").removeClass("activeInterest");
 						parentLl.find('span.clearLink').removeClass("activeInterest");
+						thisLabel.parent(".checkbox").removeClass("currentInterest");
 					}
 				}else{
 					var allChecked = rowUl.find('.allHeading').hasClass("check");
@@ -2399,6 +2416,7 @@ padding-right: 0;
 							}
 							parentUl.find(".activeInterest").removeClass("activeInterest");
 							parentLl.find('span.clearLink').removeClass("activeInterest");
+							thisLabel.parent(".checkbox").removeClass("currentInterest");
 						}else{
 							preventDefault = true;
 						}
