@@ -617,7 +617,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		text-align: center;
 	}
 	.allHeading.check,
-	.currentInterest{
+	.checkbox.currentInterest{
 		color: #B61A2E;
 		border: 1px solid;
 	}
@@ -628,6 +628,9 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	}
 	.currentInterest {
 		border-radius: 8px;
+	}
+	.currentInterest span.clearLink {
+		display: inline-block;
 	}
 	.selections a.check {
 		background-color: #AAD6FC;
@@ -1169,7 +1172,7 @@ box-sizing: border-box;
  		padding: 0 2px 0 4px;
  	}
  	.clearLink {
-
+ 		display: none;
  	}
 
 
@@ -2402,10 +2405,11 @@ padding-right: 0;
 						var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 						if (interestsChecked.length === 0){
 							parentUl.find('.allHeading').addClass("check");
-							parentUl.find(".currentInterest").removeClass("currentInterest");
+							//parentUl.find(".currentInterest").removeClass("currentInterest");
 						}
 						parentUl.find(".activeInterest").removeClass("activeInterest");
 						parentLl.find('span.clearLink').removeClass("activeInterest");
+						//Single leveled checkbox clear currentInterest
 						parentUl.find(".currentInterest").removeClass("currentInterest");
 					}
 				}else{
@@ -2416,13 +2420,14 @@ padding-right: 0;
 						if (rowUl.is(":visible") || closeChild){
 							rowUl.slideUp();
 							rowUl.find('.allHeading').removeClass("check");
-							rowUl.find(".currentInterest").removeClass("currentInterest");
+							//rowUl.find(".currentInterest").removeClass("currentInterest");
 							var interestsChecked = parentUl.find('input[type="checkbox"]:checked');
 							if (interestsChecked.length === 0){
 								parentUl.find('.allHeading').addClass("check");
 							}
 							parentUl.find(".activeInterest").removeClass("activeInterest");
 							parentLl.find('span.clearLink').removeClass("activeInterest");
+							//multi leveled checkbox clear currentInterest
 							parentUl.find(".currentInterest").removeClass("currentInterest");
 						}else{
 							preventDefault = true;
