@@ -1962,26 +1962,6 @@ padding-right: 0;
 				$jqe("li.has-subnav").slideUp();
 				$jqe("#utility-bar").slideUp();
 
-				$jqe("#interest-areas").slideDown();
-				$jqe(".selection-container", "#interest-areas").slideDown();
-				$jqe(".kids-sel", "#interest-areas").slideDown();
-
-				var newbornFive = $jqe(".zero-five-sel", "#interest-areas");
-				var newbornSel = $jqe('.collapse.zero-five-sel');
-				newbornFive.not(newbornSel).slideDown();
-
-				var sixTwelve = $jqe(".six-twelve-sel", "#interest-areas");
-				var sixTwelveSel = $jqe('.collapse.six-twelve-sel');
-				sixTwelve.not(sixTwelveSel).slideDown();
-
-				var teens = $jqe(".teens-sel", "#interest-areas");
-				var teenSel = $jqe('.collapse.teens-sel');
-				teens.not(teenSel).slideDown();
-
-				var multigen = $jqe(".multigen-sel", "#interest-areas");
-				var multigenSel = $jqe('.collapse.multigen-sel');
-				multigen.not(multigenSel).slideDown();
-
 				if( $jqe("#kidBtn").hasClass('selected')) {
 					return false;
 				}
@@ -2534,6 +2514,11 @@ padding-right: 0;
 					multigen.not(multigenSel).slideDown();
 					//otherwise do the following:
 				} else {
+					if (totalChecked === 0){
+						e.preventDefault();
+						return;
+					}
+					
 					// General Interest selections logic
 					if (newbornFiveChecked.is(':checked')) {
 						newbornFive.not(newbornSel).slideDown();
