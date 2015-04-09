@@ -1958,11 +1958,32 @@ padding-right: 0;
 				$jqe("#kidBtn").addClass('selected');
 				$jqe("#adultBtn").removeClass('selected');
 				$jqe(".selections.adults-sel", "#accordion").hide();
-				$jqe("#interest-areas").slideUp();
+				//$jqe("#interest-areas").slideUp();
 				$jqe("li.has-subnav").slideUp();
 				$jqe("#utility-bar").slideUp();
+
+				$jqe("#interest-areas").slideDown();
+				$jqe(".selection-container", "#interest-areas").slideDown();
+				$jqe(".kids-sel", "#interest-areas").slideDown();
+
+				var newbornFive = $jqe(".zero-five-sel", "#interest-areas");
+				var newbornSel = $jqe('.collapse.zero-five-sel');
+				newbornFive.not(newbornSel).slideDown();
+
+				var sixTwelve = $jqe(".six-twelve-sel", "#interest-areas");
+				var sixTwelveSel = $jqe('.collapse.six-twelve-sel');
+				sixTwelve.not(sixTwelveSel).slideDown();
+
+				var teens = $jqe(".teens-sel", "#interest-areas");
+				var teenSel = $jqe('.collapse.teens-sel');
+				teens.not(teenSel).slideDown();
+
+				var multigen = $jqe(".multigen-sel", "#interest-areas");
+				var multigenSel = $jqe('.collapse.multigen-sel');
+				multigen.not(multigenSel).slideDown();
+
 				if( $jqe("#kidBtn").hasClass('selected')) {
-						return false;
+					return false;
 				}
 			});
 			$jqe(".mega-filter").click(function() {
@@ -2184,6 +2205,8 @@ padding-right: 0;
 						rowSection.slideToggle();
 						rowSection.prev().removeClass("check").find('span.clearMains').css('opacity', '0').css('z-index', '-1');
 						rowSection.find(".currentInterest").removeClass("currentInterest");
+
+						uncheckMains($("div#"+ ulLevel.prop('id')));
 					}else{
 						var ulLevelId = ulLevel[0].id;
 						var parentCheckbox = rowSection.find("input[name='"+ ulLevelId +"']");
@@ -2245,19 +2268,6 @@ padding-right: 0;
 					if (numcheckboxes.length > 0){
 						scope.$apply();
 						$(window).scrollTop(0);
-					}
-					if (isChecked){
-						if (ulLevel.hasClass("level-three")){
-							var heading = _this.closest("div.row-section").prev().text();
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l2SubInterest);
-							DisplayAds(scope);
-						}else if (ulLevel.hasClass("level-four")){
-							var heading = _this.closest("ul")[0].id;
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l3SubInterest);
-						}else{
-							var heading = _this.closest("ul")[0].id;
-							reduceAndRefresh(scope, heading, scope.navListCtrl.l4SubInterest);
-						}
 					}
 				}
 			});
