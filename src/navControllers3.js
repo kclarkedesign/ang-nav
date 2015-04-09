@@ -317,7 +317,6 @@
 				break;
 			case "kids":
 				_scope.ageRanges[age] = true;
-				_scope.ageRanges.allKids = true;
 				_scope.ageRanges.adults = false;
 				break;
 			case "allKids":
