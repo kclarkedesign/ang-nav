@@ -100,7 +100,7 @@
 		var interestItems = _.filter(_scope.clickedItems, 'level1', interest );
 		_.forEach(interestItems, function (arr) {
 			var nodeId = arr.id;
-			if (_this.isActualNumber(nodeId)) {
+			if (isActualNumber(nodeId)) {
 				// var foundClass = findDeep(allKeys, {
 				// 	'NodeID': nodeId
 				// });
@@ -136,7 +136,7 @@
 		});
 
 		if (!_.isUndefined(nodeId)){
-			if (_this.isActualNumber(nodeId)){
+			if (isActualNumber(nodeId)){
 				if (_.contains(_this.nodeIdArray, nodeId)){
 					_.pull(_this.nodeIdArray, nodeId);
 				}else{
@@ -174,7 +174,7 @@
 			_.forEach(_scope.clickedItems, function (arr) {
 				if (arr.id === sub) {
 					var nodeId = arr.id;
-					if (_this.isActualNumber(nodeId)) {
+					if (isActualNumber(nodeId)) {
 						var reducedArray = _.filter(arrayToTest, {
 							'NodeID': nodeId
 						});
@@ -200,7 +200,7 @@
 				_.forEach(_scope.clickedItems, function (arr) {
 					if (arr[levelName] === sub && !_.contains(levelsDrilledDown[x], sub)) {
 						var nodeId = arr.id;
-						if (_this.isActualNumber(nodeId)) {
+						if (isActualNumber(nodeId)) {
 							var reducedArray = _.filter(arrayToTest, {
 								'NodeID': nodeId
 							});
@@ -299,9 +299,6 @@
 			}
 		}
 	};
-	NavListController.prototype.isActualNumber = function (num) {
-		return !isNaN(parseFloat(num)) && isFinite(num);
-	};
 	NavListController.prototype.setAgeRange = function (age) {
 		var _this = this;
 		var _scope = _this.scope;
@@ -367,6 +364,23 @@
 		return classInfoObjArray;
 	};
 
+	var formatDateOutput = function (uglyDate) {
+		var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+		var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+		var dateHour = uglyDate.getHours();
+		var yearNumber = uglyDate.getFullYear();
+		var ampm = dateHour < 12 ? "AM" : "PM";
+		if (dateHour == 0){
+			dateHour = 12;
+		}
+		if (dateHour > 12){
+			dateHour = dateHour - 12;
+		}
+		var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ uglyDate.getMinutes() : "";
+		var prettyDate = dayAbbr[uglyDate.getDay()] +", "+ monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
+		return prettyDate;
+	}
+
 	var formatDataFromJson = function (arr, nodeId){
 		var prodNo = arr.prod_season_no === 0 ? arr.PackageNo : arr.ProdSeasonNo;
 		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
@@ -385,19 +399,9 @@
 		if (multDates){
 			startDate = "Multiple dates/times";
 		}else{
-			var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
-			var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-			var dateHour = begDate.getHours();
-			var ampm = dateHour < 12 ? "AM" : "PM";
-			if (dateHour == 0){
-				dateHour = 12;
-			}
-			if (dateHour > 12){
-				dateHour = dateHour - 12;
-			}
-			var dateMinute = begDate.getMinutes() > 0 ? ":"+ begDate.getMinutes() : "";
-			startDate = dayAbbr[begDate.getDay()] +", "+ monthAbbr[begDate.getMonth()] +" " + begDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
+			startDate = formatDateOutput(begDate);
 		}
+
 		var sortDate1 = "";
 		var sortDate2 = "";
 		var warning = arr.ProdStatus;
@@ -410,12 +414,33 @@
 			sortDate1 = begDate;
 			sortDate2 = "";
 		}
+
 		var shortDescription = arr.ShortDesc;
 		var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
 		var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
 			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
 		});
 		var teachers = instructors.toString();
+		var futurePerfCount = Number(arr.FuturePerformanceCount);
+		//var price;
+		if (isActualNumber(futurePerfCount) && futurePerfCount > 0){
+			shortDesc += "<br/>Starting From:  "+ arr.LowestPrice;
+			var performances = arr.FuturePerformances;
+			_.forEach(performances, function(p, ind) {
+				var perfDate = p.perf_dt;
+				perfDate = new Date(parseInt(perfDate.substr(6)));
+				var futureDate = formatDateOutput(perfDate);
+				if (ind === 0){
+					shortDesc += "<br/>Upcoming Dates:  "+ futureDate;
+				}else{
+					if (ind >= 3){
+						return false;
+					}
+					shortDesc += "<br/>"+ futureDate;
+				}
+			});
+		}
+		shortDesc += "<br/><a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>";
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -428,8 +453,10 @@
 			SortDate2: sortDate2,
 			Url: arr.URL,
 			Warning: warning,
-			ItemType: itemType,
-			Teachers: teachers
+			ItemType: itemType
+			//Teachers: teachers,
+			//Price: price,
+			//Performances: performances
 		};
 		return classInfoObj;
 	}
@@ -637,3 +664,7 @@
 		return window._;
 	});
 })();
+
+var isActualNumber = function (num) {
+	return !isNaN(parseFloat(num)) && isFinite(num);
+};

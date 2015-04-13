@@ -740,13 +740,13 @@ transition: .1s linear;
 	display: none;
 	padding: 6px 14px 0;
 	box-sizing: border-box;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 19px;
 	text-align: left;
 	overflow-y: auto;
 }
 .shortDescription span {
-	font-size: 14px !important;
+	font-size: 12px !important;
 	}
 	.classTitle,
 	.classDate,
@@ -1795,7 +1795,7 @@ padding-right: 0;
 				var _scope = angular.element($this).scope();
 				var checkboxId = $(this)[0].id;
 				var chkLabel = $(this).next();
-				if (!_scope.navListCtrl.isActualNumber(checkboxId)){
+				if (!isActualNumber(checkboxId)){
 					chkLabel.addClass("hasChildren");
 					$('<span class="clearLink">&#61453;</span>').insertAfter(chkLabel);
 				}else{
@@ -2105,7 +2105,7 @@ padding-right: 0;
 					$this.closest("div").find("span.clearLink").removeClass("activeInterest");
 					$this.closest("div").removeClass("currentInterest");  //removes currentInterest highlight from third level, when rowheading is cleared
 					var checkboxId = $this.prop('id');
-					if (scope.navListCtrl.isActualNumber(checkboxId)){
+					if (isActualNumber(checkboxId)){
 						_.pull(scope.navListCtrl.nodeIdArray, parseInt(checkboxId));
 					}else{
 						var childUl = $("ul#"+ checkboxId);
@@ -2153,7 +2153,7 @@ padding-right: 0;
 					$this.closest("div").find("span.clearLink").removeClass("activeInterest");
 					$this.closest("div").removeClass("currentInterest"); //removes all currentInterest highlights, when all heading is clicked
 					var childId = $this.prop('id');
-					if (scope.navListCtrl.isActualNumber(childId)){
+					if (isActualNumber(childId)){
 						_.pull(scope.navListCtrl.nodeIdArray, parseInt(childId));
 					}else{
 						var childUl = $("ul#"+ childId);
@@ -2227,7 +2227,7 @@ padding-right: 0;
 					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
 						var checkboxId = _this.prop('id');
-						if (scope.navListCtrl.isActualNumber(checkboxId)){
+						if (isActualNumber(checkboxId)){
 							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
 								scope.navListCtrl.reduceList(parseInt(checkboxId));
 							}
@@ -2293,7 +2293,7 @@ padding-right: 0;
 					var numcheckboxes = ulLevel.find('input[type="checkbox"]').each(function (){
 						var _this = $(this);
 						var checkboxId = _this.prop('id');
-						if (scope.navListCtrl.isActualNumber(checkboxId)){
+						if (isActualNumber(checkboxId)){
 							if (_.contains(scope.navListCtrl.nodeIdArray, parseInt(checkboxId))){
 								scope.navListCtrl.reduceList(parseInt(checkboxId));
 							}
@@ -2459,7 +2459,7 @@ padding-right: 0;
 					scope.navListCtrl.clearResults();
 					scope.$apply();
 					var thisId = _this[0].id;
-					if (scope.navListCtrl.isActualNumber(thisId)){
+					if (isActualNumber(thisId)){
 						thisId = parseInt(thisId);
 					}
 					reduceAndRefresh(scope, thisId, levelArray);
@@ -2518,7 +2518,7 @@ padding-right: 0;
 						e.preventDefault();
 						return;
 					}
-					
+
 					// General Interest selections logic
 					if (newbornFiveChecked.is(':checked')) {
 						newbornFive.not(newbornSel).slideDown();
@@ -5081,12 +5081,24 @@ padding-right: 0;
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
-						<div><a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank"><img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" /></a></div>
-						<div class="classTitle">{{classInfo.Title}}</div>
+						<div>
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+								<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+							</a>
+						</div>
+						<div class="classTitle">
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+						</div>
 						<div class="classDate">{{classInfo.FriendlyDate}}</div>
 						<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-						<div class="getMore"><span class="showMore">Show More ▲</span><br /><div class="learnMore"><a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More &#10148;</a></div></div>
-						<div class="contentWrap"><div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div></div>
+						<div class="getMore">
+							<span class="showMore">Show More ▲</span><br />
+							<!--<div class="learnMore"><a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More &#10148;</a></div>-->
+						</div>
+						<div class="contentWrap">
+							<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+							<!-- <div class="price">{{classInfo.Price}}</div> -->
+						</div>
 					</span>
 				</div>
 			</div>
