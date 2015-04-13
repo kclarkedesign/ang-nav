@@ -2473,7 +2473,11 @@ padding-right: 0;
 		<script>
 		$(document).ready(function() {
 			//KIDS age range controls
-			
+
+			//For controlling parent div class			
+			var kidAge = $('input[type="checkbox"].kidOpt', '#kidOptions');
+			var allAge = $('input[type="checkbox"]#all-ages', '#kidOptions');
+
 			//Kid interest area selection
 			var newbornFive = $jqe(".zero-five-sel", "#interest-areas");
 			var sixTwelve = $jqe(".six-twelve-sel", "#interest-areas");
@@ -2565,6 +2569,19 @@ padding-right: 0;
 					}
 				}
 			});
+			//Add class to parent div of Kid age range checkboxes
+			kidAge.click(function() {
+				var _this = $(this);
+				var checkboxDiv = _this.closest('.checkbox');
+				var allAgeCheckboxDiv = allAge.closest('.checkbox');
+				$(this).each(function () {
+					if(checkboxDiv.hasClass('activeAge')) {
+						checkboxDiv.removeClass('activeAge');
+					} else {
+						checkboxDiv.addClass('activeAge');
+					}
+				});
+			});
 		});
 		var setAgeRange = function (_this, age) {
 			var scope = angular.element(_this).scope();
@@ -2619,6 +2636,7 @@ padding-right: 0;
 							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
 							<div class="row-dropdown">
 								<div id="kidOptions" style="display:none;">
+									<span>CHOOSE AGE RANGES</span>
  									<ul class="">
 										<li>
 											<div class="checkbox">
@@ -5033,6 +5051,9 @@ padding-right: 0;
 		</form>
         <div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
+            	<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
+					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
+				</div>
                 <div class="row-dropdown">
                     <div class="row-heading">Day of Week</div>
                     <select class="selectAll" multiple="multiple">
@@ -5076,9 +5097,6 @@ padding-right: 0;
 			<div ng-show="navListCtrl.appStarted" id="tiles">
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
-				</div>
-				<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
-					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
