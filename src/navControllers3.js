@@ -303,7 +303,9 @@
 		var _this = this;
 		var _scope = _this.scope;
 		var allAge = $('input[type="checkbox"]#all-ages', '#kidOptions');
+		var kidAge = $('input[type="checkbox"].kidOpt', '#kidOptions');
 		var allAgeCheckboxDiv = allAge.closest('.checkbox');
+		var kidAgeCheckboxDiv = kidAge.closest('.checkbox');
 		switch (age) {
 			case "adults":
 				_scope.ageRanges[age] = true;
@@ -327,12 +329,14 @@
 				_scope.ageRanges.adults = false;
 				_scope.ageRanges.kids = true;
 				allAgeCheckboxDiv.addClass('activeAge');
+				kidAgeCheckboxDiv.removeClass('activeAge');
 				break;
 			default:
 				_scope.ageRanges[age] = !_scope.ageRanges[age];
 				if (_scope.ageRanges['newborn-5 years'] === false && _scope.ageRanges['6-12 years'] === false && _scope.ageRanges.teens === false && _scope.ageRanges.multigenerational === false){
 					_scope.ageRanges.allKids = true;
 					allAgeCheckboxDiv.addClass('activeAge');
+					kidAge.removeClass('activeAge');
 				}else{
 					_scope.ageRanges.allKids = false;
 					allAgeCheckboxDiv.removeClass('activeAge');
