@@ -317,7 +317,6 @@
 				_scope.ageRanges.adults = false;
 				break;
 			case "allKids":
-				_scope.ageRanges[age] = !_scope.ageRanges[age];
 				_scope.ageRanges['newborn-5 years'] = false;
 				_scope.ageRanges['6-12 years'] = false;
 				_scope.ageRanges.teens = false;
@@ -326,7 +325,6 @@
 				_scope.ageRanges.kids = true;
 				break;
 			default:
-				_scope.ageRanges[age] = !_scope.ageRanges[age];
 				if (_scope.ageRanges['newborn-5 years'] === false && _scope.ageRanges['6-12 years'] === false && _scope.ageRanges.teens === false && _scope.ageRanges.multigenerational === false){
 					_scope.ageRanges.allKids = true;
 				}else{

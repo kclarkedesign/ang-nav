@@ -620,6 +620,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	}
 	.allHeading.check,
 	.checkbox.currentInterest,
+	.activeAge,
 	#accordion .level-five {
 		/*background: #2980b9;*/
 		background: #ccc;
@@ -629,7 +630,8 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		padding-left: 3px;
 		font-size: 16px;
 	}
-	.checkbox.currentInterest {
+	.checkbox.currentInterest,
+	.activeAge {
 		border-radius: 8px;
 	}
 	.currentInterest span.clearLink {
@@ -692,6 +694,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
     width: 300px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 10px;
 	background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
 }
 .showMore {
@@ -1323,7 +1326,7 @@ padding-right: 0;
 		text-align: center;
 		text-transform: uppercase;
 		font-size: 12px;
-		padding: 6px 0 14px 6px;
+		padding: 6px 0 14px 0;
 		/* background: #ccc; */
 		cursor: pointer;
 	}
@@ -2491,7 +2494,6 @@ padding-right: 0;
 				
 				//Kid Option Checkboxes
 				var allAges = $jqe('input[type="checkbox"]#all-ages');
-				var allAgesChecked = $jqe('input[type="checkbox"]#all-ages:checked');
 				var newbornFiveChecked = $jqe('input[type="checkbox"]#newborn-five:checked');
 				var sixTwelveChecked = $jqe('input[type="checkbox"]#six-twelve:checked');
 				var teensChecked = $jqe('input[type="checkbox"]#teens:checked');
@@ -2507,18 +2509,38 @@ padding-right: 0;
 				
 				var kidsOptsChecked = kidsOptions.parents('#kidOptions').find('input[type="checkbox"].kidOpt:checked');
 				//if the number of checked becomes equal than 1, and all is checked show everything,
-				if (allAgesChecked.is(':checked')){
+
+				switch (this.id) {
+					case "all-ages":
+						if (totalChecked === 0){
+							var scope = angular.element(this).scope();
+							scope.ageRanges.allKids = true;
+							scope.$apply();
+							return;
+						}
+						setAgeRange(this, 'allKids');
+						break;
+					case "newborn-five":
+						setAgeRange(this, 'newborn-5 years');
+						break;
+					case "six-twelve":
+						setAgeRange(this, '6-12 years');
+						break;
+					case "teens":
+						setAgeRange(this, 'teens');
+						break;
+					case "multigen":
+						setAgeRange(this, 'multigenerational');
+						break;
+				}
+
+				if (allAges.is(':checked')){
 					newbornFive.not(newbornSel).slideDown();
 					sixTwelve.not(sixTwelveSel).slideDown();
 					teens.not(teenSel).slideDown();
 					multigen.not(multigenSel).slideDown();
 					//otherwise do the following:
 				} else {
-					if (totalChecked === 0){
-						e.preventDefault();
-						return;
-					}
-
 					// General Interest selections logic
 					if (newbornFiveChecked.is(':checked')) {
 						newbornFive.not(newbornSel).slideDown();
@@ -2572,8 +2594,8 @@ padding-right: 0;
 			scope.$apply();
 			scope.navListCtrl.setAgeRange(age);
 			if (appStarted){
-					scope.navListCtrl.reduceList();
-				}
+				scope.navListCtrl.reduceList();
+			}
 			scope.$apply();
 			$("body").scrollTop(0);
 		}
@@ -2620,32 +2642,32 @@ padding-right: 0;
 								<div id="kidOptions" style="display:none;">
  									<ul class="">
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids" onclick="setAgeRange(this, 'allKids')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
+												<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids">
 												<label class="checkbox">All</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']" onclick="setAgeRange(this, 'newborn-5 years')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges['newborn-5 years']}">
+												<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']">
 												<label class="checkbox">Newborn-5</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']" onclick="setAgeRange(this, '6-12 years')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges['6-12 years']}">
+												<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']">
 												<label class="checkbox">6-12 years</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens" onclick="setAgeRange(this, 'teens')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.teens}">
+												<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens">
 												<label class="checkbox">Teens</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational" onclick="setAgeRange(this, 'multigenerational')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.multigenerational}">
+												<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational">
 												<label class="checkbox">Multigenerational</label>
 											</div>
 										</li>
