@@ -104,16 +104,19 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	display: inline-block;
 	position: relative;
 	height: 41px;
-	background: #000000;
 }
 #kidOptions ul {
 	text-align: center;
+	padding-bottom: 10px;
 }
 #kidOptions label.checkbox {
-	color: #fff;
+	color: #333;
 }
 #kidOptions .checkbox {
-	padding: 0.20em 0.7em 0.20em 0.5em;
+	/*padding: 0.20em 0.7em 0.20em 0.5em; */
+  	 padding: 0.2em 0.7em 0.3em 0.2em;
+  	margin-top: 2px;
+  	margin-bottom: 0px;
 	
 }
 #kidOptions button.btn, .row-dropdown button.btn {
@@ -207,13 +210,12 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	overflow: hidden;
 }
 .interest-title {
-	color: #fff;
+	color: #bcbdc0;
 	font-size: 24px;
 	line-height: 22px;
 	font-weight: bold;
 	padding: 14px 0 4px;
 	background: transparent;
-	color: #000;
 }
 
   #accordion .level-three, #accordion .level-four, #accordion .level-five {
@@ -232,7 +234,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	width: 100%;
   }
   .row-heading {
-  	color: #515151;
+  	color: #6d6e70;
   	display: block;
   	font-size: 14px;
   	font-weight: bold;
@@ -281,7 +283,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   }
   .age-range .row-dropdown {
   	width: 100%;
-  	background: #000000;
+  	background: #e4e4e4;
   }
   ul.CMSListMenuUL#CMSListMenu1 {
   	position: relative;
@@ -367,7 +369,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	margin-left: 7px;
   }
   button.Reset {
-  	background: #ccc;
+  	background: #bcbdc0;
   	padding: 2px 6px 2px;
   	margin: 0;
   	border-radius: 8px;
@@ -481,7 +483,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	-webkit-box-sizing: border-box;
  }
  .controls {
- 	background: #f5f5f5;
+ 	background: #252a31;
  	z-index: 4;
  	position: fixed;
  	overflow-y: auto;
@@ -489,7 +491,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	top: 51px;
  	bottom: 0;
  	left: 0;
- 	border-right: 1px solid #CCC;
+ 	border-right: 1px solid #252A31;
  }
 
 	.checkbox {
@@ -513,7 +515,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	#kidOptions .checkbox label:after {
 		content: "\f00d";
 		position: absolute;
-		top: 1px;
+		top: 0;
 		right: 1px;
 		width: 5px;
 		height: 18px;
@@ -620,6 +622,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	}
 	.allHeading.check,
 	.checkbox.currentInterest,
+	.activeAge,
 	#accordion .level-five {
 		/*background: #2980b9;*/
 		background: #ccc;
@@ -629,7 +632,8 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		padding-left: 3px;
 		font-size: 16px;
 	}
-	.checkbox.currentInterest {
+	.checkbox.currentInterest,
+	.activeAge {
 		border-radius: 8px;
 	}
 	.currentInterest span.clearLink {
@@ -859,7 +863,7 @@ span.crumbs:after {
 
 	.age-range #kidOptions li .checkbox,
 	.age-range #kidOptions li.active .checkbox {
-		font-weight: bold;
+		/*font-weight: bold;*/
 		font-size: 14px;
 	}
 	.age-range #kidOptions li.active .checkbox, 
@@ -882,8 +886,10 @@ button#adultBtn:hover, button#kidBtn:hover {
 	background: #000;
 	color: #eee;
 }
-button#adultBtn.selected, button#kidBtn.selected {
-	background: none repeat scroll 0 0 #000;
+button#adultBtn.selected,
+button#kidBtn.selected {
+	background: none repeat scroll 0 0 #e4e4e4;
+	color: #000;
 }
 input[type="checkbox"]:checked+label.activeInterest {
 	color: #B61A2E;
@@ -893,15 +899,15 @@ input[type="checkbox"]:checked~span.activeInterest {
 	z-index: 5;
 }
 button#adultBtn:focus, button#kidBtn:focus {
-	color: #fff;
-	background: #000;
+	color: #000;
+	background: #e4e4e4;
 }
 button#adultBtn {
 	border-bottom: none;
 	border-top: none;
 }
 button#kidBtn.selected {
-	background: none repeat scroll 0 0 #000;
+	background: none repeat scroll 0 0 #e4e4e4;
 	height: 27px;
 	padding: 11px 0;
 	transition: height .5s ease-in-out .5s;
@@ -962,7 +968,7 @@ fieldset#interest-areas {
  	.open .dropdown-toggle.btn-default {
  		background-color: #000;
  		border-color: #adadad;
- 		color: #fff;
+ 		color: #000;
  	}
  	.dropdown-menu {
  		position: absolute;
@@ -991,7 +997,7 @@ fieldset#interest-areas {
  		color: #ffffff;
  	}
  	div#interest-areas {
- 		color: #000;
+ 		color: #bcbdc0;
  		display: block;
  		width: 100%;
  		overflow: hidden;
@@ -1013,7 +1019,7 @@ fieldset#interest-areas {
  	.arrow-down {
  		width: 0;
  		height: 0;
- 		border-top: 14px solid #000;
+ 		border-top: 14px solid #e4e4e4;
  		border-right: 14px solid transparent;
  		border-left: 14px solid transparent;
  		position: relative;
@@ -1056,17 +1062,26 @@ fieldset#interest-areas {
  		width: 100%;
  	}
  	.toggle_bar {
+ 		cursor: pointer;
+ 		padding: 11px 0;
+ 	}
+ 	.optionHeading {
+ 		padding: 11px 0 2px;
+ 		color: #000;
+ 	}
+ 	.toggle_bar,
+ 	.optionHeading {
+ 		display: block;
+ 		font-size: 18px;
+ 		line-height: 30px;
  		text-align: center;
  		text-transform: uppercase;
- 		font-size: 12px;
- 		padding: 11px 0;
- 		cursor: pointer;
  	}
  	#utility-bar {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		display: none;
- 		background: #ffffff;
+ 		/*background: #ffffff;*/
  		border-top: 1px solid #D6D6D6;
  		border-bottom: 1px solid #D6D6D6;
 		position: relative;
@@ -1126,7 +1141,7 @@ box-sizing: border-box;
  		display: block;
  		margin: 0 0 8px 0;
  		font-weight: bold;
- 		color: #515151;
+ 		color: #BCBDC0;
 		padding-right: 30px;
  	}
  	.two-wide {
@@ -1279,14 +1294,13 @@ padding-right: 0;
 		border-left: none;
 	}
 	.interest-title {
-		color: #fff;
+		color: #bcbdc0;
 		font-size: 16px;
 		line-height: 18px;
 		font-weight: bold;
 		padding: 14px 0 4px;
 		/* text-align: center; */
 		background: transparent;
-		color: #000;
 		display: block;
 	}
 	#resetButton {
@@ -1324,7 +1338,7 @@ padding-right: 0;
 		text-align: center;
 		text-transform: uppercase;
 		font-size: 12px;
-		padding: 6px 0 14px 6px;
+		padding: 6px 0 14px 0;
 		/* background: #ccc; */
 		cursor: pointer;
 	}
@@ -1959,7 +1973,7 @@ padding-right: 0;
 				$jqe("#kidBtn").addClass('selected');
 				$jqe("#adultBtn").removeClass('selected');
 				$jqe(".selections.adults-sel", "#accordion").hide();
-				//$jqe("#interest-areas").slideUp();
+				$jqe("#interest-areas").slideUp();
 				$jqe("li.has-subnav").slideUp();
 				$jqe("#utility-bar").slideUp();
 
@@ -2492,7 +2506,6 @@ padding-right: 0;
 				
 				//Kid Option Checkboxes
 				var allAges = $jqe('input[type="checkbox"]#all-ages');
-				var allAgesChecked = $jqe('input[type="checkbox"]#all-ages:checked');
 				var newbornFiveChecked = $jqe('input[type="checkbox"]#newborn-five:checked');
 				var sixTwelveChecked = $jqe('input[type="checkbox"]#six-twelve:checked');
 				var teensChecked = $jqe('input[type="checkbox"]#teens:checked');
@@ -2508,18 +2521,38 @@ padding-right: 0;
 				
 				var kidsOptsChecked = kidsOptions.parents('#kidOptions').find('input[type="checkbox"].kidOpt:checked');
 				//if the number of checked becomes equal than 1, and all is checked show everything,
-				if (allAgesChecked.is(':checked')){
+
+				switch (this.id) {
+					case "all-ages":
+						if (totalChecked === 0){
+							var scope = angular.element(this).scope();
+							scope.ageRanges.allKids = true;
+							scope.$apply();
+							return;
+						}
+						setAgeRange(this, 'allKids');
+						break;
+					case "newborn-five":
+						setAgeRange(this, 'newborn-5 years');
+						break;
+					case "six-twelve":
+						setAgeRange(this, '6-12 years');
+						break;
+					case "teens":
+						setAgeRange(this, 'teens');
+						break;
+					case "multigen":
+						setAgeRange(this, 'multigenerational');
+						break;
+				}
+
+				if (allAges.is(':checked')){
 					newbornFive.not(newbornSel).slideDown();
 					sixTwelve.not(sixTwelveSel).slideDown();
 					teens.not(teenSel).slideDown();
 					multigen.not(multigenSel).slideDown();
 					//otherwise do the following:
 				} else {
-					if (totalChecked === 0){
-						e.preventDefault();
-						return;
-					}
-
 					// General Interest selections logic
 					if (newbornFiveChecked.is(':checked')) {
 						newbornFive.not(newbornSel).slideDown();
@@ -2573,8 +2606,8 @@ padding-right: 0;
 			scope.$apply();
 			scope.navListCtrl.setAgeRange(age);
 			if (appStarted){
-					scope.navListCtrl.reduceList();
-				}
+				scope.navListCtrl.reduceList();
+			}
 			scope.$apply();
 			$("body").scrollTop(0);
 		}
@@ -2619,34 +2652,35 @@ padding-right: 0;
 							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
 							<div class="row-dropdown">
 								<div id="kidOptions" style="display:none;">
+									<span class="optionHeading">CHOOSE AGE RANGES <span>&#9660;</span></span>
  									<ul class="">
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids" onclick="setAgeRange(this, 'allKids')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
+												<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids">
 												<label class="checkbox">All</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']" onclick="setAgeRange(this, 'newborn-5 years')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges['newborn-5 years']}">
+												<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']">
 												<label class="checkbox">Newborn-5</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']" onclick="setAgeRange(this, '6-12 years')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges['6-12 years']}">
+												<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']">
 												<label class="checkbox">6-12 years</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens" onclick="setAgeRange(this, 'teens')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.teens}">
+												<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens">
 												<label class="checkbox">Teens</label>
 											</div>
 										</li>
 										<li>
-											<div class="checkbox">
-												<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational" onclick="setAgeRange(this, 'multigenerational')">
+											<div class="checkbox" ng-class="{'activeAge': ageRanges.multigenerational}">
+												<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational">
 												<label class="checkbox">Multigenerational</label>
 											</div>
 										</li>
