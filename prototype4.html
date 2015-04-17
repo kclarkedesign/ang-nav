@@ -244,7 +244,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	cursor: pointer;
   }
   .row-heading.check {
-  	color: #B61A2E;
+  	color: #3498db;
   }
   .row-heading:hover {
   	color: #888;
@@ -823,7 +823,7 @@ div#trail {
 	margin-bottom: 12px;
 }
 span.crumbs {
-	margin: 0 8px;
+	margin: 0 4px 0 2px;
 	cursor: pointer;
 	font-weight: 700;
   	background: #ccc;
@@ -892,10 +892,10 @@ button#kidBtn.selected {
 	color: #000;
 }
 input[type="checkbox"]:checked+label.activeInterest {
-	color: #B61A2E;
+	color: #3498db;
 }
 input[type="checkbox"]:checked~span.activeInterest {
-	color: #B61A2E;
+	color: #3498db;
 	z-index: 5;
 }
 button#adultBtn:focus, button#kidBtn:focus {
@@ -968,7 +968,7 @@ fieldset#interest-areas {
  	.open .dropdown-toggle.btn-default {
  		background-color: #000;
  		border-color: #adadad;
- 		color: #000;
+ 		color: #ffffff;
  	}
  	.dropdown-menu {
  		position: absolute;
@@ -1074,7 +1074,6 @@ fieldset#interest-areas {
  		display: block;
  		font-size: 18px;
  		line-height: 30px;
- 		text-align: center;
  		text-transform: uppercase;
  	}
  	#utility-bar {
@@ -2652,7 +2651,7 @@ padding-right: 0;
 							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
 							<div class="row-dropdown">
 								<div id="kidOptions" style="display:none;">
-									<span class="optionHeading">CHOOSE AGE RANGES <span>&#9660;</span></span>
+									<span class="optionHeading center">CHOOSE AGE RANGES <span>&#9660;</span></span>
  									<ul class="">
 										<li>
 											<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
@@ -2694,7 +2693,7 @@ padding-right: 0;
 				<fieldset id="interest-areas" class="filter-grid collapsed">
 					<nav id="accordion" class="filter-grid">
 						<div id="interest-areas">
-							<div class="toggle_bar">SELECT AN INTEREST <span>&#9660;</span></div>
+							<div class="toggle_bar center">SELECT AN INTEREST <span>&#9660;</span></div>
 							<div class="selection-container">
 								<!-- Adults -->
 								<div class="selections adults-sel">
@@ -5067,6 +5066,10 @@ padding-right: 0;
 		</form>
         <div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
+            	<div id="trail" class="center" ng-show="navListCtrl.l1SubInterest.arr.length > 0">
+            		<span class="optionHeading">Results shown for: {{navListCtrl.l1SubInterest.arr[0]}}</span>
+					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
+				</div>
                 <div class="row-dropdown">
                     <div class="row-heading">Day of Week</div>
                     <select class="selectAll" multiple="multiple">
@@ -5110,9 +5113,6 @@ padding-right: 0;
 			<div ng-show="navListCtrl.appStarted" id="tiles">
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
-				</div>
-				<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
-					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
