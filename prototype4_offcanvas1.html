@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css"/>
 		<!-- Custom CSS -->
-    <link href="http://ironsummitmedia.github.io/startbootstrap-simple-sidebar/css/simple-sidebar.css" rel="stylesheet">
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -1254,10 +1254,13 @@ box-sizing:border-box;
 #sidebar-wrapper {
 	  background: #252A31;
 }
-#filter-menu {
+.filter-menu {
     position: fixed;
     /*display: block;*/
     z-index: 10;
+}
+.menu-container {
+	position: absolute;
 }
 
 @media (max-width: 768px) {
@@ -5073,7 +5076,7 @@ padding-right: 0;
         <!-- Page Content -->
         <div id="page-content-wrapper">
         	<div id="menu-container">
-        	 	<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars"></i></a>
+        	 	<a href="#menu-toggle" class="btn btn-default filter-menu" id="menu-toggle"><i class="fa fa-bars"></i></a>
         	</div>
         	<div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
