@@ -589,7 +589,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		font-size: 16px;
 		cursor: pointer;
 		opacity: 0;
-		right: -4px;
+		left: -20px;
 	}
 	.checkbox label.noChildren:after {
 		content: "\f00d";  /* close x font-awesome */
@@ -926,11 +926,11 @@ fieldset#interest-areas {
  	* Updated 
  	*/
  	#filter-search {
- 		display: inline-block;
+ 		display: inline;
  		text-align:center;
  		margin-left: 10px;
  	}
- 	#filter-search input[type="search"] {
+ 	#filter-search input[type="text"] {
  		width: 380px;
  		margin: 2px 0px 0 0;
  		border: 1px solid #ccc;
@@ -1171,7 +1171,10 @@ box-sizing: border-box;
 		/*font-size:inherit;*/
 		text-rendering:auto;
 		-webkit-font-smoothing:antialiased;
-		-moz-osx-font-smoothing:grayscale
+		-moz-osx-font-smoothing:grayscale;
+ 	}
+ 	.clearBox {
+ 		color: black;
  	}
 	.noChildren:after,
  	.hasChildren:after {
@@ -1341,9 +1344,12 @@ padding-right: 0;
 	#utility-bar {
 		padding: 10px 0 10px 0px;
 	}
+}
 
-	
-	
+#loader {
+	display: none;
+	height: 16px;
+	width: 16px;
 }
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -1498,15 +1504,18 @@ padding-right: 0;
 						}
 					}
 					parentDiv.find('span.clearBox').css('opacity', '1').css('z-index', '5');
+					$("img#loader").show();
 				}else{
-					parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+					parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+					$("img#loader").hide();
 				}
 			});
 
 			$(".clearBox").on("click", function (event){
 				var $this = $(this);
 				var parentDiv = $this.closest("div#filter-search");
-				parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+				parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+				$("img#loader").hide();
 				var textSearchBox = parentDiv.find("input#searchText");
 				textSearchBox.val('');
 				queryByWords(textSearchBox);
@@ -1521,6 +1530,7 @@ padding-right: 0;
 					scope.$apply();
 					scope.navListCtrl.queryWordTyped.value = textbox.val();
 					reduceAndRefresh(scope);
+					$("img#loader").hide();
 				});
 			};
 		});
@@ -1809,9 +1819,11 @@ padding-right: 0;
 			$("div.row-heading").each(function (){
 				var $this = $(this);
 				if ($this.hasClass('search')){
-					$('<span class="clearBox">&#61453;</span>').appendTo($this);
+					$('<span class="clearBox">&#61453;</span>').appendTo($this.next().first());
 				}else{
-					$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					if (!$this.hasClass('dd')){
+						$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					}
 				}
 			});
 
@@ -1873,23 +1885,21 @@ padding-right: 0;
 			});
 
 			$jqe(".Reset:button").click(function() {
+
+				$jqe("fieldset").children(".row-section").hide();
+				$jqe(".filter-grid div.row-section").slideUp();
+				$jqe("#interest-lists .collapsed").slideUp();
+				$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
+				$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains').css('opacity', '').css('z-index', '');
+
 				if($jqe("#adultBtn").hasClass("selected")) {
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.adults-sel a").slideDown();
 				}
 				if($jqe("#kidBtn").hasClass("selected")) {
 					$jqe("#all-ages").prop('checked', true);
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.kids-sel a").slideDown();
 				}
+
 				var _this = $(this);
 				var interestSection = _this.parents(".interest-title").find("span").text();
 				if (interestSection === "School of the Arts"){
@@ -1909,6 +1919,8 @@ padding-right: 0;
 				$jqe('.timeofselect').multiselect('deselectAll', false);
 				$jqe('.timeofselect').multiselect('updateButtonText');
 				$jqe('#searchText').val("");
+				$jqe('span.clearBox').css('opacity', '').css('z-index', '');
+				$jqe("img#loader").hide();
 
 				var scope = angular.element(_this).scope();
 				scope.animationSpeed = animationInterval;
@@ -5055,7 +5067,7 @@ padding-right: 0;
         <div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
                 <div class="row-dropdown">
-                    <div class="row-heading">Day of Week</div>
+                    <div class="row-heading dd">Day of Week</div>
                     <select class="selectAll" multiple="multiple">
                         <option value="monday">Mon</option>
                         <option value="tuesday">Tue</option>
@@ -5069,7 +5081,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Time of Day</div>
+                    <div class="row-heading dd">Time of Day</div>
                     <select class="timeofselect" multiple="multiple">
                         <option value="morning">Morning</option>
                         <option value="afternoon">Afternoon</option>
@@ -5077,7 +5089,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Program Type</div>
+                    <div class="row-heading dd">Program Type</div>
                     <select class="singleselect">
                         <option value="all">All</option>
                         <option value="class">Classes only</option>
@@ -5087,7 +5099,7 @@ padding-right: 0;
                 <div id="filter-search">
                     <div class="row-heading search">Filter Your Results by Course Title, Instructor or Keyword</div>
                     <form>
-                        <input id="searchText" type="search" class="defaultText">
+                        <input id="searchText" type="text" class="defaultText">
                     </form>
                 </div>
             </div>
@@ -5100,6 +5112,7 @@ padding-right: 0;
 				</div>
 				<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
 					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
+					<img src="http://www.92y.org/_ui/tribeca/img/loading.gif" id="loader" />
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
