@@ -104,19 +104,16 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	display: inline-block;
 	position: relative;
 	height: 41px;
+	background: #000000;
 }
 #kidOptions ul {
 	text-align: center;
-	padding-bottom: 10px;
 }
 #kidOptions label.checkbox {
-	color: #333;
+	color: #fff;
 }
 #kidOptions .checkbox {
-	/*padding: 0.20em 0.7em 0.20em 0.5em; */
-  	 padding: 0.2em 0.7em 0.3em 0.2em;
-  	margin-top: 2px;
-  	margin-bottom: 0px;
+	padding: 0.20em 0.7em 0.20em 0.5em;
 	
 }
 #kidOptions button.btn, .row-dropdown button.btn {
@@ -210,12 +207,13 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	overflow: hidden;
 }
 .interest-title {
-	color: #bcbdc0;
+	color: #fff;
 	font-size: 24px;
 	line-height: 22px;
 	font-weight: bold;
 	padding: 14px 0 4px;
 	background: transparent;
+	color: #000;
 }
 
   #accordion .level-three, #accordion .level-four, #accordion .level-five {
@@ -234,7 +232,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	width: 100%;
   }
   .row-heading {
-  	color: #6d6e70;
+  	color: #515151;
   	display: block;
   	font-size: 14px;
   	font-weight: bold;
@@ -244,7 +242,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	cursor: pointer;
   }
   .row-heading.check {
-  	color: #3498db;
+  	color: #B61A2E;
   }
   .row-heading:hover {
   	color: #888;
@@ -283,7 +281,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   }
   .age-range .row-dropdown {
   	width: 100%;
-  	background: #e4e4e4;
+  	background: #000000;
   }
   ul.CMSListMenuUL#CMSListMenu1 {
   	position: relative;
@@ -369,7 +367,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	margin-left: 7px;
   }
   button.Reset {
-  	background: #bcbdc0;
+  	background: #ccc;
   	padding: 2px 6px 2px;
   	margin: 0;
   	border-radius: 8px;
@@ -483,7 +481,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	-webkit-box-sizing: border-box;
  }
  .controls {
- 	background: #252a31;
+ 	background: #f5f5f5;
  	z-index: 4;
  	position: fixed;
  	overflow-y: auto;
@@ -491,7 +489,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	top: 51px;
  	bottom: 0;
  	left: 0;
- 	border-right: 1px solid #252A31;
+ 	border-right: 1px solid #CCC;
  }
 
 	.checkbox {
@@ -515,7 +513,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	#kidOptions .checkbox label:after {
 		content: "\f00d";
 		position: absolute;
-		top: 0;
+		top: 1px;
 		right: 1px;
 		width: 5px;
 		height: 18px;
@@ -591,7 +589,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		font-size: 16px;
 		cursor: pointer;
 		opacity: 0;
-		right: -4px;
+		left: -20px;
 	}
 	.checkbox label.noChildren:after {
 		content: "\f00d";  /* close x font-awesome */
@@ -823,7 +821,7 @@ div#trail {
 	margin-bottom: 12px;
 }
 span.crumbs {
-	margin: 0 4px 0 2px;
+	margin: 0 8px;
 	cursor: pointer;
 	font-weight: 700;
   	background: #ccc;
@@ -863,7 +861,7 @@ span.crumbs:after {
 
 	.age-range #kidOptions li .checkbox,
 	.age-range #kidOptions li.active .checkbox {
-		/*font-weight: bold;*/
+		font-weight: bold;
 		font-size: 14px;
 	}
 	.age-range #kidOptions li.active .checkbox, 
@@ -886,28 +884,26 @@ button#adultBtn:hover, button#kidBtn:hover {
 	background: #000;
 	color: #eee;
 }
-button#adultBtn.selected,
-button#kidBtn.selected {
-	background: none repeat scroll 0 0 #e4e4e4;
-	color: #000;
+button#adultBtn.selected, button#kidBtn.selected {
+	background: none repeat scroll 0 0 #000;
 }
 input[type="checkbox"]:checked+label.activeInterest {
-	color: #3498db;
+	color: #B61A2E;
 }
 input[type="checkbox"]:checked~span.activeInterest {
-	color: #3498db;
+	color: #B61A2E;
 	z-index: 5;
 }
 button#adultBtn:focus, button#kidBtn:focus {
-	color: #000;
-	background: #e4e4e4;
+	color: #fff;
+	background: #000;
 }
 button#adultBtn {
 	border-bottom: none;
 	border-top: none;
 }
 button#kidBtn.selected {
-	background: none repeat scroll 0 0 #e4e4e4;
+	background: none repeat scroll 0 0 #000;
 	height: 27px;
 	padding: 11px 0;
 	transition: height .5s ease-in-out .5s;
@@ -930,11 +926,11 @@ fieldset#interest-areas {
  	* Updated 
  	*/
  	#filter-search {
- 		display: inline-block;
+ 		display: inline;
  		text-align:center;
  		margin-left: 10px;
  	}
- 	#filter-search input[type="search"] {
+ 	#filter-search input[type="text"] {
  		width: 380px;
  		margin: 2px 0px 0 0;
  		border: 1px solid #ccc;
@@ -968,7 +964,7 @@ fieldset#interest-areas {
  	.open .dropdown-toggle.btn-default {
  		background-color: #000;
  		border-color: #adadad;
- 		color: #ffffff;
+ 		color: #fff;
  	}
  	.dropdown-menu {
  		position: absolute;
@@ -997,7 +993,7 @@ fieldset#interest-areas {
  		color: #ffffff;
  	}
  	div#interest-areas {
- 		color: #bcbdc0;
+ 		color: #000;
  		display: block;
  		width: 100%;
  		overflow: hidden;
@@ -1019,7 +1015,7 @@ fieldset#interest-areas {
  	.arrow-down {
  		width: 0;
  		height: 0;
- 		border-top: 14px solid #e4e4e4;
+ 		border-top: 14px solid #000;
  		border-right: 14px solid transparent;
  		border-left: 14px solid transparent;
  		position: relative;
@@ -1062,25 +1058,17 @@ fieldset#interest-areas {
  		width: 100%;
  	}
  	.toggle_bar {
- 		cursor: pointer;
- 		padding: 11px 0;
- 	}
- 	.optionHeading {
- 		padding: 11px 0 2px;
- 		color: #000;
- 	}
- 	.toggle_bar,
- 	.optionHeading {
- 		display: block;
- 		font-size: 18px;
- 		line-height: 30px;
+ 		text-align: center;
  		text-transform: uppercase;
+ 		font-size: 12px;
+ 		padding: 11px 0;
+ 		cursor: pointer;
  	}
  	#utility-bar {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		display: none;
- 		/*background: #ffffff;*/
+ 		background: #ffffff;
  		border-top: 1px solid #D6D6D6;
  		border-bottom: 1px solid #D6D6D6;
 		position: relative;
@@ -1140,7 +1128,7 @@ box-sizing: border-box;
  		display: block;
  		margin: 0 0 8px 0;
  		font-weight: bold;
- 		color: #BCBDC0;
+ 		color: #515151;
 		padding-right: 30px;
  	}
  	.two-wide {
@@ -1183,7 +1171,10 @@ box-sizing: border-box;
 		/*font-size:inherit;*/
 		text-rendering:auto;
 		-webkit-font-smoothing:antialiased;
-		-moz-osx-font-smoothing:grayscale
+		-moz-osx-font-smoothing:grayscale;
+ 	}
+ 	.clearBox {
+ 		color: black;
  	}
 	.noChildren:after,
  	.hasChildren:after {
@@ -1293,13 +1284,14 @@ padding-right: 0;
 		border-left: none;
 	}
 	.interest-title {
-		color: #bcbdc0;
+		color: #fff;
 		font-size: 16px;
 		line-height: 18px;
 		font-weight: bold;
 		padding: 14px 0 4px;
 		/* text-align: center; */
 		background: transparent;
+		color: #000;
 		display: block;
 	}
 	#resetButton {
@@ -1352,9 +1344,12 @@ padding-right: 0;
 	#utility-bar {
 		padding: 10px 0 10px 0px;
 	}
+}
 
-	
-	
+#loader {
+	display: none;
+	height: 16px;
+	width: 16px;
 }
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -1509,15 +1504,18 @@ padding-right: 0;
 						}
 					}
 					parentDiv.find('span.clearBox').css('opacity', '1').css('z-index', '5');
+					$("img#loader").show();
 				}else{
-					parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+					parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+					$("img#loader").hide();
 				}
 			});
 
 			$(".clearBox").on("click", function (event){
 				var $this = $(this);
 				var parentDiv = $this.closest("div#filter-search");
-				parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+				parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+				$("img#loader").hide();
 				var textSearchBox = parentDiv.find("input#searchText");
 				textSearchBox.val('');
 				queryByWords(textSearchBox);
@@ -1532,6 +1530,7 @@ padding-right: 0;
 					scope.$apply();
 					scope.navListCtrl.queryWordTyped.value = textbox.val();
 					reduceAndRefresh(scope);
+					$("img#loader").hide();
 				});
 			};
 		});
@@ -1820,9 +1819,11 @@ padding-right: 0;
 			$("div.row-heading").each(function (){
 				var $this = $(this);
 				if ($this.hasClass('search')){
-					$('<span class="clearBox">&#61453;</span>').appendTo($this);
+					$('<span class="clearBox">&#61453;</span>').appendTo($this.next().first());
 				}else{
-					$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					if (!$this.hasClass('dd')){
+						$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					}
 				}
 			});
 
@@ -1884,23 +1885,21 @@ padding-right: 0;
 			});
 
 			$jqe(".Reset:button").click(function() {
+
+				$jqe("fieldset").children(".row-section").hide();
+				$jqe(".filter-grid div.row-section").slideUp();
+				$jqe("#interest-lists .collapsed").slideUp();
+				$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
+				$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains').css('opacity', '').css('z-index', '');
+
 				if($jqe("#adultBtn").hasClass("selected")) {
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.adults-sel a").slideDown();
 				}
 				if($jqe("#kidBtn").hasClass("selected")) {
 					$jqe("#all-ages").prop('checked', true);
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.kids-sel a").slideDown();
 				}
+
 				var _this = $(this);
 				var interestSection = _this.parents(".interest-title").find("span").text();
 				if (interestSection === "School of the Arts"){
@@ -1920,6 +1919,8 @@ padding-right: 0;
 				$jqe('.timeofselect').multiselect('deselectAll', false);
 				$jqe('.timeofselect').multiselect('updateButtonText');
 				$jqe('#searchText').val("");
+				$jqe('span.clearBox').css('opacity', '').css('z-index', '');
+				$jqe("img#loader").hide();
 
 				var scope = angular.element(_this).scope();
 				scope.animationSpeed = animationInterval;
@@ -1972,7 +1973,7 @@ padding-right: 0;
 				$jqe("#kidBtn").addClass('selected');
 				$jqe("#adultBtn").removeClass('selected');
 				$jqe(".selections.adults-sel", "#accordion").hide();
-				$jqe("#interest-areas").slideUp();
+				//$jqe("#interest-areas").slideUp();
 				$jqe("li.has-subnav").slideUp();
 				$jqe("#utility-bar").slideUp();
 
@@ -2651,7 +2652,6 @@ padding-right: 0;
 							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
 							<div class="row-dropdown">
 								<div id="kidOptions" style="display:none;">
-									<span class="optionHeading center">CHOOSE AGE RANGES <span>&#9660;</span></span>
  									<ul class="">
 										<li>
 											<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
@@ -2693,7 +2693,7 @@ padding-right: 0;
 				<fieldset id="interest-areas" class="filter-grid collapsed">
 					<nav id="accordion" class="filter-grid">
 						<div id="interest-areas">
-							<div class="toggle_bar center">SELECT AN INTEREST <span>&#9660;</span></div>
+							<div class="toggle_bar">SELECT AN INTEREST <span>&#9660;</span></div>
 							<div class="selection-container">
 								<!-- Adults -->
 								<div class="selections adults-sel">
@@ -5066,12 +5066,8 @@ padding-right: 0;
 		</form>
         <div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
-            	<div id="trail" class="center" ng-show="navListCtrl.l1SubInterest.arr.length > 0">
-            		<span class="optionHeading">Results shown for: {{navListCtrl.l1SubInterest.arr[0]}}</span>
-					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
-				</div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Day of Week</div>
+                    <div class="row-heading dd">Day of Week</div>
                     <select class="selectAll" multiple="multiple">
                         <option value="monday">Mon</option>
                         <option value="tuesday">Tue</option>
@@ -5085,7 +5081,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Time of Day</div>
+                    <div class="row-heading dd">Time of Day</div>
                     <select class="timeofselect" multiple="multiple">
                         <option value="morning">Morning</option>
                         <option value="afternoon">Afternoon</option>
@@ -5093,7 +5089,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Program Type</div>
+                    <div class="row-heading dd">Program Type</div>
                     <select class="singleselect">
                         <option value="all">All</option>
                         <option value="class">Classes only</option>
@@ -5103,7 +5099,7 @@ padding-right: 0;
                 <div id="filter-search">
                     <div class="row-heading search">Filter Your Results by Course Title, Instructor or Keyword</div>
                     <form>
-                        <input id="searchText" type="search" class="defaultText">
+                        <input id="searchText" type="text" class="defaultText">
                     </form>
                 </div>
             </div>
@@ -5113,6 +5109,10 @@ padding-right: 0;
 			<div ng-show="navListCtrl.appStarted" id="tiles">
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
+				</div>
+				<div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
+					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
+					<img src="http://www.92y.org/_ui/tribeca/img/loading.gif" id="loader" />
 				</div>
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
