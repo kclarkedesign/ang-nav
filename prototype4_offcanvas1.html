@@ -1,9 +1,8 @@
 
 <!DOCTYPE html>
-<html ng-app="artNavApp" lang="en">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<html ng-app="artNavApp">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>92Y | Funnel Filter</title>
 		<link href="http://www.92y.org/_ui/uptown/css/textref.ashx?k=1b_n4uSJkq4T0lUMXTQZt2BXOcI_BY51PL_lW0MD0VPMShJH5BOahlC4m9Wt-fOa9Z5Gx_JCoIC40WqxTfM33D06jSdAmQLSIPhFwPMMY4JqzUQim1hr2OUY-yqlgg9nT6ZnpSH0CbTDhDrtmj3bJOc0eRDNB1wI8Ylp0cI_xqXFrkWl3tdQvA.." rel="Stylesheet" type="text/css" media="screen" />
 		<link rel="stylesheet" href="/css/font-awesome.css" />
@@ -12,27 +11,20 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css"/>
 		<!-- Custom CSS -->
-    <link href="/css/simple-sidebar.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    	<link href="/css/simple-sidebar.css" rel="stylesheet">
 		<style>
-fieldset#searchbox {
-	display: block;
-}
-html, form {
-	height: auto;
-}
+			fieldset#searchbox {
+				display: block;
+			}
+			html, form {
+				height: 100%;
+			}
 			#mainnavigation {
 				border-top: 2px solid #d3d3d4;
 				border-bottom: 1px solid #d3d3d4;
 				position: relative;
 				z-index: 8900;
-				background: #fff;
+				background: #000000;
 			}
 			.container {
 				top: 0;
@@ -198,10 +190,8 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	margin: 0 6px 0 0;
 }
 .centerContainer {
-	/*width: 960px;*/
 	margin: 0 10px;
 	text-align: left;
-	/*height: 70px;*/
 }
 .filter-grid {
 	background: none repeat scroll 0 0 transparent;
@@ -323,9 +313,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	text-align: center;
   	width: 100%;
   	background: #fff;
-  	/*position: fixed;*/
   	z-index: 3;
-  	/*left: 33%;*/
   }
   .sideOptions .age-range {
   	margin: 0 10px;
@@ -496,15 +484,13 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  .controls {
  	background: #252a31;
  	z-index: 4;
- 	/*position: fixed;*/
- 	overflow-y: auto;
- 	/*width: 33%;*/
+ 	overflow-y: scroll;
  	top: 51px;
  	bottom: 0;
  	left: 0;
  	border-right: 1px solid #252A31;
+ 	width: 334px;
  }
-
 	.checkbox {
 		border: none;
 		border-radius: 0;
@@ -602,13 +588,10 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		font-size: 16px;
 		cursor: pointer;
 		opacity: 0;
-		right: -4px;
+		left: -20px;
 	}
 	.checkbox label.noChildren:after {
 		content: "\f00d";  /* close x font-awesome */
-		/*position: absolute;
-		top: 5px;
-		right: 4px;*/
 		width: 5px;
 		height: 18px;
 		border-radius: 2px;
@@ -659,6 +642,11 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	.checkbox input:focus ~ label.noChildren:before {
 		background: transparent;
 	}
+	#loader {
+		display: none;
+		/*height: 16px;
+		width: 16px;*/
+ 	}
 /**
  * Container/Target Styles
  */
@@ -668,7 +656,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 		position: relative;
 		width: 940px;
     	left: 0;
-    	/*top: 142px;*/
     	margin: 0;
 	}
 	.container .mixFirst {
@@ -874,7 +861,6 @@ span.crumbs:after {
 
 	.age-range #kidOptions li .checkbox,
 	.age-range #kidOptions li.active .checkbox {
-		/*font-weight: bold;*/
 		font-size: 14px;
 	}
 	.age-range #kidOptions li.active .checkbox, 
@@ -942,10 +928,11 @@ fieldset#interest-areas {
  	*/
  	#filter-search {
  		display: inline-block;
+ 		/*display: block;*/
  		text-align:center;
  		margin-left: 10px;
  	}
- 	#filter-search input[type="search"] {
+ 	#filter-search input[type="text"] {
  		width: 380px;
  		margin: 2px 0px 0 0;
  		border: 1px solid #ccc;
@@ -1091,7 +1078,6 @@ fieldset#interest-areas {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		display: none;
- 		/*background: #ffffff;*/
  		border-top: 1px solid #D6D6D6;
  		border-bottom: 1px solid #D6D6D6;
 		position: relative;
@@ -1116,10 +1102,10 @@ fieldset#interest-areas {
  	}
  	.promo {
  		box-shadow: none;
-width: 100%;
-text-align: center;
-padding: 0 0 5px 2%;
-box-sizing: border-box;
+		width: 100%;
+		text-align: center;
+		padding: 0 0 5px 2%;
+		box-sizing: border-box;
  	}
  	.promo-item {
  		display: inline-block;
@@ -1194,7 +1180,10 @@ box-sizing: border-box;
 		/*font-size:inherit;*/
 		text-rendering:auto;
 		-webkit-font-smoothing:antialiased;
-		-moz-osx-font-smoothing:grayscale
+		-moz-osx-font-smoothing:grayscale;
+ 	}
+ 	.clearBox {
+ 		color: black;
  	}
 	.noChildren:after,
  	.hasChildren:after {
@@ -1256,7 +1245,6 @@ box-sizing:border-box;
 }
 .filter-menu {
     position: fixed;
-    /*display: block;*/
     z-index: 10;
 }
 .menu-container {
@@ -1320,7 +1308,6 @@ padding-right: 0;
 		line-height: 18px;
 		font-weight: bold;
 		padding: 14px 0 4px;
-		/* text-align: center; */
 		background: transparent;
 		display: block;
 	}
@@ -1374,9 +1361,6 @@ padding-right: 0;
 	#utility-bar {
 		padding: 10px 0 10px 0px;
 	}
-
-	
-	
 }
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -1531,15 +1515,18 @@ padding-right: 0;
 						}
 					}
 					parentDiv.find('span.clearBox').css('opacity', '1').css('z-index', '5');
+					$("img#loader").show();
 				}else{
-					parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+					parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+					$("img#loader").hide();
 				}
 			});
 
 			$(".clearBox").on("click", function (event){
 				var $this = $(this);
 				var parentDiv = $this.closest("div#filter-search");
-				parentDiv.find('span.clearBox').css('opacity', '0').css('z-index', '-1');
+				parentDiv.find('span.clearBox').css('opacity', '').css('z-index', '');
+				$("img#loader").hide();
 				var textSearchBox = parentDiv.find("input#searchText");
 				textSearchBox.val('');
 				queryByWords(textSearchBox);
@@ -1554,6 +1541,7 @@ padding-right: 0;
 					scope.$apply();
 					scope.navListCtrl.queryWordTyped.value = textbox.val();
 					reduceAndRefresh(scope);
+					$("img#loader").hide();
 				});
 			};
 		});
@@ -1842,9 +1830,11 @@ padding-right: 0;
 			$("div.row-heading").each(function (){
 				var $this = $(this);
 				if ($this.hasClass('search')){
-					$('<span class="clearBox">&#61453;</span>').appendTo($this);
+					$('<span class="clearBox">&#61453;</span>').appendTo($this.next().first());
 				}else{
-					$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					if (!$this.hasClass('dd')){
+						$('<span class="clearMains">&#61453;</span>').appendTo($this);	
+					}
 				}
 			});
 
@@ -1906,21 +1896,16 @@ padding-right: 0;
 			});
 
 			$jqe(".Reset:button").click(function() {
+				$jqe("fieldset").children(".row-section").hide();
+				$jqe(".filter-grid div.row-section").slideUp();
+				$jqe("#interest-lists .collapsed").slideUp();
+				$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
+				$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains').css('opacity', '').css('z-index', '');
 				if($jqe("#adultBtn").hasClass("selected")) {
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.adults-sel a").slideDown();
 				}
 				if($jqe("#kidBtn").hasClass("selected")) {
 					$jqe("#all-ages").prop('checked', true);
-					$jqe("fieldset").children(".row-section").hide();
-					$jqe(".filter-grid div.row-section").slideUp();
-					$jqe("#interest-lists .collapsed").slideUp();
-					$jqe(".currentInterest", "#interest-lists").removeClass('currentInterest');
-					$jqe(".row-heading","#accordion").removeClass('check').find('span.clearMains, span.clearBox').css('opacity', '0').css('z-index', '-1');
 					$jqe(".selections.kids-sel a").slideDown();
 				}
 				var _this = $(this);
@@ -1942,6 +1927,8 @@ padding-right: 0;
 				$jqe('.timeofselect').multiselect('deselectAll', false);
 				$jqe('.timeofselect').multiselect('updateButtonText');
 				$jqe('#searchText').val("");
+				$jqe('span.clearBox').css('opacity', '').css('z-index', '');
+				$jqe("img#loader").hide();
 
 				var scope = angular.element(_this).scope();
 				scope.animationSpeed = animationInterval;
@@ -5081,11 +5068,11 @@ padding-right: 0;
         	<div id="sideOptions" class="sideOptions" style="display:none;">
             <div class="centerContainer">
             	<div id="trail" class="center" ng-show="navListCtrl.l1SubInterest.arr.length > 0">
-            		<span class="optionHeading">Results shown for: {{navListCtrl.l1SubInterest.arr[0]}}</span>
+            		<span class="optionHeading">Results shown for: {{navListCtrl.l1SubInterest.arr[0]}} <img src="http://www.92y.org/_ui/tribeca/img/loading.gif" id="loader" /></span>
 					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
 				</div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Day of Week</div>
+                    <div class="row-heading dd">Day of Week</div>
                     <select class="selectAll" multiple="multiple">
                         <option value="monday">Mon</option>
                         <option value="tuesday">Tue</option>
@@ -5099,7 +5086,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Time of Day</div>
+                    <div class="row-heading dd">Time of Day</div>
                     <select class="timeofselect" multiple="multiple">
                         <option value="morning">Morning</option>
                         <option value="afternoon">Afternoon</option>
@@ -5107,7 +5094,7 @@ padding-right: 0;
                     </select>
                 </div>
                 <div class="row-dropdown">
-                    <div class="row-heading">Program Type</div>
+                    <div class="row-heading dd">Program Type</div>
                     <select class="singleselect">
                         <option value="all">All</option>
                         <option value="class">Classes only</option>
@@ -5117,7 +5104,7 @@ padding-right: 0;
                 <div id="filter-search">
                     <div class="row-heading search">Filter Your Results by Course Title, Instructor or Keyword</div>
                     <form>
-                        <input id="searchText" type="search" class="defaultText">
+                        <input id="searchText" type="text" class="defaultText">
                     </form>
                 </div>
             </div>
@@ -5127,6 +5114,10 @@ padding-right: 0;
 				<div class="fail-message" ng-show="navListCtrl.onscreenFirstResults.length === 0">
 					<span>No items were found matching the selected filters</span>
 				</div>
+				<!-- <div id="trail" ng-show="navListCtrl.l1SubInterest.arr.length > 0">Results shown for:  {{navListCtrl.l1SubInterest.arr[0]}}  
+					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
+					<img src="http://www.92y.org/_ui/tribeca/img/loading.gif" id="loader" />
+				</div> -->
 				<div set-iso-speed infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" id="isoContainer" ng-cloak class="ng-cloak" isotope-container iso-options='{ "masonry": { "columnWidth": 300, "gutter": 18 }, "itemSelector": ".itemBox" }'>
 					<span ng-repeat="classInfo in navListCtrl.onscreenFirstResults" class="itemBox mixFirst" isotope-item>
 						<div>
