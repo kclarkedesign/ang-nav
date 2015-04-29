@@ -1,4 +1,7 @@
 /*!
+ *
+ * RIGHT SIDE NAV
+ *
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
@@ -7,7 +10,7 @@
 /* Toggle Styles */
 
 #wrapper {
-    padding-left: 0;
+    padding-right: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -15,16 +18,16 @@
 }
 
 #wrapper.toggled {
-    padding-left: 320px;
+    padding-right: 320px;
 }
 
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    left: 320px;
+    right: 315px;
     width: 0;
     height: 100%;
-    margin-left: -320px;
+    margin-right: -320px;
     overflow: hidden;
     background: #000;
     -webkit-transition: all 0.5s ease;
@@ -40,7 +43,7 @@
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
+    padding: 5px 0 20px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -98,11 +101,11 @@
 
 @media(min-width:768px) {
     #wrapper {
-        padding-left: 320px;
+        padding-right: 320px;
     }
 
     #wrapper.toggled {
-        padding-left: 0;
+        padding-right: 0;
     }
 
     #sidebar-wrapper {
@@ -114,7 +117,6 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
         position: relative;
     }
 
