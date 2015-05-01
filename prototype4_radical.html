@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://davidstutz.github.io/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css"/>
 		<!-- Custom CSS -->
-    	<link href="/css/simple-sidebar.css" rel="stylesheet">
+    	<!-- <link href="/css/simple-sidebar.css" rel="stylesheet"> -->
 		<style>
 			fieldset#searchbox {
 				display: block;
@@ -107,6 +107,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	display: inline-block;
 	position: relative;
 	height: 41px;
+	width:100%;
 }
 #kidOptions ul {
 	text-align: center;
@@ -508,12 +509,11 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  .controls {
  	background: #252a31;
  	z-index: 4;
- 	overflow-y: scroll;
  	top: 51px;
  	bottom: 0;
  	left: 0;
  	border-right: 1px solid #252A31;
- 	width: 334px;
+ 	width: 100%;
  }
 	.checkbox {
 		border: none;
@@ -885,7 +885,7 @@ span.crumbs:after {
 		background: none repeat scroll 0 0 #ffffff;
 	}
 	.has-subnav ul {
-		clear: both;
+		/*clear: both;*/
 		padding: 6px 0 10px 2px;
 	}
 	/**** New Styles ****/
@@ -1114,9 +1114,10 @@ fieldset#interest-areas {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		display: none;
- 		border-top: 1px solid #D6D6D6;
+ 		/*border-top: 1px solid #D6D6D6;*/
  		border-bottom: 1px solid #D6D6D6;
-		position: relative;
+		position: fixed;
+		bottom: 0;
  	}
  	#utility-container {
  		width:100%;
@@ -1368,7 +1369,7 @@ header .bottom-nav {
 		-webkit-transition: -webkit-transform 300ms ease 0s;
 		transition: transform 300ms ease 0s;
 	}
-	.header.header-fixed {
+	.header-fixed {
   		position: fixed;
   		width: 100%;
   		top: 0;
@@ -2970,9 +2971,9 @@ padding-right: 0;
 			<div class="checkbox" style="display:none;">
 			</div>
 		</div>
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <form class="controls" id="Filters">
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+        	<form class="controls" id="Filters">
 			<!-- We can add an unlimited number of "filter groups" using the following format: -->
 			<div id="filter-container">
 				<fieldset id="topLevel" class="filter-row">
@@ -4407,15 +4408,15 @@ padding-right: 0;
 							<!-- Dance Performances -->
 							
 							<li class="has-subnav collapse zero-five-sel six-twelve-sel">
-								<div id="" class="interest-title arts-heading">
+								<div id="" class="interest-title arts-heading col-md-4">
 									<span>School of the Arts</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
 								</div>
 								<!-- School of the Arts -->
-								<ul class="level-two">
-									<li class="">
+								<ul class="level-two col-md-8">
+									<li class="col-md-2">
 										<div class="row-heading L3" id="studioArtSOA">Studio Art</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Studio Art -->
@@ -4650,7 +4651,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="">
+									<li class="col-md-2">
 										<div class="row-heading L3" id="ceramicsSOA">Ceramics</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Ceramics -->
@@ -4769,7 +4770,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="">
+									<li class="col-md-2">
 										<div class="row-heading L3" id="jewelrySOA">Jewelry</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Jewelry -->
@@ -4865,7 +4866,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="">
+									<li class="col-md-2">
 										<div class="row-heading L3" id="artAppreciationSOA">Art Talks &amp; Tours</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Art Appreciation -->
@@ -4910,7 +4911,7 @@ padding-right: 0;
 
 
 									<!-- Music -->
-									<li class="">
+									<li class="col-md-2">
 										<div class="row-heading" id="Music">Music</div>
 										<div class="row-section collapsed">
 											<ul class="level-three" id="Music">
@@ -4993,7 +4994,7 @@ padding-right: 0;
 										</div>
 									</li>
 									<!-- Dance -->
-									<li class="">
+									<li class="col-md-2">
 										<div class="row-heading" id="Dance">Dance</div>
 										<div class="row-section collapsed">
 											<ul class="level-three" id="Dance">
@@ -5397,11 +5398,8 @@ padding-right: 0;
             </div>
         </div>
 		</form>
-        </div>
-        <!-- /#sidebar-wrapper -->
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
+
         	<div id="sideOptions" class="row sideOptions" style="display:none;">
             <div class="centerContainer">
             	<div id="trail" class="center" ng-show="navListCtrl.l1SubInterest.arr.length > 0">

@@ -113,7 +113,8 @@
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        width: 0;
+       width: 0;
+       /*padding-left: 50px;*/
     }
 
     #page-content-wrapper {
