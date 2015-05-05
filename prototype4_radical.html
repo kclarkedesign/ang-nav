@@ -106,21 +106,17 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 #kidOptions {
 	display: inline-block;
 	position: relative;
-	height: 41px;
-	width:100%;
 }
 #kidOptions ul {
 	text-align: center;
-	padding-bottom: 10px;
 }
 #kidOptions .activeAge label.checkbox{
 	  color: #fff;
 }
 #kidOptions label.checkbox {
-	color: #333;
+	color: #ffffff;
 }
 #kidOptions .checkbox {
-	/*padding: 0.20em 0.7em 0.20em 0.5em; */
   	 padding: 0.2em 0.7em 0.3em 0.2em;
   	margin-top: 2px;
   	margin-bottom: 0px;
@@ -204,7 +200,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
 	list-style: none outside none;
 	margin: 0 auto;
 	padding: 0;
-	width: 100%;
+	/*width: 100%;*/
 	overflow: hidden;
 }
 .filter-grid .has-subnav {
@@ -296,7 +292,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	margin-bottom: 14px;
   	padding: 0;
   	display: inline-block;
-  	width: 100%;
+  	/*width: 100%;*/
   }
   .age-range li {
   	width: auto;
@@ -308,7 +304,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   }
   .age-range .row-dropdown {
   	width: 100%;
-  	background: #e4e4e4;
+  	/*background: #e4e4e4;*/
   }
   ul.CMSListMenuUL#CMSListMenu1 {
   	position: relative;
@@ -316,7 +312,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   	width: 630px;
   	height: 20px;
   }
-  .mainOptions {
+  /*.mainOptions {
   	display: block;
   	width: 100%;
   }
@@ -325,7 +321,7 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
   }
   .mainOptions .row-heading, #sideOptions .row-heading {
   	display: inline;
-  }
+  }*/
   #sideOptions .row-heading {
   	font-size: 10px;
   }
@@ -497,7 +493,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  	font-weight: 700;
  	border-radius: 4px;
  	cursor: pointer;
- 	margin: 5px;
  }
  button:focus {
  	outline: 0 none;
@@ -509,9 +504,6 @@ btn:focus, .btn:active:focus, .btn.active:focus, .btn.selected:focus {
  .controls {
  	background: #252a31;
  	z-index: 4;
- 	top: 51px;
- 	bottom: 0;
- 	left: 0;
  	border-right: 1px solid #252A31;
  	width: 100%;
  }
@@ -902,14 +894,15 @@ span.crumbs:after {
 		color: #fff;
 	}
 	button#adultBtn, button#kidBtn {
-		width: 50%;
+		width: 100%;
 		text-transform: uppercase;
 		/*padding: 11px 0;*/
-		padding: 15px 0;
+		/*padding: 15px 0;*/
 		background: #fff;
 		border: none;
-		float: left;
+		/*float: left;*/
 		position: relative;
+		margin-bottom: 8px;
 }
 button#adultBtn:hover, button#kidBtn:hover {
 	background: #000;
@@ -937,8 +930,8 @@ button#adultBtn {
 }
 button#kidBtn.selected {
 	background: none repeat scroll 0 0 #e4e4e4;
-	height: 27px;
-	padding: 11px 0;
+	/*height: 27px;*/
+	/*padding: 11px 0;*/
 	transition: height .5s ease-in-out .5s;
 }
 #interest-select {
@@ -950,15 +943,21 @@ button#kidBtn.selected {
 	margin: 0 auto;
 }*/
 fieldset#interest-areas {
-	width: 100%;
+	/*width: 100%;*/
 	padding: 0 15px 30px;
 	margin: 0 auto;
+	border-left: 1px solid;
 }
 #topLevel {
 	border-bottom: none;
 	height: 100%;
-	width: 100%;
+	/*width: 100%;*/
 	margin: 0;
+}
+#topLevel .optionHeading {
+  color: #bcbdc0;
+  border-bottom: 1px solid;
+  padding-bottom: 6px;
 }
 /**
  	* Updated 
@@ -1033,7 +1032,7 @@ fieldset#interest-areas {
  	div#interest-areas {
  		color: #bcbdc0;
  		display: block;
- 		width: 100%;
+ 		/*width: 100%;*/
  		overflow: hidden;
  		border: 1px solid #ccc;
  		border-top: none;
@@ -1071,7 +1070,7 @@ fieldset#interest-areas {
  		display: inline-block;
  		float: left;
  		margin: 0 2px 0 12px;
- 		width: 30.333%;
+ 		/*width: 30.333%;*/
  		-webkit-box-sizing: border-box;
  		-moz-box-sizing: border-box;
  		box-sizing: border-box;
@@ -1097,7 +1096,7 @@ fieldset#interest-areas {
  	}
  	.toggle_bar {
  		cursor: pointer;
- 		padding: 11px 0;
+ 		padding: 6px 0;
  	}
  	.optionHeading {
  		padding: 6px 0 2px;
@@ -1118,6 +1117,8 @@ fieldset#interest-areas {
  		border-bottom: 1px solid #D6D6D6;
 		position: fixed;
 		bottom: 0;
+		z-index: 1000;
+  		background: #000;
  	}
  	#utility-container {
  		width:100%;
@@ -1518,7 +1519,7 @@ End NAV Example CSS
 
 @media (max-width: 833px) {
 	button#kidBtn.selected {
-		padding: 11px 0;
+		/*padding: 11px 0;*/
 	}
 }
 
@@ -2124,6 +2125,58 @@ padding-right: 0;
 			$jqe.easing.def = "easeInOutCirc";
 			$jqe("#info-btn").click(function () {
 				$jqe("#info-block").slideToggle();
+			});
+
+
+			$jqe("#interestSelectList").change(function () {
+				var selection = $(this);		
+				var clickedText = $('select').find('option:selected').val();
+				console.log(clickedText);
+				
+				var clickedInterestTitle = $jqe("li.has-subnav").filter(function () {
+					return $jqe(this).find(".interest-title span").text() === clickedText;
+				});
+				clickedInterestTitle.slideDown(function () {
+					$jqe(".selection-container").slideUp(function () {
+						if (clickedText === "School of the Arts"){
+							$(".promo-item").css("display", "none");
+							$jqe('#utility-bar').slideDown(function () {
+								$jqe('.sideOptions').slideDown(function () {
+									$("body").scrollTop(0);
+									var scope = angular.element(selection).scope();
+									scope.animationSpeed = animationInterval;
+									scope.$apply();
+									scope.navListCtrl.getAllLevelOne(clickedText);
+									scope.$apply();
+								});
+							});
+							//this is to prevent fouc 
+							$("#Container").css("display", "");
+							$(".promo-item").css("display", "inline-block");
+								
+							var $container = $('#promo-item-container').isotope({
+								itemSelector: '.promo-item',
+								layoutMode: 'cellsByRow',
+								cellsByRow: {
+									columnWidth: 188,
+									rowHeight: 50
+								} 
+							});
+							var iso = $container.data('isotope');
+							$container.isotope( 'reveal', iso.items );
+						}else{
+							if ($jqe('.sideOptions, #utility-bar').is(':visible')){
+								$jqe('.sideOptions, #utility-bar').slideUp();
+							}
+							$("body").scrollTop(0);
+							var scope = angular.element(selection).scope();
+							scope.animationSpeed = animationInterval;
+							scope.$apply();
+							scope.navListCtrl.getAllLevelOne(clickedText);
+							scope.$apply();
+						}
+					});
+				});
 			});
 			$jqe(".selections a").click(function () {
 				//add check class to main interest selection
@@ -2907,7 +2960,7 @@ padding-right: 0;
 </head>
 
 <body ng-controller="NavListController as navListCtrl">
-	<header class="header header-fixed navbar">
+	<header class="header navbar">
 		<div class="brand top-nav">
 			<div class="navbar-brand">
 				<a href="javascript:;" class="ti-menu navbar-toggle off-left visible-xs collapsed" data-toggle="collapse" data-target="#hor-menu"></a>
@@ -2928,8 +2981,8 @@ padding-right: 0;
 		<div class="navbar-collapse pull-left collapse" id="hor-menu">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-					<a href="javascript:;" data-toggle="dropdown">
-						<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
+					<a id="advancedFilters" href="javascript:;" data-toggle="dropdown">
+						<span class="mainNavHighlight">Find Programs &amp; Classes</span>
 						<!-- <b class="caret"></b> -->
 					</a>
 				</li>
@@ -2975,72 +3028,83 @@ padding-right: 0;
         <div id="page-content-wrapper">
         	<form class="controls" id="Filters">
 			<!-- We can add an unlimited number of "filter groups" using the following format: -->
-			<div id="filter-container">
-				<fieldset id="topLevel" class="filter-row">
-					<div class="mainOptions">
-						<div class="age-range">
-							<button id="adultBtn" class="no-rounded btn btn-default" data-filter=".adults" ng-click="navListCtrl.setAgeRange('adults')">Adults
-							<div class="arrow-down collapsed"></div>
-							</button>
-							<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
-							<div class="row-dropdown">
-								<div id="kidOptions" style="display:none;">
-									<span class="optionHeading center">CHOOSE AGE RANGES <span>&#9660;</span></span>
- 									<ul class="">
-										<li>
-											<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
-												<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids">
-												<label class="checkbox">All</label>
-											</div>
-										</li>
-										<li>
-											<div class="checkbox" ng-class="{'activeAge': ageRanges['newborn-5 years']}">
-												<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']">
-												<label class="checkbox">Newborn-5</label>
-											</div>
-										</li>
-										<li>
-											<div class="checkbox" ng-class="{'activeAge': ageRanges['6-12 years']}">
-												<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']">
-												<label class="checkbox">6-12 years</label>
-											</div>
-										</li>
-										<li>
-											<div class="checkbox" ng-class="{'activeAge': ageRanges.teens}">
-												<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens">
-												<label class="checkbox">Teens</label>
-											</div>
-										</li>
-										<li>
-											<div class="checkbox" ng-class="{'activeAge': ageRanges.multigenerational}">
-												<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational">
-												<label class="checkbox">Multigenerational</label>
-											</div>
-										</li>
-									</ul>
-                                    <div class="arrow-down"></div> 
+			<div id="filter-container" class="collapsed">
+				<fieldset id="topLevel" class="filter-row col-md-2">
+					<span class="optionHeading center">FILTER BY AGE <span>&#9660;</span></span>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="">
+								<div class="col-md-12">
+									<div class="panel-body">
+									<button id="adultBtn" class="no-rounded btn btn-default" data-filter=".adults" ng-click="navListCtrl.setAgeRange('adults')">Adults</button>
+									</div>
+
+									<div class="panel-body center">
+									<button id="kidBtn" class="no-rounded btn btn-default" data-filter=".kids" ng-click="navListCtrl.setAgeRange('kids')">Kids</button>
+									<div class="age-range">
+									<div class="row-dropdown">
+										<div id="kidOptions" style="display:none;">
+											<!-- <span class="optionHeading center">CHOOSE AGE RANGES <span>&#9660;</span></span> -->
+		 									<ul class="">
+												<li>
+													<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
+														<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids">
+														<label class="checkbox">All</label>
+													</div>
+												</li>
+												<li>
+													<div class="checkbox" ng-class="{'activeAge': ageRanges['newborn-5 years']}">
+														<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']">
+														<label class="checkbox">Newborn-5</label>
+													</div>
+												</li>
+												<li>
+													<div class="checkbox" ng-class="{'activeAge': ageRanges['6-12 years']}">
+														<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']">
+														<label class="checkbox">6-12 years</label>
+													</div>
+												</li>
+												<li>
+													<div class="checkbox" ng-class="{'activeAge': ageRanges.teens}">
+														<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens">
+														<label class="checkbox">Teens</label>
+													</div>
+												</li>
+												<li>
+													<div class="checkbox" ng-class="{'activeAge': ageRanges.multigenerational}">
+														<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational">
+														<label class="checkbox">Multigenerational</label>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
 								</div>
 							</div>
+								</div>
+							</div>
+							<!-- <div class="col-md-4">
+								
+							</div> -->
+							<!-- <div class="col-md-6">
+
+							</div> -->
 						</div>
 					</div>
 				</fieldset>
-				<fieldset id="interest-areas" class="filter-grid collapsed">
+				<fieldset id="interest-areas" class="filter-grid collapsed col-md-4">
 					<nav id="accordion" class="filter-grid">
 						<div id="interest-areas">
-							<div class="toggle_bar center">SELECT AN INTEREST <span>&#9660;</span></div>
+							<div class="toggle_bar">FILTER BY INTEREST <span>&#9660;</span></div>
 							<div class="selection-container">
 								<!-- Adults -->
 								<div class="selections adults-sel">
 									<a>Talks</a>
 									<a>Continuing Education &amp; Enrichment</a>
 									<a>Parenting &amp; Early Childhood</a>
-								</div>
-								<div class="selections adults-sel">
 									<a>Health &amp; Fitness</a>
 									<a>Jewish Life</a>
 									<a>Concerts &amp; Performances</a>
-								</div>
-								<div class="selections adults-sel">
 									<a>School of the Arts</a>
 									<a>Literary</a>
 								</div>
@@ -3050,13 +3114,9 @@ padding-right: 0;
 									<a class="zero-five-sel six-twelve-sel collapsed">Camps &amp; After School</a>
 									<a class="zero-five-sel multigen-sel collapsed">Parenting &amp; Early Childhood</a>
 									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">Health &amp; Fitness</a>
-								</div>
-								<div class="selections kids-sel">
 									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">Jewish Life</a>
 									<a class="zero-five-sel six-twelve-sel teens-sel collapsed">Concerts &amp; Performances</a>
 									<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed">School of the Arts</a>
-								</div>
-								<div class="selections kids-sel">
 									<a class="zero-five-sel six-twelve-sel teens-sel collapsed">Literary</a>
 								</div>								
 							</div>
@@ -4408,15 +4468,15 @@ padding-right: 0;
 							<!-- Dance Performances -->
 							
 							<li class="has-subnav collapse zero-five-sel six-twelve-sel">
-								<div id="" class="interest-title arts-heading col-md-4">
+								<div id="" class="interest-title arts-heading col-md-12">
 									<span>School of the Arts</span>
 									<div id="resetButton">
 										<button class="Reset">Clear Filters</button>
 									</div>
 								</div>
 								<!-- School of the Arts -->
-								<ul class="level-two col-md-8">
-									<li class="col-md-2">
+								<ul class="level-two col-md-12">
+									<li class="">
 										<div class="row-heading L3" id="studioArtSOA">Studio Art</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Studio Art -->
@@ -4651,7 +4711,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="col-md-2">
+									<li class="">
 										<div class="row-heading L3" id="ceramicsSOA">Ceramics</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Ceramics -->
@@ -4770,7 +4830,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="col-md-2">
+									<li class="">
 										<div class="row-heading L3" id="jewelrySOA">Jewelry</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Jewelry -->
@@ -4866,7 +4926,7 @@ padding-right: 0;
 										</div>
 									</li>
 
-									<li class="col-md-2">
+									<li class="">
 										<div class="row-heading L3" id="artAppreciationSOA">Art Talks &amp; Tours</div>
 										<div class="row-section collapsed">
 											<!-- HTML Level Four Children : Art Appreciation -->
@@ -4911,7 +4971,7 @@ padding-right: 0;
 
 
 									<!-- Music -->
-									<li class="col-md-2">
+									<li class="">
 										<div class="row-heading" id="Music">Music</div>
 										<div class="row-section collapsed">
 											<ul class="level-three" id="Music">
@@ -4994,7 +5054,7 @@ padding-right: 0;
 										</div>
 									</li>
 									<!-- Dance -->
-									<li class="col-md-2">
+									<li class="">
 										<div class="row-heading" id="Dance">Dance</div>
 										<div class="row-section collapsed">
 											<ul class="level-three" id="Dance">
@@ -5405,7 +5465,7 @@ padding-right: 0;
             	<div id="trail" class="center" ng-show="navListCtrl.l1SubInterest.arr.length > 0">
             		<span class="optionHeading">Results shown for: {{navListCtrl.l1SubInterest.arr[0]}} <img src="http://www.92y.org/_ui/tribeca/img/loading.gif" id="loader" /></span>
 					<span class="crumbs {{crumb.id}}" ng-repeat="crumb in navListCtrl.breadCrumbs">{{crumb.text}}</span>
-					<div class="navbar-right hidden-md hidden-lg">
+					<!-- <div class="navbar-right hidden-md hidden-lg">
 				<ul id="filterMenu" class="nav navbar-nav">
 					<li>
 						<a href="#menu-toggle" class="toggle-sidebar" id="menu-toggle">
@@ -5413,7 +5473,7 @@ padding-right: 0;
 						</a>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 				</div>
                 <div class="row-dropdown col-md-3 col-sm-6 col-xs-12">
                     <div class="row-heading dd">Day of Week</div>
@@ -5516,10 +5576,13 @@ padding-right: 0;
 	    // 		});
 	    // 	}
 	    // }
-	    $("#menu-toggle, #advancedFilters").click(function(e) {
-	        e.preventDefault();
-	        $("#wrapper, #filterMenu").toggleClass("toggled");
-	    });
+	    $jqe(document).ready(function() {
+		    $jqe("#menu-toggle, #advancedFilters").click(function(e) {
+		        e.preventDefault();
+		        // $("#wrapper, #filterMenu").toggleClass("toggled");
+		        $jqe("#filter-container").slideToggle();
+		    });
+		});
     </script>
 
 </body>
