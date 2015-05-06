@@ -420,18 +420,20 @@
 		});
 		var teachers = instructors.toString();
 		var futurePerfCount = Number(arr.FuturePerformanceCount);
+
 		//var price;
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0){
-			shortDesc += "<br/>Starting From:  "+ arr.LowestPrice;
+			shortDesc += "<br/><b>Starting From:</b>  "+ arr.LowestPrice;
 			var performances = arr.FuturePerformances;
 			_.forEach(performances, function(p, ind) {
 				var perfDate = p.perf_dt;
 				perfDate = new Date(parseInt(perfDate.substr(6)));
 				var futureDate = formatDateOutput(perfDate);
 				if (ind === 0){
-					shortDesc += "<br/>Upcoming Dates:  "+ futureDate;
+					shortDesc += "<br/><b>Upcoming Dates:</b><br/>"+ futureDate;
 				}else{
 					if (ind >= 3){
+						shortDesc += "<br/>And "+ (futurePerfCount - 3) +" more";
 						return false;
 					}
 					shortDesc += "<br/>"+ futureDate;
