@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="artNavApp">
 	<head>
-		<base href="/">
+<!-- 		<base href="/prototype5.html"> -->
 		<link rel="stylesheet" href="/css/font-awesome.css" />
   		<link rel="stylesheet" href="/css/themify-icons.css" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -21,15 +21,8 @@
 				var self = this;
 				var classesByInterest = [];
 				self.arrCategory = [];
-				self.currentObj = {
-					Level: 1,
-					Name: 'School of the Arts',
-					NodeID: 3446,
-					Current: true
-				};
-				self.activeBreadcrumb = [ _.clone(self.currentObj) ];
 				self.location = $location;
-				self.lastLocationPath = '';
+
 				var _http = $http;
 				_http.get('items/CatProdPkg_SOA.json').then(function (items) {
 
@@ -38,6 +31,7 @@
 
 						self.getValues(classesByInterest, 0);
 
+						self.buildCurrentObj();
 					});
 				});
 
@@ -51,6 +45,13 @@
 						if (locationPath.length > self.lastLocationPath.length){
 							//drill down
 							var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
+							if (lastCurrent.NodeID === self.currentObj.NodeID){
+								//this is when they click the foward button instead of the link
+								var lastSubFolder = locationPath.substring(locationPath.lastIndexOf("/")+1, locationPath.length);
+								var chkLevel = self.currentObj.Level + 1;
+								var foundChild = _.where(self.arrCategory[chkLevel], { 'Name': lastSubFolder, Parent: lastCurrent.NodeID });
+								self.drillDown(foundChild[0]);
+							}
 							lastCurrent.Current = false;
 							self.activeBreadcrumb.push(_.clone(self.currentObj));
 						}else{
@@ -64,17 +65,77 @@
 							self.currentObj.NodeID = nextCurrent.NodeID;
 							self.currentObj.Current = nextCurrent.Current;
                         }
+                        self.lastLocationPath = locationPath;
 					}
 				});
+			};
 
+			NavListController.prototype.buildCurrentObj = function () {
+				var self = this;
+				var locationPath = self.location.path();
+				if (locationPath.length > 0) {
+					self.lastLocationPath = locationPath;
+					var subfolders = locationPath.split("/");
+					var findChild, foundChildParent, findObj, foundChild;
+					self.activeBreadcrumb = [];
+					_.forEachRight(subfolders, function (folder, index) {
+						if (folder.length > 0) {
+							if (_.isUndefined(foundChildParent)){
+								if (index === 1){
+									//if this is only one level above then we can safely assume there are no duplicate children
+									findObj = { 'Name': folder };
+								}else{
+									//this is to safeguard against multiple children of the same name
+									var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
+									var findAllPossibleParents = _.where(self.arrCategory[index-1], { 'Name': subfolders[index-1] });
+									_.forEach(findAllPossibleChildren, function (kids, index) {
+										var parentId = kids.Parent;
+										var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
+										if (foundParent.length > 0){
+											foundChildParent = foundParent[0].NodeID;
+											return false;
+										}
+									});
+									findObj = { 'Name': folder, Parent: foundChildParent };
+								}
+							}else{
+								findObj = { 'Name': folder, NodeID: foundChildParent };
+							}
+							findChild = _.where(self.arrCategory[index], findObj);
+							foundChild = findChild[0];
+							foundChildParent = foundChild.Parent;
 
+							if (index === (subfolders.length - 1)){
+								foundChild.Current = true;
+								self.currentObj = _.clone(foundChild);
+							}	
+						}else{
+							foundChild = {
+								Level: 0,
+								Name: 'School of the Arts',
+								NodeID: 3446,
+								Current: true
+							};
+						}
+						self.activeBreadcrumb.push(_.clone(foundChild));
+					});
+					self.activeBreadcrumb.reverse();
+				}else{
+					self.currentObj = {
+						Level: 0,
+						Name: 'School of the Arts',
+						NodeID: 3446,
+						Current: true
+					};
+					self.activeBreadcrumb = [ _.clone(self.currentObj) ];
+					self.lastLocationPath = '';
+				}
 			};
 
 			NavListController.prototype.setUrl = function () {
 				var self = this;
 				var location = self.location;
 				var locationPath = location.path();
-				self.lastLocationPath = locationPath;
 				location.path(locationPath + '/'+ self.currentObj.Name);
 			};
 
@@ -115,9 +176,15 @@
 			};
 			navApp.controller('NavListController', NavListController);
 
-			navApp.config(function($locationProvider) {
-				$locationProvider.html5Mode(true).hashPrefix('!');
-			})
+			// navApp.config(function($locationProvider) {
+			// 	$locationProvider.html5Mode(true).hashPrefix('!');
+			// })
+
+			navApp.filter('unsafe', function($sce) {
+				return function(val) {
+					return $sce.trustAsHtml(val);
+				};
+			});
 
 		})();
 
@@ -127,6 +194,8 @@
 			}
 			return end;
 		}
+
+
 		</script>
 		<style type="text/css">
 		/****
@@ -601,6 +670,7 @@
 		</style>
 	</head>
 	<body ng-controller="NavListController as navListCtrl">
+
 		<header class="header navbar">
 			<div class="container">
 				<div class="brand top-nav center">
@@ -672,13 +742,14 @@
 							<div id="filter-container" class="container">
 								<section id="breadcrumb-content" class="col-xs-12 col-sm-5 col-md-5 no-p">
 									<ol class="breadcrumb mb10">
-										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'current': $last && navListCtrl.activeBreadcrumb.length > 1, 'bcChain': $middle}" ng-repeat="bc in navListCtrl.activeBreadcrumb">{{bc.Name}}</li>
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'current': $last && navListCtrl.activeBreadcrumb.length > 1, 'bcChain': $middle}" 
+											ng-repeat="bc in navListCtrl.activeBreadcrumb" ng-bind-html="bc.Name | unsafe"></li>
 									</ol>
 								</section>
 								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-7 col-md-pull-0 no-p">
 									<span class="">
-										<span class="browse-item col-xs-12 col-sm-6 col-md-4" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level] | filter: { Parent: navListCtrl.currentObj.NodeID }">
-											<a ng-click="navListCtrl.drillDown(sl); navListCtrl.setUrl();">{{sl.Name}}</a>
+										<span class="browse-item col-xs-12 col-sm-6 col-md-4" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+											<a ng-click="navListCtrl.drillDown(sl); navListCtrl.setUrl();" ng-bind-html="sl.Name | unsafe"></a>
 										</span>
 									</span>
 								</section>
@@ -688,5 +759,6 @@
 				</div>
 			</div>
 		</section>
+
 	</body>
 </html>
