@@ -475,11 +475,16 @@
 		@media (max-width: 480px) {
 			
 		}
+
+
+
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.0/lodash.min.js"></script>
+		<script src="/src/angularLocalStorage.js"></script>
 		<script type='text/javascript'>
 		(function () {
 			'use strict';
@@ -487,13 +492,16 @@
 			var __maxLevel = 0;
 			var __initializing = true;
 
-			var navApp = angular.module('artNavApp', []);
-			var NavListController = function ($scope, $http, $location, $timeout) {
+			var navApp = angular.module('artNavApp', ['angularLocalStorage']);
+			var NavListController = function ($scope, $http, $location, $timeout, storage) {
 				var self = this;
 				var classesByInterest = [];
 				self.arrCategory = [];
 				self.location = $location;
+				self.scope = $scope;
+				self.JumpNav = {};
 
+				storage.bind(self.scope, 'savedSearches', { defaultValue: [] });
 				var _http = $http;
 				_http.get('items/CatProdPkg_SOA.json').then(function (items) {
 
@@ -506,56 +514,67 @@
 					});
 				});
 
-				$scope.$watch(function () {
+				self.scope.$watch(function () {
 					return self.location.path();
 				}, function (){
 					if (__initializing) {
 						$timeout(function() { __initializing = false; });
 					} else {
 						var locationPath = self.location.path();
-						var lastLocationPath = self.lastLocationPath;
 						var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
-						var numOfSlashesLastLocation = (lastLocationPath.match(/\//g) || []).length;
-						if (locationPath.length > lastLocationPath.length){
-							//drill down
-							if ((numOfSlashesLocation - numOfSlashesLastLocation > 1) || lastLocationPath === '/') {
-								self.buildCurrentObj();
-							}else{
-								var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
-								if (lastCurrent.NodeID === self.currentObj.NodeID){
-									//this is when they click the foward button instead of the link
-									var lastSubFolder = locationPath.substring(locationPath.lastIndexOf('/')+1, locationPath.length);
-									var chkLevel = numOfSlashesLocation;
-									var foundChild = _.where(self.arrCategory[chkLevel], { 'Name': lastSubFolder, Parent: lastCurrent.NodeID });
-									self.drillDown(foundChild[0]);
-								}
-								lastCurrent.Current = false;
+
+						//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
+						switch (self.JumpNav.Type) {
+							case 'linkTo':
+								// if child link on right side clicked
 								var cloneCurrentObj = {
 									Level: self.currentObj.Level,
 									Name: self.currentObj.Name,
 									NodeID: self.currentObj.NodeID,
 									Current: self.currentObj.Current
 								};
+								var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
+								lastCurrent.Current = false;
 								self.activeBreadcrumb.push(cloneCurrentObj);
-							}
-						}else{
-							//back up
-							if (locationPath === '/') {
-								self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
-							}else{
-								for (var x = 0; x < numOfSlashesLastLocation - numOfSlashesLocation; x++){
-									self.activeBreadcrumb.pop();	
-								}
-							}
-							var nextCurrent = _.last(self.activeBreadcrumb);
-							nextCurrent.Current = true;
+								break;
+							case 'linkBack':
+								// if link in active breadcrumb is clicked
+								var lastLocationPath = self.lastLocationPath;
+								var numOfSlashesLastLocation = (lastLocationPath.match(/\//g) || []).length;
 
-							self.currentObj.Level = nextCurrent.Level;
-							self.currentObj.Name = nextCurrent.Name;
-							self.currentObj.NodeID = nextCurrent.NodeID;
-							self.currentObj.Current = nextCurrent.Current;
-                        }
+								if (locationPath === '/') {
+									self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
+								}else{
+									for (var x = 0; x < numOfSlashesLastLocation - numOfSlashesLocation; x++){
+										self.activeBreadcrumb.pop();
+									}
+								}
+								var nextCurrent = _.last(self.activeBreadcrumb);
+								nextCurrent.Current = true;
+								break;
+							case 'jumpTo':
+								// if link in saved breadCrumb is clicked
+								if (locationPath === '/') {
+									self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
+								}else{
+									for (var x = self.activeBreadcrumb.length - 1; x >= 0; x--){
+										var breadCrumb = self.activeBreadcrumb[x];
+										if (breadCrumb.NodeID === self.currentObj.NodeID) {
+											break;
+										}
+										self.activeBreadcrumb.pop();
+									}
+								}
+								var nextCurrent = _.last(self.activeBreadcrumb);
+								nextCurrent.Current = true;
+								break;
+							default:
+								// if browser back and forward buttons used
+								self.buildCurrentObj();
+								break;
+						}
                         self.lastLocationPath = locationPath;
+                        self.JumpNav = {};
 					}
 				});
 			};
@@ -624,36 +643,76 @@
 				}
 			};
 
-			NavListController.prototype.setUrl = function (parse) {
+			NavListController.prototype.setCurrent = function (currentId, parentIndex) {
+				var self = this;
+				var currentName, currentLevel, currentNode, jumpType, currentIndex;
+				var urlMethod = 'default';
+				if (isActualNumber(currentId)){
+					if (!_.isUndefined(parentIndex)) {
+						var pastSearch = self.scope.savedSearches[parentIndex];
+						self.activeBreadcrumb = _.clone(pastSearch);
+						jumpType = 'jumpTo';
+						urlMethod = 'build';
+						currentIndex = currentId;
+					}else{
+						jumpType = 'linkBack';
+						urlMethod = 'parse';
+					}
+					var breadCrumb = self.activeBreadcrumb[currentId];
+					currentName = breadCrumb.Name;
+					currentLevel = breadCrumb.Level;
+					currentNode = breadCrumb.NodeID;
+				}else{
+					var subLevel = currentId;
+					currentName = subLevel.Name;
+					currentLevel = self.currentObj.Level + 1;
+					currentNode = subLevel.NodeID;
+					jumpType = 'linkTo';
+				}
+				self.currentObj.Level = currentLevel;
+				self.currentObj.Name = currentName;
+				self.currentObj.NodeID = currentNode;
+				self.JumpNav = {
+					To: currentName, 
+					Type: jumpType
+				};
+				self.setUrl(currentIndex || currentName, urlMethod);
+			};
+
+			NavListController.prototype.setUrl = function (currentId, urlMethod) {
 				var self = this;
 				var location = self.location;
 				var locationPath = location.path();
-				var currentName = self.currentObj.Name;
-				//protect against any links with a forward-slash, like Beginner/Advanced
-				//this is so the slash doesn't get interpreted as another level
-				currentName = currentName.replace(/\//,'%2F');
-				if (parse) {
-					if (currentName === 'School of the Arts'){
-						locationPath = '';
-					}else{
-						var folderPosition = locationPath.indexOf('/'+ currentName +'/');
-						locationPath = locationPath.substr(0, folderPosition + currentName.length + 1);
-					}
-					location.path(locationPath);
-				}else{
-					if (locationPath === '/'){
-						locationPath = '';
-					}
-					location.path(locationPath + '/'+ currentName);	
+
+				if (!isActualNumber(currentId)){
+					//protect against any links with a forward-slash, like Beginner/Advanced
+					//this is so the slash doesn't get interpreted as another level
+					currentId = currentId.replace(/\//,'%2F');
+				}
+				switch (urlMethod) {
+					case 'parse':
+						if (currentId === 'School of the Arts'){
+							locationPath = '';
+						}else{
+							var folderPosition = locationPath.indexOf('/'+ currentId +'/');
+							locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
+						}
+						location.path(locationPath);
+						break;
+					case 'build':
+						var newLocation = '';
+						for (var x = 1; x <= currentId; x++) {
+							newLocation += ('/' + self.activeBreadcrumb[x].Name);	
+						}
+						location.path(newLocation === '' ? '/'+ newLocation : newLocation);
+						break;
+					default:
+						if (locationPath === '/'){
+							locationPath = '';
+						}
+						location.path(locationPath + '/'+ currentId);	
 				}
 			};
-
-			NavListController.prototype.drillDown = function (subLevel) {
-				var self = this;
-				self.currentObj.Level = self.currentObj.Level + 1; 
-				self.currentObj.Name = subLevel.Name; 
-				self.currentObj.NodeID = subLevel.NodeID;
-			}
 
 			NavListController.prototype.getValues = function (nodes, level) {
 				var self = this;
@@ -689,13 +748,14 @@
 				return last ? _.last(self.activeBreadcrumb) : _.initial(self.activeBreadcrumb);
 			};
 
-			NavListController.prototype.jumpTo = function (index) {
+			NavListController.prototype.saveSearch = function () {
 				var self = this;
-				var breadCrumb = self.activeBreadcrumb[index];
+				self.scope.savedSearches.push(_.clone(self.activeBreadcrumb));
+			};
 
-				self.currentObj.Level = breadCrumb.Level; 
-				self.currentObj.Name = breadCrumb.Name; 
-				self.currentObj.NodeID = breadCrumb.NodeID;
+			NavListController.prototype.deleteSavedSearch = function (index) {
+				var self = this;
+				self.scope.savedSearches.splice(index, 1);
 			};
 
 			navApp.controller('NavListController', NavListController);
@@ -719,6 +779,9 @@
 			return end;
 		}
 
+		var isActualNumber = function (num) {
+			return !isNaN(parseFloat(num)) && isFinite(num);
+		};
 
 		</script>
 	</head>
@@ -795,15 +858,21 @@
 							<div id="filter-container" class="container">
 								<section id="breadcrumb-content" class="col-xs-12 col-sm-5 col-md-5 no-p">
 									<ol class="breadcrumb">
-										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" 
-											ng-repeat="bc in navListCtrl.getBreadcrumbs(false)"><a ng-click="navListCtrl.jumpTo($index); navListCtrl.setUrl(true);" ng-bind-html="bc.Name | unsafe"></a></li>
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										</li>
 										<li class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></li>
 									</ol>
+									<button ng-click="navListCtrl.saveSearch()">Save Search</button>
+									<div class="savedSearches" ng-repeat="savedSearch in savedSearches">
+										<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
+										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
+									</div>
 								</section>
 								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-7 col-md-pull-0 no-p">
 									<span class="">
 										<span class="browse-item col-xs-12 col-sm-6 col-md-4" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
-											<a ng-click="navListCtrl.drillDown(sl); navListCtrl.setUrl();" ng-bind-html="sl.Name | unsafe"></a>
+											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 										</span>
 									</span>
 								</section>
