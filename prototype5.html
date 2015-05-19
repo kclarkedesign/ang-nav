@@ -477,7 +477,6 @@
 		}
 
 
-
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -493,25 +492,25 @@
 			var __initializing = true;
 
 			var navApp = angular.module('artNavApp', ['angularLocalStorage']);
-			var NavListController = function ($scope, $http, $location, $timeout, storage) {
+			var NavListController = function ($scope, allClassSrv, $location, $timeout, storage) {
 				var self = this;
 				var classesByInterest = [];
 				self.arrCategory = [];
 				self.location = $location;
 				self.scope = $scope;
 				self.JumpNav = {};
+				self.navsDict = {};
 
 				storage.bind(self.scope, 'savedSearches', { defaultValue: [] });
-				var _http = $http;
-				_http.get('items/CatProdPkg_SOA.json').then(function (items) {
 
-					_http.get('arc-response_AllClasses.json').then(function (data) {
-						classesByInterest.push(data.data[5]);
+				self.allClassSrv = allClassSrv;
+				self.allClassSrv.getAllClasses().then(function (data) {
 
-						self.getValues(classesByInterest, 0);
+					classesByInterest.push(data.data[5]);
 
-						self.buildCurrentObj();
-					});
+					self.getValues(classesByInterest, 0);
+
+					self.buildCurrentObj();
 				});
 
 				self.scope.$watch(function () {
@@ -569,7 +568,7 @@
 								nextCurrent.Current = true;
 								break;
 							default:
-								// if browser back and forward buttons used
+								// if browser back and forward buttons used for unpredictable jumps
 								self.buildCurrentObj();
 								break;
 						}
@@ -648,15 +647,19 @@
 				var currentName, currentLevel, currentNode, jumpType, currentIndex;
 				var urlMethod = 'default';
 				if (isActualNumber(currentId)){
-					if (!_.isUndefined(parentIndex)) {
+					if (_.isUndefined(parentIndex)) {
+						jumpType = 'linkBack';
+						urlMethod = 'parse';
+					}else{
 						var pastSearch = self.scope.savedSearches[parentIndex];
+						//prevent multiple clicks to same link
+						if (pastSearch[currentId].NodeID === self.currentObj.NodeID){
+							return;
+						}
 						self.activeBreadcrumb = _.clone(pastSearch);
 						jumpType = 'jumpTo';
 						urlMethod = 'build';
 						currentIndex = currentId;
-					}else{
-						jumpType = 'linkBack';
-						urlMethod = 'parse';
 					}
 					var breadCrumb = self.activeBreadcrumb[currentId];
 					currentName = breadCrumb.Name;
@@ -672,10 +675,7 @@
 				self.currentObj.Level = currentLevel;
 				self.currentObj.Name = currentName;
 				self.currentObj.NodeID = currentNode;
-				self.JumpNav = {
-					To: currentName, 
-					Type: jumpType
-				};
+				self.JumpNav = { To: currentName, Type: jumpType };
 				self.setUrl(currentIndex || currentName, urlMethod);
 			};
 
@@ -758,6 +758,29 @@
 				self.scope.savedSearches.splice(index, 1);
 			};
 
+
+			var AllClassService = function (http) {
+				var self = this;
+				self.http = http;
+			};
+			AllClassService.$inject = ['$http'];
+
+			AllClassService.prototype.getAllClasses = function () {
+				var self = this;
+				return self.http.get('arc-response_AllClasses.json').success(function (data) {
+					return data;
+				});
+			};	
+			navApp.service('allClassSrv', AllClassService);
+
+
+
+
+
+
+
+
+			NavListController.$inject = ['$scope', 'allClassSrv', '$location', '$timeout', 'storage'];
 			navApp.controller('NavListController', NavListController);
 
 			// navApp.config(function($locationProvider) {
