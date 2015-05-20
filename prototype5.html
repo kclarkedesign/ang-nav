@@ -492,28 +492,40 @@
 			var __initializing = true;
 
 			var navApp = angular.module('artNavApp', ['angularLocalStorage']);
-			var NavListController = function ($scope, allClassSrv, $location, $timeout, storage) {
+			var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage) {
 				var self = this;
 				var classesByInterest = [];
 				self.arrCategory = [];
 				self.location = $location;
-				self.scope = $scope;
 				self.JumpNav = {};
 				self.navsDict = {};
+				self.onscreenResults = [];
 
-				storage.bind(self.scope, 'savedSearches', { defaultValue: [] });
+				storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 
-				self.allClassSrv = allClassSrv;
-				self.allClassSrv.getAllClasses().then(function (data) {
-
+				self.tileInfoSrv = tileInfoSrv;
+				self.tileInfoSrv.getAllClasses().then(function (data) {
 					classesByInterest.push(data.data[5]);
-
 					self.getValues(classesByInterest, 0);
-
 					self.buildCurrentObj();
 				});
 
-				self.scope.$watch(function () {
+				self.tileInfoSrv.getSOAItems().then(function (items) {
+					self.onscreenResults = self.navsDict["School of the Arts"] = items.data;
+				});
+
+
+
+
+
+
+
+
+
+
+
+
+				$scope.$watch(function () {
 					return self.location.path();
 				}, function (){
 					if (__initializing) {
@@ -651,7 +663,7 @@
 						jumpType = 'linkBack';
 						urlMethod = 'parse';
 					}else{
-						var pastSearch = self.scope.savedSearches[parentIndex];
+						var pastSearch = self.savedSearches[parentIndex];
 						//prevent multiple clicks to same link
 						if (pastSearch[currentId].NodeID === self.currentObj.NodeID){
 							return;
@@ -720,7 +732,13 @@
 				_.forEach(nodes, function (node){
 					if ((node.ChildNode.length === 0 && node.Keywords.length > 0) || node.ChildNode.length > 0){
 
-						tempArr.push({ Name: node.Name.trim(), NodeID: node.NodeID, Level: level, Parent: node.ParentNodeID });
+						tempArr.push({ 
+							Name: node.Name.trim(), 
+							NodeID: node.NodeID, 
+							Level: level, 
+							Parent: node.ParentNodeID, 
+							KeyWords: node.Keywords 
+						});
 						if (level > __maxLevel){
 							__maxLevel = level;
 						}
@@ -750,37 +768,48 @@
 
 			NavListController.prototype.saveSearch = function () {
 				var self = this;
-				self.scope.savedSearches.push(_.clone(self.activeBreadcrumb));
+				var breadcrumbToAdd = _.clone(self.activeBreadcrumb);
+				var crumbToCheck = _.last(breadcrumbToAdd);
+				var isCrumbAlreadySaved = false;
+				_.forEach(self.savedSearches, function (ss) {
+					var searchToCheck = _.last(ss);
+					if (searchToCheck.NodeID === crumbToCheck.NodeID){
+						isCrumbAlreadySaved = true;
+						return false;
+					}
+				});
+				if (!isCrumbAlreadySaved){
+					self.savedSearches.push(_.clone(self.activeBreadcrumb));	
+				}
 			};
 
 			NavListController.prototype.deleteSavedSearch = function (index) {
 				var self = this;
-				self.scope.savedSearches.splice(index, 1);
+				self.savedSearches.splice(index, 1);
 			};
 
 
-			var AllClassService = function (http) {
+			var TileInfoService = function (http) {
 				var self = this;
 				self.http = http;
 			};
-			AllClassService.$inject = ['$http'];
+			TileInfoService.$inject = ['$http'];
 
-			AllClassService.prototype.getAllClasses = function () {
+			TileInfoService.prototype.getAllClasses = function () {
 				var self = this;
 				return self.http.get('arc-response_AllClasses.json').success(function (data) {
 					return data;
 				});
-			};	
-			navApp.service('allClassSrv', AllClassService);
+			};
+			TileInfoService.prototype.getSOAItems = function () {
+				var _this = this;
+				return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
+					return data;
+				});
+			};
+			navApp.service('tileInfoSrv', TileInfoService);
 
-
-
-
-
-
-
-
-			NavListController.$inject = ['$scope', 'allClassSrv', '$location', '$timeout', 'storage'];
+			NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage'];
 			navApp.controller('NavListController', NavListController);
 
 			// navApp.config(function($locationProvider) {
@@ -887,7 +916,7 @@
 										<li class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></li>
 									</ol>
 									<button ng-click="navListCtrl.saveSearch()">Save Search</button>
-									<div class="savedSearches" ng-repeat="savedSearch in savedSearches">
+									<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
 										<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
 										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
 									</div>
