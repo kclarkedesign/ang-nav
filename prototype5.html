@@ -264,11 +264,49 @@
 			border-bottom-left-radius: 2px;
 			border-bottom-right-radius: 0;
 		}
+		.tabs-left .nav-tabs>li>a {
+			border-top-left-radius: 2px;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 2px;
+			border-bottom-right-radius: 0;
+			margin-right: 0;
+			margin-bottom: 2px;
+			margin-left: 0;
+		}
 		.tabs-left .nav-tabs>li {
 			float: none;
 		}
+		.nav-tabs {
+			border-bottom: 0;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			background: #eaecf6;
+		}
 		.nav-tabs>li {
   			margin: 0;
+		}
+		.box-tab {
+			margin-bottom: 25px;
+			border: 1px solid #e3e6f3;
+			border-radius: 2px;
+		}
+		.box-tab.tabs-left .tab-content {
+			border-top-left-radius: 0;
+			border-top-right-radius: 2px;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 2px;
+		}
+		.box-tab .tab-content {
+			background-color: #fff;
+			padding: 15px;
+			box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 2px;
+			border-bottom-right-radius: 2px;
+			overflow: hidden;
 		}
 
 		/*
@@ -923,28 +961,30 @@
 					<div class="row">
 						<section class="filter-content">
 							<div id="filter-container" class="container">
-								<section class="">
+								<!-- <section class="">
 									<div class="row">
 										<div class="col-md-12">
 											<div class="box-tab tabs-left">
 												<ul class="nav nav-tabs">
-													<li class="active"><a href="#home3" data-toggle="tab">Adults</a>
+													<li class="active">
+														<a href="#adults" data-toggle="tab">Adults</a>
 													</li>
-													<li><a href="#profile3" data-toggle="tab">Kids</a>
+													<li>
+														<a href="#kids" data-toggle="tab">Kids</a>
 													</li>
 												</ul>
 												<div class="tab-content text-center">
-													<div class="tab-pane fade active in" id="home3">
-														<h1 class="text-muted bolder pb25 pt25">1</h1>
+													<div class="tab-pane fade active in" id="adults">
+														Hi
 													</div>
-													<div class="tab-pane fade" id="profile3">
+													<div class="tab-pane fade" id="kids">
 														<h1 class="text-muted bolder pb25 pt25">2</h1>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</section>
+								</section> -->
 								<section id="breadcrumb-content" class="col-xs-12 col-sm-5 col-md-5 no-p">
 									<ol class="breadcrumb mb10">
 										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
