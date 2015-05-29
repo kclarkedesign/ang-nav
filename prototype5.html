@@ -287,10 +287,18 @@
 		.nav-tabs>li {
   			margin: 0;
 		}
+		.nav-tabs>li.active>a, 
+		.nav-tabs>li.active>a:hover, 
+		.nav-tabs>li.active>a:focus {
+			color: #59595a;
+			border: 1px solid #fff;
+			border-bottom: 0;
+		}
 		.box-tab {
 			margin-bottom: 25px;
 			border: 1px solid #e3e6f3;
 			border-radius: 2px;
+			background-color: #EAECF6;
 		}
 		.box-tab.tabs-left .tab-content {
 			border-top-left-radius: 0;
@@ -300,7 +308,7 @@
 		}
 		.box-tab .tab-content {
 			background-color: #fff;
-			padding: 15px;
+			/*padding: 15px;*/
 			box-shadow: 0 1px 1px rgba(0,0,0,0.05);
 			border-top-left-radius: 0;
 			border-top-right-radius: 0;
@@ -509,6 +517,79 @@
 			padding-bottom: 5px;
 		}
 
+		/*
+		 *
+		 * Old Styling / Modified 
+		 *
+		 *
+		 */
+
+		.age-range {
+			border-bottom: none;
+			padding: 10px 10px 0;
+			/*display: inline-block;*/
+		}
+		 .age-range li {
+		 	width: auto;
+		 	margin: 0 0 1px 0;
+		 	display: inline-block;
+		 }
+		#kidOptions {
+			border-bottom: 1px solid #DBDDEA;
+			padding-bottom: 10px;
+		}
+		#kidOptions ul {
+			display: inline;
+		}
+		 #kidOptions .age-range li {
+		 	margin: 2px 0 0 0;
+		 }
+		 ul {
+		 	overflow: hidden;
+		 	margin: 0;
+		 	padding: 0;
+		 }
+		 .checkbox {
+		 	margin: 0;
+		 }
+		.checkbox label {
+			display: inline-block;
+			vertical-align: top;
+			text-align: left;
+			padding-left: .6em;
+			padding-right: .6em;
+			color: #000;
+		}
+		.checkbox input[type="checkbox"] {
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			cursor: pointer;
+			margin: 0;
+			opacity: 0;
+			z-index: 1;
+		}
+
+		.selections {
+		  padding: 10px;
+		  overflow: hidden;
+		}
+		.selections a {
+			float: left;
+			padding: 4px;
+			/*width: 100%;*/
+			font-size: 13px;
+			cursor: pointer;
+			text-decoration: none;
+		}
+		.selections a:hover {
+			background-color: #D8ECFD;/*padding-left: 8px;*/
+		}
+
+
 		@media (max-width: 1960px) {
 
 		}
@@ -517,12 +598,32 @@
 		}
 
 		@media (max-width: 768px) {
+			.age-range {
+				border-right: none;
+			}
+			/*.age-range li {
+				display: inline-block;
+			}*/
 			.breadcrumb {
 				text-align: center;
 			}
 			.breadcrumb>li.current,
 			#browse-nav {
 				text-align: center;
+			}
+			.tabs-left .nav-tabs {
+				float: none;
+				border-top-left-radius: 2px;
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 2px;
+				border-bottom-right-radius: 0;
+			}
+			.tabs-left .nav-tabs>li {
+				float: left;
+			}
+			.tabs-left .nav-tabs>li>a {
+				border-bottom: none;
+				margin-bottom: 0;
 			}
 		}
 		@media (max-width: 480px) {
@@ -965,20 +1066,77 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="box-tab tabs-left">
-												<ul class="nav nav-tabs">
-													<li class="active">
-														<a href="javascript:;">Adults</a>
-													</li>
+												<ul id="ageList" class="nav nav-tabs">
 													<li>
-														<a href="javascript:;">Kids</a>
+														<a href="javascript:void(0)" role="tab" data-toggle="tab">Adults</a>
+													</li>
+													<li class="active">
+														<a href="javascript:void(0)" role="tab" data-toggle="tab">Kids</a>
 													</li>
 												</ul>
-												<div class="tab-content text-center">
-													<div class="tab-pane fade active in" id="adults">
-														<a href="javascript:;">School of the Arts</a>
+												<div class="tab-content">
+													<div class="tab-pane fade" id="adults">
+														<div class="selections adults-sel">
+															<a class="col-lg-4 col-md-4 col-sm-4">Talks</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Continuing Education &amp; Enrichment</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Parenting &amp; Early Childhood</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Health &amp; Fitness</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Jewish Life</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Concerts &amp; Performances</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">School of the Arts</a>
+															<a class="col-lg-4 col-md-4 col-sm-4">Literary</a>
+														</div>
 													</div>
-													<div class="tab-pane fade" id="kids">
-														<h1 class="text-muted bolder pb25 pt25">2</h1>
+													<div class="tab-pane fade active in" id="kids">
+														<div class="age-range col-md-12">
+															<div class="row-dropdown">
+																<div id="kidOptions">
+																	<span class="optionHeading text-center">Filter age:</span>
+																	<ul class="" id="age-list">
+																		<li>
+																			<div class="checkbox" ng-class="{'activeAge': ageRanges.allKids}">
+																				<input type="checkbox" id="all-ages" ng-model="ageRanges.allKids">
+																				<label class="checkbox">All</label>
+																			</div>
+																		</li>
+																		<li>
+																			<div class="checkbox" ng-class="{'activeAge': ageRanges['newborn-5 years']}">
+																				<input type="checkbox" id="newborn-five" class="kidOpt" ng-model="ageRanges['newborn-5 years']">
+																				<label class="checkbox">Newborn-5</label>
+																			</div>
+																		</li>
+																		<li>
+																			<div class="checkbox" ng-class="{'activeAge': ageRanges['6-12 years']}">
+																				<input type="checkbox" id="six-twelve" class="kidOpt" ng-model="ageRanges['6-12 years']">
+																				<label class="checkbox">6-12 years</label>
+																			</div>
+																		</li>
+																		<li>
+																			<div class="checkbox" ng-class="{'activeAge': ageRanges.teens}">
+																				<input type="checkbox" id="teens" class="kidOpt" ng-model="ageRanges.teens">
+																				<label class="checkbox">Teens</label>
+																			</div>
+																		</li>
+																		<li>
+																			<div class="checkbox" ng-class="{'activeAge': ageRanges.multigenerational}">
+																				<input type="checkbox" id="multigen" class="kidOpt" ng-model="ageRanges.multigenerational">
+																				<label class="checkbox">Multigenerational</label>
+																			</div>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+														<div class="selections kids-sel col-md-12">
+															<a class="teens-sel collapsed col-lg-4 col-md-4 col-sm-4">Talks</a>
+															<a class="zero-five-sel six-twelve-sel collapsed col-lg-4 col-md-4 col-sm-4">Camps &amp; After School</a>
+															<a class="zero-five-sel multigen-sel collapsed col-lg-4 col-md-4 col-sm-4">Parenting &amp; Early Childhood</a>
+															<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed col-lg-4 col-md-4 col-sm-4">Health &amp; Fitness</a>
+															<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed col-lg-4 col-md-4 col-sm-4">Jewish Life</a>
+															<a class="zero-five-sel six-twelve-sel teens-sel collapsed col-lg-4 col-md-4 col-sm-4">Concerts &amp; Performances</a>
+															<a class="zero-five-sel six-twelve-sel teens-sel multigen-sel collapsed col-lg-4 col-md-4 col-sm-4">School of the Arts</a>
+															<a class="zero-five-sel six-twelve-sel teens-sel collapsed col-lg-4 col-md-4 col-sm-4">Literary</a>
+														</div>	
 													</div>
 												</div>
 											</div>
