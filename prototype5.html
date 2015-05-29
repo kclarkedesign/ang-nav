@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="artNavApp">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- 		<base href="/prototype5.html"> -->
 		<link rel="stylesheet" href="/css/font-awesome.css" />
   		<link rel="stylesheet" href="/css/themify-icons.css" />
@@ -17,148 +18,142 @@
 		 * Updated NAV
 		 *
 		 */
-		 a:visited, a:active, a:focus, a:hover {
-		 	text-decoration: none;
-		 	outline: 0;
-		 }
-		 .center {
-		 	text-align: center;
+		a:visited, 
+		a:active, 
+		a:focus, 
+		a:hover {
+			text-decoration: none;
+			outline: 0;
 		}
-		 #hor-menu {
-		 	width: 100%;
-		 	background: #fff;
-		 	border-bottom: 1px solid #000000;
-		 }
-		 .header {
-		 	background-color: #000000;
-		 }
-		 .header {
-		 	min-height: 50px;
-		 	z-index: 1000;
-		 	border-radius: 0;
-		 	border: 0;
-		 	margin: 0;
-		 }
-		/*.top-nav {
-		  width: 100%;
-		  background-color: #000000;
-		  position: fixed;
-		  }*/
-		  header .bottom-nav {
-		  	background: #ccc;
-		  	position: relative;
-		  }
-		  .header .navbar-nav {
-		  	margin: 0;
-		  }
-		  .header .brand .navbar-brand {
-		  	font-size: 14px;
-		  	font-weight: 600;
-		  	padding-top: 0;
-		  	padding-bottom: 0;
-		  	line-height: 50px;
-		  }
-		  .header .brand .navbar-brand img {
-		  	max-height: 25px;
-		  	margin-right: 5px;
-		  	margin-top: -5px;
-		  }
-		  .header .nav>li>a:hover, 
-		  .header .nav>li>a:focus, 
-		  .header .nav .open>a, 
-		  .header .nav .open>a:hover, 
-		  .header .nav .open>a:focus {
-		  	background-color: #e4e4e4;
-		  }
-		  #utilnav {
-		  	display: inline-block;
-		  	padding: 0 10px;
-		  }
-		  #utilnav ul {
-		  	list-style: none;
-		  	color: #4076bb;
-		  	font-size: 11px;
-		  	font-weight: bold;
-		  	line-height: 48px;
-		  	white-space: nowrap;
-		  	margin: 0 auto;
-		  	padding: 0;
-		  	font-family: arial, sans-serif;
-		  }
-		  #utilnav ul li {
-		  	display: inline;
-		  	margin: 0;
-		  	padding: 0 7px 0 9px;
-		  	border-left: 1px solid #fff;
-		  }
-		  #utilnav ul li:first-child {
-		  	padding: 0 7px 0 0;
-		  	border: 0;
-		  }
-		  #utilnav ul li a {
-		  	color: #fff;
-		  	text-decoration: none;
-		  }
-		  #utilnav ul li span.greeting {
-		  	margin-right: 12px;
-		  	color: #70a0eb;
-		  }
-		  .navbar {
-		  	margin-bottom: 0;
-		  	border-radius: 0;
-		  	position: relative;
-		  	top: 0;
-		  	width: 100%;
-		  	z-index: 1001;
-		  	margin: -1px;
-		  }
-		  .nav>li>a:hover,
-		  .nav>li>a:focus {
-		  	background-color: transparent;
-		  	/*color: #fff;*/
-		  }
-		  .nav>li {
-		  	margin: 0;
-		  }
-		  #sidebar-wrapper {
-		  	background: #252A31;
-		  }
-		  .filter-menu {
-		  	position: fixed;
-		  	z-index: 10;
-		  }
-		  #menu-container {
-		  	position: fixed;
-		  	z-index: 1001;
-		  }
-		  @media (max-width: 767px) {
-		  	.header {
-		  		width: 100%;
-		  	}
-		  	.layout, .header {
-		  		-webkit-backface-visibility: hidden;
-		  		position: relative;
-		  		width: 100%;
-		  		-webkit-transition: -webkit-transform 300ms ease 0s;
-		  		transition: transform 300ms ease 0s;
-		  	}
-		  	.header.header-fixed {
-		  		position: fixed;
-		  		width: 100%;
-		  		top: 0;
-		  	}
-		  	.header>.brand {
-		  		width: 100%;
-		  		text-align: center;
-		  	}
-		  	.header .brand .navbar-brand {
-		  		display: inline-block;
-		  		float: none;
-		  		text-align: center;
-		  	}
-		  	.header .brand .navbar-brand {
-				/*padding-top: 4px;
-				line-height: 29px;*/
+		.center {
+			text-align: center;
+		}
+		#hor-menu {
+			width: 100%;
+			background: #fff;
+			border-bottom: 1px solid #000000;
+		}
+		.header {
+			background-color: #000000;
+		}
+		.header {
+			min-height: 50px;
+			z-index: 1000;
+			border-radius: 0;
+			border: 0;
+			margin: 0;
+		}
+		header .bottom-nav {
+			background: #ccc;
+			position: relative;
+		}
+		.header .navbar-nav {
+			margin: 0;
+		}
+		.header .brand .navbar-brand {
+			font-size: 14px;
+			font-weight: 600;
+			padding-top: 0;
+			padding-bottom: 0;
+			line-height: 50px;
+		}
+		.header .brand .navbar-brand img {
+			max-height: 25px;
+			margin-right: 5px;
+			margin-top: -5px;
+		}
+		.header .nav>li>a:hover, 
+		.header .nav>li>a:focus, 
+		.header .nav .open>a, 
+		.header .nav .open>a:hover, 
+		.header .nav .open>a:focus {
+			background-color: #e4e4e4;
+		}
+		#utilnav {
+			display: inline-block;
+			padding: 0 10px;
+		}
+		#utilnav ul {
+			list-style: none;
+			color: #4076bb;
+			font-size: 11px;
+			font-weight: bold;
+			line-height: 48px;
+			white-space: nowrap;
+			margin: 0 auto;
+			padding: 0;
+			font-family: arial, sans-serif;
+		}
+		#utilnav ul li {
+			display: inline;
+			margin: 0;
+			padding: 0 7px 0 9px;
+			border-left: 1px solid #fff;
+		}
+		#utilnav ul li:first-child {
+			padding: 0 7px 0 0;
+			border: 0;
+		}
+		#utilnav ul li a {
+			color: #fff;
+			text-decoration: none;
+		}
+		#utilnav ul li span.greeting {
+			margin-right: 12px;
+			color: #70a0eb;
+		}
+		.navbar {
+			margin-bottom: 0;
+			border-radius: 0;
+			position: relative;
+			top: 0;
+			width: 100%;
+			z-index: 1001;
+			margin: -1px;
+		}
+		.nav>li>a:hover, 
+		.nav>li>a:focus {
+			background-color: transparent;
+		}
+		.nav>li {
+			margin: 0;
+		}
+		#sidebar-wrapper {
+			background: #252A31;
+		}
+		.filter-menu {
+			position: fixed;
+			z-index: 10;
+		}
+		#menu-container {
+			position: fixed;
+			z-index: 1001;
+		}
+		@media (max-width: 767px) {
+			.header {
+				width: 100%;
+			}
+			.layout, 
+			.header {
+				-webkit-backface-visibility: hidden;
+				position: relative;
+				width: 100%;
+				-webkit-transition: -webkit-transform 300ms ease 0s;
+				transition: transform 300ms ease 0s;
+			}
+			.header.header-fixed {
+				position: fixed;
+				width: 100%;
+				top: 0;
+			}
+			.header>.brand {
+				width: 100%;
+				text-align: center;
+			}
+			.header .brand .navbar-brand {
+				display: inline-block;
+				float: none;
+				text-align: center;
 			}
 			.header .off-left {
 				position: absolute;
@@ -222,8 +217,8 @@
 			cursor: pointer;
 		}
 		.breadcrumb {
-  			background: transparent;
-  			padding: 0;
+			background: transparent;
+			padding: 0;
 		}
 		.breadcrumb>li.current {
 			display: block;
@@ -250,11 +245,11 @@
 		}
 		.defaultBc,
 		.current {
-  			font-size: 22px;
-  			font-weight: bold;
+			font-size: 22px;
+			font-weight: bold;
 		}
 		.main-content .content-wrap .wrapper {
-  			padding: 15px;
+			padding: 15px;
 		}
 		/*
 		 *
@@ -476,14 +471,174 @@
 			
 		}
 
+		/**
+		 * Container/Target Styles
+		 */
+
+		#isoContainer {
+			margin: 0 auto;
+		}
+
+		#isoContainer:before, 
+		#isoContainer:after {
+			content: "";
+			display: table;
+		}
+
+		.tileContainer .mixFirst {
+			width: 100px;
+			display: block;
+			position: absolute;
+			top: 0;
+		}
+		.tileContainer .gap {
+			width: 100px;
+			display: inline-block;
+			position: relative;
+		}
+		.tileContainer .mixFirst {
+			vertical-align: top;
+			width: 300px;
+			height: 340px;
+			background: white;
+			color: #515151;
+			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+			-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+		}
+		.tileContainer .gap {
+			width: 300px;
+			margin: 1% 0 1% 0;
+			background: transparent;
+		}
+
+		.itemBox { 
+			margin-bottom: 20px;
+		}
+		.getMore{
+			bottom: 0;
+			position: absolute;
+			text-align: center;
+			width: 300px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 10px;
+			background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
+		}
+		.showMore {
+			cursor: pointer;
+			font-size: 11px;
+			padding: 4px 8px;
+			display: inline-block;
+			background: #ffffff;
+			border-radius: 4px;
+			width: 75px;
+			transition: .1s linear;
+		}
+		.showMore:hover {
+			background: #E8E8E8;
+			transition: .1s linear;
+		}
+		.learnMore {
+			position: relative;
+			text-align: right;
+			padding: 2px 8px 5px 5px;
+		}
+		.learnMore a {
+			color: #515151;
+			display: block;
+			font-weight: normal;
+			padding: 2px;
+			width: 100%;
+		}
+		.learnMore a:hover {
+			color: #888888;
+			text-decoration: none;
+		}
+		.learnMore a:visited, 
+		.learnMore a:focus {
+			text-decoration: none;
+		}
+		.contentWrap{
+			bottom: 0;
+			position: relative;
+			background: #ffffff;
+		}
+		.shortDescription {
+			position: relative;
+			width: 100%;
+			height: 190px;
+			display: none;
+			padding: 6px 14px 0;
+			box-sizing: border-box;
+			font-size: 12px;
+			line-height: 19px;
+			text-align: left;
+			overflow-y: auto;
+		}
+		.shortDescription span {
+			font-size: 12px !important;
+		}
+		.classTitle, 
+		.classDate, 
+		.warning {
+			padding: 4px 14px 0;
+			position: relative;
+			background-color: white;
+			line-height: 16px;
+		}
+		.classTitle {
+			text-align: left;
+			font-weight: bold;
+			font-size: 14px;
+			padding-top: 8px;
+			line-height: 17px;
+		}
+		.classDate {
+			font-size: 12px;
+			padding-top: 2px;
+			position: relative;
+			text-align: left;
+		}
+		.warning {
+			text-align: left;
+			font-size: 12px;
+			color: red;
+			font-size: 12px;
+			padding-bottom: 3px;
+		}
+		.warning h4 {
+			font-size: 12px;
+		}
+		.warning > :first-child { 
+			margin: 0;
+		}
+		.defaultText { 
+			width: 300px; 
+		}
+		.defaultTextActive { 
+			color: #a1a1a1; 
+		}
+
+		/* masonry styling - important is for fouc protection */
+		.masonry-brick {
+			display: none !important;
+		}
+
+		.masonry-brick.loaded {
+			display: block !important;
+		}
 
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
+		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+		<script src="/src/angular-masonry.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.0/lodash.min.js"></script>
 		<script src="/src/angularLocalStorage.js"></script>
+		<script src="/src/ng-infinite-scroll.min.js"></script>
 		<script type='text/javascript'>
 		(function () {
 			'use strict';
@@ -491,8 +646,8 @@
 			var __maxLevel = 0;
 			var __initializing = true;
 
-			var navApp = angular.module('artNavApp', ['angularLocalStorage']);
-			var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage) {
+			var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll']);
+			var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 				var self = this;
 				var classesByInterest = [];
 				self.arrCategory = [];
@@ -500,30 +655,36 @@
 				self.JumpNav = {};
 				self.navsDict = {};
 				self.onscreenResults = [];
+				self.resultsByKeywords = [];
+				self.classesByNodeId = {};
+				self.limit = 0;
+				self.numOfColumns = 0;
 
 				storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 
 				self.tileInfoSrv = tileInfoSrv;
-				self.tileInfoSrv.getAllClasses().then(function (data) {
-					classesByInterest.push(data.data[5]);
-					self.getValues(classesByInterest, 0);
-					self.buildCurrentObj();
-				});
 
 				self.tileInfoSrv.getSOAItems().then(function (items) {
-					self.onscreenResults = self.navsDict["School of the Arts"] = items.data;
+					self.resultsByKeywords = self.navsDict["School of the Arts"] = items.data;
+
+					self.tileInfoSrv.getAllClasses().then(function (data) {
+						classesByInterest.push(data.data[5]);
+						self.getValues(classesByInterest, 0);
+						self.buildCurrentObj();
+						self.displayTiles();
+					});
+
 				});
 
+				var w = angular.element($window);
+				w.bind('resize', function () {
+					resizeTileDisplay($scope);
 
-
-
-
-
-
-
-
-
-
+					self.onscreenResults = [];
+					$scope.$apply();
+					self.displayTiles();
+					self.loadMore();
+				});
 
 				$scope.$watch(function () {
 					return self.location.path();
@@ -584,22 +745,73 @@
 								self.buildCurrentObj();
 								break;
 						}
+						self.displayTiles();
                         self.lastLocationPath = locationPath;
                         self.JumpNav = {};
 					}
 				});
 			};
 
+			NavListController.prototype.displayTiles = function () {
+				var self = this;
+				if (self.currentObj.Level === 0) {
+					self.getClassesByNodeId(self.classesByNodeId);
+				}else{
+					self.getClassesByNodeId(self.currentObj.NodeID);
+				}
+			};
+
+			NavListController.prototype.getClassesByNodeId = function (id) {
+				var self = this;
+				if (_.isObject(id)){
+					self.onscreenResults = [];
+					var cni;
+					for (cni in id) {
+						_.forEach(self.classesByNodeId[cni], function (arr) {
+							var classInfoObj = formatDataFromJson(arr, cni);
+							var checkPropExists = _.find(self.onscreenResults, { 'ProdNo': classInfoObj.ProdNo });
+							if (_.isUndefined(checkPropExists)){
+								self.onscreenResults.push(classInfoObj);
+							}
+						});
+					}
+				}else{
+					var onscreenResultsQueue = [];
+					_.forEach(self.classesByNodeId[id], function (arr) {
+						var classInfoObj = formatDataFromJson(arr, id);
+						onscreenResultsQueue.push(classInfoObj);
+					});
+					var lastLocArr = self.lastLocationPath.split("/");
+					var locArr = self.location.path().split("/");
+
+					if (_.difference(locArr, lastLocArr).length === 1){
+						if (self.onscreenResults.length) {
+							_.forEach(_.clone(self.onscreenResults), function (arr) {
+								var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+								if (_.isUndefined(checkPropExists)){
+									_.pull(self.onscreenResults, arr);
+								}
+							});
+						}else{
+							self.onscreenResults = _.clone(onscreenResultsQueue);
+						}
+					}else{
+						self.onscreenResults = _.clone(onscreenResultsQueue);
+					}
+				}
+				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+			};
+
 			NavListController.prototype.buildCurrentObj = function () {
 				var self = this;
 				var locationPath = self.location.path();
-				if (locationPath.length > 0 && locationPath !== '/') {
+				if (locationPath.length && locationPath !== '/') {
 					self.lastLocationPath = locationPath;
 					var subfolders = locationPath.split('/');
 					var findChild, foundChildParent, findObj, foundChild;
 					self.activeBreadcrumb = [];
 					_.forEachRight(subfolders, function (folder, index) {
-						if (folder.length > 0) {
+						if (folder.length) {
 							if (_.isUndefined(foundChildParent)){
 								if (index === 1){
 									//if this is only one level above then we can safely assume there are no duplicate children
@@ -611,7 +823,7 @@
 									_.forEach(findAllPossibleChildren, function (kids, index) {
 										var parentId = kids.Parent;
 										var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
-										if (foundParent.length > 0){
+										if (foundParent.length){
 											foundChildParent = foundParent[0].NodeID;
 											return false;
 										}
@@ -730,8 +942,7 @@
 				var self = this;
 				var tempArr = [];
 				_.forEach(nodes, function (node){
-					if ((node.ChildNode.length === 0 && node.Keywords.length > 0) || node.ChildNode.length > 0){
-
+					if ((node.ChildNode.length === 0 && node.Keywords.length) || node.ChildNode.length > 0){
 						tempArr.push({ 
 							Name: node.Name.trim(), 
 							NodeID: node.NodeID, 
@@ -739,10 +950,17 @@
 							Parent: node.ParentNodeID, 
 							KeyWords: node.Keywords 
 						});
+						if (node.Keywords.length) {
+							var keywordsToLookForArr = node.Keywords.toLowerCase().split(',');
+							var filteredResults = filterList(self.resultsByKeywords, keywordsToLookForArr);
+							if (filteredResults.length) {
+								self.classesByNodeId[node.NodeID] = filteredResults;
+							}
+						}
 						if (level > __maxLevel){
 							__maxLevel = level;
 						}
-						if (node.ChildNode.length > 0){
+						if (node.ChildNode.length){
 							var childNodeValue = self.getValues(node.ChildNode, ++level);
 							if (!childNodeValue){
 								tempArr.pop();
@@ -788,6 +1006,141 @@
 				self.savedSearches.splice(index, 1);
 			};
 
+			NavListController.prototype.loadMore = function () {
+				var self = this;
+				self.limit += self.numOfColumns;
+			};
+
+			// NavListController.prototype.getAllLevelOne = function (interest) {
+			// 	var self = this;
+			// 	self.origClassInfoArray = [];
+			// 	var allKeys = self.classKeys.concat(self.eventKeys);
+			// 	self.l1SubInterest.arr = [];
+
+			// 	var interestItems = _.filter(_scope.clickedItems, 'level1', interest );
+			// 	_.forEach(interestItems, function (arr) {
+			// 		var nodeId = arr.id;
+			// 		if (isActualNumber(nodeId)) {
+			// 			var foundClass = findDeep(allKeys, nodeId);
+			// 			var foundClassKeywordsArray = foundClass.Keywords.toLowerCase().split(',');
+			// 			var filteredNavs = filterList(self.navsDict[interest], foundClassKeywordsArray);
+			// 			var classInfoObjArray = addToArray(nodeId, filteredNavs);
+			// 			self.origClassInfoArray = self.origClassInfoArray.concat(classInfoObjArray);
+			// 		}
+			// 		if (!_.contains(self.l1SubInterest.arr, interest)){
+			// 			self.l1SubInterest.arr.push(interest);
+			// 		}
+			// 	});
+			// 	self.reduceList();
+			// };
+
+			var filterList = function (navArr, foundClassKeywordsArray) {
+				var filteredNavs = _.filter(navArr, function (navs) {
+					var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
+						return catprod.keyword.toLowerCase();
+					});
+					var filtered = _.filter(foundClassKeywordsArray, function(keyword){
+						return navKeywords.indexOf(keyword) != -1;
+					});
+					return filtered.length === foundClassKeywordsArray.length;
+				});
+				return filteredNavs;
+			};
+
+			var formatDataFromJson = function (arr, nodeId){
+				var prodNo = arr.ProductionSeasonNumber === 0 ? arr.PackageNo : arr.ProductionSeasonNumber;
+				var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
+				var itemTypes = _.remove(keyWords, function (n) { 
+					return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
+				});
+				var itemType = itemTypes.length ? itemTypes[0] : "";
+				var mainImage = arr.MainImage;
+				var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
+				var startDate;
+				var begDate = arr.NextPerformanceDateTime || arr.FirstDate;
+				begDate = new Date(parseInt(begDate.substr(6)));
+				var yearNumber = begDate.getFullYear();
+
+				var multDates = arr.IsMultipleDatesTimes;
+				if (multDates){
+					startDate = "Multiple dates/times";
+				}else{
+					startDate = formatDateOutput(begDate);
+				}
+
+				var sortDate1 = "";
+				var sortDate2 = "";
+				var warning = arr.ProdStatus;
+				if (begDate < new Date() || warning.length){
+					sortDate2 = begDate;
+					//10 is an arbirtary number to set the secondary sorting
+					sortDate1 = begDate.setFullYear(yearNumber + 10);
+					startDate = "";
+				}else{
+					sortDate1 = begDate;
+					sortDate2 = "";
+				}
+
+				var shortDescription = arr.ShortDesc;
+				var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
+				var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
+					return arr.Instructor_name.replace(/\s{2,}/g, ' ');
+				});
+				var teachers = instructors.toString();
+				var futurePerfCount = Number(arr.FuturePerformanceCount);
+
+				if (isActualNumber(futurePerfCount) && futurePerfCount > 0){
+					shortDesc += "<br/><b>Starting From:</b>  "+ arr.LowestPrice;
+					var performances = arr.FuturePerformances;
+					_.forEach(performances, function(p, ind) {
+						var perfDate = p.perf_dt;
+						perfDate = new Date(parseInt(perfDate.substr(6)));
+						var futureDate = formatDateOutput(perfDate);
+						if (ind === 0){
+							shortDesc += "<br/><b>Upcoming Dates:</b><br/>"+ futureDate;
+						}else{
+							if (ind >= 3){
+								shortDesc += "<br/>And "+ (futurePerfCount - 3) +" more";
+								return false;
+							}
+							shortDesc += "<br/>"+ futureDate;
+						}
+					});
+				}
+				shortDesc += "<br/><a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>";
+				var classInfoObj = {
+					Title: arr.Title,
+					KeyWord: keyWords,
+					ProdNo: prodNo,
+					NodeID: nodeId,
+					Desc: shortDesc,
+					Img: image,
+					FriendlyDate: startDate,
+					SortDate1: sortDate1,
+					SortDate2: sortDate2,
+					Url: arr.URL,
+					Warning: warning,
+					ItemType: itemType
+				};
+				return classInfoObj;
+			}
+
+			var formatDateOutput = function (uglyDate) {
+				var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+				var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+				var dateHour = uglyDate.getHours();
+				var yearNumber = uglyDate.getFullYear();
+				var ampm = dateHour < 12 ? "AM" : "PM";
+				if (dateHour == 0){
+					dateHour = 12;
+				}
+				if (dateHour > 12){
+					dateHour = dateHour - 12;
+				}
+				var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ uglyDate.getMinutes() : "";
+				var prettyDate = dayAbbr[uglyDate.getDay()] +", "+ monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
+				return prettyDate;
+			}
 
 			var TileInfoService = function (http) {
 				var self = this;
@@ -809,12 +1162,21 @@
 			};
 			navApp.service('tileInfoSrv', TileInfoService);
 
-			NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage'];
+			NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage', '$window'];
 			navApp.controller('NavListController', NavListController);
 
 			// navApp.config(function($locationProvider) {
 			// 	$locationProvider.html5Mode(true).hashPrefix('!');
 			// })
+
+			navApp.directive('getBodyDimensions', function () {
+				function link(scope) {
+					resizeTileDisplay(scope);
+				}
+				return {
+					link: link
+				};
+			});
 
 			navApp.filter('unsafe', function($sce) {
 				return function(val) {
@@ -823,6 +1185,23 @@
 			});
 
 		})();
+
+		var resizeTileDisplay = function (scope) {
+			var tileWidth = 320;
+			var pageWidth = _.isUndefined(window.outerWidth) ? $(window).width() : window.outerWidth;
+
+			var numColumns = Math.floor(pageWidth / tileWidth);
+
+			var headerHeight = 274;
+			var tileHeight = 360;
+			var pageHeight = $(window).height();
+			var pageHeightWithoutHeader = pageHeight - headerHeight;
+			var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
+
+			var limitToSet = numColumns * numRows;
+			scope.navListCtrl.limit = limitToSet;
+			scope.navListCtrl.numOfColumns = numColumns;
+		}
 
 		var adjustLevelArray = function (arr, start, end) {
 			for (var x = start; x <= end; x++){
@@ -835,9 +1214,40 @@
 			return !isNaN(parseFloat(num)) && isFinite(num);
 		};
 
+		$(document).on('click','.showMore',function(){
+			var $showMore = $(this).parent(".getMore");
+			var $wrapper = $showMore.next(".contentWrap");
+			var $classTitle = $showMore.prevAll(".classTitle");
+			var $classDate = $showMore.prevAll(".classDate");
+			var $warning = $showMore.prevAll(".warning");
+			var $content = $wrapper.find("div");
+			var titleHeight = $classTitle.height();
+			var warnHeight = $warning.height();
+			$wrapper.children(".shortDescription").css("height", 210 - titleHeight - warnHeight+"px");
+			if($wrapper.css("bottom") == "144px") {
+				$wrapper.animate({bottom: "5px"});
+				$classTitle.animate({bottom: "0"});
+				$classDate.animate({bottom: "0"});
+				$warning.animate({bottom: "0"});
+				$content.slideUp(function () {
+					$showMore.html($showMore.html().replace("Show Less ▼", "Show More ▲"));
+				});
+			} else {
+				$wrapper.css( "bottom", "5px" );
+				$wrapper.animate({bottom: "144px"});
+				$classTitle.animate({bottom: "144px"});
+				$classDate.animate({bottom: "144px"});
+				$warning.animate({bottom: "144px"});
+				$content.slideDown(function () {
+					$showMore.html($showMore.html().replace("Show More ▲", "Show Less ▼"));
+				});
+			}
+			return false;
+		});
+
 		</script>
 	</head>
-	<body ng-controller="NavListController as navListCtrl">
+	<body ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
 		<header class="header navbar">
 			<div class="container">
@@ -934,6 +1344,33 @@
 				</div>
 			</div>
 		</section>
+
+<!--todo:  try to see what's up with ff and why there are gaps -->
+		<div id="Container" class="tileContainer">
+			<div id="tiles">
+				<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" masonry='{ "columnWidth": 300, "isFitWidth": true, "gutter": 18 }'>
+					<span ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick">
+						<div>
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+								<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+							</a>
+						</div>
+						<div class="classTitle">
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+						</div>
+						<div class="classDate">{{classInfo.FriendlyDate}}</div>
+						<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+						<div class="getMore">
+							<span class="showMore">Show More ▲</span><br />
+						</div>
+						<div class="contentWrap">
+							<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
+
 
 	</body>
 </html>
