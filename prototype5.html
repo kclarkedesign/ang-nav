@@ -216,6 +216,10 @@
 		a {
 			cursor: pointer;
 		}
+		#breadcrumb-content {
+
+			border-bottom: 1px solid #bdc3c7;
+		}
 		.breadcrumb {
 			background: transparent;
 			padding: 0;
@@ -239,6 +243,9 @@
 			display: block;
 			font-size: 12px;
 			font-weight: bold;
+			-webkit-transition: all .2s ease;
+			-moz-transition: all .2s ease;
+			transition: all .2s ease;
 		}		
 		.browse-item a:hover {
 			background-color: #D8ECFD;
@@ -572,12 +579,11 @@
 		}
 
 		.selections {
-		  padding: 10px;
 		  overflow: hidden;
 		}
 		.selections a {
 			float: left;
-			padding: 4px;
+			padding: 4px 16px;
 			/*width: 100%;*/
 			font-size: 13px;
 			cursor: pointer;
@@ -871,7 +877,12 @@
 							<div id="filter-container" class="container">
 								<section class="">
 									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-2">
+											<div class="rowHeading">
+												Interest Area
+											</div>
+										</div>
+										<div class="col-md-10">
 											<div class="">
 												<div class="selections">
 													<a class="">Talks</a>
@@ -888,22 +899,25 @@
 										</div>
 									</div>
 								</section>
-								<section id="breadcrumb-content" class="col-xs-12 col-sm-5 col-md-5 no-p">
-									<ol class="breadcrumb mb10">
+								<section id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
+									<ol class="breadcrumb mb5">
 										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
-											<a ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
 										</li>
-										<li class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></li>
 									</ol>
-									<button ng-click="navListCtrl.saveSearch()">Save Search</button>
+								</section>
+								<section id="" class="col-xs-12 col-sm-5 col-md-6 no-p">
+									<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+									<a ng-click="navListCtrl.saveSearch()"><i class="fa fa-heart"></i></a>
+
 									<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
 										<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
 										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
 									</div>
 								</section>
-								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-7 col-md-pull-0 no-p">
+								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 no-p">
 									<span class="">
-										<span class="browse-item col-xs-12 col-sm-6 col-md-4" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+										<span class="browse-item col-xs-12 col-sm-6 col-md-4 pl0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 										</span>
 									</span>
