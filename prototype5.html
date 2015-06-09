@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="artNavApp">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- 		<base href="/prototype5.html"> -->
 		<link rel="stylesheet" href="/css/font-awesome.css" />
   		<link rel="stylesheet" href="/css/themify-icons.css" />
@@ -17,148 +18,142 @@
 		 * Updated NAV
 		 *
 		 */
-		 a:visited, a:active, a:focus, a:hover {
-		 	text-decoration: none;
-		 	outline: 0;
-		 }
-		 .center {
-		 	text-align: center;
+		a:visited, 
+		a:active, 
+		a:focus, 
+		a:hover {
+			text-decoration: none;
+			outline: 0;
 		}
-		 #hor-menu {
-		 	width: 100%;
-		 	background: #fff;
-		 	border-bottom: 1px solid #000000;
-		 }
-		 .header {
-		 	background-color: #000000;
-		 }
-		 .header {
-		 	min-height: 50px;
-		 	z-index: 1000;
-		 	border-radius: 0;
-		 	border: 0;
-		 	margin: 0;
-		 }
-		/*.top-nav {
-		  width: 100%;
-		  background-color: #000000;
-		  position: fixed;
-		  }*/
-		  header .bottom-nav {
-		  	background: #ccc;
-		  	position: relative;
-		  }
-		  .header .navbar-nav {
-		  	margin: 0;
-		  }
-		  .header .brand .navbar-brand {
-		  	font-size: 14px;
-		  	font-weight: 600;
-		  	padding-top: 0;
-		  	padding-bottom: 0;
-		  	line-height: 50px;
-		  }
-		  .header .brand .navbar-brand img {
-		  	max-height: 25px;
-		  	margin-right: 5px;
-		  	margin-top: -5px;
-		  }
-		  .header .nav>li>a:hover, 
-		  .header .nav>li>a:focus, 
-		  .header .nav .open>a, 
-		  .header .nav .open>a:hover, 
-		  .header .nav .open>a:focus {
-		  	background-color: #e4e4e4;
-		  }
-		  #utilnav {
-		  	display: inline-block;
-		  	padding: 0 10px;
-		  }
-		  #utilnav ul {
-		  	list-style: none;
-		  	color: #4076bb;
-		  	font-size: 11px;
-		  	font-weight: bold;
-		  	line-height: 48px;
-		  	white-space: nowrap;
-		  	margin: 0 auto;
-		  	padding: 0;
-		  	font-family: arial, sans-serif;
-		  }
-		  #utilnav ul li {
-		  	display: inline;
-		  	margin: 0;
-		  	padding: 0 7px 0 9px;
-		  	border-left: 1px solid #fff;
-		  }
-		  #utilnav ul li:first-child {
-		  	padding: 0 7px 0 0;
-		  	border: 0;
-		  }
-		  #utilnav ul li a {
-		  	color: #fff;
-		  	text-decoration: none;
-		  }
-		  #utilnav ul li span.greeting {
-		  	margin-right: 12px;
-		  	color: #70a0eb;
-		  }
-		  .navbar {
-		  	margin-bottom: 0;
-		  	border-radius: 0;
-		  	position: relative;
-		  	top: 0;
-		  	width: 100%;
-		  	z-index: 1001;
-		  	margin: -1px;
-		  }
-		  .nav>li>a:hover,
-		  .nav>li>a:focus {
-		  	background-color: transparent;
-		  	/*color: #fff;*/
-		  }
-		  .nav>li {
-		  	margin: 0;
-		  }
-		  #sidebar-wrapper {
-		  	background: #252A31;
-		  }
-		  .filter-menu {
-		  	position: fixed;
-		  	z-index: 10;
-		  }
-		  #menu-container {
-		  	position: fixed;
-		  	z-index: 1001;
-		  }
-		  @media (max-width: 767px) {
-		  	.header {
-		  		width: 100%;
-		  	}
-		  	.layout, .header {
-		  		-webkit-backface-visibility: hidden;
-		  		position: relative;
-		  		width: 100%;
-		  		-webkit-transition: -webkit-transform 300ms ease 0s;
-		  		transition: transform 300ms ease 0s;
-		  	}
-		  	.header.header-fixed {
-		  		position: fixed;
-		  		width: 100%;
-		  		top: 0;
-		  	}
-		  	.header>.brand {
-		  		width: 100%;
-		  		text-align: center;
-		  	}
-		  	.header .brand .navbar-brand {
-		  		display: inline-block;
-		  		float: none;
-		  		text-align: center;
-		  	}
-		  	.header .brand .navbar-brand {
-				/*padding-top: 4px;
-				line-height: 29px;*/
+		.center {
+			text-align: center;
+		}
+		#hor-menu {
+			width: 100%;
+			background: #fff;
+			border-bottom: 1px solid #000000;
+		}
+		.header {
+			background-color: #000000;
+		}
+		.header {
+			min-height: 50px;
+			z-index: 1000;
+			border-radius: 0;
+			border: 0;
+			margin: 0;
+		}
+		header .bottom-nav {
+			background: #ccc;
+			position: relative;
+		}
+		.header .navbar-nav {
+			margin: 0;
+		}
+		.header .brand .navbar-brand {
+			font-size: 14px;
+			font-weight: 600;
+			padding-top: 0;
+			padding-bottom: 0;
+			line-height: 50px;
+		}
+		.header .brand .navbar-brand img {
+			max-height: 25px;
+			margin-right: 5px;
+			margin-top: -5px;
+		}
+		.header .nav>li>a:hover, 
+		.header .nav>li>a:focus, 
+		.header .nav .open>a, 
+		.header .nav .open>a:hover, 
+		.header .nav .open>a:focus {
+			background-color: #e4e4e4;
+		}
+		#utilnav {
+			display: inline-block;
+			padding: 0 10px;
+		}
+		#utilnav ul {
+			list-style: none;
+			color: #4076bb;
+			font-size: 11px;
+			font-weight: bold;
+			line-height: 48px;
+			white-space: nowrap;
+			margin: 0 auto;
+			padding: 0;
+			font-family: arial, sans-serif;
+		}
+		#utilnav ul li {
+			display: inline;
+			margin: 0;
+			padding: 0 7px 0 9px;
+			border-left: 1px solid #fff;
+		}
+		#utilnav ul li:first-child {
+			padding: 0 7px 0 0;
+			border: 0;
+		}
+		#utilnav ul li a {
+			color: #fff;
+			text-decoration: none;
+		}
+		#utilnav ul li span.greeting {
+			margin-right: 12px;
+			color: #70a0eb;
+		}
+		.navbar {
+			margin-bottom: 0;
+			border-radius: 0;
+			position: relative;
+			top: 0;
+			width: 100%;
+			z-index: 1001;
+			margin: -1px;
+		}
+		.nav>li>a:hover, 
+		.nav>li>a:focus {
+			background-color: transparent;
+		}
+		.nav>li {
+			margin: 0;
+		}
+		#sidebar-wrapper {
+			background: #252A31;
+		}
+		.filter-menu {
+			position: fixed;
+			z-index: 10;
+		}
+		#menu-container {
+			position: fixed;
+			z-index: 1001;
+		}
+		@media (max-width: 767px) {
+			.header {
+				width: 100%;
+			}
+			.layout, 
+			.header {
+				-webkit-backface-visibility: hidden;
+				position: relative;
+				width: 100%;
+				-webkit-transition: -webkit-transform 300ms ease 0s;
+				transition: transform 300ms ease 0s;
+			}
+			.header.header-fixed {
+				position: fixed;
+				width: 100%;
+				top: 0;
+			}
+			.header>.brand {
+				width: 100%;
+				text-align: center;
+			}
+			.header .brand .navbar-brand {
+				display: inline-block;
+				float: none;
+				text-align: center;
 			}
 			.header .off-left {
 				position: absolute;
@@ -222,8 +217,8 @@
 			cursor: pointer;
 		}
 		.breadcrumb {
-  			background: transparent;
-  			padding: 0;
+			background: transparent;
+			padding: 0;
 		}
 		.breadcrumb a {
 			font-size: 12px;
@@ -253,11 +248,11 @@
 		}
 		.defaultBc,
 		.current {
-  			font-size: 22px;
-  			font-weight: bold;
+			font-size: 22px;
+			font-weight: bold;
 		}
 		.main-content .content-wrap .wrapper {
-  			padding: 15px;
+			padding: 15px;
 		}
 
 		.tabs-left .nav-tabs {
@@ -633,368 +628,177 @@
 			
 		}
 
+		/**
+		 * Container/Target Styles
+		 */
+
+		#isoContainer {
+			margin: 0 auto;
+		}
+
+		#isoContainer:before, 
+		#isoContainer:after {
+			content: "";
+			display: table;
+		}
+
+		.tileContainer .mixFirst {
+			width: 100px;
+			display: block;
+			position: absolute;
+			top: 0;
+		}
+		.tileContainer .gap {
+			width: 100px;
+			display: inline-block;
+			position: relative;
+		}
+		.tileContainer .mixFirst {
+			vertical-align: top;
+			width: 300px;
+			height: 340px;
+			background: white;
+			color: #515151;
+			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+			-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+		}
+		.tileContainer .gap {
+			width: 300px;
+			margin: 1% 0 1% 0;
+			background: transparent;
+		}
+
+		.itemBox { 
+			margin-bottom: 20px;
+		}
+		.getMore{
+			bottom: 0;
+			position: absolute;
+			text-align: center;
+			width: 300px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 10px;
+			background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
+		}
+		.showMore {
+			cursor: pointer;
+			font-size: 11px;
+			padding: 4px 8px;
+			display: inline-block;
+			background: #ffffff;
+			border-radius: 4px;
+			width: 75px;
+			transition: .1s linear;
+		}
+		.showMore:hover {
+			background: #E8E8E8;
+			transition: .1s linear;
+		}
+		.learnMore {
+			position: relative;
+			text-align: right;
+			padding: 2px 8px 5px 5px;
+		}
+		.learnMore a {
+			color: #515151;
+			display: block;
+			font-weight: normal;
+			padding: 2px;
+			width: 100%;
+		}
+		.learnMore a:hover {
+			color: #888888;
+			text-decoration: none;
+		}
+		.learnMore a:visited, 
+		.learnMore a:focus {
+			text-decoration: none;
+		}
+		.contentWrap{
+			bottom: 0;
+			position: relative;
+			background: #ffffff;
+		}
+		.shortDescription {
+			position: relative;
+			width: 100%;
+			height: 190px;
+			display: none;
+			padding: 6px 14px 0;
+			box-sizing: border-box;
+			font-size: 12px;
+			line-height: 19px;
+			text-align: left;
+			overflow-y: auto;
+		}
+		.shortDescription span {
+			font-size: 12px !important;
+		}
+		.classTitle, 
+		.classDate, 
+		.warning {
+			padding: 4px 14px 0;
+			position: relative;
+			background-color: white;
+			line-height: 16px;
+		}
+		.classTitle {
+			text-align: left;
+			font-weight: bold;
+			font-size: 14px;
+			padding-top: 8px;
+			line-height: 17px;
+		}
+		.classDate {
+			font-size: 12px;
+			padding-top: 2px;
+			position: relative;
+			text-align: left;
+		}
+		.warning {
+			text-align: left;
+			font-size: 12px;
+			color: red;
+			font-size: 12px;
+			padding-bottom: 3px;
+		}
+		.warning h4 {
+			font-size: 12px;
+		}
+		.warning > :first-child { 
+			margin: 0;
+		}
+		.defaultText { 
+			width: 300px; 
+		}
+		.defaultTextActive { 
+			color: #a1a1a1; 
+		}
+
+		/* masonry styling - important is for fouc protection */
+		.masonry-brick {
+			display: none !important;
+		}
+
+		.masonry-brick.loaded {
+			display: block !important;
+		}
 
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
+		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+		<script src="/src/angular-masonry.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.0/lodash.min.js"></script>
 		<script src="/src/angularLocalStorage.js"></script>
-		<script type='text/javascript'>
-		(function () {
-			'use strict';
-			var __startingLevel = 0;
-			var __maxLevel = 0;
-			var __initializing = true;
-
-			var navApp = angular.module('artNavApp', ['angularLocalStorage']);
-			var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage) {
-				var self = this;
-				var classesByInterest = [];
-				self.arrCategory = [];
-				self.location = $location;
-				self.JumpNav = {};
-				self.navsDict = {};
-				self.onscreenResults = [];
-
-				storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
-
-				self.tileInfoSrv = tileInfoSrv;
-				self.tileInfoSrv.getAllClasses().then(function (data) {
-					classesByInterest.push(data.data[5]);
-					self.getValues(classesByInterest, 0);
-					self.buildCurrentObj();
-				});
-
-				self.tileInfoSrv.getSOAItems().then(function (items) {
-					self.onscreenResults = self.navsDict["School of the Arts"] = items.data;
-				});
-
-
-
-
-
-
-
-
-
-
-
-
-				$scope.$watch(function () {
-					return self.location.path();
-				}, function (){
-					if (__initializing) {
-						$timeout(function() { __initializing = false; });
-					} else {
-						var locationPath = self.location.path();
-						var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
-
-						//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
-						switch (self.JumpNav.Type) {
-							case 'linkTo':
-								// if child link on right side clicked
-								var cloneCurrentObj = {
-									Level: self.currentObj.Level,
-									Name: self.currentObj.Name,
-									NodeID: self.currentObj.NodeID,
-									Current: self.currentObj.Current
-								};
-								var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
-								lastCurrent.Current = false;
-								self.activeBreadcrumb.push(cloneCurrentObj);
-								break;
-							case 'linkBack':
-								// if link in active breadcrumb is clicked
-								var lastLocationPath = self.lastLocationPath;
-								var numOfSlashesLastLocation = (lastLocationPath.match(/\//g) || []).length;
-
-								if (locationPath === '/') {
-									self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
-								}else{
-									for (var x = 0; x < numOfSlashesLastLocation - numOfSlashesLocation; x++){
-										self.activeBreadcrumb.pop();
-									}
-								}
-								var nextCurrent = _.last(self.activeBreadcrumb);
-								nextCurrent.Current = true;
-								break;
-							case 'jumpTo':
-								// if link in saved breadCrumb is clicked
-								if (locationPath === '/') {
-									self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
-								}else{
-									for (var x = self.activeBreadcrumb.length - 1; x >= 0; x--){
-										var breadCrumb = self.activeBreadcrumb[x];
-										if (breadCrumb.NodeID === self.currentObj.NodeID) {
-											break;
-										}
-										self.activeBreadcrumb.pop();
-									}
-								}
-								var nextCurrent = _.last(self.activeBreadcrumb);
-								nextCurrent.Current = true;
-								break;
-							default:
-								// if browser back and forward buttons used for unpredictable jumps
-								self.buildCurrentObj();
-								break;
-						}
-                        self.lastLocationPath = locationPath;
-                        self.JumpNav = {};
-					}
-				});
-			};
-
-			NavListController.prototype.buildCurrentObj = function () {
-				var self = this;
-				var locationPath = self.location.path();
-				if (locationPath.length > 0 && locationPath !== '/') {
-					self.lastLocationPath = locationPath;
-					var subfolders = locationPath.split('/');
-					var findChild, foundChildParent, findObj, foundChild;
-					self.activeBreadcrumb = [];
-					_.forEachRight(subfolders, function (folder, index) {
-						if (folder.length > 0) {
-							if (_.isUndefined(foundChildParent)){
-								if (index === 1){
-									//if this is only one level above then we can safely assume there are no duplicate children
-									findObj = { 'Name': folder };
-								}else{
-									//this is to safeguard against multiple children of the same name
-									var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
-									var findAllPossibleParents = _.where(self.arrCategory[index-1], { 'Name': subfolders[index-1] });
-									_.forEach(findAllPossibleChildren, function (kids, index) {
-										var parentId = kids.Parent;
-										var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
-										if (foundParent.length > 0){
-											foundChildParent = foundParent[0].NodeID;
-											return false;
-										}
-									});
-									findObj = { 'Name': folder, Parent: foundChildParent };
-								}
-							}else{
-								findObj = { 'Name': folder, NodeID: foundChildParent };
-							}
-							findChild = _.where(self.arrCategory[index], findObj);
-							foundChild = findChild[0];
-							foundChildParent = foundChild.Parent;
-							foundChild = _.clone(foundChild);
-							delete foundChild.Parent;
-
-							if (index === (subfolders.length - 1)){
-								foundChild.Current = true;
-								self.currentObj = _.clone(foundChild);
-							}	
-						}else{
-							foundChild = {
-								Level: 0,
-								Name: 'School of the Arts',
-								NodeID: 3446,
-								Current: false
-							};
-						}
-						self.activeBreadcrumb.push(_.clone(foundChild));
-					});
-					self.activeBreadcrumb.reverse();
-				}else{
-					self.currentObj = {
-						Level: 0,
-						Name: 'School of the Arts',
-						NodeID: 3446,
-						Current: true
-					};
-					self.activeBreadcrumb = [ _.clone(self.currentObj) ];
-					self.lastLocationPath = '';
-				}
-			};
-
-			NavListController.prototype.setCurrent = function (currentId, parentIndex) {
-				var self = this;
-				var currentName, currentLevel, currentNode, jumpType, currentIndex;
-				var urlMethod = 'default';
-				if (isActualNumber(currentId)){
-					if (_.isUndefined(parentIndex)) {
-						jumpType = 'linkBack';
-						urlMethod = 'parse';
-					}else{
-						var pastSearch = self.savedSearches[parentIndex];
-						//prevent multiple clicks to same link
-						if (pastSearch[currentId].NodeID === self.currentObj.NodeID){
-							return;
-						}
-						self.activeBreadcrumb = _.clone(pastSearch);
-						jumpType = 'jumpTo';
-						urlMethod = 'build';
-						currentIndex = currentId;
-					}
-					var breadCrumb = self.activeBreadcrumb[currentId];
-					currentName = breadCrumb.Name;
-					currentLevel = breadCrumb.Level;
-					currentNode = breadCrumb.NodeID;
-				}else{
-					var subLevel = currentId;
-					currentName = subLevel.Name;
-					currentLevel = self.currentObj.Level + 1;
-					currentNode = subLevel.NodeID;
-					jumpType = 'linkTo';
-				}
-				self.currentObj.Level = currentLevel;
-				self.currentObj.Name = currentName;
-				self.currentObj.NodeID = currentNode;
-				self.JumpNav = { To: currentName, Type: jumpType };
-				self.setUrl(currentIndex || currentName, urlMethod);
-			};
-
-			NavListController.prototype.setUrl = function (currentId, urlMethod) {
-				var self = this;
-				var location = self.location;
-				var locationPath = location.path();
-
-				if (!isActualNumber(currentId)){
-					//protect against any links with a forward-slash, like Beginner/Advanced
-					//this is so the slash doesn't get interpreted as another level
-					currentId = currentId.replace(/\//,'%2F');
-				}
-				switch (urlMethod) {
-					case 'parse':
-						if (currentId === 'School of the Arts'){
-							locationPath = '';
-						}else{
-							var folderPosition = locationPath.indexOf('/'+ currentId +'/');
-							locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
-						}
-						location.path(locationPath);
-						break;
-					case 'build':
-						var newLocation = '';
-						for (var x = 1; x <= currentId; x++) {
-							newLocation += ('/' + self.activeBreadcrumb[x].Name);	
-						}
-						location.path(newLocation === '' ? '/'+ newLocation : newLocation);
-						break;
-					default:
-						if (locationPath === '/'){
-							locationPath = '';
-						}
-						location.path(locationPath + '/'+ currentId);	
-				}
-			};
-
-			NavListController.prototype.getValues = function (nodes, level) {
-				var self = this;
-				var tempArr = [];
-				_.forEach(nodes, function (node){
-					if ((node.ChildNode.length === 0 && node.Keywords.length > 0) || node.ChildNode.length > 0){
-
-						tempArr.push({ 
-							Name: node.Name.trim(), 
-							NodeID: node.NodeID, 
-							Level: level, 
-							Parent: node.ParentNodeID, 
-							KeyWords: node.Keywords 
-						});
-						if (level > __maxLevel){
-							__maxLevel = level;
-						}
-						if (node.ChildNode.length > 0){
-							var childNodeValue = self.getValues(node.ChildNode, ++level);
-							if (!childNodeValue){
-								tempArr.pop();
-							}
-							--level;
-						}
-					}
-				});
-				if (tempArr.length === 0){
-					return false;
-				}
-				if (__startingLevel < __maxLevel){
-					__startingLevel = adjustLevelArray(self.arrCategory, __startingLevel, __maxLevel);
-				}
-				self.arrCategory[level] = self.arrCategory[level].concat(tempArr);
-				return true;
-			};
-
-			NavListController.prototype.getBreadcrumbs = function (last) {
-				var self = this;
-				return last ? _.last(self.activeBreadcrumb) : _.initial(self.activeBreadcrumb);
-			};
-
-			NavListController.prototype.saveSearch = function () {
-				var self = this;
-				var breadcrumbToAdd = _.clone(self.activeBreadcrumb);
-				var crumbToCheck = _.last(breadcrumbToAdd);
-				var isCrumbAlreadySaved = false;
-				_.forEach(self.savedSearches, function (ss) {
-					var searchToCheck = _.last(ss);
-					if (searchToCheck.NodeID === crumbToCheck.NodeID){
-						isCrumbAlreadySaved = true;
-						return false;
-					}
-				});
-				if (!isCrumbAlreadySaved){
-					self.savedSearches.push(_.clone(self.activeBreadcrumb));	
-				}
-			};
-
-			NavListController.prototype.deleteSavedSearch = function (index) {
-				var self = this;
-				self.savedSearches.splice(index, 1);
-			};
-
-
-			var TileInfoService = function (http) {
-				var self = this;
-				self.http = http;
-			};
-			TileInfoService.$inject = ['$http'];
-
-			TileInfoService.prototype.getAllClasses = function () {
-				var self = this;
-				return self.http.get('arc-response_AllClasses.json').success(function (data) {
-					return data;
-				});
-			};
-			TileInfoService.prototype.getSOAItems = function () {
-				var _this = this;
-				return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
-					return data;
-				});
-			};
-			navApp.service('tileInfoSrv', TileInfoService);
-
-			NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage'];
-			navApp.controller('NavListController', NavListController);
-
-			// navApp.config(function($locationProvider) {
-			// 	$locationProvider.html5Mode(true).hashPrefix('!');
-			// })
-
-			navApp.filter('unsafe', function($sce) {
-				return function(val) {
-					return $sce.trustAsHtml(val);
-				};
-			});
-
-		})();
-
-		var adjustLevelArray = function (arr, start, end) {
-			for (var x = start; x <= end; x++){
-				arr[x] = [];
-			}
-			return end;
-		}
-
-		var isActualNumber = function (num) {
-			return !isNaN(parseFloat(num)) && isFinite(num);
-		};
-
-		</script>
+		<script src="/src/ng-infinite-scroll.min.js"></script>
+		<script src="/src/navControllers5.js"></script>
 	</head>
-	<body ng-controller="NavListController as navListCtrl">
+	<body ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
 		<header class="header navbar">
 			<div class="container">
@@ -1110,6 +914,32 @@
 				</div>
 			</div>
 		</section>
+
+<!--todo:  try to see what's up with ff and why there are gaps -->
+		<div id="Container" class="tileContainer">
+			<div id="tiles">
+				<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 300, "isFitWidth": true, "gutter": 18 }'>
+					<span ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick">
+						<div>
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+								<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+							</a>
+						</div>
+						<div class="classTitle">
+							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+						</div>
+						<div class="classDate">{{classInfo.FriendlyDate}}</div>
+						<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+						<div class="getMore">
+							<span class="showMore">Show More ▲</span><br />
+						</div>
+						<div class="contentWrap">
+							<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
 
 	</body>
 </html>
