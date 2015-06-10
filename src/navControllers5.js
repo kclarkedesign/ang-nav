@@ -558,7 +558,7 @@ $(document).on('click','.showMore',function(){
 	var $content = $wrapper.find("div");
 	var titleHeight = $classTitle.height();
 	var warnHeight = $warning.height();
-	$wrapper.children(".shortDescription").css("height", 210 - titleHeight - warnHeight+"px");
+	$wrapper.children(".shortDescription").css("height", 180 - titleHeight - warnHeight+"px");
 	if($wrapper.css("bottom") == "144px") {
 		$wrapper.animate({bottom: "5px"});
 		$classTitle.animate({bottom: "0"});

@@ -239,7 +239,7 @@
 			content: "\f105\00a0";
 			font-family: FontAwesome;
 		}
-		.browse-item a {
+		/*.browse-item a {
 			padding: 2px 5px;
 			display: block;
 			font-size: 12px;
@@ -247,16 +247,44 @@
 			-webkit-transition: all .2s ease;
 			-moz-transition: all .2s ease;
 			transition: all .2s ease;
-		}		
+		}*/
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		}*/
+		.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		  box-sizing: border-box;
+		  border-bottom: 1px solid #fff;
+		}	
+		/*.browse-item a:hover {
+			background-color: #D8ECFD;
+		}*/
 		.browse-item a:hover {
 			background-color: #D8ECFD;
+			border-bottom: 1px solid #ccc;
 		}
 		.current {
 			font-weight: bold;
 		}
 		.defaultBc,
 		.current {
-			font-size: 3rem;
+			font-size: 4.8rem;
   			font-weight: bold;
   			line-height: 1.1;
 		}
@@ -322,6 +350,10 @@
 			border-bottom-left-radius: 2px;
 			border-bottom-right-radius: 2px;
 			overflow: hidden;
+		}
+		#current-interest .save-link {
+  			vertical-align: 10px;
+  			font-size: 22px;
 		}
 
 		/*
@@ -797,7 +829,11 @@
 		.masonry-brick.loaded {
 			display: block !important;
 		}
-
+		@media (max-width: 768px) {
+			#current-interest {
+				text-align: center;
+			}
+		}
 		@media (min-width: 468px) and (max-width: 768px) {
 			.itemBox img {
 				width: 300px;
@@ -892,29 +928,31 @@
 		</header>
 		<section class="container-fluid">
 			<div class="row">
-				<div class="filter-content container pl10 pr10 mb25">
-					<div class="">
-						<div class="col-md-2">
-							<div class="rowHeading">
-								Interest Area
-							</div>
+				<div class="container pl10 pr10 mt25 mb25">
+					<div class="col-md-2">
+						<div class="rowHeading">
+							Interest Area
 						</div>
-						<div class="col-md-10">
-							<div class="">
-								<div class="selections">
-									<a class="">Talks</a>
-									<a class="">Camps &amp; After School</a>
-									<a class="">Continuing Education &amp; Enrichment</a>
-									<a class="">Parenting &amp; Early Childhood</a>
-									<a class="">Health &amp; Fitness</a>
-									<a class="">Jewish Life</a>
-									<a class="">Concerts &amp; Performances</a>
-									<a class="">School of the Arts</a>
-									<a class="">Literary</a>
-								</div>
+					</div>
+					<div class="col-md-10">
+						<div class="">
+							<div class="selections">
+								<a class="">Talks</a>
+								<a class="">Camps &amp; After School</a>
+								<a class="">Continuing Education &amp; Enrichment</a>
+								<a class="">Parenting &amp; Early Childhood</a>
+								<a class="">Health &amp; Fitness</a>
+								<a class="">Jewish Life</a>
+								<a class="">Concerts &amp; Performances</a>
+								<a class="">School of the Arts</a>
+								<a class="">Literary</a>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="filter-content container pl10 pr10 mb25">
 					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
 						<ol class="breadcrumb mb5">
 							<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
@@ -923,16 +961,17 @@
 						</ol>
 					</div>
 					<div id="filter-container">
-						<div id="current-interest" class="col-xs-12 col-sm-5 col-md-6 no-p">
+						<!--<div id="current-interest" class="col-xs-12 col-sm-5 col-md-6 no-p">-->
+						<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p">
 							<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
-							<a ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
+							<a class="save-link" ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
 
 							<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
 								<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
 								<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
 							</div>
 						</div>
-						<div id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 no-p">
+						<div id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 mt10 pt10 pl0">
 							<span class="">
 								<span class="browse-item col-xs-12 col-sm-6 col-md-4 pl0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 									<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
@@ -953,17 +992,18 @@
 									<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
 										<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 									</a>
-									
-									<div class="classTitle">
-										<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
-									</div>
-									<div class="classDate">{{classInfo.FriendlyDate}}</div>
-									<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-									<div class="getMore">
-										<span class="showMore">Show More ▲</span><br />
-									</div>
-									<div class="contentWrap">
-										<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+									<div class="item-details">
+										<div class="classTitle">
+											<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+										</div>
+										<div class="classDate">{{classInfo.FriendlyDate}}</div>
+										<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+										<div class="getMore">
+											<span class="showMore">Show More ▲</span><br />
+										</div>
+										<div class="contentWrap">
+											<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+										</div>
 									</div>
 								</div>
 							</div>
