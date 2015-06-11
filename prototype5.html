@@ -26,13 +26,16 @@
 			text-decoration: none;
 			outline: 0;
 		}
+		body {
+		  position: relative;
+		}
 		.center {
 			text-align: center;
 		}
 		#hor-menu {
 			width: 100%;
 			background: #fff;
-			border-bottom: 1px solid #000000;
+			/*border-bottom: 1px solid #000000;*/
 		}
 		.header {
 			background-color: #000000;
@@ -377,6 +380,13 @@
 		#current-interest .save-link:hover {
 			color: #428BCA;
 		}
+		#interest-areaRow {
+			background: #333;
+		}
+		#interest-areaRow .rowHeading {
+			color: #fff;
+			text-transform: uppercase;
+		}
 
 		/*
 		 *
@@ -644,9 +654,14 @@
 			font-size: 13px;
 			cursor: pointer;
 			text-decoration: none;
+			color: #fff;
+  			font-weight: bold;
 		}
-		.selections a:hover {
-			background-color: #D8ECFD;/*padding-left: 8px;*/
+		.selections a:hover,
+		.selections a.active {
+			background-color: #8FB8DC;
+  			/* padding-left: 8px; */
+  			color: #466594;
 		}
 
 
@@ -842,8 +857,45 @@
 		.defaultTextActive { 
 			color: #a1a1a1; 
 		}
+		.container.affix {
+			top: 0;
+			z-index: 2;
+			background-color: #fff;
+			border-bottom: 1px solid #ccc;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
+		}
+		#interest-list.active {
+			  background-color: #E4E4E4;
+		}
+		#slicers {
+			background-color: #eff0f2;
+		}
+		/* slicers */
+		/*#slicers .row-dropdown {
+			width: 24%;
+			float: left;
+			text-align: center;
+		}*/
+		#slicers .row-heading {
+			display: inline;
+		}
+		#slicers .row-heading {
+			font-size: 10px;
+		}
+		/*.slicers {
+			border-bottom: 1px solid #ccc;
+			display: block;
+			margin: 0 auto 10px;
+			padding: 55px 0 0;
+			text-align: center;
+			width: 100%;
+			background: #fff;
+		}*/
 
-		/* masonry styling - important is for fouc protection */
+
+		/* masonry styling - important - is for fouc protection */
 		.masonry-brick {
 			display: none !important;
 		}
@@ -882,8 +934,19 @@
 		<script src="/src/angularLocalStorage.js"></script>
 		<script src="/src/ng-infinite-scroll.min.js"></script>
 		<script src="/src/navControllers5.js"></script>
+		<!-- TO BE ADDED TO ANGULAR -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+			    $("#menu-toggle, #advancedFilters").click(function(e) {
+			        e.preventDefault();
+			        // $("#wrapper, #filterMenu").toggleClass("toggled");
+			        $("#interest-areaRow").slideToggle();
+			        $("#interest-list").addClass('active');
+			    });
+			});
+		</script>
 	</head>
-	<body ng-controller="NavListController as navListCtrl" get-body-dimensions>
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
 		<header class="header navbar">
 			<div class="container">
@@ -909,7 +972,7 @@
 				<div class="container no-p">
 					<ul id="main-navigation" class="nav navbar-nav">
 						<li class="dropdown">
-							<a href="javascript:;" data-toggle="dropdown">
+							<a id="interest-list" href="" data-toggle="dropdown">
 								<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
 								<!-- <b class="caret"></b> -->
 							</a>
@@ -949,11 +1012,11 @@
 			</div>
 		</header>
 		<section class="container-fluid">
-			<div class="row">
+			<div id="interest-areaRow" class="row" style="display:none">
 				<div class="container pl10 pr10 mt25 mb25">
 					<div class="col-md-2">
 						<div class="rowHeading">
-							Interest Area
+							I'm looking for &hellip;
 						</div>
 					</div>
 					<div class="col-md-10">
@@ -966,7 +1029,7 @@
 								<a class="">Health &amp; Fitness</a>
 								<a class="">Jewish Life</a>
 								<a class="">Concerts &amp; Performances</a>
-								<a class="">School of the Arts</a>
+								<a class="active">School of the Arts</a>
 								<a class="">Literary</a>
 							</div>
 						</div>
@@ -983,23 +1046,71 @@
 						</ol>
 					</div>
 					<div id="filter-container">
-						<div id="current-interest" class="col-xs-12 col-sm-5 col-md-6 no-p">
+						<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p">
 						<!-- <div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p"> -->
 							<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 							<a class="save-link" ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
-
 							<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
-								<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
-								<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
+								<a ng-href="{{savedSearch.url}}" style="padding: 5px;">
+									{{savedSearch.folder}} + {{savedSearch.filter}}
+								</a>
+								<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">
+									X
+								</a>
 							</div>
 						</div>
-						<div id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 mt10 pt10 pl0" masonry='{ "columnWidth": browse-sizer, "isFitWidth": false, "gutter": 0 }'>
-							<span class="row">
-								<span class="browse-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3 p0"></span>
-								<span class="browse-item masonry-brick col-xs-12 col-sm-5 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+						<div id="browse-nav" class="col-xs-12 col-sm-12 col-md-12 col-md-pull-0 mt10 pt10 pl0 pr0">
+								<span class="browse-item col-xs-12 col-sm-5 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 									<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 								</span>
-							</span>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="slicers" class="row mb15">
+				<div id="slicerContainer" scrollspy>
+					<div class="container pt15 pb15" data-spy="affix" data-offset-top="555" data-offset-bottom="0">
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Day of Week</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
+								<option value="monday">Mon</option>
+								<option value="tuesday">Tue</option>
+								<option value="wednesday">Wed</option>
+								<option value="thursday">Thu</option>
+								<option value="friday">Fri</option>
+								<option value="saturday">Sat</option>
+								<option value="sunday">Sun</option>
+								<option value="weekday">Weekday</option>
+								<option value="weekend">Weekend</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Time of Day</div>
+							<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+								<option value="morning">Morning</option>
+								<option value="afternoon">Afternoon</option>
+								<option value="evening">Evening</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Program Type</div>
+							<select class="form-control singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
+								<option value="all">All</option>
+								<option value="class">Classes only</option>
+								<option value="event">Events only</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Age</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
+								<option value="adults">All Adults</option>
+								<option value="kids">All Kids</option>
+								<option value="newborn-5">Newborn-5</option>
+								<option value="6-12">6-12 years</option>
+								<option value="teens">Teens</option>
+								<option value="multigenerational">Multigenerational</option>
+							</select>
 						</div>
 					</div>
 				</div>
