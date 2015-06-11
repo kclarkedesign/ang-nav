@@ -619,7 +619,30 @@
 			color: #a1a1a1; 
 		}
 
-		/* masonry styling - important is for fouc protection */
+		/* slicers */
+		#sideOptions .row-dropdown {
+			width: 24%;
+			float: left;
+			text-align: center;
+		}
+		#sideOptions .row-heading {
+			display: inline;
+		}
+		#sideOptions .row-heading {
+			font-size: 10px;
+		}
+		.sideOptions {
+			border-bottom: 1px solid #ccc;
+			display: block;
+			margin: 0 auto 10px;
+			padding: 55px 0 0;
+			text-align: center;
+			width: 100%;
+			background: #fff;
+		}
+
+
+		/* masonry styling - important - is for fouc protection */
 		.masonry-brick {
 			display: none !important;
 		}
@@ -706,6 +729,7 @@
 				</div>
 			</div>
 		</header>
+
 		<section class="main-content">
 			<div class="content-wrap">
 				<div class="wrapper">
@@ -721,9 +745,61 @@
 									</ol>
 									<button ng-click="navListCtrl.saveSearch()">Save Search</button>
 									<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
-										<a ng-click="navListCtrl.setCurrent($index, $parent.$index);" ng-repeat="ss in savedSearch" style="padding: 5px;" ng-bind-html="ss.Name | unsafe"></a>
-										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
+
+
+
+										<a ng-href="{{savedSearch.url}}" style="padding: 5px;">{{savedSearch.folder}} {{savedSearch.filter}}</a>
+										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">X</a>
 									</div>
+
+
+									<div id="sideOptions" class="sideOptions">
+										<div class="centerContainer">
+											<div class="row-dropdown">
+												<div class="row-heading dd">Day of Week</div>
+												<select class="selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
+													<option value="monday">Mon</option>
+													<option value="tuesday">Tue</option>
+													<option value="wednesday">Wed</option>
+													<option value="thursday">Thu</option>
+													<option value="friday">Fri</option>
+													<option value="saturday">Sat</option>
+													<option value="sunday">Sun</option>
+													<option value="weekday">Weekday</option>
+													<option value="weekend">Weekend</option>
+												</select>
+											</div>
+											<div class="row-dropdown">
+												<div class="row-heading dd">Time of Day</div>
+												<select class="timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+													<option value="morning">Morning</option>
+													<option value="afternoon">Afternoon</option>
+													<option value="evening">Evening</option>
+												</select>
+											</div>
+											<div class="row-dropdown">
+												<div class="row-heading dd">Program Type</div>
+												<select class="singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
+													<option value="all">All</option>
+													<option value="class">Classes only</option>
+													<option value="event">Events only</option>
+												</select>
+											</div>
+											<div class="row-dropdown">
+												<div class="row-heading dd">Age</div>
+												<select class="selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
+													<option value="adults">All Adults</option>
+													<option value="kids">All Kids</option>
+													<option value="newborn-5">Newborn-5</option>
+													<option value="6-12">6-12 years</option>
+													<option value="teens">Teens</option>
+													<option value="multigenerational">Multigenerational</option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+
 								</section>
 								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-7 col-md-pull-0 no-p">
 									<span class="">
@@ -739,7 +815,6 @@
 			</div>
 		</section>
 
-<!--todo:  try to see what's up with ff and why there are gaps -->
 		<div id="Container" class="tileContainer">
 			<div id="tiles">
 				<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 300, "isFitWidth": true, "gutter": 18 }'>
