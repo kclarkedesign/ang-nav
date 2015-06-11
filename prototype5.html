@@ -239,6 +239,9 @@
 			content: "\f105\00a0";
 			font-family: FontAwesome;
 		}
+		.browse-item {
+		  padding: 0 8px 0;
+		}
 		/*.browse-item a {
 			padding: 2px 5px;
 			display: block;
@@ -271,7 +274,22 @@
 		  margin: 3px -4px;
 		  box-sizing: border-box;
 		  border-bottom: 1px solid #fff;
-		}	
+		}
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		  box-sizing: border-box;
+		  border-bottom: 1px solid #fff;
+		  white-space: nowrap;
+		  overflow: hidden;
+		}*/	
 		/*.browse-item a:hover {
 			background-color: #D8ECFD;
 		}*/
@@ -354,6 +372,10 @@
 		#current-interest .save-link {
   			vertical-align: 10px;
   			font-size: 22px;
+  			color: #BDC3C7;
+		}
+		#current-interest .save-link:hover {
+			color: #428BCA;
 		}
 
 		/*
@@ -954,15 +976,15 @@
 			<div class="row">
 				<div class="filter-content container pl10 pr10 mb25">
 					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
-						<ol class="breadcrumb mb5">
+						<ol class="breadcrumb mt10 mb5">
 							<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
 								<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
 							</li>
 						</ol>
 					</div>
 					<div id="filter-container">
-						<!--<div id="current-interest" class="col-xs-12 col-sm-5 col-md-6 no-p">-->
-						<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p">
+						<div id="current-interest" class="col-xs-12 col-sm-5 col-md-6 no-p">
+						<!-- <div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p"> -->
 							<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 							<a class="save-link" ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
 
@@ -971,9 +993,10 @@
 								<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.length">X</a>
 							</div>
 						</div>
-						<div id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 mt10 pt10 pl0">
-							<span class="">
-								<span class="browse-item col-xs-12 col-sm-6 col-md-4 pl0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+						<div id="browse-nav" class="col-xs-12 col-sm-7 col-md-6 col-md-pull-0 mt10 pt10 pl0" masonry='{ "columnWidth": browse-sizer, "isFitWidth": false, "gutter": 0 }'>
+							<span class="row">
+								<span class="browse-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3 p0"></span>
+								<span class="browse-item masonry-brick col-xs-12 col-sm-5 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 									<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 								</span>
 							</span>
@@ -986,7 +1009,7 @@
 				<div id="Container" class="tileContainer container">
 					<div id="tiles" class="row">
 						<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
-							<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
+							<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
 							<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-4 col-lg-4 pl10 pr10">
 								<div class="itemContents">
 									<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
