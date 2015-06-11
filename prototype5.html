@@ -2,6 +2,7 @@
 <html ng-app="artNavApp">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <!-- 		<base href="/prototype5.html"> -->
 		<link rel="stylesheet" href="/css/font-awesome.css" />
   		<link rel="stylesheet" href="/css/themify-icons.css" />
@@ -25,13 +26,16 @@
 			text-decoration: none;
 			outline: 0;
 		}
+		body {
+		  position: relative;
+		}
 		.center {
 			text-align: center;
 		}
 		#hor-menu {
 			width: 100%;
 			background: #fff;
-			border-bottom: 1px solid #000000;
+			/*border-bottom: 1px solid #000000;*/
 		}
 		.header {
 			background-color: #000000;
@@ -216,9 +220,16 @@
 		a {
 			cursor: pointer;
 		}
+		#breadcrumb-content {
+
+			border-bottom: 1px solid #bdc3c7;
+		}
 		.breadcrumb {
 			background: transparent;
 			padding: 0;
+		}
+		.breadcrumb a {
+			font-size: 12px;
 		}
 		.breadcrumb>li.current {
 			display: block;
@@ -231,26 +242,152 @@
 			content: "\f105\00a0";
 			font-family: FontAwesome;
 		}
-		.browse-item a {
+		.browse-item {
+		  padding: 0 8px 0;
+		}
+		/*.browse-item a {
 			padding: 2px 5px;
 			display: block;
 			font-size: 12px;
 			font-weight: bold;
-		}		
+			-webkit-transition: all .2s ease;
+			-moz-transition: all .2s ease;
+			transition: all .2s ease;
+		}*/
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		}*/
+		.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		  box-sizing: border-box;
+		  border-bottom: 1px solid #fff;
+		}
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		  box-sizing: border-box;
+		  border-bottom: 1px solid #fff;
+		  white-space: nowrap;
+		  overflow: hidden;
+		}*/	
+		/*.browse-item a:hover {
+			background-color: #D8ECFD;
+		}*/
 		.browse-item a:hover {
 			background-color: #D8ECFD;
+			border-bottom: 1px solid #ccc;
 		}
 		.current {
 			font-weight: bold;
 		}
 		.defaultBc,
 		.current {
-			font-size: 22px;
-			font-weight: bold;
+			font-size: 4.8rem;
+  			font-weight: bold;
+  			line-height: 1.1;
 		}
 		.main-content .content-wrap .wrapper {
 			padding: 15px;
 		}
+
+		.tabs-left .nav-tabs {
+			float: left;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 2px;
+			border-bottom-right-radius: 0;
+		}
+		.tabs-left .nav-tabs>li>a {
+			border-top-left-radius: 2px;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 2px;
+			border-bottom-right-radius: 0;
+			margin-right: 0;
+			margin-bottom: 2px;
+			margin-left: 0;
+		}
+		.tabs-left .nav-tabs>li {
+			float: none;
+		}
+		.nav-tabs {
+			border-bottom: 0;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			background: #eaecf6;
+		}
+		.nav-tabs>li {
+  			margin: 0;
+		}
+		.nav-tabs>li.active>a, 
+		.nav-tabs>li.active>a:hover, 
+		.nav-tabs>li.active>a:focus {
+			color: #59595a;
+			border: 1px solid #fff;
+			border-bottom: 0;
+		}
+		.box-tab {
+			margin-bottom: 25px;
+			border: 1px solid #e3e6f3;
+			border-radius: 2px;
+			background-color: #EAECF6;
+		}
+		.box-tab.tabs-left .tab-content {
+			border-top-left-radius: 0;
+			border-top-right-radius: 2px;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 2px;
+		}
+		.box-tab .tab-content {
+			background-color: #fff;
+			/*padding: 15px;*/
+			box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 2px;
+			border-bottom-right-radius: 2px;
+			overflow: hidden;
+		}
+		#current-interest .save-link {
+  			vertical-align: 10px;
+  			font-size: 22px;
+  			color: #BDC3C7;
+		}
+		#current-interest .save-link:hover {
+			color: #428BCA;
+		}
+		#interest-areaRow {
+			background: #333;
+		}
+		#interest-areaRow .rowHeading {
+			color: #fff;
+			text-transform: uppercase;
+		}
+
 		/*
 		 *
 		 * Margin & Padding Options
@@ -451,6 +588,83 @@
 			padding-bottom: 5px;
 		}
 
+		/*
+		 *
+		 * Old Styling / Modified 
+		 *
+		 *
+		 */
+
+		.age-range {
+			border-bottom: none;
+			padding: 10px 10px 0;
+			/*display: inline-block;*/
+		}
+		 .age-range li {
+		 	width: auto;
+		 	margin: 0 0 1px 0;
+		 	display: inline-block;
+		 }
+		#kidOptions {
+			border-bottom: 1px solid #DBDDEA;
+			padding-bottom: 10px;
+		}
+		#kidOptions ul {
+			display: inline;
+		}
+		 #kidOptions .age-range li {
+		 	margin: 2px 0 0 0;
+		 }
+		 ul {
+		 	overflow: hidden;
+		 	margin: 0;
+		 	padding: 0;
+		 }
+		 .checkbox {
+		 	margin: 0;
+		 }
+		.checkbox label {
+			display: inline-block;
+			vertical-align: top;
+			text-align: left;
+			padding-left: .6em;
+			padding-right: .6em;
+			color: #000;
+		}
+		.checkbox input[type="checkbox"] {
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			cursor: pointer;
+			margin: 0;
+			opacity: 0;
+			z-index: 1;
+		}
+
+		.selections {
+		  overflow: hidden;
+		}
+		.selections a {
+			float: left;
+			padding: 4px 16px;
+			/*width: 100%;*/
+			font-size: 13px;
+			cursor: pointer;
+			text-decoration: none;
+			color: #fff;
+  			font-weight: bold;
+		}
+		.selections a:hover,
+		.selections a.active {
+			background-color: #8FB8DC;
+  			/* padding-left: 8px; */
+  			color: #466594;
+		}
+
+
 		@media (max-width: 1960px) {
 
 		}
@@ -459,12 +673,32 @@
 		}
 
 		@media (max-width: 768px) {
+			.age-range {
+				border-right: none;
+			}
+			/*.age-range li {
+				display: inline-block;
+			}*/
 			.breadcrumb {
 				text-align: center;
 			}
 			.breadcrumb>li.current,
 			#browse-nav {
 				text-align: center;
+			}
+			.tabs-left .nav-tabs {
+				float: none;
+				border-top-left-radius: 2px;
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 2px;
+				border-bottom-right-radius: 0;
+			}
+			.tabs-left .nav-tabs>li {
+				float: left;
+			}
+			.tabs-left .nav-tabs>li>a {
+				border-bottom: none;
+				margin-bottom: 0;
 			}
 		}
 		@media (max-width: 480px) {
@@ -477,6 +711,7 @@
 
 		#isoContainer {
 			margin: 0 auto;
+			width: 100% !important;
 		}
 
 		#isoContainer:before, 
@@ -486,7 +721,7 @@
 		}
 
 		.tileContainer .mixFirst {
-			width: 100px;
+			/*width: 100px;*/
 			display: block;
 			position: absolute;
 			top: 0;
@@ -496,14 +731,14 @@
 			display: inline-block;
 			position: relative;
 		}
-		.tileContainer .mixFirst {
+		.tileContainer .itemContents {
 			vertical-align: top;
-			width: 300px;
+			position: relative;
 			height: 340px;
 			background: white;
 			color: #515151;
-			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
 			-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
 		}
 		.tileContainer .gap {
 			width: 300px;
@@ -514,15 +749,19 @@
 		.itemBox { 
 			margin-bottom: 20px;
 		}
+		.itemBox img {
+  			width: 100%;
+		}
 		.getMore{
 			bottom: 0;
 			position: absolute;
 			text-align: center;
-			width: 300px;
+			width: 100%;
 			margin-left: auto;
 			margin-right: auto;
 			margin-bottom: 10px;
 			background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
+			z-index: 1;
 		}
 		.showMore {
 			cursor: pointer;
@@ -618,20 +857,34 @@
 		.defaultTextActive { 
 			color: #a1a1a1; 
 		}
-
+		.container.affix {
+			top: 0;
+			z-index: 2;
+			background-color: #fff;
+			border-bottom: 1px solid #ccc;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
+		}
+		#interest-list.active {
+			  background-color: #E4E4E4;
+		}
+		#slicers {
+			background-color: #eff0f2;
+		}
 		/* slicers */
-		#sideOptions .row-dropdown {
+		/*#slicers .row-dropdown {
 			width: 24%;
 			float: left;
 			text-align: center;
-		}
-		#sideOptions .row-heading {
+		}*/
+		#slicers .row-heading {
 			display: inline;
 		}
-		#sideOptions .row-heading {
+		#slicers .row-heading {
 			font-size: 10px;
 		}
-		.sideOptions {
+		/*.slicers {
 			border-bottom: 1px solid #ccc;
 			display: block;
 			margin: 0 auto 10px;
@@ -639,7 +892,7 @@
 			text-align: center;
 			width: 100%;
 			background: #fff;
-		}
+		}*/
 
 
 		/* masonry styling - important - is for fouc protection */
@@ -649,6 +902,24 @@
 
 		.masonry-brick.loaded {
 			display: block !important;
+		}
+		@media (max-width: 768px) {
+			#current-interest {
+				text-align: center;
+			}
+		}
+		@media (min-width: 468px) and (max-width: 768px) {
+			.itemBox img {
+				width: 300px;
+			}
+			.tileContainer .itemContents {
+				height: 380px;
+			}
+		}
+		@media (min-width: 440px) and (max-width: 468px) {
+			.tileContainer .itemContents {
+				height: 420px;
+			}
 		}
 
 		</style>
@@ -663,12 +934,23 @@
 		<script src="/src/angularLocalStorage.js"></script>
 		<script src="/src/ng-infinite-scroll.min.js"></script>
 		<script src="/src/navControllers5.js"></script>
+		<!-- TO BE ADDED TO ANGULAR -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+			    $("#menu-toggle, #advancedFilters").click(function(e) {
+			        e.preventDefault();
+			        // $("#wrapper, #filterMenu").toggleClass("toggled");
+			        $("#interest-areaRow").slideToggle();
+			        $("#interest-list").addClass('active');
+			    });
+			});
+		</script>
 	</head>
-	<body ng-controller="NavListController as navListCtrl" get-body-dimensions>
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
 		<header class="header navbar">
 			<div class="container">
-				<div class="brand top-nav">
+				<div class="brand top-nav center">
 					<div class="navbar-brand">
 						<a href="javascript:;" class="ti-menu navbar-toggle off-left visible-xs collapsed" data-toggle="collapse" data-target="#hor-menu"></a>
 						<a href="#" class=" navbar-nav">
@@ -686,11 +968,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="navbar-collapse pull-left collapse" id="hor-menu">
+			<div class="navbar-collapse pull-left collapse pr0" id="hor-menu">
 				<div class="container no-p">
-					<ul class="nav navbar-nav">
+					<ul id="main-navigation" class="nav navbar-nav">
 						<li class="dropdown">
-							<a href="javascript:;" data-toggle="dropdown">
+							<a id="interest-list" href="" data-toggle="dropdown">
 								<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
 								<!-- <b class="caret"></b> -->
 							</a>
@@ -729,116 +1011,140 @@
 				</div>
 			</div>
 		</header>
-
-		<section class="main-content">
-			<div class="content-wrap">
-				<div class="wrapper">
-					<div class="row">
-						<section class="filter-content">
-							<div id="filter-container" class="container">
-								<section id="breadcrumb-content" class="col-xs-12 col-sm-5 col-md-5 no-p">
-									<ol class="breadcrumb">
-										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
-											<a ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
-										</li>
-										<li class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></li>
-									</ol>
-									<button ng-click="navListCtrl.saveSearch()">Save Search</button>
-									<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
-
-
-
-										<a ng-href="{{savedSearch.url}}" style="padding: 5px;">{{savedSearch.folder}} {{savedSearch.filter}}</a>
-										<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">X</a>
-									</div>
-
-
-									<div id="sideOptions" class="sideOptions">
-										<div class="centerContainer">
-											<div class="row-dropdown">
-												<div class="row-heading dd">Day of Week</div>
-												<select class="selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
-													<option value="monday">Mon</option>
-													<option value="tuesday">Tue</option>
-													<option value="wednesday">Wed</option>
-													<option value="thursday">Thu</option>
-													<option value="friday">Fri</option>
-													<option value="saturday">Sat</option>
-													<option value="sunday">Sun</option>
-													<option value="weekday">Weekday</option>
-													<option value="weekend">Weekend</option>
-												</select>
-											</div>
-											<div class="row-dropdown">
-												<div class="row-heading dd">Time of Day</div>
-												<select class="timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
-													<option value="morning">Morning</option>
-													<option value="afternoon">Afternoon</option>
-													<option value="evening">Evening</option>
-												</select>
-											</div>
-											<div class="row-dropdown">
-												<div class="row-heading dd">Program Type</div>
-												<select class="singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
-													<option value="all">All</option>
-													<option value="class">Classes only</option>
-													<option value="event">Events only</option>
-												</select>
-											</div>
-											<div class="row-dropdown">
-												<div class="row-heading dd">Age</div>
-												<select class="selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
-													<option value="adults">All Adults</option>
-													<option value="kids">All Kids</option>
-													<option value="newborn-5">Newborn-5</option>
-													<option value="6-12">6-12 years</option>
-													<option value="teens">Teens</option>
-													<option value="multigenerational">Multigenerational</option>
-												</select>
-											</div>
-										</div>
-									</div>
-
-
-								</section>
-								<section id="browse-nav" class="col-xs-12 col-sm-7 col-md-7 col-md-pull-0 no-p">
-									<span class="">
-										<span class="browse-item col-xs-12 col-sm-6 col-md-4" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
-											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
-										</span>
-									</span>
-								</section>
+		<section class="container-fluid">
+			<div id="interest-areaRow" class="row" style="display:none">
+				<div class="container pl10 pr10 mt25 mb25">
+					<div class="col-md-2">
+						<div class="rowHeading">
+							I'm looking for &hellip;
+						</div>
+					</div>
+					<div class="col-md-10">
+						<div class="">
+							<div class="selections">
+								<a class="">Talks</a>
+								<a class="">Camps &amp; After School</a>
+								<a class="">Continuing Education &amp; Enrichment</a>
+								<a class="">Parenting &amp; Early Childhood</a>
+								<a class="">Health &amp; Fitness</a>
+								<a class="">Jewish Life</a>
+								<a class="">Concerts &amp; Performances</a>
+								<a class="active">School of the Arts</a>
+								<a class="">Literary</a>
 							</div>
-						</section>
+						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-
-		<div id="Container" class="tileContainer">
-			<div id="tiles">
-				<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 300, "isFitWidth": true, "gutter": 18 }'>
-					<span ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick">
-						<div>
-							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
-								<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
-							</a>
+			<div class="row">
+				<div class="filter-content container pl10 pr10 mb25">
+					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
+						<ol class="breadcrumb mt10 mb5">
+							<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+								<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+							</li>
+						</ol>
+					</div>
+					<div id="filter-container">
+						<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p">
+						<!-- <div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p"> -->
+							<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+							<a class="save-link" ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
+							<div class="savedSearches" ng-repeat="savedSearch in navListCtrl.savedSearches">
+								<a ng-href="{{savedSearch.url}}" style="padding: 5px;">
+									{{savedSearch.folder}} + {{savedSearch.filter}}
+								</a>
+								<a ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">
+									X
+								</a>
+							</div>
 						</div>
-						<div class="classTitle">
-							<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+						<div id="browse-nav" class="col-xs-12 col-sm-12 col-md-12 col-md-pull-0 mt10 pt10 pl0 pr0">
+								<span class="browse-item col-xs-12 col-sm-5 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+									<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+								</span>
+							
 						</div>
-						<div class="classDate">{{classInfo.FriendlyDate}}</div>
-						<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-						<div class="getMore">
-							<span class="showMore">Show More ▲</span><br />
-						</div>
-						<div class="contentWrap">
-							<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
-						</div>
-					</span>
+					</div>
 				</div>
 			</div>
-		</div>
-
+			<div id="slicers" class="row mb15">
+				<div id="slicerContainer" scrollspy>
+					<div class="container pt15 pb15" data-spy="affix" data-offset-top="555" data-offset-bottom="0">
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Day of Week</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
+								<option value="monday">Mon</option>
+								<option value="tuesday">Tue</option>
+								<option value="wednesday">Wed</option>
+								<option value="thursday">Thu</option>
+								<option value="friday">Fri</option>
+								<option value="saturday">Sat</option>
+								<option value="sunday">Sun</option>
+								<option value="weekday">Weekday</option>
+								<option value="weekend">Weekend</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Time of Day</div>
+							<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+								<option value="morning">Morning</option>
+								<option value="afternoon">Afternoon</option>
+								<option value="evening">Evening</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Program Type</div>
+							<select class="form-control singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
+								<option value="all">All</option>
+								<option value="class">Classes only</option>
+								<option value="event">Events only</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Age</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
+								<option value="adults">All Adults</option>
+								<option value="kids">All Kids</option>
+								<option value="newborn-5">Newborn-5</option>
+								<option value="6-12">6-12 years</option>
+								<option value="teens">Teens</option>
+								<option value="multigenerational">Multigenerational</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!--todo:  try to see what's up with ff and why there are gaps -->
+				<div id="Container" class="tileContainer container">
+					<div id="tiles" class="row">
+						<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
+							<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+							<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-4 col-lg-4 pl10 pr10">
+								<div class="itemContents">
+									<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+										<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+									</a>
+									<div class="item-details">
+										<div class="classTitle">
+											<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+										</div>
+										<div class="classDate">{{classInfo.FriendlyDate}}</div>
+										<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+										<div class="getMore">
+											<span class="showMore">Show More ▲</span><br />
+										</div>
+										<div class="contentWrap">
+											<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</section>
 	</body>
 </html>
