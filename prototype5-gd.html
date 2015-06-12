@@ -4,8 +4,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <!-- 		<base href="/prototype5.html"> -->
-		<link rel="stylesheet" href="/css/font-awesome.css" />
-  		<link rel="stylesheet" href="/css/themify-icons.css" />
+		<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
+  		<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<style type="text/css">
 		/****
@@ -958,13 +958,13 @@
 		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
 		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
-		<script src="/src/angular-masonry.min.js"></script>
+		<script src="/ang-nav/src/angular-masonry.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.0/lodash.min.js"></script>
-		<script src="/src/angularLocalStorage.js"></script>
-		<script src="/src/ng-infinite-scroll.min.js"></script>
-		<script src="/src/navControllers5.js"></script>
+		<script src="/ang-nav/src/angularLocalStorage.js"></script>
+		<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
+		<script src="/ang-nav/src/navControllers5.js"></script>
 		<!-- TO BE ADDED TO ANGULAR -->
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -984,7 +984,7 @@
 				});
 				refineBar.click(function() {
 					refineBar.slideUp();
-					refineSlicers.toggleClass('visible-sm');
+					refineSlicers.slideToggle();
 				});
 				refineClose.click(function() {
 					refineBar.slideDown();
@@ -1000,10 +1000,7 @@
 			        top: $('header').height()
 			      }
 				});
-				$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
-					e.stopPropagation();
-				});
-			});
+		});
 		</script>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
@@ -1133,64 +1130,55 @@
 			</div>
 			<div id="slicers" class="row mb15" scrollspy>
 				<div id="slicerContainer" data-spy="affix">
-					<div id="refine-bar" class="hidden-md hidden-lg">
-						<div class="container center pt15 pb15">
+					<div id="refine-bar">
+						<div class="container center pt15 pb15 md-hidden">
 							Refine Filters
 						</div>
 					</div>
-					<div class="refine-slicers container pt15 pb15 collapse visible-md visible-lg">
-						<div id="refine-close" class="hidden-lg hidden-md">
+					<div class="refine-slicers container pt15 pb15 xs-visible">
+						<div id="refine-close" class="xs-visible">
 							<i class="fa fa-times"></i>
 						</div>
-						<div class="dropdown">
-							<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Day or Time
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-form col-xs-12 col-md-3 p10" role="menu">
-							  <li>
-							  	<label class="checkbox">Day of Week</label>
-								  	<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
-										<option value="monday">Mon</option>
-										<option value="tuesday">Tue</option>
-										<option value="wednesday">Wed</option>
-										<option value="thursday">Thu</option>
-										<option value="friday">Fri</option>
-										<option value="saturday">Sat</option>
-										<option value="sunday">Sun</option>
-										<option value="weekday">Weekday</option>
-										<option value="weekend">Weekend</option>
-									</select>
-								</li>
-							  <li>
-							  	<label class="checkbox">
-							  		<input type="checkbox">Time of Day</label>
-							  		<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
-										<option value="morning">Morning</option>
-										<option value="afternoon">Afternoon</option>
-										<option value="evening">Evening</option>
-									</select>
-							  </li>
-							</ul>
-							<div class="row-dropdown col-xs-12 col-md-3">
-								<div class="row-heading dd">Program Type</div>
-								<select class="form-control singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
-									<option value="all">All</option>
-									<option value="class">Classes only</option>
-									<option value="event">Events only</option>
-								</select>
-							</div>
-							<div class="row-dropdown col-xs-12 col-md-3">
-								<div class="row-heading dd">Age</div>
-								<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
-									<option value="adults">All Adults</option>
-									<option value="kids">All Kids</option>
-									<option value="newborn-5">Newborn-5</option>
-									<option value="6-12">6-12 years</option>
-									<option value="teens">Teens</option>
-									<option value="multigenerational">Multigenerational</option>
-								</select>
-							</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Day of Week</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
+								<option value="monday">Mon</option>
+								<option value="tuesday">Tue</option>
+								<option value="wednesday">Wed</option>
+								<option value="thursday">Thu</option>
+								<option value="friday">Fri</option>
+								<option value="saturday">Sat</option>
+								<option value="sunday">Sun</option>
+								<option value="weekday">Weekday</option>
+								<option value="weekend">Weekend</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Time of Day</div>
+							<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+								<option value="morning">Morning</option>
+								<option value="afternoon">Afternoon</option>
+								<option value="evening">Evening</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Program Type</div>
+							<select class="form-control singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
+								<option value="all">All</option>
+								<option value="class">Classes only</option>
+								<option value="event">Events only</option>
+							</select>
+						</div>
+						<div class="row-dropdown col-xs-12 col-md-3">
+							<div class="row-heading dd">Age</div>
+							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
+								<option value="adults">All Adults</option>
+								<option value="kids">All Kids</option>
+								<option value="newborn-5">Newborn-5</option>
+								<option value="6-12">6-12 years</option>
+								<option value="teens">Teens</option>
+								<option value="multigenerational">Multigenerational</option>
+							</select>
 						</div>
 					</div>
 				</div>
