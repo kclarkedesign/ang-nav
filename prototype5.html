@@ -64,7 +64,7 @@
 		.header .brand .navbar-brand img {
 			max-height: 25px;
 			margin-right: 5px;
-			margin-top: -5px;
+			margin-top: -3px;
 		}
 		.header .nav>li>a:hover, 
 		.header .nav>li>a:focus, 
@@ -74,15 +74,15 @@
 			background-color: #e4e4e4;
 		}
 		#utilnav {
-			display: inline-block;
+			/*display: inline-block;*/
 			padding: 0 10px;
+			line-height: 50px;
 		}
 		#utilnav ul {
 			list-style: none;
 			color: #4076bb;
 			font-size: 11px;
 			font-weight: bold;
-			line-height: 48px;
 			white-space: nowrap;
 			margin: 0 auto;
 			padding: 0;
@@ -109,7 +109,6 @@
 		.navbar {
 			margin-bottom: 0;
 			border-radius: 0;
-			position: relative;
 			top: 0;
 			width: 100%;
 			z-index: 1001;
@@ -140,7 +139,6 @@
 			.layout, 
 			.header {
 				-webkit-backface-visibility: hidden;
-				position: relative;
 				width: 100%;
 				-webkit-transition: -webkit-transform 300ms ease 0s;
 				transition: transform 300ms ease 0s;
@@ -197,8 +195,8 @@
 				border: 0;
 			}
 			.header .brand .navbar-brand {
-				padding: 4px 0 0 0;
-				line-height: 29px;
+				/*padding: 4px 0 0 0;
+				line-height: 29px;*/
 			}
 		}
 		@media (max-width: 238px) {
@@ -673,6 +671,9 @@
 		}
 
 		@media (max-width: 768px) {
+			body {
+			 /* padding-top: 70px;*/
+			}
 			.age-range {
 				border-right: none;
 			}
@@ -699,6 +700,10 @@
 			.tabs-left .nav-tabs>li>a {
 				border-bottom: none;
 				margin-bottom: 0;
+			}
+			#utilnav {
+				/* display: inline-block; */
+				padding: 6px 0 10px;
 			}
 		}
 		@media (max-width: 480px) {
@@ -857,8 +862,24 @@
 		.defaultTextActive { 
 			color: #a1a1a1; 
 		}
-		.container.affix {
-			top: 0;
+		#refine-bar {
+		  background-color: #EFF0F2;
+		  border-bottom: 1px solid #BDC3C7;
+		}
+		#refine-close {
+		  /* text-align: right; */
+		  font-size: 24px;
+		  position: absolute;
+		  right: 10px;
+		  top: 0px;
+		  cursor: pointer;
+		  z-index: 1;
+		}
+		.refine-slicers {
+		  	position: relative;
+		}
+		#slicerContainer.affix {
+			top: 99px;
 			z-index: 2;
 			background-color: #fff;
 			border-bottom: 1px solid #ccc;
@@ -907,6 +928,16 @@
 			#current-interest {
 				text-align: center;
 			}
+			#slicerContainer.affix {
+				top: initial;
+				z-index: 2;
+				background-color: #fff;
+				border-bottom: 1px solid #ccc;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
 		}
 		@media (min-width: 468px) and (max-width: 768px) {
 			.itemBox img {
@@ -937,34 +968,63 @@
 		<!-- TO BE ADDED TO ANGULAR -->
 		<script type="text/javascript">
 			$(document).ready(function() {
-			    $("#menu-toggle, #advancedFilters").click(function(e) {
+				var refineBar = $('#refine-bar');
+				var refineSlicers = $('.refine-slicers'); 
+				var refineClose = $('#refine-close');
+			    $("#interest-list").click(function(e) {
 			        e.preventDefault();
 			        // $("#wrapper, #filterMenu").toggleClass("toggled");
 			        $("#interest-areaRow").slideToggle();
 			        $("#interest-list").addClass('active');
 			    });
-			});
+				$('header').affix({
+			      offset: {
+			        top: 0
+			      }
+				});
+				refineBar.click(function() {
+					refineBar.slideUp();
+					refineSlicers.slideToggle();
+				});
+				refineClose.click(function() {
+					refineBar.slideDown();
+					refineSlicers.slideUp();
+				})
+				// $('#interest-areaRow').affix({
+			 //      offset: {
+			 //        top: $('header').height()
+			 //      }
+				// });
+				$('#slicerContainer').affix({
+			      offset: {
+			        top: $('header').height()
+			      }
+				});
+		});
 		</script>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
-		<header class="header navbar">
+		<header class="header navbar" data-spy="affix">
 			<div class="container">
 				<div class="brand top-nav center">
-					<div class="navbar-brand">
+					<div >
 						<a href="javascript:;" class="ti-menu navbar-toggle off-left visible-xs collapsed" data-toggle="collapse" data-target="#hor-menu"></a>
-						<a href="#" class=" navbar-nav">
-							<img src="http://92Y.org/_ui/uptown/img/sitelogo_92Y.png" alt=""/>
-						</a>
-						<div id="utilnav" role="navigation">
-							<ul>
-								<li><span class="greeting">Howdy!</span>
-									<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
-								</li>
-								<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
-								</li>
-							</ul>
+						<div class="">
+							<a href="#" id="logo-anchor" class="navbar-brand">
+								<img src="http://92Y.org/_ui/uptown/img/sitelogo_92Y.png" alt=""/>
+							</a>
+							<div id="utilnav" role="navigation" class="navbar-nav">
+								<ul>
+									<li><span class="greeting">Howdy!</span>
+										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+									</li>
+									<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+									</li>
+								</ul>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -1068,9 +1128,17 @@
 					</div>
 				</div>
 			</div>
-			<div id="slicers" class="row mb15">
-				<div id="slicerContainer" scrollspy>
-					<div class="container pt15 pb15" data-spy="affix" data-offset-top="555" data-offset-bottom="0">
+			<div id="slicers" class="row mb15" scrollspy>
+				<div id="slicerContainer" data-spy="affix">
+					<div id="refine-bar">
+						<div class="container center pt15 pb15">
+							Refine Filters
+						</div>
+					</div>
+					<div class="refine-slicers container pt15 pb15 collapse">
+						<div id="refine-close" class="">
+							<i class="fa fa-times"></i>
+						</div>
 						<div class="row-dropdown col-xs-12 col-md-3">
 							<div class="row-heading dd">Day of Week</div>
 							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
