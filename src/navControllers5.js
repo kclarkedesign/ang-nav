@@ -8,7 +8,7 @@
 	var TYPESLICEURL = '/type__';
 	var AGESLICEURL = '/age__';
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll']);
+	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
 		var classesByInterest = [];
@@ -44,6 +44,19 @@
 			self.loadMore();
 			$scope.$apply();
 		});
+
+		//Click event for Calendar
+		$scope.open = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+
+			$scope.opened = true;
+		};
+		//Datepicker
+		$scope.dateOptions = {
+			formatYear: 'yy',
+			startingDay: 1
+		};
 
 		$scope.$watch(function () {
 			return self.location.path();

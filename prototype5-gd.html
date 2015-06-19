@@ -73,6 +73,9 @@
 		.header .nav .open>a:focus {
 			background-color: #e4e4e4;
 		}
+		.full-width {
+			width: 100%
+		}
 		#utilnav {
 			/*display: inline-block;*/
 			padding: 0 10px;
@@ -112,7 +115,7 @@
 			top: 0;
 			width: 100%;
 			z-index: 1001;
-			margin: -1px;
+			/*margin: -1px;*/
 		}
 		.nav>li>a:hover, 
 		.nav>li>a:focus {
@@ -228,6 +231,7 @@
 		}
 		.breadcrumb a {
 			font-size: 12px;
+			font-weight: bold;
 		}
 		.breadcrumb>li.current {
 			display: block;
@@ -620,6 +624,7 @@
 		 }
 		 .checkbox {
 		 	margin: 0;
+		 	display: inline-block;
 		 }
 		.checkbox label {
 			display: inline-block;
@@ -687,6 +692,27 @@
 			#browse-nav {
 				text-align: center;
 			}
+			#browse-nav {
+				margin-top: 0;
+				padding-top: 0;
+			}
+			#current-interest {
+				text-align: center;
+			}
+			.current {
+				font-size: 2.8rem;
+				font-weight: bold;
+				line-height: 1.1;
+			}
+			#current-interest .save-link {
+				vertical-align: -10px;
+				font-size: 22px;
+				color: #BDC3C7;
+			}
+			.filter-content {
+				margin-bottom: 15px;
+
+			}
 			.tabs-left .nav-tabs {
 				float: none;
 				border-top-left-radius: 2px;
@@ -705,6 +731,19 @@
 				/* display: inline-block; */
 				padding: 6px 0 10px;
 			}
+
+			
+
+			/*#slicerContainer.affix {
+				top: initial;
+				z-index: 2;
+				background-color: #fff;
+				border-bottom: 1px solid #ccc;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}*/
 		}
 		@media (max-width: 480px) {
 			
@@ -925,19 +964,7 @@
 			display: block !important;
 		}
 		@media (max-width: 768px) {
-			#current-interest {
-				text-align: center;
-			}
-			#slicerContainer.affix {
-				top: initial;
-				z-index: 2;
-				background-color: #fff;
-				border-bottom: 1px solid #ccc;
-				margin: 0 auto;
-				left: 0;
-				right: 0;
-				bottom: 0;
-			}
+			
 		}
 		@media (min-width: 468px) and (max-width: 768px) {
 			.itemBox img {
@@ -984,7 +1011,7 @@
 				});
 				refineBar.click(function() {
 					refineBar.slideUp();
-					refineSlicers.slideToggle();
+					refineSlicers.slideDown();
 				});
 				refineClose.click(function() {
 					refineBar.slideDown();
@@ -1000,7 +1027,10 @@
 			        top: $('header').height()
 			      }
 				});
-		});
+				$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
+					e.stopPropagation();
+				});
+			});
 		</script>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
@@ -1097,7 +1127,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="filter-content container pl10 pr10 mb25">
+				<div class="filter-content container pl10 pr10 mb15">
 					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
 						<ol class="breadcrumb mt10 mb5">
 							<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
@@ -1119,8 +1149,8 @@
 								</a>
 							</div>
 						</div>
-						<div id="browse-nav" class="col-xs-12 col-sm-12 col-md-12 col-md-pull-0 mt10 pt10 pl0 pr0">
-								<span class="browse-item col-xs-12 col-sm-5 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+						<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0">
+								<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 									<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 								</span>
 							
@@ -1130,48 +1160,161 @@
 			</div>
 			<div id="slicers" class="row mb15" scrollspy>
 				<div id="slicerContainer" data-spy="affix">
-					<div id="refine-bar">
-						<div class="container center pt15 pb15 md-hidden">
+					<div id="refine-bar" class="collapse">
+						<div class="container center pt15 pb15 ">
 							Refine Filters
 						</div>
 					</div>
-					<div class="refine-slicers container pt15 pb15 xs-visible">
-						<div id="refine-close" class="xs-visible">
+					<div class="refine-slicers container pt15 pb15">
+						<div class="row">
+						<div id="refine-close" class="collapse">
 							<i class="fa fa-times"></i>
 						</div>
-						<div class="row-dropdown col-xs-12 col-md-3">
-							<div class="row-heading dd">Day of Week</div>
-							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
-								<option value="monday">Mon</option>
-								<option value="tuesday">Tue</option>
-								<option value="wednesday">Wed</option>
-								<option value="thursday">Thu</option>
-								<option value="friday">Fri</option>
-								<option value="saturday">Sat</option>
-								<option value="sunday">Sun</option>
-								<option value="weekday">Weekday</option>
-								<option value="weekend">Weekend</option>
-							</select>
+						
+						<div class="dropdown col-sm-2">
+							<button id="btn-dayTime" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Day or Time
+								<span class="caret"></span>
+							</button>
+
+							<ul class="dropdown-menu dropdown-menu-form p15" role="menu">
+								<li>
+									<div class="row">
+										<div class="col-xs-12">
+											<div role="separator" class="divider"></div>
+											<label class="checkbox">Date:</label>
+										</div>
+										<div class="col-xs-6 pull-left">
+											<div class="full-width">
+												<input type="date">
+												<label class="checkbox" value="any" for="anyTime">Any</label>
+											</div>
+										</div>
+										
+									</div>
+								</li>
+								<li>
+									<div class="row">
+										<div class="col-xs-12">
+											<div role="separator" class="divider"></div>
+											<label class="checkbox">Time:</label>
+										</div>
+										<div class="col-xs-6 pull-left">
+											<div class="full-width">
+												<input id="anyTime" type="checkbox" class="selectAll">
+												<label class="checkbox" value="any" for="anyTime">Any</label>
+											</div>
+										</div>
+										<div class="col-xs-6 pull-right no-p">
+											<div class="full-width">
+												<input id="morningSlice" type="checkbox" class="selectAll">
+												<label class="checkbox" value="morning" for="morningSlice">Morning</label>
+											</div>
+											<div class="full-width">
+												<input id="afternoonSlice" type="checkbox" class="selectAll">
+												<label class="checkbox" value="afternoon" for="afternoonSlice">Afternoon</label>
+											</div>
+											<div class="full-width">
+												<input id="eveningSlice" type="checkbox" class="selectAll">
+												<label class="checkbox" value="evening" for="eveningSlice">Evening</label>
+											</div>
+										</div>
+										<!-- <select class="timeofselect col-sm-6 no-p" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+											<option value="morning">Morning</option>
+											<option value="afternoon">Afternoon</option>
+											<option value="evening">Evening</option>
+										</select> -->
+									</div>
+								</li>
+								<li>
+									<div class="row">
+										<div class="col-xs-12">
+											<div role="separator" class="divider"></div>
+											<label class="checkbox">Days:</label>
+										</div>
+										<div class="col-xs-6 pull-left">
+											
+											<input id="anyDay" type="checkbox" class="selectAll">
+											<label class="" value="any" for="anyDay">Any</label>
+										</div>
+										<div class="col-xs-6 pull-right no-p">
+											<div class="col-xs-3 no-p">
+												<input id="mondaySlice" type="checkbox" class="selectAll">
+												<label class="checkbox" value="monday" for="mondaySlice">M</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="tuesdaySlice" type="checkbox" class="selectAll" multiple="multiple">
+												<label class="checkbox" value="tuesday" for="tuesdaySlice">T</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="wednesdaySlice" type="checkbox" class="selectAll" multiple="multiple">
+												<label class="checkbox" value="wednesday" for="wednesdaySlice">W</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="thursdaySlice" type="checkbox" class="selectAll" multiple="multiple">
+												<label class="checkbox" value="thursday" for="thursdaySlice">T</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="fridaySlice" type="checkbox" class="selectAll" multiple="multiple">
+												<label class="checkbox" value="friday" for="fridaySlice">F</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="saturdaySlice" type="checkbox" class="selectAll" multiple="multiple">
+												<label class="checkbox" value="saturday" for="saturdaySlice">S</label>
+											</div>
+											<div class="col-xs-3 no-p">
+												<input id="sundaySlice" type="checkbox" class="selectAll">
+												<label class="checkbox" value="sunday" for="sundaySlice">S</label>
+											</div>
+										</div>
+									</div>
+								</li>
+
+									<!-- <label class="checkbox">Day of Week</label>
+									<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.sliceBy('day')">
+										<option value="monday">Mon</option>
+										<option value="tuesday">Tue</option>
+										<option value="wednesday">Wed</option>
+										<option value="thursday">Thu</option>
+										<option value="friday">Fri</option>
+										<option value="saturday">Sat</option>
+										<option value="sunday">Sun</option>
+										<option value="weekday">Weekday</option>
+										<option value="weekend">Weekend</option>
+									</select> -->
+								
+								<!-- <li>
+									<label class="checkbox">Time of Day</label>
+									<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
+										<option value="morning">Morning</option>
+										<option value="afternoon">Afternoon</option>
+										<option value="evening">Evening</option>
+									</select>
+								</li> -->
+							</ul>
 						</div>
-						<div class="row-dropdown col-xs-12 col-md-3">
-							<div class="row-heading dd">Time of Day</div>
-							<select class="form-control timeofselect" multiple="multiple" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.sliceBy('time')">
-								<option value="morning">Morning</option>
-								<option value="afternoon">Afternoon</option>
-								<option value="evening">Evening</option>
-							</select>
+					
+						<div class="dropdown col-sm-3">
+							<div class="row">
+								<div class="col-xs-12 pull-left btn-group" data-toggle="buttons">
+									<label class="btn btn-default active" value="all" for="allTypes"><input id="allTypes" type="radio" class="selectAll" name="programType"><span class="pr5">All</span></label>
+
+
+									<label class="btn btn-default" value="class" for="classesOnly"><input id="classesOnly" type="radio" class="selectAll" name="programType"><span class="pr5">Classes only</span></label>
+
+									<label class="btn btn-default" value="event" for="eventsOnly"><input id="eventsOnly" type="radio" class="selectAll" name="programType"><span class="pr5">Events only</span></label>
+								</div>
+							</div>
 						</div>
-						<div class="row-dropdown col-xs-12 col-md-3">
-							<div class="row-heading dd">Program Type</div>
-							<select class="form-control singleselect" ng-model="navListCtrl.typeSlice" ng-change="navListCtrl.sliceBy('type')">
-								<option value="all">All</option>
-								<option value="class">Classes only</option>
-								<option value="event">Events only</option>
-							</select>
-						</div>
-						<div class="row-dropdown col-xs-12 col-md-3">
-							<div class="row-heading dd">Age</div>
-							<select class="form-control selectAll" multiple="multiple" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
+				
+						<div class="dropdown col-sm-2">
+							<button id="btn-ageRange" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Age Range
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-form col-xs-12 p15" role="menu">
+								<li>
+									<select class="form-control" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.sliceBy('age')">
 								<option value="adults">All Adults</option>
 								<option value="kids">All Kids</option>
 								<option value="newborn-5">Newborn-5</option>
@@ -1179,9 +1322,36 @@
 								<option value="teens">Teens</option>
 								<option value="multigenerational">Multigenerational</option>
 							</select>
+								</li>
+
+							</ul>
 						</div>
+						<div class="col-sm-4 pull-right">
+							<div class="row">
+								<div class="col-md-6 pull-left">
+									<input id="searchText" type="text" class="form-control col-md-12">
+		                    		<!-- <span class="clearBox"></span> -->
+		                    	</div>
+		                    	<div class="col-sm-12 col-md-6 pull-right">
+		                    		<button id="btn-sort" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="col-xs-12 pull-right btn btn-default">
+										Sort
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu col-xs-12">
+										<li><a href="#">Most Relevant</a></li>
+										<li><a href="#">Featured</a></li>
+										<li><a href="#">Soonest</a></li>
+										<li role="separator" class="divider"></li>
+										<li><a href="#">In Progess</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>	
+							
 					</div>
 				</div>
+			</div>
 			</div>
 			<div class="row">
 				<!--todo:  try to see what's up with ff and why there are gaps -->
