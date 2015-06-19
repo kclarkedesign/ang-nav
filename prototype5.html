@@ -1162,7 +1162,7 @@ input[type="date"]::-webkit-inner-spin-button{
 			</div>
 			<div class="row">
 				<div class="filter-content container pl10 pr10 mb15">
-					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5" data-spy="affix">
+					<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
 						<ol class="breadcrumb mt10 mb5">
 							<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
 								<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
