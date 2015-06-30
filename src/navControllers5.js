@@ -7,18 +7,29 @@
 	var TIMESLICEURL = '/time__';
 	var TYPESLICEURL = '/type__';
 	var AGESLICEURL = '/age__';
+	var SDATESLICEURL = '/sdate__';
+	var EDATESLICEURL = '/edate__';
+	var SORTSLICEURL = '/sort__';
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap']);
+	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
 		var classesByInterest = [];
 		self.arrCategory = [];
 		self.location = $location;
+		self.timeout = $timeout;
 		self.JumpNav = {};
 		self.navsDict = {};
 		self.onscreenResults = [];
 		self.resultsByKeywords = [];
 		self.classesByNodeId = {};
+		self.opened = {};
+		self.minBegDate = new Date();
+		self.minEndDate = new Date();
+		self.maxDate = new Date();
+		self.maxDate = self.maxDate.setFullYear(self.maxDate.getFullYear() + 1);
+		self.times = ['morning', 'afternoon', 'evening'];
+		self.days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 
@@ -44,19 +55,6 @@
 			self.loadMore();
 			$scope.$apply();
 		});
-
-		//Click event for Calendar
-		$scope.open = function($event) {
-			$event.preventDefault();
-			$event.stopPropagation();
-
-			$scope.opened = true;
-		};
-		//Datepicker
-		$scope.dateOptions = {
-			formatYear: 'yy',
-			startingDay: 1
-		};
 
 		$scope.$watch(function () {
 			return self.location.path();
@@ -93,7 +91,7 @@
 
 						if (locationPath === '/') {
 							self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
-						}else{
+						} else {
 							for (var x = 0; x < numOfSlashesLastLocation - numOfSlashesLocation; x++){
 								self.activeBreadcrumb.pop();
 							}
@@ -105,7 +103,7 @@
 						// if link in saved breadCrumb is clicked
 						if (locationPath === '/') {
 							self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
-						}else{
+						} else {
 							for (var x = self.activeBreadcrumb.length - 1; x >= 0; x--){
 								var breadCrumb = self.activeBreadcrumb[x];
 								if (breadCrumb.NodeID === self.currentObj.NodeID) {
@@ -134,17 +132,85 @@
 		});
 	};
 
+	NavListController.prototype.slicerPicked = function (whichDateTime, whatTime) {
+		var self = this;
+		switch (whichDateTime) {
+			case 'sdate':
+				self.updateEndMinDate();
+				break;
+			case 'time':
+				self.timeSlice = self.updateCheckedGroups(self.timeSlice, whatTime);
+				break;
+			case 'day':
+				self.daySlice = self.updateCheckedGroups(self.daySlice, whatTime);
+				break;
+			case 'age':
+				self.ageSlice = self.updateCheckedGroups(self.ageSlice, whatTime);
+				break;
+		}
+		//this is used when we want to fire off a change every time something is clicked - but that ends up closing the dialog
+		//self.sliceBy(whichDateTime)
+	};
+
+	NavListController.prototype.updateCheckedGroups = function(chkSlc, chkVal) {
+		if (_.isUndefined(chkVal)) {
+			chkSlc = 'all';
+		} else {
+			if (!_.isArray(chkSlc)) {
+				chkSlc = [];
+			}
+			if (chkSlc.indexOf(chkVal) > -1) {
+				_.pull(chkSlc, chkVal);
+				if (chkSlc.length === 0) {
+					chkSlc = 'all';
+				}
+			} else {
+				chkSlc.push(chkVal);
+				if (chkVal === 'newborn-5' || chkVal === '6-12' || chkVal === 'teens' || chkVal === 'multigenerational') {
+					_.pull(chkSlc, 'kids');
+				} else if (chkVal === 'kids') {
+					_.pull(chkSlc, 'newborn-5');
+					_.pull(chkSlc, '6-12');
+					_.pull(chkSlc, 'teens');
+					_.pull(chkSlc, 'multigenerational');
+				}
+			}
+		}
+		return chkSlc;
+	};
+
+	NavListController.prototype.updateEndMinDate = function () {
+		var self = this;
+		self.minEndDate = self.sdateSlice;
+		if (self.sdateSlice > self.edateSlice) {
+			self.edateSlice = self.sdateSlice;
+		}
+	};
+
+	NavListController.prototype.openCalendar = function ($event, which) {
+		var self = this;
+		$event.preventDefault();
+		$event.stopPropagation();
+		if (which === 'end') {
+			self.opened.end = !self.opened.end;
+		} else {
+			//prevents the start calendar opening up and overlapping the open end calendar
+			self.opened.start = !self.opened.start && !self.opened.end ? true : false;
+		}
+	};
+
 	NavListController.prototype.displayTiles = function () {
 		var self = this;
 		if (self.currentObj.Level === 0) {
 			self.getClassesByNodeId(self.classesByNodeId);
-		}else{
+		} else {
 			self.getClassesByNodeId(self.currentObj.NodeID);
 		}
 	};
 
 	NavListController.prototype.getClassesByNodeId = function (id) {
 		var self = this;
+		var locationPath = self.location.path();
 		if (_.isObject(id)) {
 			self.onscreenResults = [];
 			var cni;
@@ -157,7 +223,7 @@
 					}
 				});
 			}
-		}else{
+		} else {
 			var onscreenResultsQueue = [];
 			_.forEach(self.classesByNodeId[id], function (arr) {
 				var classInfoObj = formatDataFromJson(arr, id);
@@ -167,7 +233,6 @@
 			lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
 			var lastLocArr = lastLocationPath.split("/");
 
-			var locationPath = self.location.path();
 			locationPath = seperateSlicersFromUrl(locationPath).path;
 			var locArr = locationPath.split("/");
 
@@ -179,28 +244,76 @@
 							_.pull(self.onscreenResults, arr);
 						}
 					});
-				}else{
+				} else {
 					self.onscreenResults = _.clone(onscreenResultsQueue);
 				}
-			}else{
+			} else {
 				self.onscreenResults = _.clone(onscreenResultsQueue);
 			}
 		}
-		self.onscreenResults = filterList(self.onscreenResults, self.daySlice);
-		self.onscreenResults = filterList(self.onscreenResults, self.timeSlice);
+
+		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
+		if (!_.isUndefined(self.daySlice) && self.daySlice !== 'all') {
+			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.daySlice);
+		}
+		if (!_.isUndefined(self.timeSlice) && self.timeSlice !== 'all') {
+			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.timeSlice);
+		}
 		if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
 			self.onscreenResults = _.filter(self.onscreenResults, function(res) {
 				return res.ItemType.toLowerCase() === self.typeSlice;
 			});
 		}
-		self.onscreenResults = filterList(self.onscreenResults, self.ageSlice);
-		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+		if (!_.isUndefined(self.ageSlice) && self.ageSlice !== 'all') {
+			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
+		}
+		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
+
+		var sortBy;
+		var sortUrlLocation = locationPath.indexOf(SORTSLICEURL);
+		if (sortUrlLocation < 0) {
+			sortBy = 'soonest';
+		} else {
+			var endSlashLocation = locationPath.indexOf("/", sortUrlLocation + 1);
+			if (endSlashLocation < 0) {
+				endSlashLocation = locationPath.length;
+			}
+			sortBy = locationPath.substring(sortUrlLocation + 7, endSlashLocation);
+		}
+		switch (sortBy) {
+			case 'progress':
+				self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+				break;
+			case 'featured':
+				self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+				break;
+			default:
+				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+				break;
+		}
+	};
+
+	NavListController.prototype.sortResults = function (sortBy) {
+		var self = this;
+		var location = self.location;
+		var locationPath = location.path();
+
+		locationPath = rewriteUrlLocation(SORTSLICEURL, sortBy, locationPath);
+		location.path(locationPath);
+
+		self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 	};
 
 	NavListController.prototype.populateSlicers = function (urlSlicers, getTextOnly) {
 		var self = this;
-		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL];
+		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL];
 		var slicerTexts = [];
+		self.daySlice = 'all';
+		self.timeSlice = 'all';
+		self.typeSlice = 'all';
+		self.ageSlice = 'all';
+		self.sdateSlice = undefined;
+		self.edateSlice = undefined;
 		_.forEach(slicerUrls, function (slicerUrl, index) {
 			var sliceUrlStartLocation = urlSlicers.indexOf(slicerUrl);
 			if (sliceUrlStartLocation >= 0) {
@@ -209,7 +322,7 @@
 				var sliceValues = sliceString.substring(sliceString.indexOf('__') + 2);
 				if (getTextOnly) {
 					slicerTexts.push(sliceValues.toString());
-				}else{
+				} else {
 					switch (index) {
 						case 0:
 							self.daySlice = sliceValues.split(',');
@@ -223,7 +336,13 @@
 						case 3:
 							self.ageSlice = sliceValues.split(',');
 							break;
-					};
+						case 4:
+							self.sdateSlice = Number(sliceValues);
+							break;
+						case 5:
+							self.edateSlice = Number(sliceValues);
+							break;
+					}
 				}
 			}
 		});
@@ -247,7 +366,7 @@
 						if (index === 1) {
 							//if this is only one level above then we can safely assume there are no duplicate children
 							findObj = { 'Name': folder };
-						}else{
+						} else {
 							//this is to safeguard against multiple children of the same name
 							var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
 							var findAllPossibleParents = _.where(self.arrCategory[index-1], { 'Name': subfolders[index-1] });
@@ -261,7 +380,7 @@
 							});
 							findObj = { 'Name': folder, Parent: foundChildParent };
 						}
-					}else{
+					} else {
 						findObj = { 'Name': folder, NodeID: foundChildParent };
 					}
 					findChild = _.where(self.arrCategory[index], findObj);
@@ -274,7 +393,7 @@
 						foundChild.Current = true;
 						self.currentObj = _.clone(foundChild);
 					}	
-				}else{
+				} else {
 					foundChild = {
 						Level: 0,
 						Name: 'School of the Arts',
@@ -285,7 +404,7 @@
 				self.activeBreadcrumb.push(_.clone(foundChild));
 			});
 			self.activeBreadcrumb.reverse();
-		}else{
+		} else {
 			self.currentObj = {
 				Level: 0,
 				Name: 'School of the Arts',
@@ -302,14 +421,14 @@
 		var self = this;
 		var currentName, currentLevel, currentNode, jumpType, currentIndex;
 		var urlMethod = 'default';
-		if (isActualNumber(currentId)){
+		if (isActualNumber(currentId)) {
 			jumpType = 'linkBack';
 			urlMethod = 'parse';
 			var breadCrumb = self.activeBreadcrumb[currentId];
 			currentName = breadCrumb.Name;
 			currentLevel = breadCrumb.Level;
 			currentNode = breadCrumb.NodeID;
-		}else{
+		} else {
 			var subLevel = currentId;
 			currentName = subLevel.Name;
 			currentLevel = self.currentObj.Level + 1;
@@ -330,7 +449,7 @@
 		var locationObj = seperateSlicersFromUrl(locationPath);
 		locationPath = locationObj.path;
 		var locationPathRemoved = locationObj.removed;
-		if (!isActualNumber(currentId)){
+		if (!isActualNumber(currentId)) {
 			//protect against any links with a forward-slash, like Beginner/Advanced
 			//this is so the slash doesn't get interpreted as another level
 			currentId = currentId.replace(/\//g,'%2F');
@@ -339,7 +458,7 @@
 			case 'parse':
 				if (currentId === 'School of the Arts'){
 					locationPath = '';
-				}else{
+				} else {
 					var folderPosition = locationPath.indexOf('/'+ currentId +'/');
 					locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
 				}
@@ -353,7 +472,7 @@
 				location.path(fixUrl(newLocation === '' ? '/'+ newLocation : newLocation + locationPathRemoved));
 				break;
 			default:
-				if (locationPath === '/'){
+				if (locationPath === '/') {
 					locationPath = '';
 				}
 				location.path(fixUrl(locationPath + '/'+ currentId + locationPathRemoved));
@@ -374,7 +493,7 @@
 				});
 				if (node.Keywords.length) {
 					var keywordsToLookForArr = node.Keywords.toLowerCase().split(',');
-					var filteredResults = filterList(self.resultsByKeywords, keywordsToLookForArr);
+					var filteredResults = filterListByKeywords(self.resultsByKeywords, keywordsToLookForArr);
 					if (filteredResults.length) {
 						self.classesByNodeId[node.NodeID] = filteredResults;
 					}
@@ -413,9 +532,9 @@
 		var locationObj = seperateSlicersFromUrl(locationPath);
 		locationPath = locationObj.path;
 		var folderToAdd;
-		if (locationPath == '') {
+		if (locationPath == '' || locationPath == '/') {
 			folderToAdd = "School of the Arts";
-		}else{
+		} else {
 			var foldersToAdd = locationPath.split('/');
 			folderToAdd = _.last(foldersToAdd);
 		}
@@ -465,23 +584,84 @@
 			case 'age':
 				sliceUrl = AGESLICEURL;
 				sliceArr = self.ageSlice;
+				self.ageApplyClicked = true;
+				break;
+			case 'sdate':
+				sliceUrl = SDATESLICEURL;
+				sliceArr = Date.parse(self.sdateSlice);
+				break;
+			case 'edate':
+				sliceUrl = EDATESLICEURL;
+				sliceArr = Date.parse(self.edateSlice);
+				break;
+			case 'datetime':
+				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL];
+				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice)];
+				self.dateApplyClicked = true;
 				break;
 		}
 		if (!_.isUndefined(sliceUrl)) {
-			var sliceUrlStartLocation = locationPath.indexOf(sliceUrl);
-			if (sliceUrlStartLocation >= 0){
-				var sliceUrlEndLocation = locationPath.indexOf('/', sliceUrlStartLocation + 1);
-				var sliceStringToReplace = sliceUrlEndLocation >= 0 ? locationPath.substring(sliceUrlStartLocation, sliceUrlEndLocation) : locationPath.substring(sliceUrlStartLocation);
-				//clear from url if field is deselected
-				if(!sliceArr.length) {
-					sliceUrl = '';
-				}
-				location.path(fixUrl(locationPath.replace(sliceStringToReplace, sliceUrl + sliceArr.toString())));
-			}else{
-				location.path(fixUrl(locationPath + sliceUrl + sliceArr.toString()));
+			if (_.isArray(sliceUrl)) {
+				_.forEach(sliceUrl, function (arr, idx) {
+					if (!_.isUndefined(sliceArr[idx])) {
+						locationPath = rewriteUrlLocation(arr, sliceArr[idx], locationPath);
+					}
+				});
+			} else {
+				locationPath = rewriteUrlLocation(sliceUrl, sliceArr, locationPath);
 			}
+			location.path(locationPath);
 			self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 		}
+	};
+
+	NavListController.prototype.checkDateState = function (open) {
+		var self = this;
+		if (open) {
+			self.dateApplyClicked = false;
+			self.origDaySlice = _.clone(self.daySlice);
+			self.origTimeSlice = _.clone(self.timeSlice);
+			self.origSdateSlice = self.sdateSlice;
+			self.origEdateSlice = self.edateSlice;
+		} else {
+			if (!self.dateApplyClicked) {
+				self.daySlice = _.clone(self.origDaySlice);
+				self.timeSlice = _.clone(self.origTimeSlice);
+				self.sdateSlice = self.origSdateSlice;
+				self.edateSlice = self.origEdateSlice;
+			}
+		}
+	};
+
+	NavListController.prototype.checkAgeState = function (open) {
+		var self = this;
+		if (open) {
+			self.ageApplyClicked = false;
+			self.origAgeSlice = _.clone(self.ageSlice);
+		} else {
+			if (!self.ageApplyClicked) {
+				self.ageSlice = _.clone(self.origAgeSlice);
+			}
+		}
+	};
+
+	var rewriteUrlLocation = function (sliceUrl, sliceVal, locationPath) {
+		var sliceUrlStartLocation = locationPath.indexOf(sliceUrl);
+		if (sliceUrlStartLocation >= 0){
+			var sliceUrlEndLocation = locationPath.indexOf('/', sliceUrlStartLocation + 1);
+			var sliceStringToReplace = sliceUrlEndLocation >= 0 ? locationPath.substring(sliceUrlStartLocation, sliceUrlEndLocation) : locationPath.substring(sliceUrlStartLocation);
+			//clear from url if field is deselected or value is for 'all' or value is erroneous
+			if(!sliceVal.toString().length || _.isNaN(sliceVal) || sliceVal === 'all') {
+				sliceUrl = '';
+				sliceVal = '';
+			}
+			locationPath = fixUrl(locationPath.replace(sliceStringToReplace, sliceUrl + sliceVal.toString()));
+		} else {
+			if (!_.isNaN(sliceVal) && sliceVal !== 'all') {
+				locationPath = fixUrl(locationPath + sliceUrl + sliceVal.toString());	
+			}
+		}
+		return locationPath;
 	};
 
 	var fixUrl = function (possiblyMessyUrl) {
@@ -495,31 +675,69 @@
 		var timeUrlLocation = locationPath.indexOf(TIMESLICEURL);
 		var typeUrlLocation = locationPath.indexOf(TYPESLICEURL);
 		var ageUrlLocation = locationPath.indexOf(AGESLICEURL);
-		var locations = [dayUrlLocation, timeUrlLocation, typeUrlLocation, ageUrlLocation];
+		var sdateUrlLocation = locationPath.indexOf(SDATESLICEURL);
+		var edateUrlLocation = locationPath.indexOf(EDATESLICEURL);
+		var sortUrlLocation = locationPath.indexOf(SORTSLICEURL);
+		var locations = [dayUrlLocation, timeUrlLocation, typeUrlLocation, ageUrlLocation, sdateUrlLocation, edateUrlLocation, sortUrlLocation];
 		var slcLocation = _.min(locations, function (n) { 
 			if (n >= 0) { 
 				return n; 
 			} 
 		});
-		if (slcLocation >= 0){
+		if (slcLocation >= 0) {
 			cleanUrl.path = locationPath.substring(0, slcLocation);
 			cleanUrl.removed = locationPath.substring(slcLocation);
-		}else{
+		} else {
 			cleanUrl.path = locationPath;
 			cleanUrl.removed = '';
 		}
 		return cleanUrl;
 	};
 
-	var filterList = function (navArr, foundClassKeywordsArray) {
+	var filterListByDateRange = function (navArr, sdate, edate) {
+		var filteredNavs;
+		if (!_.isUndefined(sdate) && isDate(sdate)) {
+			if (!_.isUndefined(edate) && isDate(edate)) {
+				filteredNavs = _.filter(navArr, function (navs) {
+					var sortDate1 = navs.SortDate1;
+					return sortDate1 >= sdate && sortDate1 <= edate;
+				});
+			} else {
+				filteredNavs = _.filter(navArr, function (navs) {
+					var sortDate1 = navs.SortDate1;
+					return sortDate1 >= sdate;
+				});
+			}
+		} else {
+			filteredNavs = navArr;
+		}
+		return filteredNavs;
+	};
+
+	var checkListContainsWords = function (results, searchVal) {
+		var filteredNavs;
+		var pattern = new RegExp(searchVal, "i");
+		if (!_.isUndefined(searchVal) && searchVal.length) {
+			filteredNavs = _.filter(results, function (result) {
+				return pattern.test(result.Teachers) || pattern.test(result.Title) || pattern.test(result.KeyWord.toString());
+			});
+		} else {
+			filteredNavs = results;
+		}
+		return filteredNavs;
+	};
+
+	var filterListByKeywords = function (navArr, foundClassKeywordsArray) {
+		var filteredNavs;
 		if (!_.isUndefined(foundClassKeywordsArray) && foundClassKeywordsArray.length) {
-			var filteredNavs = _.filter(navArr, function (navs) {
+			filteredNavs = _.filter(navArr, function (navs) {
 				var isSlicing = false;
 				if (navs.CategoryProductionKeywords) {
+					// when page first loads
 					var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
 						return catprod.keyword.toLowerCase();
 					});
-				}else{
+				} else {
 					var navKeywords = _.map(navs.KeyWord, function (catprod) {
 						return catprod.toLowerCase();
 					});
@@ -542,12 +760,12 @@
 							break;
 						default:
 							returnVal = navKeywords.indexOf(keyword) != -1;
-					};
+					}
 					return returnVal;
 				});
 				return isSlicing ? filtered.length > 0 : filtered.length === foundClassKeywordsArray.length;
 			});
-		}else{
+		} else {
 			filteredNavs = navArr;
 		}
 		return filteredNavs;
@@ -559,6 +777,7 @@
 		var itemTypes = _.remove(keyWords, function (n) { 
 			return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
 		});
+		var featured = _.includes(keyWords, 'Featured Item') ? true : false;
 		var itemType = itemTypes.length ? itemTypes[0] : "";
 		var mainImage = arr.MainImage;
 		var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
@@ -572,14 +791,17 @@
 		var sortDate1 = "";
 		var sortDate2 = "";
 		var warning = arr.ProdStatus;
-		if (begDate < new Date() || warning.length){
+		var inProgress;
+		if (begDate < new Date() || warning.length) {
 			sortDate2 = begDate;
 			//10 is an arbirtary number to set the secondary sorting
 			sortDate1 = begDate.setFullYear(yearNumber + 10);
 			startDate = "";
-		}else{
+			inProgress = true;
+		} else {
 			sortDate1 = begDate;
 			sortDate2 = "";
+			inProgress = false;
 		}
 
 		var shortDescription = arr.ShortDesc;
@@ -590,17 +812,17 @@
 		var teachers = instructors.toString();
 		var futurePerfCount = Number(arr.FuturePerformanceCount);
 
-		if (isActualNumber(futurePerfCount) && futurePerfCount > 0){
+		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
 			shortDesc += "<br/><b>Starting From:</b>  "+ arr.LowestPrice;
 			var performances = arr.FuturePerformances;
 			_.forEach(performances, function(p, ind) {
 				var perfDate = p.perf_dt;
 				perfDate = new Date(parseInt(perfDate.substr(6)));
 				var futureDate = formatDateOutput(perfDate);
-				if (ind === 0){
+				if (ind === 0) {
 					shortDesc += "<br/><b>Upcoming Dates:</b><br/>"+ futureDate;
-				}else{
-					if (ind >= 3){
+				} else {
+					if (ind >= 3) {
 						shortDesc += "<br/>And "+ (futurePerfCount - 3) +" more";
 						return false;
 					}
@@ -621,7 +843,10 @@
 			SortDate2: sortDate2,
 			Url: arr.URL,
 			Warning: warning,
-			ItemType: itemType
+			ItemType: itemType,
+			Teachers: teachers,
+			InProgress: inProgress,
+			Featured: featured
 		};
 		return classInfoObj;
 	}
@@ -632,10 +857,10 @@
 		var dateHour = uglyDate.getHours();
 		var yearNumber = uglyDate.getFullYear();
 		var ampm = dateHour < 12 ? "AM" : "PM";
-		if (dateHour == 0){
+		if (dateHour == 0) {
 			dateHour = 12;
 		}
-		if (dateHour > 12){
+		if (dateHour > 12) {
 			dateHour = dateHour - 12;
 		}
 		var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ uglyDate.getMinutes() : "";
@@ -689,6 +914,10 @@
 	});
 
 })();
+
+var isDate = function (checkDate) {
+	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
+}
 
 var resizeTileDisplay = function (scope) {
 	var tileWidth = 320;
