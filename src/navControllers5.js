@@ -173,6 +173,11 @@
 					_.pull(chkSlc, '6-12');
 					_.pull(chkSlc, 'teens');
 					_.pull(chkSlc, 'multigenerational');
+				} else if (chkVal === 'adults' || chkVal === 'seniors') {
+					_.pull(chkSlc, 'alladults');
+				} else if (chkVal === 'alladults') {
+					_.pull(chkSlc, 'adults');
+					_.pull(chkSlc, 'seniors');
 				}
 			}
 		}
@@ -758,6 +763,9 @@
 						case 'kids':
 							returnVal = navKeywords.indexOf('parenting & family') != -1 || navKeywords.indexOf('6-12 years') != -1 || navKeywords.indexOf('newborn-5 years') != -1 || navKeywords.indexOf('teens') != -1;
 							break;
+						case 'alladults':
+							returnVal = navKeywords.indexOf('adults') != -1 || navKeywords.indexOf('seniors') != -1;
+							break;
 						default:
 							returnVal = navKeywords.indexOf(keyword) != -1;
 					}
@@ -804,7 +812,7 @@
 			inProgress = false;
 		}
 
-		var shortDescription = arr.ShortDesc;
+		var shortDescription = "<div class='shortDescTxt'>" + arr.ShortDesc + "</div>";
 		var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
 		var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
 			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
@@ -813,24 +821,24 @@
 		var futurePerfCount = Number(arr.FuturePerformanceCount);
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
-			shortDesc += "<br/><b>Starting From:</b>  "+ arr.LowestPrice;
+			shortDesc += "<div class='startPrice'>" + "<b>Starting From:</b>  "+ arr.LowestPrice + "</div>";
 			var performances = arr.FuturePerformances;
 			_.forEach(performances, function(p, ind) {
 				var perfDate = p.perf_dt;
 				perfDate = new Date(parseInt(perfDate.substr(6)));
 				var futureDate = formatDateOutput(perfDate);
 				if (ind === 0) {
-					shortDesc += "<br/><b>Upcoming Dates:</b><br/>"+ futureDate;
+					shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
 				} else {
 					if (ind >= 3) {
-						shortDesc += "<br/>And "+ (futurePerfCount - 3) +" more";
+						shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
 						return false;
 					}
-					shortDesc += "<br/>"+ futureDate;
+					shortDesc += "<div class='dates'>"+ futureDate + "</div>";
 				}
 			});
 		}
-		shortDesc += "<br/><a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>";
+		shortDesc += "<div class='detailLink'>" + "<a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>" + "</div>";
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -920,12 +928,22 @@ var isDate = function (checkDate) {
 }
 
 var resizeTileDisplay = function (scope) {
-	var tileWidth = 320;
-	var pageWidth = (_.isUndefined(window.outerWidth) || window.outerWidth === 0) ? $(window).width() : window.outerWidth;
-	var numColumns = Math.floor(pageWidth / tileWidth);
 
-	var headerHeight = 274;
-	var tileHeight = 360;
+	var tileHeight, numColumns;
+	if (window.matchMedia( "(min-width: 1200px)" ).matches) {
+		numColumns = 4;
+		tileHeight = 340;
+	} else if (window.matchMedia( "(min-width: 992px)" ).matches) {
+		numColumns = 3;
+		tileHeight = 340;
+	} else if (window.matchMedia( "(min-width: 768px)" ).matches) {
+		numColumns = 2;
+		tileHeight = 340;
+	} else {
+		numColumns = 1;
+		tileHeight = 193;
+	}
+	var headerHeight = $("#isoContainer").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
@@ -956,8 +974,8 @@ $(document).on('click','.showMore',function(){
 	var $content = $wrapper.find("div");
 	var titleHeight = $classTitle.height();
 	var warnHeight = $warning.height();
-	$wrapper.children(".shortDescription").css("height", 180 - titleHeight - warnHeight+"px");
-	if($wrapper.css("bottom") == "144px") {
+	$wrapper.children(".shortDescription").css("height", 225 - titleHeight - warnHeight+"px");
+	if($wrapper.css("bottom") == "164px") {
 		$wrapper.animate({bottom: "5px"});
 		$classTitle.animate({bottom: "0"});
 		$classDate.animate({bottom: "0"});
@@ -967,10 +985,10 @@ $(document).on('click','.showMore',function(){
 		});
 	} else {
 		$wrapper.css( "bottom", "5px" );
-		$wrapper.animate({bottom: "144px"});
-		$classTitle.animate({bottom: "144px"});
-		$classDate.animate({bottom: "144px"});
-		$warning.animate({bottom: "144px"});
+		$wrapper.animate({bottom: "164px"});
+		$classTitle.animate({bottom: "164px"});
+		$classDate.animate({bottom: "164px"});
+		$warning.animate({bottom: "164px"});
 		$content.slideDown(function () {
 			$showMore.html($showMore.html().replace("Show More ▲", "Show Less ▼"));
 		});
