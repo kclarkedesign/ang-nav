@@ -548,7 +548,7 @@
 
 		var savedSearch = { 
 			url: urlToAdd,
-			folder: folderToAdd,
+			folder: folderToAdd + " " + "+",
 			filter: filtersToAdd.toString()
 		};
 		if (!_.filter(self.savedSearches, function (ss) {

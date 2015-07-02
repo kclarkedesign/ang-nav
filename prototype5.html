@@ -35,6 +35,7 @@
 		#hor-menu {
 			width: 100%;
 			background: #fff;
+			/*border-bottom: 1px solid #000000;*/
 			background-color: #4F93CD;
 		}
 		.header {
@@ -62,9 +63,9 @@
 			line-height: 50px;
 		}
 		.header .brand .navbar-brand img {
-			max-height: 25px;
+			max-height: 50px;
 			margin-right: 5px;
-			margin-top: -3px;
+			/*margin-top: -3px;*/
 		}
 		.header .nav>li>a:hover, 
 		.header .nav>li>a:focus, 
@@ -77,6 +78,7 @@
 			width: 100%
 		}
 		#utilnav {
+			/*display: inline-block;*/
 			padding: 0 10px;
 			line-height: 50px;
 			float: left !important;
@@ -134,6 +136,18 @@
 			right: -590px;
 			transition: ease .5s all;
 		}
+		#mainNavSidebar {
+			position: fixed;
+			height: 100%;
+			top: 0;
+			z-index: 1002;
+			background-color: #333;
+			left: -590px;
+			transition: ease .5s all;
+		}
+		#mainNavSidebar.in {
+			left: 0;
+		}
 		#sidebar.in,
 		#browseSidebar.in {
 			right: 0;
@@ -154,6 +168,7 @@
 				width: auto;
 			}
 		}
+
 		@media (max-width: 767px) {
 			.header {
 				width: 100%;
@@ -174,12 +189,23 @@
 				width: 100%;
 				text-align: center;
 			}
+			/*.header .brand .navbar-brand {
+				display: inline-block;
+				float: none;
+				text-align: center;
+			}*/
+			/*.header .off-left {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}*/
 			#logo-anchor {
 				margin-left: -15px;
- 			}
+			}
 			.header .navbar-toggle, 
 			.header .brand [data-toggle="offscreen"] {
 				z-index: 999;
+				/*padding: 10px 15px;*/
 				margin-top: 8px;
 				margin-right: 0;
 				margin-left: 0;
@@ -195,6 +221,9 @@
 			.navbar-collapse {
 				padding-left: 0px;
 			}
+			/*#utilnav ul {
+				line-height: 12px;
+			}*/
 		}
 		@media (max-width: 319px) {
 			#utilnav {
@@ -232,7 +261,7 @@
 		}
 		#main-navigation span {
 			color: #FFF;
- 		}
+		}
 		#breadcrumb-content {
 
 			border-bottom: 1px solid #bdc3c7;
@@ -259,6 +288,26 @@
 		.browse-item {
 		  padding: 0 8px 0;
 		}
+		/*.browse-item a {
+			padding: 2px 5px;
+			display: block;
+			font-size: 12px;
+			font-weight: bold;
+			-webkit-transition: all .2s ease;
+			-moz-transition: all .2s ease;
+			transition: all .2s ease;
+		}*/
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		}*/
 		.browse-item a {
 		  padding: 5px 8px;
 		  display: block;
@@ -272,6 +321,24 @@
 		  box-sizing: border-box;
 		  border-bottom: 1px solid #fff;
 		}
+		/*.browse-item a {
+		  padding: 5px 8px;
+		  display: block;
+		  font-size: 12px;
+		  font-weight: bold;
+		  -webkit-transition: all .2s ease;
+		  -moz-transition: all .2s ease;
+		  transition: all .2s ease;
+		  background-color: #eff0f2;
+		  margin: 3px -4px;
+		  box-sizing: border-box;
+		  border-bottom: 1px solid #fff;
+		  white-space: nowrap;
+		  overflow: hidden;
+		}*/	
+		/*.browse-item a:hover {
+			background-color: #D8ECFD;
+		}*/
 		.browse-item a:hover {
 			background-color: #D8ECFD;
 			border-bottom: 1px solid #ccc;
@@ -293,6 +360,9 @@
 			padding: 0;
 			margin-top: 5px;
 			border-radius: 1.25em;
+			/*line-height: 12px;
+			border: 1px solid #ccc;
+			margin-right: 10px;*/
 		}
 		.savedSearches a {
 			display: inline-block;
@@ -652,6 +722,7 @@
 		.selections a {
 			float: left;
 			padding: 4px 16px;
+			/*width: 100%;*/
 			font-size: 13px;
 			cursor: pointer;
 			text-decoration: none;
@@ -661,6 +732,7 @@
 		.selections a:hover,
 		.selections a.active {
 			background-color: #8EBADF;
+  			/* padding-left: 8px; */
   			color: #466594;
 		}
 
@@ -716,7 +788,7 @@
 			}
 			.savedSearches a {
 				padding: 4px 8px 4px;
- 			}
+			}
 			.tabs-left .nav-tabs {
 				float: none;
 				border-top-left-radius: 2px;
@@ -731,6 +803,23 @@
 				border-bottom: none;
 				margin-bottom: 0;
 			}
+			#utilnav {
+				/* display: inline-block; */
+				/*padding: 6px 0 10px;*/
+			}
+
+			
+
+			/*#slicerContainer.affix {
+				top: initial;
+				z-index: 2;
+				background-color: #fff;
+				border-bottom: 1px solid #ccc;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}*/
 		}
 		@media (max-width: 480px) {
 			
@@ -752,6 +841,7 @@
 		}
 
 		.tileContainer .mixFirst {
+			/*width: 100px;*/
 			display: block;
 			position: absolute;
 			top: 0;
@@ -789,20 +879,32 @@
 			width: 100%;
 			margin-left: auto;
 			margin-right: auto;
+			/*margin-bottom: 10px;*/
 			background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
 			z-index: 1;
 		}
+		/*.showMore {
+			cursor: pointer;
+			font-size: 11px;
+			padding: 4px 8px;
+			display: inline-block;
+			background: #ffffff;
+			border-radius: 4px;
+			width: 75px;
+			transition: .1s linear;
+		}*/
 		.showMore {
 			cursor: pointer;
 			font-size: 11px;
 			padding: 18px 8px;
 			display: inline-block;
 			background: #ffffff;
+			/* border-radius: 4px; */
 			transition: .1s linear;
 			width: 100%;
-			background-color: #F5F5F5;
+			/*background-color: #F5F5F5;*/
 			border-top: 1px solid #EDEDED;
- 		}
+		}
 		.showMore:hover {
 			background: #E8E8E8;
 			transition: .1s linear;
@@ -858,15 +960,15 @@
 			background-color: white;
 			line-height: 16px;
 		}
-		.classTitleMobile {
-			font-weight: bold;
-		}
 		.classTitle {
 			text-align: left;
 			font-weight: bold;
 			font-size: 14px;
 			padding-top: 8px;
 			line-height: 17px;
+		}
+		.classTitleMobile {
+			font-weight: bold;
 		}
 		.classDate {
 			font-size: 12px;
@@ -880,6 +982,9 @@
 			color: red;
 			font-size: 12px;
 			padding-bottom: 3px;
+		}
+		.warning {
+
 		}
 		.warning h4 {
 			font-size: 12px;
@@ -919,18 +1024,32 @@
 			right: 0;
 		}
 		#interest-list.active {
-			  background-color: #8EBADF;
+			background-color: #8EBADF;
 		}
 		#slicers {
 			background-color: #eff0f2;
 		}
 		/* slicers */
+		/*#slicers .row-dropdown {
+			width: 24%;
+			float: left;
+			text-align: center;
+		}*/
 		#slicers .row-heading {
 			display: inline;
 		}
 		#slicers .row-heading {
 			font-size: 10px;
 		}
+		/*.slicers {
+			border-bottom: 1px solid #ccc;
+			display: block;
+			margin: 0 auto 10px;
+			padding: 55px 0 0;
+			text-align: center;
+			width: 100%;
+			background: #fff;
+		}*/
 
 		/* angular UI */
 		.nav, 
@@ -939,7 +1058,8 @@
 		.panel-title a { 
 			cursor: pointer;
 		}
-		input[type="date"]::-webkit-calendar-picker-indicator, input[type="date"]::-webkit-inner-spin-button{
+		input[type="date"]::-webkit-calendar-picker-indicator,
+		input[type="date"]::-webkit-inner-spin-button{
 			display: none;
 		}
 
@@ -972,18 +1092,37 @@
 				margin: 0;
 			}
 			#browseSidebar .current {
-				font-size: 1.6em;
+  				font-size: 1.6em;
 			}
 			.browse-item a {
 				padding: 10px 15px;
 			}
 		}
-		@media (min-width: 468px) and (max-width: 768px) {
+		@media (min-width: 768px) and (max-width: 992px) {
+			.tileContainer .itemContents {
+				height: 380px;
+			}
+		}
+		@media (min-width: 768px) and (max-width: 786px) {
+			.filter-content.container {
+				padding: 0;
+				width: 100%;
+			}
+		}
+		@media (min-width: 468px) and (max-width: 767px) {
+			/*.itemBox img {
+				width: 40%;
+			}*/
 			.tileContainer .itemContents {
 				height: auto;
 			}
 			.itemContents.visible-xs .warning {
 				padding: 4px 0;
+
+			}
+			.shortDescriptionMobile a {
+
+
 			}
 		}
 		@media (max-width: 468px) {
@@ -991,12 +1130,17 @@
 				padding-left: 0;
   				padding-right: 0;
 			}
- 			.tileContainer .itemContents {
+			.tileContainer .itemContents {
 				padding-bottom: 16px;
 			}
 			.detailLink {
 				display: none;
- 			}
+			}
+			.shortDescTxt,
+			.startPrice,
+			.dates {
+				display: none;
+			}
 		}
 		@media (max-width: 360px) {
 			.classTitleMobile {
@@ -1006,10 +1150,6 @@
 			}
 		}
 		@media (max-width: 300px) {
-			.shortDescTxt,
-			.dates {
-				display: none;
-			}
 			.classTitleMobile {
 				font-weight: bold;
 				line-height: 16px;
@@ -1071,7 +1211,16 @@
 			#utilnav {
 				float: left !important;
 			}
+
 		}
+		@media (min-width: 768px) {
+			.tileContainer .itemContents {
+				-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+  				box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+			}
+		}
+
+
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
@@ -1102,9 +1251,14 @@
 					e.preventDefault();
 					$("#browseSidebar").toggleClass('in');
 				});
-				$("#sidebar, #browseSidebar").click(function(e) {
+				$("#mainNavBtn").click(function(e) {
 					e.preventDefault();
-					$("#sidebar, #browseSidebar").removeClass('in');
+					console.log("Pressed");
+					$("#mainNavSidebar").toggleClass('in');
+				});
+				$("#sidebar, #browseSidebar, #mainNavSidebar").click(function(e) {
+					e.preventDefault();
+					$("#sidebar, #browseSidebar, #mainNavSidebar").removeClass('in');
 				});
 				refineBar.click(function() {
 					refineBar.slideUp();
@@ -1155,9 +1309,9 @@
 					<div >
 						<div class="">
 							<div>
-								<a href="javascript:;" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse" data-target="#hor-menu"></a>
+								<a id="mainNavBtn" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse"></a>
 								<a href="#" id="logo-anchor" class="navbar-brand">
-									<img src="http://92Y.org/_ui/uptown/img/sitelogo_92Y.png" alt=""/>
+									<img src="img/sitelogo_92Y-1.png" alt=""/>
 								</a>
 							</div>
 							<div id="utilnav" role="navigation" class="navbar-nav">
@@ -1280,7 +1434,7 @@
 									</div>
 									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 visible-xs" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
 										<button id="browseBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Browse
+											Subcategories
 											<span class="caret"></span>
 										</button>
 	 								</div>
@@ -1288,7 +1442,7 @@
 	 						</div>
 						</div>
 						<div id="slicers" class="row mb15 hidden-xs hidden-sm hidden-md" scrollspy>
-							<div id="slicerContainer" data-spy="affix">
+							<div id="slicerContainer" affix>
 								<div id="refine-bar" class="collapse">
 									<div class="container center pt15 pb15 ">
 										Refine Filters
@@ -1486,7 +1640,7 @@
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu col-xs-12" role="menu">
-														<li><a ng-click="navListCtrl.sortResults('all')">Soonest</a></li>
+														<li><a ng-click="navListCtrl.sortResults('all')">Soonest Available</a></li>
 														<li><a ng-click="navListCtrl.sortResults('featured')">Featured</a></li>
 														<li role="separator" class="divider"></li>
 														<li><a ng-click="navListCtrl.sortResults('progress')">In Progess</a></li>
@@ -1572,6 +1726,47 @@
 						<span class="browse-item col-xs-12 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 							<a class="list-group-item" ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 						</span>
+					</div>
+				</div>
+				<!-- Main Nav -->
+				<div id="mainNavSidebar">
+					<ul id="main-navigation" class="nav navbar-nav">
+						<li class="dropdown">
+							<a id="interest-list" href="" data-toggle="dropdown">
+								<span id="advancedFilters" class="mainNavHighlight list-group-item">Find Programs &amp; Classes</span>
+								<!-- <b class="caret"></b> -->
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Talks &amp; Readings</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Performing Arts</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>School of the Arts</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Health &amp; Fitness</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Jewish Life</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Kids &amp; Family</span>
+							</a>
+						</li>
 					</div>
 				</div>
 			</div>
