@@ -1072,6 +1072,13 @@
 				float: left !important;
 			}
 		}
+
+		.spinnerInTextbox 
+		{
+			background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
+			background-size: 20px;
+			padding-right: 24px;
+		}
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
@@ -1088,8 +1095,6 @@
 		<!-- TO BE ADDED TO ANGULAR -->
 		<script type="text/javascript">
 			$(document).ready(function() {
-
-				//Experiment with affix and having a refine button reveal slicers
 				var refineBar = $('#refine-bar');
 				var refineSlicers = $('.refine-slicers'); 
 				var refineClose = $('#refine-close');
@@ -1114,32 +1119,6 @@
 					refineBar.slideDown();
 					refineSlicers.slideUp();
 				})
-
-				//Expands additional age ranges in Age range dropdown
-				var toggleBtnAdult = $('#adultAgeExpander');
-				var toggleBtnKid = $('#kidAgeExpander');
-
-				toggleBtnAdult.click(function() {
-					$('#adultAgeRanges').slideDown(function () {
-						toggleBtnAdult.text('[-]');
-					});
-
-					if(toggleBtnAdult.text().indexOf('[-]') > -1) {
-						$('#adultAgeRanges').slideUp(function () {
-							toggleBtnAdult.text('[+]');
-						});
-					}
-				});
-				toggleBtnKid.click(function() {
-					$('#kidAgeRanges').slideDown(function () {
-						toggleBtnKid.text('[-]');
-					});
-					if(toggleBtnKid.text().indexOf('[-]') > -1) {
-						$('#kidAgeRanges').slideUp(function () {
-							toggleBtnKid.text('[+]');
-						});
-					}
-				});
 
 				$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
 					e.stopPropagation();
@@ -1248,7 +1227,7 @@
 						</div>
 						<div class="">
 							<div class="filter-content container pl10 pr10 mb15">
-								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5">
+								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5" ng-show="navListCtrl.activeBreadcrumb.length > 1">
 									<ol class="breadcrumb mt10 mb5">
 										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
 											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
@@ -1273,7 +1252,7 @@
 											</div>
 										</div>
 									</div>
-									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs">
+									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
 										<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 										</span>
@@ -1300,7 +1279,7 @@
 											<i class="fa fa-times"></i>
 										</div>
 									
-										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)">
+										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit()}">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
 												<span class="caret"></span>
@@ -1400,7 +1379,7 @@
 		 									</div>
 										</div>
 						
-										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)">
+										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit()}">
 											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Age Range
 		 										<span class="caret"></span>
@@ -1423,8 +1402,8 @@
 														<div class="col-xs-9 pull-right no-p">
 															<div class="full-width">
 																<input id="allAdults" type="checkbox" class="selectAll" value="alladults" ng-click="navListCtrl.slicerPicked('age', 'alladults')" ng-checked="navListCtrl.ageSlice.indexOf('alladults') > -1">
-																<label class="checkbox fw-normal" for="allAdults">All Adults <a id="adultAgeExpander">[+]</a></label>
-																<div id="adultAgeRanges" class="collapse col-xs-12">
+																<label class="checkbox fw-normal" for="allAdults">All Adults</label>
+																<div id="adultAgeRanges" class="col-xs-12">
 																	<ul>
 																		<li>
 																			<input id="adults" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
@@ -1440,8 +1419,8 @@
 															</div>
 															<div class="full-width">
 																<input id="allKids" type="checkbox" class="selectAll" value="kids" ng-click="navListCtrl.slicerPicked('age', 'kids')" ng-checked="navListCtrl.ageSlice.indexOf('kids') > -1">
-																<label class="checkbox fw-normal" for="allKids">All Kids <a id="kidAgeExpander">[+]</a></label>
-																<div id="kidAgeRanges" class="collapse col-xs-12">
+																<label class="checkbox fw-normal" for="allKids">All Kids</label>
+																<div id="kidAgeRanges" class="col-xs-12">
 																	<ul>
 																		<li>
 																			<input id="newborn" type="checkbox" class="selectAll" value="newborn-5" ng-click="navListCtrl.slicerPicked('age', 'newborn-5')" ng-checked="navListCtrl.ageSlice.indexOf('newborn-5') > -1">
@@ -1478,9 +1457,9 @@
 										<div class="col-sm-4 pull-right">
 											<div class="row">
 												<div class="col-md-8 pull-left">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-model-options="{ debounce: 2000 }" ng-change="navListCtrl.displayTiles()">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												</div>
-												<div class="col-sm-12 col-md-4 pull-right" dropdown>
+												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
 														Sort By
 														<span class="caret"></span>
