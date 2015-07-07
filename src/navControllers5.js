@@ -10,6 +10,7 @@
 	var SDATESLICEURL = '/sdate__';
 	var EDATESLICEURL = '/edate__';
 	var SORTSLICEURL = '/sort__';
+	var SEARCHSLICEURL = '/search__';
 
 	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
@@ -17,7 +18,6 @@
 		var classesByInterest = [];
 		self.arrCategory = [];
 		self.location = $location;
-		self.scope = $scope;
 		self.timeout = $timeout;
 		self.JumpNav = {};
 		self.navsDict = {};
@@ -37,8 +37,10 @@
 		self.initEdateSlice = undefined;
 		self.initAgeSlice = 'all';
 		self.initSortOrder = 'all';
+		self.soonestSortSelected = false;
 		self.showSpinner = false;
-		self.debounceSearch = _.debounce(function () { self.displayTiles() }, 2000);
+		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(); }, 2000);
+		self.applyScope = function () { $scope.$apply(); };
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 
@@ -74,7 +76,6 @@
 				var locationPath = self.location.path();
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
-
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
 
 				//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
@@ -157,8 +158,6 @@
 				self.ageSlice = self.updateCheckedGroups(self.ageSlice, whatTime);
 				break;
 		}
-		//this is used when we want to fire off a change every time something is clicked - but that ends up closing the dialog
-		//self.sliceBy(whichDateTime)
 	};
 
 	NavListController.prototype.updateCheckedGroups = function(chkSlc, chkVal) {
@@ -213,13 +212,27 @@
 		}
 	};
 
+	NavListController.prototype.modifyUrlSearch = function () {
+		var self = this;
+		var location = self.location;
+		var locationPath = location.path();
+
+		locationPath = rewriteUrlLocation(SEARCHSLICEURL, self.textboxSearch, locationPath);
+		location.path(locationPath);
+
+		self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
+
+		self.debounceSearch.cancel();
+		self.applyScope();
+	};
+
 	NavListController.prototype.searchByWord = function () {
 		var self = this;
 		if (self.textboxSearch.length) {
 			self.showSpinner = true;
 			self.debounceSearch();
 		} else {
-			self.displayTiles();
+			self.modifyUrlSearch();
 		}
 	};
 
@@ -317,10 +330,6 @@
 		}
 		self.sortOrder = sortBy;
 		self.showSpinner = false;
-		if (!_.isUndefined(self.textboxSearch) && self.textboxSearch.length) {
-			self.debounceSearch.cancel();
-			self.scope.$apply();
-		}
 	};
 
 	NavListController.prototype.sortResults = function (sortBy) {
@@ -331,12 +340,14 @@
 		locationPath = rewriteUrlLocation(SORTSLICEURL, sortBy, locationPath);
 		location.path(locationPath);
 
+		self.soonestSortSelected = sortBy === 'all' ? true : false;
+
 		self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 	};
 
-	NavListController.prototype.populateSlicers = function (urlSlicers, getTextOnly) {
+	NavListController.prototype.populateSlicers = function (urlSlicers) {
 		var self = this;
-		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL];
+		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL, SEARCHSLICEURL];
 		var slicerTexts = [];
 		self.daySlice = _.clone(self.initDaySlice);
 		self.timeSlice = _.clone(self.initTimeSlice);
@@ -344,39 +355,38 @@
 		self.ageSlice = _.clone(self.initAgeSlice);
 		self.sdateSlice = self.initSdateSlice;
 		self.edateSlice = self.initEdateSlice;
+		self.textboxSearch = '';
 		_.forEach(slicerUrls, function (slicerUrl, index) {
 			var sliceUrlStartLocation = urlSlicers.indexOf(slicerUrl);
 			if (sliceUrlStartLocation >= 0) {
 				var sliceUrlEndLocation = urlSlicers.indexOf('/', sliceUrlStartLocation + 1);
 				var sliceString = sliceUrlEndLocation >= 0 ? urlSlicers.substring(sliceUrlStartLocation, sliceUrlEndLocation) : urlSlicers.substring(sliceUrlStartLocation);
 				var sliceValues = sliceString.substring(sliceString.indexOf('__') + 2);
-				if (getTextOnly) {
-					slicerTexts.push(sliceValues.toString());
-				} else {
-					switch (index) {
-						case 0:
-							self.daySlice = sliceValues.split(',');
-							break;
-						case 1:
-							self.timeSlice = sliceValues.split(',');
-							break;
-						case 2:
-							self.typeSlice = sliceValues;
-							break;
-						case 3:
-							self.ageSlice = sliceValues.split(',');
-							break;
-						case 4:
-							self.sdateSlice = Number(sliceValues);
-							break;
-						case 5:
-							self.edateSlice = Number(sliceValues);
-							break;
-					}
+				switch (index) {
+					case 0:
+						self.daySlice = sliceValues.split(',');
+						break;
+					case 1:
+						self.timeSlice = sliceValues.split(',');
+						break;
+					case 2:
+						self.typeSlice = sliceValues;
+						break;
+					case 3:
+						self.ageSlice = sliceValues.split(',');
+						break;
+					case 4:
+						self.sdateSlice = Number(sliceValues);
+						break;
+					case 5:
+						self.edateSlice = Number(sliceValues);
+						break;
+					case 6:
+						self.textboxSearch = sliceValues;
+						break;
 				}
 			}
 		});
-		return slicerTexts;
 	};
 
 	NavListController.prototype.buildCurrentObj = function () {
@@ -422,7 +432,7 @@
 					if (index === (subfolders.length - 1)) {
 						foundChild.Current = true;
 						self.currentObj = _.clone(foundChild);
-					}	
+					}
 				} else {
 					foundChild = {
 						Level: 0,
@@ -431,7 +441,9 @@
 						Current: false
 					};
 				}
-				self.activeBreadcrumb.push(_.clone(foundChild));
+				if (!_.isUndefined(foundChild)) {
+					self.activeBreadcrumb.push(_.clone(foundChild));	
+				}
 			});
 			self.activeBreadcrumb.reverse();
 		} else {
@@ -569,17 +581,29 @@
 			folderToAdd = _.last(foldersToAdd);
 		}
 		var locationPathRemoved = locationObj.removed;
-		var filtersToAdd = self.populateSlicers(locationPathRemoved, true);
+
+		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL, SEARCHSLICEURL, SORTSLICEURL];
+		var slicerTexts = [];
+		_.forEach(slicerUrls, function (slicerUrl, index) {
+			var sliceUrlStartLocation = locationPathRemoved.indexOf(slicerUrl);
+			if (sliceUrlStartLocation >= 0) {
+				var sliceUrlEndLocation = locationPathRemoved.indexOf('/', sliceUrlStartLocation + 1);
+				var sliceString = sliceUrlEndLocation >= 0 ? locationPathRemoved.substring(sliceUrlStartLocation, sliceUrlEndLocation) : locationPathRemoved.substring(sliceUrlStartLocation);
+				var sliceValues = sliceString.substring(sliceString.indexOf('__') + 2);
+				var textVal = (index >= 4 && index <=5) ? formatDateOutput(new Date(Number(sliceValues)), true) : formatCommaString(sliceValues.toString());
+				slicerTexts.push(textVal);
+			}
+		});
 
 		var savedSearch = { 
 			url: urlToAdd,
-			folder: folderToAdd + " " + "+",
-			filter: filtersToAdd.toString()
+			folder: folderToAdd,
+			filter: formatCommaString(slicerTexts.toString())
 		};
 		if (!_.filter(self.savedSearches, function (ss) {
 			return ss.url === savedSearch.url && ss.folder === savedSearch.folder && ss.filter === savedSearch.filter;
 		}).length){
-			self.savedSearches.push(savedSearch);			
+			self.savedSearches.push(savedSearch);
 		}
 	};
 
@@ -726,7 +750,8 @@
 		var sdateUrlLocation = locationPath.indexOf(SDATESLICEURL);
 		var edateUrlLocation = locationPath.indexOf(EDATESLICEURL);
 		var sortUrlLocation = locationPath.indexOf(SORTSLICEURL);
-		var locations = [dayUrlLocation, timeUrlLocation, typeUrlLocation, ageUrlLocation, sdateUrlLocation, edateUrlLocation, sortUrlLocation];
+		var searchUrlLocation = locationPath.indexOf(SEARCHSLICEURL);
+		var locations = [dayUrlLocation, timeUrlLocation, typeUrlLocation, ageUrlLocation, sdateUrlLocation, edateUrlLocation, sortUrlLocation, searchUrlLocation];
 		var slcLocation = _.min(locations, function (n) { 
 			if (n >= 0) { 
 				return n; 
@@ -902,7 +927,14 @@
 		return classInfoObj;
 	}
 
-	var formatDateOutput = function (uglyDate) {
+	var formatCommaString = function (uglyString) {
+		uglyString = uglyString.replace(/,(.)/g, function ($0, $1) {
+			return ', '+ _.capitalize($1);
+		});
+		return _.capitalize(uglyString);
+	}
+
+	var formatDateOutput = function (uglyDate, short) {
 		var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
 		var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 		var dateHour = uglyDate.getHours();
@@ -915,7 +947,7 @@
 			dateHour = dateHour - 12;
 		}
 		var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ uglyDate.getMinutes() : "";
-		var prettyDate = dayAbbr[uglyDate.getDay()] +", "+ monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
+		var prettyDate = short ? monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +" "+ yearNumber : dayAbbr[uglyDate.getDay()] +", "+ monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
 		return prettyDate;
 	}
 
