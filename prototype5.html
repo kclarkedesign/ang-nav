@@ -1459,16 +1459,16 @@
 												<div class="col-md-8 pull-left">
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												</div>
-												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
+												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
 														Sort By
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu col-xs-12" role="menu">
-														<li><a ng-click="navListCtrl.sortResults('all')">Soonest</a></li>
-														<li><a ng-click="navListCtrl.sortResults('featured')">Featured</a></li>
+														<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
+														<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
 														<li role="separator" class="divider"></li>
-														<li><a ng-click="navListCtrl.sortResults('progress')">In Progess</a></li>
+														<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
 													</ul>
 												</div>
 											</div>
