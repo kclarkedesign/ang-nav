@@ -17,6 +17,7 @@
 		var classesByInterest = [];
 		self.arrCategory = [];
 		self.location = $location;
+		self.scope = $scope;
 		self.timeout = $timeout;
 		self.JumpNav = {};
 		self.navsDict = {};
@@ -30,6 +31,14 @@
 		self.maxDate = self.maxDate.setFullYear(self.maxDate.getFullYear() + 1);
 		self.times = ['morning', 'afternoon', 'evening'];
 		self.days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+		self.initDaySlice = 'all';
+		self.initTimeSlice = 'all';
+		self.initSdateSlice = undefined;
+		self.initEdateSlice = undefined;
+		self.initAgeSlice = 'all';
+		self.initSortOrder = 'all';
+		self.showSpinner = false;
+		self.debounceSearch = _.debounce(function () { self.displayTiles() }, 2000);
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 
@@ -204,6 +213,16 @@
 		}
 	};
 
+	NavListController.prototype.searchByWord = function () {
+		var self = this;
+		if (self.textboxSearch.length) {
+			self.showSpinner = true;
+			self.debounceSearch();
+		} else {
+			self.displayTiles();
+		}
+	};
+
 	NavListController.prototype.displayTiles = function () {
 		var self = this;
 		if (self.currentObj.Level === 0) {
@@ -277,7 +296,7 @@
 		var sortBy;
 		var sortUrlLocation = locationPath.indexOf(SORTSLICEURL);
 		if (sortUrlLocation < 0) {
-			sortBy = 'soonest';
+			sortBy = 'all';
 		} else {
 			var endSlashLocation = locationPath.indexOf("/", sortUrlLocation + 1);
 			if (endSlashLocation < 0) {
@@ -296,6 +315,12 @@
 				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
 				break;
 		}
+		self.sortOrder = sortBy;
+		self.showSpinner = false;
+		if (!_.isUndefined(self.textboxSearch) && self.textboxSearch.length) {
+			self.debounceSearch.cancel();
+			self.scope.$apply();
+		}
 	};
 
 	NavListController.prototype.sortResults = function (sortBy) {
@@ -313,12 +338,12 @@
 		var self = this;
 		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL];
 		var slicerTexts = [];
-		self.daySlice = 'all';
-		self.timeSlice = 'all';
+		self.daySlice = _.clone(self.initDaySlice);
+		self.timeSlice = _.clone(self.initTimeSlice);
 		self.typeSlice = 'all';
-		self.ageSlice = 'all';
-		self.sdateSlice = undefined;
-		self.edateSlice = undefined;
+		self.ageSlice = _.clone(self.initAgeSlice);
+		self.sdateSlice = self.initSdateSlice;
+		self.edateSlice = self.initEdateSlice;
 		_.forEach(slicerUrls, function (slicerUrl, index) {
 			var sliceUrlStartLocation = urlSlicers.indexOf(slicerUrl);
 			if (sliceUrlStartLocation >= 0) {
@@ -637,6 +662,24 @@
 			}
 		}
 	};
+
+	NavListController.prototype.checkDateInit = function () {
+		var self = this;
+		//https://github.com/angular-ui/bootstrap/issues/3701 - clear date issue
+		//since fields don't get cleared directly due to bug, we must explicitly set date fields to undefined
+		if (_.isNull(self.sdateSlice)) {
+			delete self.sdateSlice;
+		}
+		if (_.isNull(self.edateSlice)) {
+			delete self.edateSlice;
+		}
+		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
+	}
+
+	NavListController.prototype.checkAgeInit = function () {
+		var self = this;
+		return _.isEqual(self.ageSlice, self.initAgeSlice);
+	}
 
 	NavListController.prototype.checkAgeState = function (open) {
 		var self = this;

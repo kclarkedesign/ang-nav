@@ -16,6 +16,7 @@ a:hover {
 	text-decoration: none;
 	outline: 0;
 }
+
 body {
   position: relative;
 }
@@ -52,6 +53,7 @@ header .bottom-nav {
 	padding-top: 0;
 	padding-bottom: 0;
 	line-height: 50px;
+	margin-right: -15px;
 }
 .header .brand .navbar-brand img {
 	max-height: 50px;
@@ -157,6 +159,12 @@ header .bottom-nav {
 	position: fixed;
 	z-index: 1001;
 }
+.spinnerInTextbox {
+	background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
+	background-size: 20px;
+	padding-right: 24px;
+}
+
 @media (max-width: 1200px) {
 	.refine-slicers .full-width {
 		width: auto;
@@ -452,6 +460,19 @@ a {
 #inProgress .help:after {
 	float: right;
 		line-height: 20px;
+}
+#searchText.active {
+  border: 1px solid #4F93CD;
+  color: #4F93CD;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.active #btn-dayTime,
+label.btn.active,
+.active #btn-ageRange,
+.active #btn-sort {
+	background-color: #4F93CD;
+	color: #fff;
 }
 
 /*
@@ -756,7 +777,8 @@ a {
 	#browse-nav {
 		text-align: center;
 	}
-	#browse-nav {
+	#browse-nav,
+	#filter-nav {
 		margin-top: 0;
 		padding-top: 0;
 	}
