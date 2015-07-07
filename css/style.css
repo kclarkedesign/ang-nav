@@ -20,6 +20,9 @@ a:hover {
 body {
   position: relative;
 }
+body.sidebar-open {
+	overflow-y: hidden;
+}
 .center {
 	text-align: center;
 }
@@ -34,7 +37,7 @@ body {
 	background-color: #000000;
 }
 .header {
-	min-height: 50px;
+	/*max-height: 50px;*/
 	z-index: 1000;
 	border-radius: 0;
 	border: 0;
@@ -123,14 +126,16 @@ header .bottom-nav {
 	margin: 0;
 }
 #sidebar,
-#browseSidebar {
+#browseSidebar,
+#filterSidebar {
 	position: fixed;
 	height: 100%;
 	top: 0;
 	z-index: 1002;
 	background-color: #333;
-	right: -590px;
+	right: -890px;
 	transition: ease .5s all;
+	overflow-y: scroll; 
 }
 #mainNavSidebar {
 	position: fixed;
@@ -145,7 +150,8 @@ header .bottom-nav {
 	left: 0;
 }
 #sidebar.in,
-#browseSidebar.in {
+#browseSidebar.in,
+#filterSidebar.in {
 	right: 0;
 }
 #sidebar-wrapper {
@@ -163,6 +169,9 @@ header .bottom-nav {
 	background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
 	padding-right: 24px;
+}
+.scroll {
+	height: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -352,8 +361,23 @@ a {
 .defaultBc,
 .current {
 	font-size: 4.8rem;
-		font-weight: bold;
-		line-height: 1.1;
+	font-weight: bold;
+	line-height: 1.1;
+}
+.divider {
+	height: 1px;
+	margin: 9px 0;
+	overflow: hidden;
+ 	background-color: #e5e5e5;
+}
+#filterSidebar .divider {
+
+}
+#filterSidebar label.checkbox {
+	color: #fff;
+}
+#programType label.active {
+	color: #fff;
 }
 .main-content .content-wrap .wrapper {
 	padding: 15px;
@@ -460,6 +484,21 @@ a {
 #inProgress .help:after {
 	float: right;
 		line-height: 20px;
+}
+.scroll-container {
+	width: 285px;
+	overflow: hidden;
+	margin: 0 auto;
+	height: 100%;
+}
+.scroll-nav {
+	position: relative;
+  height: 100%;
+  width: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 17px;
+  padding-bottom: 60px;
 }
 #searchText.active {
   border: 1px solid #4F93CD;
@@ -839,7 +878,9 @@ label.btn.active,
 	}*/
 }
 @media (max-width: 480px) {
-	
+	#utilnav {
+		display: none;
+	}
 }
 
 /**
@@ -1090,6 +1131,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	display: block !important;
 }
 @media (max-width: 768px) {
+	.top-nav .navbar-right {
+		float: right;
+	}
 	.tileContainer .itemContents {
 		height: auto;
 		padding-bottom: 20px;
@@ -1105,7 +1149,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	.item-details {
 		/*padding-right: 0;*/
 	}
-	#browseSidebar .list-group-item {
+	#browseSidebar .list-group-item,
+	#filterSidebar .list-group-item {
 		border-radius: 0px;
 		margin: 0;
 	}
@@ -1170,6 +1215,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	.dates {
 		display: none;
 	}
+	#mainNavSidebar {
+	  overflow-y: scroll;
+	}
 }
 @media (max-width: 360px) {
 	.classTitleMobile {
@@ -1216,15 +1264,15 @@ input[type="date"]::-webkit-inner-spin-button{
 		display: none!important;
 	}
 	.navbar-nav {
-		float: none!important;
+		/*float: none!important;*/
 		margin: 7.5px -15px;
 	}
 	.navbar-nav>li {
 		float: none;
 	}
 	.navbar-nav>li>a {
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 	.navbar-text {
 		float: none;
@@ -1250,5 +1298,14 @@ input[type="date"]::-webkit-inner-spin-button{
 	.tileContainer .itemContents {
 		-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
 			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+	}
+	.navbar-nav.navbar-right:last-child {
+  		margin-right: -15px;
+	}
+	.navbar-right {
+		float: right!important;
+	}
+	.navbar-nav>li {
+  		float: left;
 	}
 }
