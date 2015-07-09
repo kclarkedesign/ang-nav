@@ -506,6 +506,11 @@ a {
   font-weight: bold;
   text-transform: uppercase;
 }
+#browseSidebar .list-group-item,
+#filterSidebar .list-group-item {
+	border-radius: 0px;
+	margin: 0;
+}
 .active #btn-dayTime,
 label.btn.active,
 .active #btn-ageRange,
