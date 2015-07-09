@@ -4,6 +4,89 @@ For NAV Example
 
 ****/
 
+/** For Promo  **/
+
+	#utility-bar {
+ 		width: 100%;
+ 		padding: 10px 0 10px 16px;
+ 		
+ 		/*border-top: 1px solid #D6D6D6;*/
+ 		border-bottom: 1px solid #D6D6D6;
+		position: fixed;
+		bottom: 0;
+		z-index: 1000;
+  		background: #000;
+ 	}
+ 	#utility-container {
+ 		width:100%;
+ 		margin: 0 auto;
+ 		display: block;
+ 	}
+
+ 	.group-private {
+ 		font-size: 13px;
+ 		height: 38px;
+ 		display: block;
+ 		line-height: 16px;
+ 		padding: 2px;
+ 		box-sizing: border-box;
+ 	}
+ 	img {
+ 		verticle-align: top;
+ 	}
+ 	.promo {
+ 		box-shadow: none;
+		width: 100%;
+		text-align: center;
+		padding: 0 0 5px 2%;
+		box-sizing: border-box;
+ 	}
+ 	.promo-item {
+ 		display: inline-block;
+ 		text-align: center;
+ 		width: 170px;
+ 		margin: 0 0 8px 8px;
+ 		box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+ 		-webkit-box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+ 		vertical-align: top;
+		border-radius: 3px;
+		overflow: hidden;
+ 	}
+	.promo-item a:hover,
+	.promo-item:hover {
+    	background: none repeat scroll 0 0 #ededed;
+    	text-decoration: none;
+		opacity: .85;
+	}
+	.promo-item.SOA img {
+    	margin: -6px;
+   		width: 106%;
+	}
+ 	.promo-item img {
+ 		width: 100%;
+ 	}
+ 	.promo-msg {
+ 		text-align: center;
+ 		width: 100%;
+ 		display: block;
+ 		margin: 0 0 8px 0;
+ 		font-weight: bold;
+ 		color: #BCBDC0;
+		padding-right: 30px;
+ 	}
+ 	.two-wide {
+ 		width: 49%;
+ 	}
+ 	.two-tall {
+ 		min-height: 200px;
+ 	}
+
+
+ 	/** End For Promo **/
+ 	.activeFamily {
+ 		display:block;
+ 	}
+
 /*
  *
  * Updated NAV
@@ -149,6 +232,7 @@ header .bottom-nav {
 	background-color: #333;
 	left: -590px;
 	transition: ease .5s all;
+	width: 280px;
 }
 #mainNavSidebar.in {
 	left: 0;
@@ -1163,6 +1247,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	display: block !important;
 }
 @media (max-width: 768px) {
+	.header {
+		height: 50px;
+	}
 	.top-nav .navbar-right {
 		float: right;
 	}

@@ -20,28 +20,6 @@
 		<script src="/ang-nav/src/angularLocalStorage.js"></script>
 		<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
 		<script src="/ang-nav/src/navControllers5.js"></script>
-		<!DOCTYPE html>
-<html ng-app="artNavApp">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<!-- 		<base href="/prototype5.html"> -->
-		<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
-  		<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/ang-nav/css/style.css">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
-		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
-		<script src="/ang-nav/src/angular-masonry.min.js"></script>
-		<script src="/ang-nav/src/ngScrollSpy.js"></script>
-		<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
-		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
-		<script src="/ang-nav/src/angularLocalStorage.js"></script>
-		<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
-		<script src="/ang-nav/src/navControllers5.js"></script>
 		<!-- TO BE ADDED TO ANGULAR -->
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -117,7 +95,7 @@
 									<img src="img/sitelogo_92Y-1.png" alt=""/>
 								</a>
 							</div>
-							<div id="utilnav" role="navigation" class="navbar-nav">
+							<div id="utilnav" role="navigation" class="navbar-nav hidden-xs hidden-sm">
 								<ul>
 									<li><span class="greeting">Howdy!</span>
 										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
@@ -188,6 +166,58 @@
 				</div>
 			</div>
 		</header>
+
+		<div id="utility-bar" style="display:none;">
+            <div id="utility-container">
+                <!-- Promo Art -->
+                <div class="promo promo-art" data-myorder="1">
+                    <span class="promo-msg">More information about our programs:</span>
+                    <div id="promo-item-container">
+	                    <div class="promo-item SOA">
+	                        <a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Art studioArt">
+	                        <a href="http://www.92y.org/SOA/Studio-Art" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Art ceramics">
+	                        <a href="http://www.92y.org/SOA/Ceramics" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Art jewelry">
+	                        <a href="http://www.92y.org/SOA/Jewelry.aspx" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Music">
+	                        <a href="http://www.92y.org/SOA/School-of-Music" target="_blank" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Music instruct">
+	                        <a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts/School-of-Music/Private-Instruction.aspx" target="_blank">
+	                            Private &amp; Semi-Private Instruction
+	                        </a>
+	                    </div>
+	                    <div class="promo-item Dance">
+	                        <a href="http://www.92y.org/Uptown/School-of-the-Arts/Harkness-Dance-Center" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">
+	                        </a>
+	                    </div>
+	                    <div class="promo-item rk-program">
+	                        <a href="http://www.92y.org/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts" target="_blank">
+	                            <img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">
+	                        </a>
+	                    </div>
+	                </div>
+                </div>
+                <!-- End Promo Area-->
+            </div>
+        </div>
 
 		<div class="container-fluid">
 			<div class="row">
@@ -460,16 +490,16 @@
 												<div class="col-md-8 pull-left">
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												</div>
-												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
+												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
 														Sort By
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu col-xs-12" role="menu">
-														<li><a ng-click="navListCtrl.sortResults('all')">Soonest Available</a></li>
-														<li><a ng-click="navListCtrl.sortResults('featured')">Featured</a></li>
+														<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
+														<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
 														<li role="separator" class="divider"></li>
-														<li><a ng-click="navListCtrl.sortResults('progress')">In Progess</a></li>
+														<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
 													</ul>
 												</div>
 											</div>
@@ -489,14 +519,16 @@
 													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 												</a>
 												<div class="item-details">
+
 													<div class="classTitle">
-														<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark"><i class="fa fa-heart"></i></a>
 													</div>
 													<div class="classDate">{{classInfo.FriendlyDate}}</div>
 													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 													<div class="getMore">
 														<span class="showMore">Show More ▲</span><br />
 													</div>
+
 													<div class="contentWrap">
 														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
 													</div>
@@ -512,6 +544,7 @@
 														</div>
 														<div class="item-details col-xs-12 pull-right pt10 pb10">
 															<div class="classTitleMobile ">
+																<a class="bookmark"><i class="fa fa-heart fa-lg"></i></a>
 																<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 															</div>
 															<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
@@ -732,9 +765,20 @@
 						</span>
 					</div>
 				</div>
-				<!-- Main Nav -->
+				<!-- Main Nav Sidebar -->
 				<div id="mainNavSidebar" class="col-xs-8 col-sm-3 col-lg-3 no-p">
 					<ul id="main-navigation" class="nav">
+						<li>
+							<div id="utilnav" role="navigation" class="">
+								<ul>
+									<li><span class="greeting">Howdy!</span>
+										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+									</li>
+									<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+									</li>
+								</ul>
+							</div>
+						</li>
 						<li class="dropdown">
 							<a id="sidebar-interest-list">
 								<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
