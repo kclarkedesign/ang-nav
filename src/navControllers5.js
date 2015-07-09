@@ -653,6 +653,11 @@
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice)];
 				self.dateApplyClicked = true;
 				break;
+			case 'datetimeage':
+				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL, AGESLICEURL];
+				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice];
+				self.dateApplyClicked = true;
+				break;
 		}
 		if (!_.isUndefined(sliceUrl)) {
 			if (_.isArray(sliceUrl)) {
@@ -782,7 +787,14 @@
 				});
 			}
 		} else {
-			filteredNavs = navArr;
+			if (!_.isUndefined(edate) && isDate(edate)) {
+				filteredNavs = _.filter(navArr, function (navs) {
+					var sortDate1 = navs.SortDate1;
+					return sortDate1 <= edate;
+				});
+			} else {
+				filteredNavs = navArr;
+			}
 		}
 		return filteredNavs;
 	};
