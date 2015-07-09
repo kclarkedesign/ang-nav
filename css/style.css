@@ -79,8 +79,12 @@ header .bottom-nav {
 	/*display: inline-block;*/
 	padding: 0 10px;
 	line-height: 50px;
-	float: left !important;
+	float: left;
 }
+#main-navigation #utilnav {
+		float: none;
+		background-color: #333;
+	}
 #utilnav ul {
 	list-style: none;
 	color: #4076bb;
@@ -271,6 +275,19 @@ a {
 	cursor: pointer;
 	color: #4F93CD;
 }
+.itemContents .bookmark {
+	position: absolute;
+	padding: 5px 8px;
+	/*background-color: rgba(255, 255, 255, 0.7);*/
+	border-radius: 3px;
+	top: 3px;
+	right: 5px;
+	z-index: 1;
+}
+.titleLink {
+	max-width: 89%;
+	display: inline-block;
+}
 #main-navigation span {
 	color: #FFF;
 }
@@ -459,12 +476,14 @@ a {
 	border-bottom-right-radius: 2px;
 	overflow: hidden;
 }
-#current-interest .save-link {
+#current-interest .save-link,
+.bookmark {
 		vertical-align: 10px;
 		font-size: 22px;
 		color: #BDC3C7;
 }
-#current-interest .save-link:hover {
+#current-interest .save-link:hover,
+.bookmark:hover {
 	color: #428BCA;
 }
 #interest-areaRow {
@@ -486,7 +505,7 @@ a {
 		line-height: 20px;
 }
 .scroll-container {
-	width: 285px;
+	width: 280px;
 	overflow: hidden;
 	margin: 0 auto;
 	height: 100%;
@@ -505,6 +524,11 @@ a {
   color: #4F93CD;
   font-weight: bold;
   text-transform: uppercase;
+}
+#browseSidebar .list-group-item,
+#filterSidebar .list-group-item {
+	border-radius: 0px;
+	margin: 0;
 }
 .active #btn-dayTime,
 label.btn.active,
@@ -863,8 +887,16 @@ label.btn.active,
 		/* display: inline-block; */
 		/*padding: 6px 0 10px;*/
 	}
-
-	
+	.itemContents .bookmark {
+		position: relative;
+		padding: 5px 8px;
+		background-color: #fff;
+		border-radius: 3px;
+		top: -5px;
+		right: -8px;
+		float: right;
+		z-index: 1;
+	}
 
 	/*#slicerContainer.affix {
 		top: initial;
@@ -878,9 +910,9 @@ label.btn.active,
 	}*/
 }
 @media (max-width: 480px) {
-	#utilnav {
+	/*#utilnav {
 		display: none;
-	}
+	}*/
 }
 
 /**
@@ -1149,11 +1181,6 @@ input[type="date"]::-webkit-inner-spin-button{
 	.item-details {
 		/*padding-right: 0;*/
 	}
-	#browseSidebar .list-group-item,
-	#filterSidebar .list-group-item {
-		border-radius: 0px;
-		margin: 0;
-	}
 	#browseSidebar .current {
 			font-size: 1.6em;
 	}
@@ -1217,6 +1244,14 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	#mainNavSidebar {
 	  overflow-y: scroll;
+	}
+	.itemContents .bookmark {
+		padding: 5px 8px;
+		/*background-color: rgba(255, 255, 255, 0.7);*/
+		border-radius: 3px;
+		top: -3px;
+		right: -8px;
+		z-index: 1;
 	}
 }
 @media (max-width: 360px) {
@@ -1290,7 +1325,7 @@ input[type="date"]::-webkit-inner-spin-button{
 
 @media (min-width: 768px) and (max-width: 1199px) {
 	#utilnav {
-		float: left !important;
+		float: left;
 	}
 
 }

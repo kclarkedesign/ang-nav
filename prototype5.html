@@ -95,7 +95,7 @@
 									<img src="img/sitelogo_92Y-1.png" alt=""/>
 								</a>
 							</div>
-							<div id="utilnav" role="navigation" class="navbar-nav">
+							<div id="utilnav" role="navigation" class="navbar-nav hidden-xs hidden-sm">
 								<ul>
 									<li><span class="greeting">Howdy!</span>
 										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
@@ -467,14 +467,16 @@
 													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 												</a>
 												<div class="item-details">
+
 													<div class="classTitle">
-														<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark"><i class="fa fa-heart"></i></a>
 													</div>
 													<div class="classDate">{{classInfo.FriendlyDate}}</div>
 													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 													<div class="getMore">
 														<span class="showMore">Show More ▲</span><br />
 													</div>
+
 													<div class="contentWrap">
 														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
 													</div>
@@ -490,6 +492,7 @@
 														</div>
 														<div class="item-details col-xs-12 pull-right pt10 pb10">
 															<div class="classTitleMobile ">
+																<a class="bookmark"><i class="fa fa-heart fa-lg"></i></a>
 																<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 															</div>
 															<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
@@ -710,9 +713,20 @@
 						</span>
 					</div>
 				</div>
-				<!-- Main Nav -->
+				<!-- Main Nav Sidebar -->
 				<div id="mainNavSidebar" class="col-xs-8 col-sm-3 col-lg-3 no-p">
 					<ul id="main-navigation" class="nav">
+						<li>
+							<div id="utilnav" role="navigation" class="">
+								<ul>
+									<li><span class="greeting">Howdy!</span>
+										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+									</li>
+									<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+									</li>
+								</ul>
+							</div>
+						</li>
 						<li class="dropdown">
 							<a id="sidebar-interest-list">
 								<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
