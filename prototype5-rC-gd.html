@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html ng-app="artNavApp">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<!-- 		<base href="/prototype5.html"> -->
+		<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
+  		<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/ang-nav/css/style-rc.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
+		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+		<script src="/ang-nav/src/angular-masonry.min.js"></script>
+		<script src="/ang-nav/src/ngScrollSpy.js"></script>
+		<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
+		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
+		<script src="/ang-nav/src/angularLocalStorage.js"></script>
+		<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
+		<script src="/ang-nav/src/navControllers5.js"></script>
+		<!-- TO BE ADDED TO ANGULAR -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var refineBar = $('#refine-bar');
+				var refineSlicers = $('.refine-slicers'); 
+				var refineClose = $('#refine-close');
+				var mainNavIntList = $('#interest-list, #sidebar-interest-list');
+				var sideBar = $("#sidebar");
+				mainNavIntList.click(function(e) {
+					e.preventDefault();
+					sideBar.toggleClass('in');
+					$("body").toggleClass('sidebar-open');
+					mainNavIntList.addClass('active');
+				});
+				$("#sidebar-interest-list").click(function(e) {
+					e.preventDefault();
+					sideBar.addClass('in');
+					$("body").toggleClass('sidebar-open');
+				});
+				$("#browseBtn").click(function(e) {
+					e.preventDefault();
+					$("#browseSidebar").toggleClass('in');
+					$("body").toggleClass('sidebar-open');
+				});
+				$("#filterSidebarBtn").click(function(e) {
+					e.preventDefault();
+					$("body").toggleClass('sidebar-open');
+					$("#filterSidebar").toggleClass('in');
+					$("#filterClose").click(function(e) {
+						e.preventDefault();
+						$("#filterSidebar").removeClass('in');
+						$("body").removeClass('sidebar-open');
+					});
+					$("#sidebar, #browseSidebar, #mainNavSidebar").removeClass('in');
+				});
+				$("#mainNavBtn").click(function(e) {
+					e.preventDefault();
+					$("#mainNavSidebar").toggleClass('in');
+					$("#site-container").toggleClass('out-left');
+					$("body").toggleClass('sidebar-open');
+				});
+				//Close these sidebars when they are clicked
+				$("#sidebar, #browseSidebar, #mainNavSidebar, #btnSubmit").click(function(e) {
+					e.preventDefault();
+					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in');
+					$("body").removeClass('sidebar-open');
+				});
+				refineBar.click(function() {
+					refineBar.slideUp();
+					refineSlicers.slideDown();
+				});
+				refineClose.click(function() {
+					refineBar.slideDown();
+					refineSlicers.slideUp();
+				})
+
+				$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
+					e.stopPropagation();
+				});
+			});
+</script>
+</head>
+<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
+
+	<div id="site-container">
+		<header class="header navbar left-slide" affix>
+			<div class="container-fluid">
+				<div class="brand top-nav center">
+					<div >
+						<div class="">
+							<div>
+								<a id="mainNavBtn" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse"></a>
+								<a href="#" id="logo-anchor" class="navbar-brand">
+									<img src="img/sitelogo_92Y-1.png" alt=""/>
+								</a>
+							</div>
+							<div id="utilnav" role="navigation" class="navbar-nav hidden-xs hidden-sm">
+								<ul>
+									<li><span class="greeting">Howdy!</span>
+										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+									</li>
+									<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+									</li>
+								</ul>
+							</div>
+							<ul class="nav navbar-nav navbar-right hidden-lg hidden-xl">
+
+								<li class="filter">
+									<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown">
+										<span class="navtext">Filter</span> <i class="fa fa-filter fa-lg"></i>
+									</a>
+								</li>
+								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
+										<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Filters
+											<span class="caret"></span>
+										</button>
+									</div> -->
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="navbar-collapse pull-left collapse pr0" id="hor-menu">
+					<div class="container-fluid no-p">
+						<ul id="main-navigation" class="nav navbar-nav">
+							<li class="dropdown">
+								<a id="interest-list" href="" data-toggle="dropdown">
+									<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
+									<!-- <b class="caret"></b> -->
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>Talks &amp; Readings</span>
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>Performing Arts</span>
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>School of the Arts</span>
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>Health &amp; Fitness</span>
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>Jewish Life</span>
+								</a>
+							</li>
+							<li class="dropdown">
+								<a href="javascript:;">
+									<span>Kids &amp; Family</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header>
+			<div class="container-fluid">
+				<div class="row">
+					<div id="main-area" class="col-xs-12">
+						<section class="main-content">
+							<div id="interest-areaRow" class="row" style="display:none">
+								<div class="container pl10 pr10 mt25 mb25">
+									<div class="col-md-2">
+										<div class="rowHeading">
+											I'm looking for &hellip;
+										</div>
+									</div>
+									<div class="col-md-10">
+										<div class="">
+											<div class="selections">
+												<a class="">Talks</a>
+												<a class="">Camps &amp; After School</a>
+												<a class="">Continuing Education &amp; Enrichment</a>
+												<a class="">Parenting &amp; Early Childhood</a>
+												<a class="">Health &amp; Fitness</a>
+												<a class="">Jewish Life</a>
+												<a class="">Concerts &amp; Performances</a>
+												<a class="active">School of the Arts</a>
+												<a class="">Literary</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						<div class="">
+							<div class="filter-content container-fluid no-p mt10 mb15">
+								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5" ng-show="navListCtrl.activeBreadcrumb.length > 1">
+									<ol class="breadcrumb mb5">
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										</li>
+									</ol>
+								</div>
+								<div id="filter-container">
+									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 no-p">
+										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+										<a class="save-link" ng-click="navListCtrl.saveSearch()"><sup class="fa fa-heart"></sup></a>
+										<br/>
+										<div class="row">
+											<div class="col-xs-12 pb10">
+												<div class="savedSearches label label-info mr5" ng-repeat="savedSearch in navListCtrl.savedSearches">
+													<a ng-href="{{savedSearch.url}}">
+														{{savedSearch.folder}} {{savedSearch.filter}}
+													</a>
+													<a class="savedSearchClose" ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">
+														<i class="fa fa-times"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="browse-nav" class="col-xs-12 col-lg-10 mt10 pl0 pr0 hidden-xs" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+										<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+										</span>
+									</div>
+									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 visible-xs" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+										<button id="browseBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Subcategories
+											<span class="caret"></span>
+										</button>
+	 								</div>
+	 								<div class="col-xs-12 pull-left pt10 pl0 pr0 hidden-lg hidden-xl">
+										<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+									</div>
+	 								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
+										<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Filters
+											<span class="caret"></span>
+										</button>
+	 								</div> -->
+	 							</div>
+	 						</div>
+						</div>
+						<div id="slicers" class="row mb15 hidden-xs hidden-sm hidden-md" scrollspy>
+							<div id="slicerContainer" affix>
+								<div id="refine-bar" class="collapse">
+									<div class="container center pt15 pb15 ">
+										Refine Filters
+									</div>
+								</div>
+								<div class="refine-slicers container-fluid col-lg-10 pt15 pb15">
+									<div class="row">
+										<div id="refine-close" class="collapse">
+											<i class="fa fa-times"></i>
+										</div>
+
+										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit()}">
+											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
+												Day or Time
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-form p15" role="menu" ng-style="{ width: (navListCtrl.opened.start || navListCtrl.opened.end ? '285px' : ''), height: (navListCtrl.opened.end ? '410px' : '') }">
+												<li>
+													<div class="row">
+														<div class="col-xs-12">
+															<label class="checkbox dropdown-header pl0 fw-normal">Date:</label>
+														</div>
+														<div class="col-xs-12">
+															<p class="input-group">
+																<input type="text" placeholder="Starts On" class="form-control" datepicker-popup="MM/dd/yyyy" min-date="navListCtrl.minBegDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.sdateSlice" close-text="Close" is-open="navListCtrl.opened.start" show-weeks="false" ng-change="navListCtrl.slicerPicked('sdate');" ng-click="navListCtrl.openCalendar($event, 'start')" />
+																<span class="input-group-btn">
+																	<button type="button" class="btn btn-default" ng-click="navListCtrl.openCalendar($event, 'start')"><i class="glyphicon glyphicon-calendar"></i></button>
+																</span>
+															</p>
+														</div>
+
+														<div class="col-xs-12">
+															<p class="input-group mb0">
+																<input type="text" placeholder="Ends By" class="form-control" datepicker-popup="MM/dd/yyyy" min-date="navListCtrl.minEndDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.edateSlice" close-text="Close" is-open="navListCtrl.opened.end" show-weeks="false" init-date="navListCtrl.minEndDate" ng-change="navListCtrl.slicerPicked('edate');" ng-click="navListCtrl.openCalendar($event, 'end')" />
+																<span class="input-group-btn">
+																	<button type="button" class="btn btn-default" ng-click="navListCtrl.openCalendar($event, 'end')"><i class="glyphicon glyphicon-calendar"></i></button>
+																</span>
+															</p>
+														</div>
+													</div>
+												</li>
+												<li>
+													<div class="row">
+														<div class="col-xs-12">
+															<div role="separator" class="divider"></div>
+															<label class="checkbox dropdown-header pl0 fw-normal">Time:</label>
+														</div>
+														<div class="col-xs-6 pull-left">
+															<div class="full-width">
+																<input id="anyTime" type="checkbox" class="selectAll" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.timeSlice === '' ? navListCtrl.timeSlice = 'all' : navListCtrl.slicerPicked('time')" ng-true-value="'all'" ng-false-value="''">
+																<label class="checkbox fw-normal" for="anyTime">Any</label>
+															</div>
+														</div>
+														<div class="col-xs-6 pull-right no-p">
+															<div class="full-width" ng-repeat="time in navListCtrl.times">
+																<input id="{{time}}Slice" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('time', time)" value="'{{time}}'" ng-checked="navListCtrl.timeSlice.indexOf(time) > -1">
+																<label class="checkbox fw-normal" for="{{time}}Slice" ng-bind-html="time.charAt(0).toUpperCase() + time.slice(1) | unsafe"></label>
+															</div>
+														</div>
+													</div>
+												</li>
+												<li>
+													<div class="row">
+														<div class="col-xs-12">
+															<div role="separator" class="divider"></div>
+															<label class="checkbox dropdown-header pl0 fw-normal">Days:</label>
+														</div>
+														<div class="col-xs-6 pull-left">
+															<input id="anyDay" type="checkbox" class="selectAll" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.daySlice === '' ? navListCtrl.daySlice = 'all' : navListCtrl.slicerPicked('day')" ng-true-value="'all'" ng-false-value="''">
+															<label class="checkbox fw-normal" for="anyDay">Any</label>
+														</div>
+														<div class="col-xs-6 pull-right no-p">
+															<div class="col-xs-3 no-p" ng-repeat="day in navListCtrl.days">
+																<input id="{{day}}Slice" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1"><br />
+																<label class="checkbox fw-normal" for="{{day}}Slice" ng-bind-html="day.charAt(0).toUpperCase() | unsafe"></label>
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- we must use apply button otherwise if elements fire to change the location.path then the dialog box will close every time we changed something -->
+												<li>
+													<div class="row">
+														<div class="col-xs-12">
+															<div role="separator" class="divider"></div>
+														</div>
+														<div class="text-center">
+															<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetime')">Apply</button>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+
+										<div class="dropdown col-sm-3">
+											<div class="row">
+												<div class="col-xs-12 pull-left btn-group" role="group" data-toggle="buttons">
+													<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
+														<span class="pr5">All</span>
+													</label>
+
+													<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'class'" ng-change="navListCtrl.sliceBy('type')">
+														<span class="pr5">Classes only</span>
+													</label>
+
+													<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'event'" ng-change="navListCtrl.sliceBy('type')">
+														<span class="pr5">Events only</span>
+													</label>
+												</div>
+											</div>
+										</div>
+
+										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit()}">
+											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
+												Age Range
+												<span class="caret"></span>
+											</button>
+
+											<ul class="dropdown-menu dropdown-menu-form col-xs-12 p15" role="menu" style="min-width: 240px;left: -10%;">
+												<li>
+													<div class="row">
+														<div class="col-xs-3">
+															<label class="checkbox dropdown-header pl0 fw-normal">Ages:</label>
+														</div>
+														<div class="col-xs-9 pull-right pl0">
+															<div class="full-width">
+																<input id="allAges" type="checkbox" class="selectAll" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.ageSlice === '' ? navListCtrl.ageSlice = 'all' : navListCtrl.slicerPicked('age')" ng-true-value="'all'" ng-false-value="''">
+																<label class="checkbox fw-normal" for="allAges">Any</label>
+															</div>
+															<div role="separator" class="divider"></div>
+														</div>
+														
+														<div class="col-xs-9 pull-right no-p">
+															<div class="full-width">
+																<input id="allAdults" type="checkbox" class="selectAll" value="alladults" ng-click="navListCtrl.slicerPicked('age', 'alladults')" ng-checked="navListCtrl.ageSlice.indexOf('alladults') > -1">
+																<label class="checkbox fw-normal" for="allAdults">All Adults</label>
+																<div id="adultAgeRanges" class="col-xs-12">
+																	<ul>
+																		<li>
+																			<input id="adults" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
+																			<label class="checkbox fw-normal" for="adults">Adults</label>
+																		</li>
+																		<li>
+																			<input id="seniors" type="checkbox" class="selectAll" value="seniors" ng-click="navListCtrl.slicerPicked('age', 'seniors')" ng-checked="navListCtrl.ageSlice.indexOf('seniors') > -1">
+																			<label class="checkbox fw-normal" for="seniors">Seniors</label>
+																		</li>
+																	</ul>
+																	<div role="separator" class="divider"></div>
+																</div>
+															</div>
+															<div class="full-width">
+																<input id="allKids" type="checkbox" class="selectAll" value="kids" ng-click="navListCtrl.slicerPicked('age', 'kids')" ng-checked="navListCtrl.ageSlice.indexOf('kids') > -1">
+																<label class="checkbox fw-normal" for="allKids">All Kids</label>
+																<div id="kidAgeRanges" class="col-xs-12">
+																	<ul>
+																		<li>
+																			<input id="newborn" type="checkbox" class="selectAll" value="newborn-5" ng-click="navListCtrl.slicerPicked('age', 'newborn-5')" ng-checked="navListCtrl.ageSlice.indexOf('newborn-5') > -1">
+																			<label class="checkbox fw-normal" for="newborn">Newborn-5</label>
+																		</li>
+																		<li>
+																			<input id="sixTwelve" type="checkbox" class="selectAll" value="6-12" ng-click="navListCtrl.slicerPicked('age', '6-12')" ng-checked="navListCtrl.ageSlice.indexOf('6-12') > -1">
+																			<label class="checkbox fw-normal" for="sixTwelve">6-12 years</label>
+																		</li>
+																		<li>
+																			<input id="teens" type="checkbox" class="selectAll" value="teens" ng-click="navListCtrl.slicerPicked('age', 'teens')" ng-checked="navListCtrl.ageSlice.indexOf('teens') > -1">
+																			<label class="checkbox fw-normal" for="teens">Teens</label>
+																		</li>
+																		<li>
+																			<input id="multigenerational" type="checkbox" class="selectAll" value="multigenerational" ng-click="navListCtrl.slicerPicked('age', 'multigenerational')" ng-checked="navListCtrl.ageSlice.indexOf('multigenerational') > -1">
+																			<label class="checkbox fw-normal" for="multigenerational">Multigenerational</label>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-xs-12">
+															<div role="separator" class="divider"></div>
+														</div>
+														<div class="text-center">
+															<button id="btnAgeSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('age')">Apply</button>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="col-sm-4 pull-right">
+											<div class="row">
+												<div class="col-md-8 pull-left">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												</div>
+												<div class="col-sm-12 col-md-4 pull-right" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected}">
+													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
+														Sort By
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu col-xs-12" role="menu">
+														<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
+														<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
+														<li role="separator" class="divider"></li>
+														<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div id="Container" class="tileContainer container-fluid col-lg-10">
+								<div id="tiles" class="row">
+									<!-- Iso -->
+									<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
+										<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+										<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-4 col-lg-3 pl10 pr10">
+											<div class="itemContents hidden-xs">
+												<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+												</a>
+												<div class="item-details">
+
+													<div class="classTitle">
+														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark"><i class="fa fa-heart"></i></a>
+													</div>
+													<div class="classDate">{{classInfo.FriendlyDate}}</div>
+													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+													<div class="getMore">
+														<span class="showMore">Show More ▲</span><br />
+													</div>
+
+													<div class="contentWrap">
+														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+													</div>
+												</div>
+											</div>
+											<div class="itemContents visible-xs">
+												<div class="container-fluid">
+													<div class="row">
+														<div id="tileImg" class="col-xs-12 no-p">
+															<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank" class="">
+																<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
+															</a>
+														</div>
+														<div class="item-details col-xs-12 pull-right pt10 pb10">
+															<div class="classTitleMobile ">
+																<a class="bookmark"><i class="fa fa-heart fa-lg"></i></a>
+																<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+															</div>
+															<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
+															<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+															<div class="contentWrapMobile">
+																<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- End Iso --> 
+
+									<!-- Center Links -->
+									<div id="utility-bar" class="hidden-xs hidden-sm hidden-md">
+										<div id="utility-container">
+											<!-- Promo Art -->
+											<div class="promo promo-art" data-myorder="1">
+												<span class="promo-msg">More information about our programs:</span>
+												<div id="promo-item-container">
+													<div class="promo-item SOA">
+														<a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">
+														</a>
+													</div>
+													<div class="promo-item Art studioArt">
+														<a href="http://www.92y.org/SOA/Studio-Art" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">
+														</a>
+													</div>
+													<div class="promo-item Art ceramics">
+														<a href="http://www.92y.org/SOA/Ceramics" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">
+														</a>
+													</div>
+													<div class="promo-item Art jewelry">
+														<a href="http://www.92y.org/SOA/Jewelry.aspx" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">
+														</a>
+													</div>
+													<div class="promo-item Music">
+														<a href="http://www.92y.org/SOA/School-of-Music" target="_blank" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">
+														</a>
+													</div>
+													<div class="promo-item Music instruct">
+														<a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts/School-of-Music/Private-Instruction.aspx" target="_blank">
+															Private &amp; Semi-Private Instruction
+														</a>
+													</div>
+													<div class="promo-item Dance">
+														<a href="http://www.92y.org/Uptown/School-of-the-Arts/Harkness-Dance-Center" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">
+														</a>
+													</div>
+													<div class="promo-item rk-program">
+														<a href="http://www.92y.org/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts" target="_blank">
+															<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">
+														</a>
+													</div>
+												</div>
+											</div>
+											<!-- End Promo Area-->
+										</div>
+									</div>
+									<!-- End Center Links -->
+
+								</div>
+							</div>
+						</div>	
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Filter Sidebar  -->
+				<div class="col-xs-12 col-sm-5 col-lg-5 sidebar-offcanvas no-p" id="filterSidebar">
+					<div class="list-group">
+							<span class="list-group-item col-xs-10 active">Filter Results</span>
+							<a id="filterClose"class="list-group-item col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
+
+
+						</div>
+					<div class="container-fluid scroll">
+						<div class="scroll-container">
+							<div class="scroll-nav">
+								<div class="row">
+									<div class="col-xs-12 pt10">
+										<label class="checkbox dropdown-header pl0 fw-normal">Date:</label>
+									</div>
+									<div class="col-xs-12">
+										<p class="input-group">
+											<input type="text" placeholder="mm/dd/yyyy" class="form-control" datepicker-popup="MM/dd/yyyy" min-date="navListCtrl.minBegDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.sdateSlice" close-text="Close" is-open="navListCtrl.opened.start" show-weeks="false" ng-change="navListCtrl.slicerPicked('sdate');" ng-click="navListCtrl.openCalendar($event, 'start')" />
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" ng-click="navListCtrl.openCalendar($event, 'start')"><i class="glyphicon glyphicon-calendar"></i></button>
+											</span>
+										</p>
+									</div>
+
+									<div class="col-xs-12">
+										<p class="input-group mb0">
+											<input type="text" placeholder="mm/dd/yyyy" class="form-control" datepicker-popup="MM/dd/yyyy" min-date="navListCtrl.minEndDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.edateSlice" close-text="Close" is-open="navListCtrl.opened.end" show-weeks="false" init-date="navListCtrl.minEndDate" ng-change="navListCtrl.slicerPicked('edate');" ng-click="navListCtrl.openCalendar($event, 'end')" />
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" ng-click="navListCtrl.openCalendar($event, 'end')"><i class="glyphicon glyphicon-calendar"></i></button>
+											</span>
+										</p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+										<label class="checkbox dropdown-header pl0 fw-normal">Time:</label>
+									</div>
+									<div class="col-xs-6 pull-left">
+										<div class="full-width">
+											<input id="anyTimeMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.timeSlice === '' ? navListCtrl.timeSlice = 'all' : navListCtrl.slicerPicked('time')" ng-true-value="'all'" ng-false-value="''">
+											<label class="checkbox fw-normal" for="anyTime">Any</label>
+										</div>
+									</div>
+									<div class="col-xs-6 pull-right no-p">
+										<div class="full-width" ng-repeat="time in navListCtrl.times">
+											<input id="{{time}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('time', time)" value="'{{time}}'" ng-checked="navListCtrl.timeSlice.indexOf(time) > -1">
+											<label class="checkbox fw-normal" for="{{time}}Slice" ng-bind-html="time.charAt(0).toUpperCase() + time.slice(1) | unsafe"></label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+										<label class="checkbox dropdown-header pl0 fw-normal">Days:</label>
+									</div>
+									<div class="col-xs-6 pull-left">
+										<input id="anyDayMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.daySlice === '' ? navListCtrl.daySlice = 'all' : navListCtrl.slicerPicked('day')" ng-true-value="'all'" ng-false-value="''">
+										<label class="checkbox fw-normal" for="anyDay">Any</label>
+									</div>
+									<div class="col-xs-6 pull-right no-p">
+										<div class="col-xs-3 no-p" ng-repeat="day in navListCtrl.days">
+											<input id="{{day}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1"><br />
+											<label class="checkbox fw-normal" for="{{day}}Slice" ng-bind-html="day.charAt(0).toUpperCase() | unsafe"></label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+										<label class="checkbox dropdown-header pl0 fw-normal">Program Type:</label>
+									</div>
+									<div id="programTypeMobile" class="col-xs-12 pull-left btn-group" role="group" data-toggle="buttons">
+										<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
+											<span class="pr5">All</span>
+										</label>
+
+										<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'class'" ng-change="navListCtrl.sliceBy('type')">
+											<span class="pr5">Classes only</span>
+										</label>
+
+										<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'event'" ng-change="navListCtrl.sliceBy('type')">
+											<span class="pr5">Events only</span>
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+									</div>
+									<div class="col-xs-3">
+										<label class="checkbox dropdown-header pl0 fw-normal">Ages:</label>
+									</div>
+									<div class="col-xs-9 pull-right pl0">
+										<div class="full-width">
+											<input id="allAgesMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.ageSlice === '' ? navListCtrl.ageSlice = 'all' : navListCtrl.slicerPicked('age')" ng-true-value="'all'" ng-false-value="''">
+											<label class="checkbox fw-normal" for="allAges">Any</label>
+										</div>
+										<div role="separator" class="divider"></div>
+									</div>
+
+									<div class="col-xs-9 pull-right no-p">
+										<div class="full-width">
+											<input id="allAdultsMobile" type="checkbox" class="selectAll" value="alladults" ng-click="navListCtrl.slicerPicked('age', 'alladults')" ng-checked="navListCtrl.ageSlice.indexOf('alladults') > -1">
+											<label class="checkbox fw-normal" for="allAdults">All Adults</label>
+											<div id="adultAgeRangesMobile" class="col-xs-12">
+												<ul>
+													<li>
+														<input id="adultsMobile" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
+														<label class="checkbox fw-normal" for="adults">Adults</label>
+													</li>
+													<li>
+														<input id="seniorsMobile" type="checkbox" class="selectAll" value="seniors" ng-click="navListCtrl.slicerPicked('age', 'seniors')" ng-checked="navListCtrl.ageSlice.indexOf('seniors') > -1">
+														<label class="checkbox fw-normal" for="seniors">Seniors</label>
+													</li>
+												</ul>
+												<div role="separator" class="divider"></div>
+											</div>
+										</div>
+										<div class="full-width">
+											<input id="allKidsMobile" type="checkbox" class="selectAll" value="kids" ng-click="navListCtrl.slicerPicked('age', 'kids')" ng-checked="navListCtrl.ageSlice.indexOf('kids') > -1">
+											<label class="checkbox fw-normal" for="allKids">All Kids</label>
+											<div id="kidAgeRangesMobile" class="col-xs-12">
+												<ul>
+													<li>
+														<input id="newbornMobile" type="checkbox" class="selectAll" value="newborn-5" ng-click="navListCtrl.slicerPicked('age', 'newborn-5')" ng-checked="navListCtrl.ageSlice.indexOf('newborn-5') > -1">
+														<label class="checkbox fw-normal" for="newborn">Newborn-5</label>
+													</li>
+													<li>
+														<input id="sixTwelveMobile" type="checkbox" class="selectAll" value="6-12" ng-click="navListCtrl.slicerPicked('age', '6-12')" ng-checked="navListCtrl.ageSlice.indexOf('6-12') > -1">
+														<label class="checkbox fw-normal" for="sixTwelve">6-12 years</label>
+													</li>
+													<li>
+														<input id="teensMobile" type="checkbox" class="selectAll" value="teens" ng-click="navListCtrl.slicerPicked('age', 'teens')" ng-checked="navListCtrl.ageSlice.indexOf('teens') > -1">
+														<label class="checkbox fw-normal" for="teens">Teens</label>
+													</li>
+													<li>
+														<input id="multigenerationalMobile" type="checkbox" class="selectAll" value="multigenerational" ng-click="navListCtrl.slicerPicked('age', 'multigenerational')" ng-checked="navListCtrl.ageSlice.indexOf('multigenerational') > -1">
+														<label class="checkbox fw-normal" for="multigenerational">Multigenerational</label>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+									</div>
+									<div class="col-xs-12 col-sm-12 col-md-12" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
+										<button id="btn-sortMobile" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
+											Sort By
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu col-xs-12" role="menu">
+											<li><a ng-click="navListCtrl.sortResults('all')">Soonest Available</a></li>
+											<li><a ng-click="navListCtrl.sortResults('featured')">Featured</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a ng-click="navListCtrl.sortResults('progress')">In Progess</a></li>
+										</ul>
+									</div>
+								</div>
+								<!-- we must use apply button otherwise if elements fire to change the location.path then the dialog box will close every time we changed something -->
+								<div class="row">
+									<div class="col-xs-12">
+										<div role="separator" class="divider"></div>
+									</div>
+									<div class="text-center">
+										<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			<!-- Sidebar  -->
+			<div class="col-xs-8 col-sm-3 col-lg-3 sidebar-offcanvas" id="sidebar">
+				<div class="list-group">
+					<span class="list-group-item active">I'm looking for &hellip;</span>
+					<a href="#" class="list-group-item">Talks</a>
+					<a href="#" class="list-group-item">Camps &amp; After School</a>
+					<a href="#" class="list-group-item">Continuing Education &amp; Enrichment</a>
+					<a href="#" class="list-group-item">Parenting &amp; Early Childhood</a>
+					<a href="#" class="list-group-item">Health &amp; Fitness</a>
+					<a href="#" class="list-group-item">Jewish Life</a>
+					<a href="#" class="list-group-item">Concerts &amp; Performances</a>
+					<a href="#" class="list-group-item active">School of the Arts</a>
+					<a href="#" class="list-group-item">Literary</a>
+				</div>
+			</div>
+			<!-- Browse  -->
+			<div class="col-xs-8 col-sm-3 col-lg-3 no-p sidebar-offcanvas hidden-sm hidden-md hidden-lg hidden-xl" id="browseSidebar">
+				<div class="list-group">
+					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span></span>
+					<span class="browse-item col-xs-12 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+						<a class="list-group-item" ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+					</span>
+				</div>
+			</div>
+			<!-- Main Nav Sidebar -->
+			<div id="mainNavSidebar" class="col-xs-8 col-sm-3 col-lg-3 no-p">
+				<ul id="main-navigation" class="nav">
+					<li>
+						<div id="utilnav" role="navigation" class="">
+							<ul>
+								<li><span class="greeting">Howdy!</span>
+									<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+								</li>
+								<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a id="sidebar-interest-list">
+							<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
+							<!-- <b class="caret"></b> -->
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>Talks &amp; Readings</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>Performing Arts</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>School of the Arts</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>Health &amp; Fitness</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>Jewish Life</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;">
+							<span>Kids &amp; Family</span>
+						</a>
+					</li>
+				</div>
+				<!-- Main Nav Sidebar -->
+				<div id="mainNavSidebar" class="col-xs-8 col-sm-3 col-lg-3 no-p">
+					<ul id="main-navigation" class="nav">
+						<li>
+							<div id="utilnav" role="navigation" class="">
+								<ul>
+									<li><span class="greeting">Howdy!</span>
+										<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
+									</li>
+									<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="dropdown">
+							<a id="sidebar-interest-list">
+								<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
+								<!-- <b class="caret"></b> -->
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Talks &amp; Readings</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Performing Arts</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>School of the Arts</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Health &amp; Fitness</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Jewish Life</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="javascript:;">
+								<span>Kids &amp; Family</span>
+							</a>
+						</li>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

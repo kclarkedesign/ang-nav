@@ -7,16 +7,16 @@ For NAV Example
 /** For Promo  **/
 
 	#utility-bar {
- 		width: 100%;
- 		padding: 10px 0 10px 16px;
- 		
- 		/*border-top: 1px solid #D6D6D6;*/
- 		border-bottom: 1px solid #D6D6D6;
+		padding: 10px;
+		border-bottom: 1px solid #D6D6D6;
 		position: fixed;
 		bottom: 0;
 		z-index: 1000;
-  		background: #000;
- 	}
+		background: #000;
+		top: 100px;
+		width: 220px;
+		right: 0;
+	}
  	#utility-container {
  		width:100%;
  		margin: 0 auto;
@@ -45,7 +45,7 @@ For NAV Example
  		display: inline-block;
  		text-align: center;
  		width: 170px;
- 		margin: 0 0 8px 8px;
+ 		margin: 8px;
  		box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
  		-webkit-box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
  		vertical-align: top;
@@ -72,7 +72,7 @@ For NAV Example
  		margin: 0 0 8px 0;
  		font-weight: bold;
  		color: #BCBDC0;
-		padding-right: 30px;
+		/*padding-right: 30px;*/
  	}
  	.two-wide {
  		width: 49%;
@@ -904,10 +904,6 @@ label.btn.active,
 	background-color: #8EBADF;
 		/* padding-left: 8px; */
 		color: #466594;
-}
-.dropdown-menu .active {
-	background-color: #4F93CD;
-  color: #fff;
 }
 
 
