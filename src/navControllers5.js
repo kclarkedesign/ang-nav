@@ -194,7 +194,7 @@
 
 	NavListController.prototype.updateEndMinDate = function () {
 		var self = this;
-		self.minEndDate = self.sdateSlice;
+		self.minEndDate = _.clone(self.sdateSlice);
 		if (self.sdateSlice > self.edateSlice) {
 			self.edateSlice = self.sdateSlice;
 		}
@@ -330,6 +330,7 @@
 		}
 		self.sortOrder = sortBy;
 		self.showSpinner = false;
+		self.initialized = true;
 	};
 
 	NavListController.prototype.sortResults = function (sortBy) {

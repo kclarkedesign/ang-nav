@@ -1447,3 +1447,37 @@ input[type="date"]::-webkit-inner-spin-button{
   		float: left;
 	}
 }
+
+/* this only works with the modification in ui-bootstrap-tpls-0.13.0.js that adds this class to the button */
+.text-muted {
+	display: none;
+}
+
+/**
+ * Fail message styles
+ */
+ .container .fail-message {
+ 	top: 0;
+ 	left: 0;
+ 	bottom: 0;
+ 	right: 0;
+ 	text-align: center;
+ 	pointer-events: none;
+}
+.container .fail-message:before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
+.container .fail-message span {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 20px;
+	font-weight: 700;
+	color: black;
+}
+.container.fail .fail-message {
+	opacity: 1;
+	pointer-events: auto;
+}
