@@ -384,10 +384,10 @@
 																<label class="checkbox fw-normal" for="allAdults">All Adults</label>
 																<div id="adultAgeRanges" class="col-xs-12">
 																	<ul>
-																		<li>
+																		<!-- <li>
 																			<input id="adults" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
 																			<label class="checkbox fw-normal" for="adults">Adults</label>
-																		</li>
+																		</li> -->
 																		<li>
 																			<input id="seniors" type="checkbox" class="selectAll" value="seniors" ng-click="navListCtrl.slicerPicked('age', 'seniors')" ng-checked="navListCtrl.ageSlice.indexOf('seniors') > -1">
 																			<label class="checkbox fw-normal" for="seniors">Seniors</label>
@@ -570,21 +570,14 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Filter Sidebar  -->
-				<div class="sidebar-offcanvas no-p" id="filterSidebar" style="">
-					<div class="list-group" style="position: relative;">
-							<span class="list-group-item col-xs-12 active heading" style="position: fixed; z-index: 3; max-width: 320px;">Filter Results 
-								<span class="ist-group-item text-center">
-									<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
-								</span>
-								<a id="filterClose"class="list-group-item col-xs-4 center active" style=" text-align: right; float: right;"><i class="fa fa-times fa-lg"></i></a>
+				<div class="col-xs-12 col-sm-5 col-lg-5 sidebar-offcanvas no-p" id="filterSidebar">
+					<div class="list-group">
+							<span class="list-group-item col-xs-10 active">Filter Results</span>
+							<a id="filterClose"class="list-group-item col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
 
-							</span>
-							
-							
 
 						</div>
-					<div class="container-fluid scroll" style="
-    margin-top: 60px;">
+					<div class="container-fluid scroll">
 						<div class="scroll-container">
 							<div class="scroll-nav">
 								<div class="row">
@@ -740,12 +733,14 @@
 									</div>
 								</div>
 								<!-- we must use apply button otherwise if elements fire to change the location.path then the dialog box will close every time we changed something -->
-								<!-- <div class="row">
+								<div class="row">
 									<div class="col-xs-12">
 										<div role="separator" class="divider"></div>
 									</div>
-									
-								</div> -->
+									<div class="text-center">
+										<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
+									</div>
+								</div>
 							</div>
 						</div>
 
