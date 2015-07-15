@@ -6,11 +6,9 @@ For NAV Example
 
 /** For Promo  **/
 
-	#utility-bar {
+/*	#utility-bar {
  		width: 100%;
  		padding: 10px 0 10px 16px;
- 		
- 		/*border-top: 1px solid #D6D6D6;*/
  		border-bottom: 1px solid #D6D6D6;
 		position: fixed;
 		bottom: 0;
@@ -80,7 +78,99 @@ For NAV Example
  	.two-tall {
  		min-height: 200px;
  	}
+*/
+/** For Promo  **/
 
+	#utility-bar {
+		padding: 10px 0;
+		/*border-left: 1px solid #D6D6D6;*/
+		/*position: fixed;*/
+		/*bottom: 0;*/
+		z-index: 1;
+		top: 100px;
+		width: 200px;
+	}
+	#utility-bar.affix {
+  		top: 162px;
+	}
+ 	#utility-container {
+ 		width:100%;
+ 		margin: 0 auto;
+ 		display: block;
+ 	}
+
+ 	.group-private {
+ 		font-size: 13px;
+ 		height: 38px;
+ 		display: block;
+ 		line-height: 16px;
+ 		padding: 2px;
+ 		box-sizing: border-box;
+ 	}
+ 	img {
+ 		verticle-align: top;
+ 	}
+ 	.promo {
+ 		box-shadow: none;
+		width: 100%;
+		text-align: center;
+		padding: 0 0 5px 0;
+		box-sizing: border-box;
+ 	}
+ 	/*.promo {
+  box-shadow: none;
+  width: 100%;
+  text-align: center;
+  padding: 8px 0 5px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}*/
+ 	.promo-item {
+ 		display: inline-block;
+ 		text-align: center;
+ 		width: 170px;
+ 		margin: 8px;
+ 		box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+ 		-webkit-box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+ 		vertical-align: top;
+		border-radius: 3px;
+		overflow: hidden;
+ 	}
+	.promo-item a:hover,
+	.promo-item:hover {
+    	background: none repeat scroll 0 0 #ededed;
+    	text-decoration: none;
+		opacity: .85;
+	}
+	.promo-item.SOA img {
+    	margin: -6px;
+   		width: 106%;
+	}
+ 	.promo-item img {
+ 		width: 100%;
+ 	}
+ 	.promo-msg {
+ 		text-align: center;
+ 		width: 100%;
+ 		display: block;
+ 		margin: 0 0 8px 0;
+ 		font-weight: bold;
+ 		color: #BCBDC0;
+		/*padding-right: 30px;*/
+ 	}
+ 	.two-wide {
+ 		width: 49%;
+ 	}
+ 	.two-tall {
+ 		min-height: 200px;
+ 	}
+
+
+ 	/** End For Promo **/
+ 	.activeFamily {
+ 		display:block;
+ 	}
 
  	/** End For Promo **/
  	.activeFamily {
@@ -215,7 +305,8 @@ header .bottom-nav {
 }
 #sidebar,
 #browseSidebar,
-#filterSidebar {
+#filterSidebar,
+#savedSidebar {
 	position: fixed;
 	height: 100%;
 	top: 0;
@@ -225,6 +316,22 @@ header .bottom-nav {
 	transition: ease .5s all;
 	overflow-y: scroll; 
 }
+#savedSidebar {
+	position: fixed;
+	height: 100%;
+	top: 0;
+	z-index: 1002;
+	background-color: #333;
+	right: -590px;
+	transition: ease .5s all;
+	width: 580px;
+}
+#savedPrograms .item-details {
+  		width: 50%;
+	}
+	#savedPrograms #tileImg {
+  		width: 50%;
+  	}
 #mainNavSidebar {
 	position: fixed;
 	height: 100%;
@@ -244,7 +351,9 @@ header .bottom-nav {
 }
 #sidebar.in,
 #browseSidebar.in,
-#filterSidebar.in {
+#filterSidebar.in,
+#savedSidebar.in,
+#sidebar.inMobile {
 	right: 0;
 }
 #sidebar-wrapper {
@@ -266,11 +375,36 @@ header .bottom-nav {
 .scroll {
 	height: 100%;
 }
+.sidebarHeading {
+  width: 100%;
+  display: block;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
+  height: 41px;
+}
+#savedSidebarClose {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  text-align: right;
+}
+#savedPrograms img {
+  width: 100%;
+}
+#filterBtn-container {
+	/*margin-right: -15px; */
+	/*border-left: 1px solid #fff;
+	border-right: 1px solid #fff;*/
+}
 
 @media (max-width: 1200px) {
 	.refine-slicers .full-width {
 		width: auto;
 	}
+	
 }
 
 @media (max-width: 767px) {
@@ -328,6 +462,14 @@ header .bottom-nav {
 	/*#utilnav ul {
 		line-height: 12px;
 	}*/
+}
+@media (max-width: 768px) {
+	#savedSidebar.in {
+		width: 320px;
+	}
+	#filterBtn-container {
+		margin-right: -15px; 
+	}
 }
 @media (max-width: 319px) {
 	#utilnav {
@@ -1257,6 +1399,9 @@ input[type="date"]::-webkit-inner-spin-button{
 .masonry-brick.loaded {
 	display: block !important;
 }
+@media (max-width: 1200px) {
+
+  	}
 @media (max-width: 768px) {
 	.header {
 		height: 50px;
