@@ -509,12 +509,22 @@ a {
 .itemContents .bookmark {
 	position: absolute;
 	padding: 5px 8px;
-	/*background-color: rgba(255, 255, 255, 0.7);*/
 	border-radius: 3px;
 	top: 3px;
 	right: 5px;
 	z-index: 1;
 }
+/*.itemContents .bookmark {
+  position: absolute;
+  padding: 8px 8px;
+  background-color: rgba(181, 181, 181, 0.7);
+  border-radius: 3px;
+  top: -176px;
+  right: 8px;
+  z-index: 1;
+  color: #EFF0F2;
+  border: 1px solid #E0E0E0;
+}*/
 .titleLink {
 	max-width: 89%;
 	display: inline-block;
@@ -1282,7 +1292,7 @@ label.btn.active,
 .classTitle, 
 .classDate, 
 .warning {
-	padding: 4px 14px 0;
+	padding: 4px 18px 0;
 	position: relative;
 	background-color: white;
 	line-height: 16px;
@@ -1291,7 +1301,7 @@ label.btn.active,
 	text-align: left;
 	font-weight: bold;
 	font-size: 14px;
-	padding-top: 8px;
+	padding-top: 18px;
 	line-height: 17px;
 }
 .classTitleMobile {
