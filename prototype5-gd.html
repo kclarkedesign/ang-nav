@@ -21,7 +21,7 @@
 	<script src="/ang-nav/src/angularLocalStorage.js"></script>
 	<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
 	<script src="/ang-nav/src/navControllers5.js"></script>
-		<!-- TO BE ADDED TO ANGULAR -->
+	<!-- TO BE ADDED TO ANGULAR -->
 	<script type="text/javascript">
 	$(document).ready(function() {
 		// var refineBar = $('#refine-bar');
@@ -88,8 +88,6 @@
 			e.preventDefault();
 			$(this).removeClass('inMobile');
 		});
-
-
 		// refineBar.click(function() {
 		// 	refineBar.slideUp();
 		// 	refineSlicers.slideDown();
@@ -128,7 +126,7 @@
 									</li>
 								</ul>
 							</div>
-							<ul class="nav navbar-nav navbar-right hidden-lg hidden-xl">
+							<ul id="filterBtn-container" class="nav navbar-nav navbar-right hidden-lg hidden-xl">
 
 								<li class="filter">
 									<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown">
@@ -136,11 +134,11 @@
 									</a>
 								</li>
 								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
-										<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Filters
-											<span class="caret"></span>
-										</button>
-									</div> -->
+									<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Filters
+										<span class="caret"></span>
+									</button>
+								</div> -->
 								</ul>
 							</div>
 						</div>
@@ -259,6 +257,19 @@
 									<div class="col-xs-12 pull-left pt10 pl0 pr0 hidden-lg hidden-xl">
 										<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
 									</div>
+									<!-- <div id="filterBtn-container" class="col-xs-12 col-sm-3 pr0 hidden-lg hidden-xl">
+										<span class="filter btn btn-default">
+											<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown">
+												<span class="navtext">Advanced Filters</span> <i class="fa fa-filter fa-lg"></i>
+											</a>
+										</span>
+										<div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
+											<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Filters
+												<span class="caret"></span>
+											</button>
+										</div>
+									</div> -->
 	 								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
 										<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											Filters
@@ -498,11 +509,14 @@
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="getMore">
-															<span class="showMore">Show More ▲</span><br />
+															<span class="showMore">More Info <i class="fa fa-chevron-up"></i></span><br />
 														</div>
-
+														
 														<div class="contentWrap">
 															<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+														</div>
+														<div class="getTickets">
+															<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target=\"_blank\">Buy Now <i class="fa fa-arrow-right"></i></a>
 														</div>
 													</div>
 												</div>
@@ -639,7 +653,7 @@
 										<label class="checkbox fw-normal" for="anyTime">Any</label>
 									</div>
 								</div>
-								<div class="col-xs-12 pull-right no-p">
+								<div class="col-xs-12 pull-right">
 									<div class="full-width" ng-repeat="time in navListCtrl.times">
 										<input id="{{time}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('time', time)" value="'{{time}}'" ng-checked="navListCtrl.timeSlice.indexOf(time) > -1">
 										<label class="checkbox fw-normal" for="{{time}}Slice" ng-bind-html="time.charAt(0).toUpperCase() + time.slice(1) | unsafe"></label>
@@ -656,8 +670,8 @@
 									<label class="checkbox fw-normal" for="anyDay">Any</label>
 								</div>
 								<div class="col-xs-12 pull-right">
-									<div class="col-xs-3 no-p" ng-repeat="day in navListCtrl.days">
-										<input id="{{day}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1"><br />
+									<div class="col-xs-2 no-p" ng-repeat="day in navListCtrl.days">
+										<input id="{{day}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1"> 
 										<label class="checkbox fw-normal" for="{{day}}Slice" ng-bind-html="day.charAt(0).toUpperCase() | unsafe"></label>
 									</div>
 								</div>
@@ -685,10 +699,10 @@
 								<div class="col-xs-12">
 									<div role="separator" class="divider"></div>
 								</div>
-								<div class="col-xs-3">
+								<div class="col-xs-12">
 									<label class="checkbox dropdown-header pl0 fw-normal">Ages:</label>
 								</div>
-								<div class="col-xs-9 pull-right pl0">
+								<div class="col-xs-12 pull-right">
 									<div class="full-width">
 										<input id="allAgesMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.ageSlice" ng-change="navListCtrl.ageSlice === '' ? navListCtrl.ageSlice = 'all' : navListCtrl.slicerPicked('age')" ng-true-value="'all'" ng-false-value="''">
 										<label class="checkbox fw-normal" for="allAges">Any</label>
@@ -696,7 +710,7 @@
 									<div role="separator" class="divider"></div>
 								</div>
 
-								<div class="col-xs-9 pull-right no-p">
+								<div class="col-xs-12 pull-right">
 									<div class="full-width">
 										<input id="allAdultsMobile" type="checkbox" class="selectAll" value="alladults" ng-click="navListCtrl.slicerPicked('age', 'alladults')" ng-checked="navListCtrl.ageSlice.indexOf('alladults') > -1">
 										<label class="checkbox fw-normal" for="allAdults">All Adults</label>
@@ -774,9 +788,9 @@
 			</div>
 
 			<!-- Sidebar  -->
-			<div class="col-xs-8 col-sm-3 col-lg-3 sidebar-offcanvas" id="sidebar">
+			<div class="sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
-					<span class="list-group-item active">I'm looking for &hellip;</span>
+					<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
 					<a href="#" class="list-group-item">Talks</a>
 					<a href="#" class="list-group-item">Camps &amp; After School</a>
 					<a href="#" class="list-group-item">Continuing Education &amp; Enrichment</a>
@@ -809,7 +823,9 @@
 								<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
 								</li>
 							</ul>
+							<a id="mainNavClose" class="center active"><i class="fa fa-times fa-lg"></i></a>
 						</div>
+
 					</li>
 					<li class="dropdown">
 						<a id="sidebar-interest-list">
@@ -944,6 +960,9 @@
 									<div class="itemContents">
 										<div class="container-fluid">
 											<div class="row">
+												<div class="removeContainer">
+													<a id="removeItem"class="center active"><i class="fa fa-times fa-lg"></i></a>
+												</div>
 												<div id="tileImg" class="col-xs-12 no-p">
 													<a ng-href="http://www.92y.org/Class/Egg-Tempera-Painting" target="_blank" class="" href="http://www.92y.org/Class/Egg-Tempera-Painting">
 														<img ng-src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg" border="0" alt="Egg Tempera Painting" width="" class="" src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg">

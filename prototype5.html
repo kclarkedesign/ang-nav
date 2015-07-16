@@ -88,8 +88,6 @@
 			e.preventDefault();
 			$(this).removeClass('inMobile');
 		});
-
-
 		// refineBar.click(function() {
 		// 	refineBar.slideUp();
 		// 	refineSlicers.slideDown();
@@ -511,11 +509,14 @@
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="getMore">
-															<span class="showMore">Show More ▲</span><br />
+															<span class="showMore">More Info <i class="fa fa-chevron-up"></i></span><br />
 														</div>
-
+														
 														<div class="contentWrap">
 															<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+														</div>
+														<div class="getTickets">
+															<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target=\"_blank\">Buy Now <i class="fa fa-arrow-right"></i></a>
 														</div>
 													</div>
 												</div>
@@ -787,9 +788,9 @@
 			</div>
 
 			<!-- Sidebar  -->
-			<div class="col-xs-8 col-sm-3 col-lg-3 sidebar-offcanvas" id="sidebar">
+			<div class="sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
-					<span class="list-group-item active">I'm looking for &hellip;</span>
+					<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
 					<a href="#" class="list-group-item">Talks</a>
 					<a href="#" class="list-group-item">Camps &amp; After School</a>
 					<a href="#" class="list-group-item">Continuing Education &amp; Enrichment</a>
@@ -822,7 +823,9 @@
 								<li> <a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
 								</li>
 							</ul>
+							<a id="mainNavClose" class="center active"><i class="fa fa-times fa-lg"></i></a>
 						</div>
+
 					</li>
 					<li class="dropdown">
 						<a id="sidebar-interest-list">
@@ -957,6 +960,9 @@
 									<div class="itemContents">
 										<div class="container-fluid">
 											<div class="row">
+												<div class="removeContainer">
+													<a id="removeItem"class="center active"><i class="fa fa-times fa-lg"></i></a>
+												</div>
 												<div id="tileImg" class="col-xs-12 no-p">
 													<a ng-href="http://www.92y.org/Class/Egg-Tempera-Painting" target="_blank" class="" href="http://www.92y.org/Class/Egg-Tempera-Painting">
 														<img ng-src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg" border="0" alt="Egg Tempera Painting" width="" class="" src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg">

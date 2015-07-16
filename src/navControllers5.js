@@ -919,7 +919,7 @@
 				}
 			});
 		}
-		shortDesc += "<div class='detailLink'>" + "<a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>" + "</div>";
+		//shortDesc += "<div class='detailLink'>" + "<a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>" + "</div>";
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -1069,7 +1069,7 @@ $(document).on('click','.showMore',function(){
 		$classDate.animate({bottom: "0"});
 		$warning.animate({bottom: "0"});
 		$content.slideUp(function () {
-			$showMore.html($showMore.html().replace("Show Less ▼", "Show More ▲"));
+			$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
 		});
 	} else {
 		$wrapper.css( "bottom", "5px" );
@@ -1078,7 +1078,7 @@ $(document).on('click','.showMore',function(){
 		$classDate.animate({bottom: "164px"});
 		$warning.animate({bottom: "164px"});
 		$content.slideDown(function () {
-			$showMore.html($showMore.html().replace("Show More ▲", "Show Less ▼"));
+			$showMore.html($showMore.html().replace('More Info <i class="fa fa-chevron-up"></i></span>', 'Less Info <i class="fa fa-chevron-down"></i></span>'));
 		});
 	}
 	return false;
