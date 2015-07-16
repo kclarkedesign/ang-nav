@@ -6,15 +6,17 @@ For NAV Example
 
 /** For Promo  **/
 
-/*	#utility-bar {
- 		width: 100%;
- 		padding: 10px 0 10px 16px;
- 		border-bottom: 1px solid #D6D6D6;
+	#utility-bar {
+		padding: 10px;
+		border-bottom: 1px solid #D6D6D6;
 		position: fixed;
 		bottom: 0;
 		z-index: 1000;
-  		background: #000;
- 	}
+		background: #000;
+		top: 100px;
+		width: 220px;
+		right: 0;
+	}
  	#utility-container {
  		width:100%;
  		margin: 0 auto;
@@ -39,96 +41,6 @@ For NAV Example
 		padding: 0 0 5px 2%;
 		box-sizing: border-box;
  	}
- 	.promo-item {
- 		display: inline-block;
- 		text-align: center;
- 		width: 170px;
- 		margin: 0 0 8px 8px;
- 		box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
- 		-webkit-box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
- 		vertical-align: top;
-		border-radius: 3px;
-		overflow: hidden;
- 	}
-	.promo-item a:hover,
-	.promo-item:hover {
-    	background: none repeat scroll 0 0 #ededed;
-    	text-decoration: none;
-		opacity: .85;
-	}
-	.promo-item.SOA img {
-    	margin: -6px;
-   		width: 106%;
-	}
- 	.promo-item img {
- 		width: 100%;
- 	}
- 	.promo-msg {
- 		text-align: center;
- 		width: 100%;
- 		display: block;
- 		margin: 0 0 8px 0;
- 		font-weight: bold;
- 		color: #BCBDC0;
-		padding-right: 30px;
- 	}
- 	.two-wide {
- 		width: 49%;
- 	}
- 	.two-tall {
- 		min-height: 200px;
- 	}
-*/
-/** For Promo  **/
-
-	#utility-bar {
-		padding: 10px 0;
-		/*border-left: 1px solid #D6D6D6;*/
-		/*position: fixed;*/
-		/*bottom: 0;*/
-		z-index: 1;
-		top: 100px;
-		width: 200px;
-		-webkit-transition: all .5s ease;
-		-moz-transition: all .5s ease;
-		transition: all .5s ease;
-	}
-	#utility-bar.affix {
-  		top: 162px;
-	}
- 	#utility-container {
- 		width:100%;
- 		margin: 0 auto;
- 		display: block;
- 	}
-
- 	.group-private {
- 		font-size: 13px;
- 		height: 38px;
- 		display: block;
- 		line-height: 16px;
- 		padding: 2px;
- 		box-sizing: border-box;
- 	}
- 	img {
- 		verticle-align: top;
- 	}
- 	.promo {
- 		box-shadow: none;
-		width: 100%;
-		text-align: center;
-		padding: 0 0 5px 0;
-		box-sizing: border-box;
- 	}
- 	/*.promo {
-  box-shadow: none;
-  width: 100%;
-  text-align: center;
-  padding: 8px 0 5px 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}*/
  	.promo-item {
  		display: inline-block;
  		text-align: center;
@@ -168,23 +80,7 @@ For NAV Example
  	.two-tall {
  		min-height: 200px;
  	}
-	#removeItem {
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-	.removeContainer {
-		position: absolute;
-		z-index: 1;
-		background-color: #ccc;
-		right: 0;
-	}
 
-
- 	/** End For Promo **/
- 	.activeFamily {
- 		display:block;
- 	}
 
  	/** End For Promo **/
  	.activeFamily {
@@ -317,39 +213,18 @@ header .bottom-nav {
 .nav>li {
 	margin: 0;
 }
+#sidebar,
 #browseSidebar,
-#filterSidebar,
-#savedSidebar {
+#filterSidebar {
 	position: fixed;
 	height: 100%;
 	top: 0;
 	z-index: 1002;
 	background-color: #333;
 	right: -890px;
-	-webkit-transition: all .5s ease;
-	-moz-transition: all .5s ease;
-	transition: all .5s ease;
+	transition: ease .5s all;
 	overflow-y: scroll; 
 }
-#savedSidebar {
-	position: fixed;
-	height: 100%;
-	top: 0;
-	z-index: 1002;
-	background-color: #333;
-	right: -590px;
-	-webkit-transition: all .5s ease;
-	-moz-transition: all .5s ease;
-	transition: all .5s ease;
-	width: 580px;
-}
-#savedPrograms .item-details {
-  		width: 50%;
-	}
-	#savedPrograms #tileImg {
-  		width: 50%;
-  	}
-  	#sidebar,
 #mainNavSidebar {
 	position: fixed;
 	height: 100%;
@@ -357,36 +232,23 @@ header .bottom-nav {
 	z-index: 1002;
 	background-color: #333;
 	left: -590px;
-	-webkit-transition: all .5s ease;
-	-moz-transition: all .5s ease;
-	transition: all .5s ease;
+	transition: ease .5s all;
 	width: 280px;
 }
 /*#site-container.out-left {
 	transform: matrix(1, 0, 0, 1, 280, 0);
 	transition: ease .5s all;
 }*/
-#mainNavSidebar.in,
-#sidebar.in,
-#sidebar.inMobile {
+#mainNavSidebar.in {
 	left: 0;
 }
+#sidebar.in,
 #browseSidebar.in,
-#filterSidebar.in,
-#savedSidebar.in {
+#filterSidebar.in {
 	right: 0;
 }
 #sidebar-wrapper {
 	background: #252A31;
-}
-#sideBarClose {
-  right: 14px;
-  position: absolute;
-  color: #fff;
-}
-.sidebar-offcanvas .heading {
-  height: 50px;
-  line-height: 28px;
 }
 .filter-menu {
 	position: fixed;
@@ -404,41 +266,11 @@ header .bottom-nav {
 .scroll {
 	height: 100%;
 }
-.sidebarHeading {
-  width: 100%;
-  display: block;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 20px;
-  position: relative;
-  /*height: 41px;*/
-}
-#savedSidebarClose {
-  position: absolute;
-  top: 10px;
-  right: 5px;
-  text-align: right;
-}
-#savedPrograms img {
-  width: 100%;
-}
-#filterBtn-container {
-	/*margin-right: -15px; */
-	/*border-left: 1px solid #fff;
-	border-right: 1px solid #fff;*/
-}
-#mainNavClose {
-  position: absolute;
-  right: 14px;
-  top: 0;
-}
 
 @media (max-width: 1200px) {
 	.refine-slicers .full-width {
 		width: auto;
 	}
-	
 }
 
 @media (max-width: 767px) {
@@ -497,14 +329,6 @@ header .bottom-nav {
 		line-height: 12px;
 	}*/
 }
-@media (max-width: 768px) {
-	#savedSidebar.in {
-		width: 320px;
-	}
-	#filterBtn-container {
-		margin-right: -15px; 
-	}
-}
 @media (max-width: 319px) {
 	#utilnav {
 		width: 100%;
@@ -543,22 +367,12 @@ a {
 .itemContents .bookmark {
 	position: absolute;
 	padding: 5px 8px;
+	/*background-color: rgba(255, 255, 255, 0.7);*/
 	border-radius: 3px;
-	top: 5px;
+	top: 3px;
 	right: 5px;
 	z-index: 1;
 }
-/*.itemContents .bookmark {
-  position: absolute;
-  padding: 8px 8px;
-  background-color: rgba(181, 181, 181, 0.7);
-  border-radius: 3px;
-  top: -176px;
-  right: 8px;
-  z-index: 1;
-  color: #EFF0F2;
-  border: 1px solid #E0E0E0;
-}*/
 .titleLink {
 	max-width: 89%;
 	display: inline-block;
@@ -802,8 +616,7 @@ a {
   text-transform: uppercase;
 }
 #browseSidebar .list-group-item,
-#filterSidebar .list-group-item,
-#sidebar .list-group-item  {
+#filterSidebar .list-group-item {
 	border-radius: 0px;
 	margin: 0;
 }
@@ -1092,10 +905,6 @@ label.btn.active,
 		/* padding-left: 8px; */
 		color: #466594;
 }
-.dropdown-menu .active {
-	background-color: #4F93CD;
-  color: #fff;
-}
 
 
 @media (max-width: 1960px) {
@@ -1244,16 +1053,17 @@ label.btn.active,
 .itemBox img {
 		width: 100%;
 }
-/*.getMore{
+.getMore{
 	bottom: 0;
 	position: absolute;
 	text-align: center;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+	/*margin-bottom: 10px;*/
 	background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;
 	z-index: 1;
-}*/
+}
 /*.showMore {
 	cursor: pointer;
 	font-size: 11px;
@@ -1264,82 +1074,20 @@ label.btn.active,
 	width: 75px;
 	transition: .1s linear;
 }*/
-.getMore {
-  bottom: 0;
-  position: absolute;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  /*background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;*/
-  z-index: 1;
-}
-.getTickets {
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  /*background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;*/
-  z-index: 1;
-}
-/*.showMore {
+.showMore {
 	cursor: pointer;
 	font-size: 11px;
 	padding: 18px 8px;
 	display: inline-block;
 	background: #ffffff;
-	-webkit-transition: .1s linear;
-	-moz-transition: .1s linear;
+	/* border-radius: 4px; */
 	transition: .1s linear;
 	width: 100%;
+	/*background-color: #F5F5F5;*/
 	border-top: 1px solid #EDEDED;
-}*/
-.showMore {
-  cursor: pointer;
-  font-size: 12px;
-  padding: 18px 22px;
-  display: inline-block;
-  background: #ffffff;
-  /* border-radius: 4px; */
-  -webkit-transition: .1s linear;
-  -moz-transition: .1s linear;
-  transition: .1s linear;
-  width: 100%;
-  /* background-color: #F5F5F5; */
-  border-top: 1px solid #EDEDED;
-  border-right: 1px solid #EDEDED;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
 }
 .showMore:hover {
 	background: #E8E8E8;
-	-webkit-transition: .1s linear;
-	-moz-transition: .1s linear;
-	transition: .1s linear;
-}
-.getLink {
-	cursor: pointer;
-  font-size: 12px;
-  padding: 18px 22px;
-  display: inline-block;
-  background: #ffffff;
-  /* border-radius: 4px; */
-  -webkit-transition: .1s linear;
-  -moz-transition: .1s linear;
-  transition: .1s linear;
-  width: 100%;
-  /* background-color: #F5F5F5; */
-  border-top: 1px solid #EDEDED;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-}
-.getLink:hover {
-	background: #E8E8E8;
-	-webkit-transition: .1s linear;
-	-moz-transition: .1s linear;
 	transition: .1s linear;
 }
 .learnMore {
@@ -1372,7 +1120,7 @@ label.btn.active,
 	width: 100%;
 	height: 190px;
 	display: none;
-	padding: 6px 18px 0;
+	padding: 6px 14px 0;
 	box-sizing: border-box;
 	font-size: 12px;
 	line-height: 19px;
@@ -1388,7 +1136,7 @@ label.btn.active,
 .classTitle, 
 .classDate, 
 .warning {
-	padding: 4px 18px 0;
+	padding: 4px 14px 0;
 	position: relative;
 	background-color: white;
 	line-height: 16px;
@@ -1397,7 +1145,7 @@ label.btn.active,
 	text-align: left;
 	font-weight: bold;
 	font-size: 14px;
-	padding-top: 18px;
+	padding-top: 8px;
 	line-height: 17px;
 }
 .classTitleMobile {
@@ -1447,12 +1195,10 @@ label.btn.active,
 .refine-slicers {
   	position: relative;
 }
-#slicerContainer {
-}
 #slicerContainer.affix {
 	top: 99px;
 	z-index: 2;
-	background-color: #eff0f2;
+	background-color: #fff;
 	border-bottom: 1px solid #ccc;
 	margin: 0 auto;
 	left: 0;
@@ -1507,9 +1253,6 @@ input[type="date"]::-webkit-inner-spin-button{
 .masonry-brick.loaded {
 	display: block !important;
 }
-@media (max-width: 1200px) {
-
-  	}
 @media (max-width: 768px) {
 	.header {
 		height: 50px;
@@ -1699,38 +1442,4 @@ input[type="date"]::-webkit-inner-spin-button{
 	.navbar-nav>li {
   		float: left;
 	}
-}
-
-/* this only works with the modification in ui-bootstrap-tpls-0.13.0.js that adds this class to the button */
-.text-muted {
-	display: none;
-}
-
-/**
- * Fail message styles
- */
- .container .fail-message {
- 	top: 0;
- 	left: 0;
- 	bottom: 0;
- 	right: 0;
- 	text-align: center;
- 	pointer-events: none;
-}
-.container .fail-message:before {
-	content: '';
-	display: inline-block;
-	vertical-align: middle;
-	height: 100%;
-}
-.container .fail-message span {
-	display: inline-block;
-	vertical-align: middle;
-	font-size: 20px;
-	font-weight: 700;
-	color: black;
-}
-.container.fail .fail-message {
-	opacity: 1;
-	pointer-events: auto;
 }
