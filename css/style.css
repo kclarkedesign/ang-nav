@@ -319,7 +319,8 @@ header .bottom-nav {
 }
 #browseSidebar,
 #filterSidebar,
-#savedSidebar {
+#savedSidebar,
+#mainNavSidebar {
 	position: fixed;
 	height: 100%;
 	top: 0;
@@ -379,7 +380,8 @@ header .bottom-nav {
 #sidebar-wrapper {
 	background: #252A31;
 }
-#sideBarClose {
+#sideBarClose,
+#browseSidebarClose {
   right: 14px;
   position: absolute;
   color: #fff;
@@ -1733,4 +1735,9 @@ input[type="date"]::-webkit-inner-spin-button{
 .container.fail .fail-message {
 	opacity: 1;
 	pointer-events: auto;
+}
+.container .fail-message .removeFilters {
+  font-size: 16px;
+  margin: 5px 0;
+  display: block;
 }
