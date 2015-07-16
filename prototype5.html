@@ -490,11 +490,16 @@
 						</div>
 						<div class="row">
 							<div id="Container" class="tileContainer container">
-								<div class="fail-message" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-									<span>No items were found matching the selected filters</span>
-								</div>
+								
 								<div id="tiles" class="row">
 									<div class="col-md-12 col-lg-10  pl0 pr0">
+										<div class="fail-message" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
+											<span class="noResults">No items were found matching the selected filters</span>
+
+											<span class="removeFilters">Try removing "FILTERTYPE" filters to see: <a>Blah Results</a></span>
+
+											<!-- <span class="removeFilters">Remove Age filters to see: <a>Blah Results</a></span> -->
+										</div>
 										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
 											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-4 col-lg-4 pl10 pr10">
@@ -805,7 +810,7 @@
 			<!-- Browse  -->
 			<div class="col-xs-8 col-sm-3 col-lg-3 no-p sidebar-offcanvas hidden-sm hidden-md hidden-lg hidden-xl" id="browseSidebar">
 				<div class="list-group">
-					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span></span>
+					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span><a id="browseSidebarClose"class="center active pull-right"><i class="fa fa-times fa-lg"></i></a></span>
 					<span class="browse-item col-xs-12 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 						<a class="list-group-item" ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 					</span>
