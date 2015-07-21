@@ -94,7 +94,7 @@ For NAV Example
 		transition: all .5s ease;
 	}
 	#utility-bar.affix {
-  		top: 162px;
+  		top: 120px;
 	}
  	#utility-container {
  		width:100%;
@@ -140,17 +140,31 @@ For NAV Example
 		border-radius: 3px;
 		overflow: hidden;
  	}
+ 	.promo-item-top {
+	  display: block;
+	  text-align: center;
+	  width: 170px;
+	  margin: 6px;
+	  box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+	  -webkit-box-shadow: 0px 0px 4px 1px rgba(1, 87, 119, .19);
+	  vertical-align: top;
+	  border-radius: 3px;
+	  overflow: hidden;
+	  float: left;
+	}
 	.promo-item a:hover,
 	.promo-item:hover {
     	background: none repeat scroll 0 0 #ededed;
     	text-decoration: none;
 		opacity: .85;
 	}
-	.promo-item.SOA img {
+	.promo-item.SOA img,
+	.promo-item-top.SOA img {
     	margin: -6px;
    		width: 106%;
 	}
- 	.promo-item img {
+ 	.promo-item img,
+ 	.promo-item-top img {
  		width: 100%;
  	}
  	.promo-msg {
@@ -161,6 +175,12 @@ For NAV Example
  		font-weight: bold;
  		color: #BCBDC0;
 		/*padding-right: 30px;*/
+ 	}
+ 	#promo-item-container-top {
+ 		/*display: none;*/
+ 	}
+ 	#relatedProgramsBtn {
+ 		/*display: none;*/
  	}
  	.two-wide {
  		width: 49%;
@@ -215,10 +235,10 @@ body.sidebar-open {
 }
 #hor-menu,
 #main-navigation {
-	width: 100%;
+	/*width: 100%;*/
 	background: #fff;
 	/*border-bottom: 1px solid #000000;*/
-	background-color: #4F93CD;
+	background-color: #000000;
 }
 .header {
 	background-color: #000000;
@@ -248,7 +268,8 @@ header .bottom-nav {
 }
 .header .brand .navbar-brand img {
 	max-height: 50px;
-	margin-right: 5px;
+	/*margin-right: 5px;*/
+	margin-right: 15px;
 	/*margin-top: -3px;*/
 }
 .header .nav>li>a:hover, 
@@ -345,10 +366,10 @@ header .bottom-nav {
 	width: 580px;
 }
 #savedPrograms .item-details {
-  		width: 50%;
+  		width: 60%;
 	}
 	#savedPrograms #tileImg {
-  		width: 50%;
+  		width: 40%;
   	}
   	#sidebar,
 #mainNavSidebar {
@@ -377,6 +398,9 @@ header .bottom-nav {
 #savedSidebar.in {
 	right: 0;
 }
+#savedSidebar.in {
+	width: 300px;
+}
 #sidebar-wrapper {
 	background: #252A31;
 }
@@ -394,17 +418,34 @@ header .bottom-nav {
 	position: fixed;
 	z-index: 10;
 }
+/*.filter-browse-container.affix {
+  z-index: 2;
+  background-color: #fff;
+  width: 100%;
+  top: 50px;
+  left: 0;
+  transition: ease .5 all;
+  padding: 0 15px;
+}*/
 #menu-container {
 	position: fixed;
 	z-index: 1001;
+}
+.form-control {
+	background: #fff 98%/22px url(http://cdn-img.easyicon.net/png/36/3653.png) no-repeat;
+	/*padding: 6px 20px 6px;*/
 }
 .spinnerInTextbox {
 	background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
 	padding-right: 24px;
 }
+
 .scroll {
 	height: 100%;
+}
+.topHeading {
+	height: 50px;
 }
 .sidebarHeading {
   width: 100%;
@@ -435,12 +476,27 @@ header .bottom-nav {
   right: 14px;
   top: 0;
 }
+.traveling {
+	position: absolute;
+	top: calc(600% - 40px);
+	right: 0px;
+	background-color: #333;
+}
 
 @media (max-width: 1200px) {
 	.refine-slicers .full-width {
 		width: auto;
 	}
-	
+	.promo-top {
+		display: none;
+		background-color: #F1F1F1;
+		position: relative;
+		z-index: 2;
+		top: 0;
+		padding: 10px 0;
+  		margin-top: 10px;
+  		overflow: hidden;
+	}
 }
 
 @media (max-width: 767px) {
@@ -503,9 +559,9 @@ header .bottom-nav {
 	#savedSidebar.in {
 		width: 320px;
 	}
-	#filterBtn-container {
+	/*#filterBtn-container {
 		margin-right: -15px; 
-	}
+	}*/
 }
 @media (max-width: 319px) {
 	#utilnav {
@@ -577,7 +633,7 @@ a {
 	padding: 0;
 }
 .breadcrumb a {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
 }
 .breadcrumb>li.current {
@@ -645,6 +701,13 @@ a {
 /*.browse-item a:hover {
 	background-color: #D8ECFD;
 }*/
+
+#browseSidebar .current {
+  font-size: 1.6em;
+}
+#browseSidebar .browse-item a {
+	padding: 10px 15px;
+}
 .browse-item a:hover {
 	background-color: #D8ECFD;
 	border-bottom: 1px solid #ccc;
@@ -689,10 +752,19 @@ a {
 	display: inline-block;
 	color: #ffffff;
 	padding: 4px 6px 4px;
+	font-size: 12px;
+}
+.savedSearches a:first-child {
+  max-width: 230px;
+  /*overflow: hidden;
+  height: 13px;*/
 }
 .savedSearchClose {
 	border-left: 1px solid #fff;
 	padding-left: 4px;
+	z-index: 1;
+	background-color: #5BC0DE;
+	border-radius: 0 9px 9px 0px;
 }
 .tabs-left .nav-tabs {
 	float: left;
@@ -1176,8 +1248,8 @@ label.btn.active,
 		padding: 5px 8px;
 		background-color: #fff;
 		border-radius: 3px;
-		top: -5px;
-		right: -8px;
+		top: -8px;
+  		right: -14px;
 		float: right;
 		z-index: 1;
 	}
@@ -1404,6 +1476,7 @@ label.btn.active,
 }
 .classTitleMobile {
 	font-weight: bold;
+	font-size: 12px;
 }
 .classDate {
 	font-size: 12px;
@@ -1452,9 +1525,11 @@ label.btn.active,
 #slicerContainer {
 }
 #slicerContainer.affix {
-	top: 99px;
+	/*top: 99px;*/
+	top: 50px;
 	z-index: 2;
 	background-color: #eff0f2;
+	/*background-color: #333333;*/
 	border-bottom: 1px solid #ccc;
 	margin: 0 auto;
 	left: 0;
@@ -1545,6 +1620,15 @@ input[type="date"]::-webkit-inner-spin-button{
 	.browse-item a {
 		padding: 10px 15px;
 	}
+	/*#browseBtns {
+  		padding-left: 0;
+  		padding-right: 0;
+	}*/
+	.promo-item-top {
+  		display: inline-block;
+  		text-align: center;
+  		float: none;
+	}
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
@@ -1610,7 +1694,9 @@ input[type="date"]::-webkit-inner-spin-button{
 		top: -3px;
 		right: -8px;
 		z-index: 1;
+		position: relative;
 	}
+	
 }
 @media (max-width: 360px) {
 	.classTitleMobile {
@@ -1620,6 +1706,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	#main-area {
   		/*padding: 0 8px;*/
+	}
+	#browseBtns button {
+	  font-size: .8em;
 	}
 }
 @media (max-width: 300px) {
@@ -1660,8 +1749,10 @@ input[type="date"]::-webkit-inner-spin-button{
 		/*float: none!important;*/
 		margin: 7.5px -15px;
 	}
+	/* If we want two rows stacked, float: none; */
 	.navbar-nav>li {
-		float: none;
+		/*float: none;*/
+		float: left;
 	}
 	.navbar-nav>li>a {
 		padding-top: 15px;
@@ -1692,9 +1783,9 @@ input[type="date"]::-webkit-inner-spin-button{
 		-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
 			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
 	}
-	.navbar-nav.navbar-right:last-child {
+	/*.navbar-nav.navbar-right:last-child {
   		margin-right: -15px;
-	}
+	}*/
 	.navbar-right {
 		float: right!important;
 	}
