@@ -1599,6 +1599,8 @@ input[type="date"]::-webkit-inner-spin-button{
 		padding-bottom: 20px;
 		box-shadow: none;
 		border: 1px solid #E0E0E0;
+		border-top: 0;
+  		border-left: 0;
 	}
 	.classDateMobile {
 		font-size: 12px;
@@ -1628,6 +1630,9 @@ input[type="date"]::-webkit-inner-spin-button{
   		display: inline-block;
   		text-align: center;
   		float: none;
+	}
+	.item-details {
+	  line-height: 16px;
 	}
 }
 @media (min-width: 768px) and (max-width: 992px) {
@@ -1696,6 +1701,23 @@ input[type="date"]::-webkit-inner-spin-button{
 		z-index: 1;
 		position: relative;
 	}
+	.classTitle, .classDate, .warning {
+		position: relative;
+		background-color: white;
+		line-height: 14px;
+  		font-size: 11px;
+	}
+	.classTitleMobile a {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+		font-size: 11px;
+	}
+	.classDateMobile,
+	 {
+  		font-size: 11px;
+	}
 	
 }
 @media (max-width: 360px) {
@@ -1703,7 +1725,10 @@ input[type="date"]::-webkit-inner-spin-button{
 		font-weight: bold;
 		line-height: 16px;
 		font-size: 12px;
+		width: auto;
+		overflow: hidden;
 	}
+
 	#main-area {
   		/*padding: 0 8px;*/
 	}
