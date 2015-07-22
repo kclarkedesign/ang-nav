@@ -33,34 +33,40 @@
 			e.preventDefault();
 			sideBar.toggleClass('in');
 			$("body").toggleClass('sidebar-open');
+			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			mainNavIntList.addClass('active');
 			$("#savedSidebar").removeClass('in');
 		});
 		$("#sidebar-interest-list").click(function(e) {
 			e.preventDefault();
 			sideBar.toggleClass('inMobile');
-			$("body").toggleClass('sidebar-open');
+			// To add the overlay back once selecting a option for the find menu
+				setTimeout(function () {
+					$("body").addClass('sidebar-open');
+            		$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+        		}, 100);	
 			$(this).addClass('active');
 		});
 		$("#relatedProgramsBtn").click(function(e) {
 			e.preventDefault();
-			// sideBar.toggleClass('inMobile');
-			// $("body").toggleClass('sidebar-open');
 			$('.promo-top').slideToggle();
 		});
 		$("#browseBtn").click(function(e) {
 			e.preventDefault();
 			$("#browseSidebar").toggleClass('in');
 			$("body").toggleClass('sidebar-open');
+			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			$("#sidebar, #filterSidebar, #mainNavSidebar, #savedSidebar").removeClass('in inMobile');
 		});
 		$("#filterSidebarBtn").click(function(e) {
 			e.preventDefault();
 			$("body").toggleClass('sidebar-open');
+			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			$("#filterSidebar").toggleClass('in');
 			$("#filterClose").click(function(e) {
 				e.preventDefault();
 				$("#filterSidebar").removeClass('in');
+				$(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
 				$("body").removeClass('sidebar-open');
 			});
 			$("#sidebar, #browseSidebar, #mainNavSidebar, #savedSidebar").removeClass('in inMobile');
@@ -70,6 +76,7 @@
 			$("#mainNavSidebar").toggleClass('in');
 			$("#site-container").toggleClass('out-left');
 			$("body").toggleClass('sidebar-open');
+			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			$("#sidebar, #browseSidebar, #savedSidebar, #filterSidebar").removeClass('in inMobile');
 		});
 		$("#navSavedBtn").click(function(e) {
@@ -77,9 +84,11 @@
 			$("#savedSidebar").addClass('in');
 			$("#site-container").toggleClass('out-left');
 			$("body").toggleClass('sidebar-open');
+			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			$("#savedSidebarClose").click(function(e) {
 				e.preventDefault();
 				$("#savedSidebar").removeClass('in');
+				$(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
 				$("body").removeClass('sidebar-open');
 			});
 			$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in inMobile');
@@ -94,15 +103,11 @@
 			e.preventDefault();
 			$(this).removeClass('inMobile');
 		});
-		// refineBar.click(function() {
-		// 	refineBar.slideUp();
-		// 	refineSlicers.slideDown();
-		// });
-		// refineClose.click(function() {
-		// 	refineBar.slideDown();
-		// 	refineSlicers.slideUp();
-		// })
-
+		$('#backToTop').click(function(e) {
+			e.preventDefault();
+			$("html, body").animate({ scrollTop: 0 }, "fast");
+  			return false;
+		});
 		$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
 			e.stopPropagation();
 		});
@@ -212,6 +217,9 @@
 				<div class="row">
 					<div id="main-area" class="col-xs-12">
 						<section class="main-content">
+							<div id="backToTop" class="btn" affix>
+       							 <a href="#"><i class="fa fa-chevron-circle-up"></i> Back to Top</a>
+     						 </div>
 							<div id="interest-areaRow" class="row" style="display:none">
 								<div class="container pl10 pr10 mt25 mb25">
 									<div class="col-md-2">
@@ -1073,5 +1081,6 @@
 			</div>
 		</div>
 	</div>
+	<div class="qp-ui-mask-modal"></div>
 </body>
 </html>

@@ -1025,11 +1025,11 @@ var resizeTileDisplay = function (scope) {
 		numColumns = 3;
 		tileHeight = 340;
 	} else if (window.matchMedia( "(min-width: 768px)" ).matches) {
-		numColumns = 2;
-		tileHeight = 340;
+		numColumns = 4;
+		tileHeight = 141;
 	} else {
-		numColumns = 1;
-		tileHeight = 193;
+		numColumns = 4;
+		tileHeight = 96;
 	}
 	var headerHeight = $("#isoContainer").offset().top;
 	var pageHeight = $(window).height();

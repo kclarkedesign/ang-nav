@@ -328,7 +328,7 @@ header .bottom-nav {
 	border-radius: 0;
 	top: 0;
 	width: 100%;
-	z-index: 1001;
+	z-index: 2;
 	/*margin: -1px;*/
 }
 .nav>li>a:hover, 
@@ -398,6 +398,9 @@ header .bottom-nav {
 #savedSidebar.in {
 	right: 0;
 }
+#filterSidebar {
+	overflow-y: hidden; 
+}
 #savedSidebar.in {
 	width: 300px;
 }
@@ -431,7 +434,7 @@ header .bottom-nav {
 	position: fixed;
 	z-index: 1001;
 }
-.form-control {
+#browse-nav .form-control {
 	background: #fff 98%/22px url(http://cdn-img.easyicon.net/png/36/3653.png) no-repeat;
 	/*padding: 6px 20px 6px;*/
 }
@@ -489,13 +492,14 @@ header .bottom-nav {
 	}
 	.promo-top {
 		display: none;
-		background-color: #F1F1F1;
+		background-color: #f5f5f5;
 		position: relative;
-		z-index: 2;
+		z-index: 1;
 		top: 0;
 		padding: 10px 0;
   		margin-top: 10px;
   		overflow: hidden;
+  		border-bottom: 1px solid #ccc;
 	}
 }
 
@@ -597,6 +601,33 @@ NEW Example CSS
 a {
 	cursor: pointer;
 	color: #4F93CD;
+}
+#backToTop {
+  right: 16%;
+  display: none;
+  z-index: 3;
+  width: 100px;
+  right: -1px;
+}
+#backToTop a {
+  padding: 10px 12px;
+  position: absolute;
+  bottom: -1px;
+  background-color: #000;
+  font-weight: bold;
+  font-size: 12px;
+  right: -1px;
+}
+#backToTop.affix {
+  display: block;
+  bottom: 0;
+}
+#backToTop.btn:focus,
+#backToTop.btn:active {
+	outline: none;
+	outline-offset: 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 .itemContents .bookmark {
 	position: absolute;
@@ -1303,8 +1334,8 @@ label.btn.active,
 	height: 340px;
 	background: white;
 	color: #515151;
-	-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
-	box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+	-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 .tileContainer .gap {
 	width: 300px;
@@ -1603,7 +1634,7 @@ input[type="date"]::-webkit-inner-spin-button{
   		border-left: 0;
 	}
 	.classDateMobile {
-		font-size: 12px;
+		font-size: 11px;
 	}
 	.itemBox {
 		padding: 0 15px;
@@ -1617,7 +1648,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		margin: 0;
 	}
 	#browseSidebar .current {
-			font-size: 1.6em;
+			font-size: 1.4em;
 	}
 	.browse-item a {
 		padding: 10px 15px;
@@ -1653,11 +1684,11 @@ input[type="date"]::-webkit-inner-spin-button{
 		display: none;
 	}
 	#tileImg {
-		width: 50%;
+		width: 40%;
   		/*padding: 15px !important;*/
 	}
 	.item-details {
-		width: 50%;
+		width: 60%;
 	}
 	
 	.tileContainer .itemContents {
@@ -1689,7 +1720,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	.dates {
 		display: none;
 	}
-	#mainNavSidebar {
+	#mainNavSidebar,
+	#sidebar {
 	  overflow-y: scroll;
 	}
 	.itemContents .bookmark {
@@ -1714,8 +1746,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		display: block;
 		font-size: 11px;
 	}
-	.classDateMobile,
-	 {
+	.classDateMobile {
   		font-size: 11px;
 	}
 	
@@ -1804,9 +1835,13 @@ input[type="date"]::-webkit-inner-spin-button{
 
 }
 @media (min-width: 768px) {
+	.filter-browse-container {
+		margin-right: -15px;
+  		margin-left: -15px;
+	}
 	.tileContainer .itemContents {
-		-webkit-box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
-			box-shadow: 0px 0px 8px 3px rgba(1, 87, 119, .15);
+		-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 	}
 	/*.navbar-nav.navbar-right:last-child {
   		margin-right: -15px;
@@ -1856,4 +1891,36 @@ input[type="date"]::-webkit-inner-spin-button{
   font-size: 16px;
   margin: 5px 0;
   display: block;
+}
+
+/** Material Design
+ * (overlay adopted for ang-nav) 
+ * https://www.google.com/design/spec/material-design/introduction.html
+**/
+
+.qp-ui-mask-modal {
+  background-color: rgba(0,0,0,0.5);
+  height: 100%;
+  left: 0;
+  opacity: 0.1;
+  top: 0;
+  visibility: hidden;
+  width: 100%;
+  z-index: 3;
+  position: fixed;
+  -webkit-transition: visibility 0 linear 0.4s,opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  -moz-transition: visibility 0 linear 0.4s,opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: visibility 0 linear 0.4s,opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.sidebar-open .qp-ui-mask-modal.qp-ui-mask-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition-delay: 0;
+  -moz-transition-delay: 0;
+  transition-delay: 0;
 }
