@@ -11,11 +11,68 @@
 	var EDATESLICEURL = '/edate__';
 	var SORTSLICEURL = '/sort__';
 	var SEARCHSLICEURL = '/search__';
+	var MICROSITESOA = {
+		classes: 'promo-item SOA',
+		aClass: 'group-private',
+		aHref: '/Uptown/School-of-the-Arts',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">',
+		id: 'SOA'
+	};
+	var MICROSITEFINEART = {
+		classes: 'promo-item Art studioArt',
+		aClass: '',
+		aHref: '/SOA/Studio-Art',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">',
+		id: 'fineart'
+	};
+	var MICROSITECERAMICS = {
+		classes: 'promo-item Art ceramics',
+		aClass: '',
+		aHref: '/SOA/Ceramics',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">',
+		id: 'ceramics'
+	};
+	var MICROSITEJEWELRY = {
+		classes: 'promo-item Art jewelry',
+		aClass: '',
+		aHref: '/SOA/Jewelry.aspx',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">',
+		id: 'jewelry'
+	};
+	var MICROSITEMUSIC = {
+		classes: 'promo-item Music',
+		aClass: '',
+		aHref: '/SOA/School-of-Music',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">',
+		id: 'music'
+	};
+	var MICROSITEINSTRUCT = {
+		classes: 'promo-item Music instruct',
+		aClass: 'group-private',
+		aHref: '/Uptown/School-of-the-Arts/School-of-Music/Private-Instruction.aspx',
+		img: 'Private &amp; Semi-Private Instruction',
+		id: 'instruct'
+	};
+	var MICROSITEDANCE = {
+		classes: 'promo-item Dance',
+		aClass: '',
+		aHref: '/Uptown/School-of-the-Arts/Harkness-Dance-Center',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">',
+		id: 'dance'
+	};
+	var MICROSITERK = {
+		classes: 'promo-item rk-program',
+		aClass: '',
+		aHref: '/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts',
+		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">',
+		id: 'rk'
+	};
+	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
 
 	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
-		var classesByInterest = [];
+		self.allClasses = [];
 		self.arrCategory = [];
 		self.location = $location;
 		self.timeout = $timeout;
@@ -43,28 +100,35 @@
 		self.applyScope = function () { $scope.$apply(); };
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
+		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
 		self.tileInfoSrv = tileInfoSrv;
-
 		self.tileInfoSrv.getSOAItems().then(function (items) {
 			self.resultsByKeywords = self.navsDict["School of the Arts"] = items.data;
-
 			self.tileInfoSrv.getAllClasses().then(function (data) {
-				classesByInterest.push(data.data[5]);
-				self.getValues(classesByInterest, 0);
-				self.buildCurrentObj();
-				self.displayTiles();
+				self.allClasses.push.apply(self.allClasses, data.data);
+				var locationPath = self.location.path();
+				if (locationPath.length && locationPath !== '/') {
+					var match = locationPath.match(/^\/(.+?)(\/|$)/);
+					var interestFolder = match[1];
+					var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
+					self.displayMicroSites(locationPath);
+					self.getValues(classesByInterest, 0, self.resultsByKeywords);
+					self.buildCurrentObj();
+					self.displayTiles();
+				}
 			});
-
 		});
 
 		var w = angular.element($window);
 		w.bind('resize', function () {
-			resizeTileDisplay($scope);
-			self.onscreenResults = [];
-			self.displayTiles();
-			self.loadMore();
-			$scope.$apply();
+			if (!_.isUndefined(self.currentObj)) {
+				resizeTileDisplay($scope);
+				self.onscreenResults = [];
+				self.displayTiles();
+				self.loadMore();
+				$scope.$apply();
+			}
 		});
 
 		$scope.$watch(function () {
@@ -89,7 +153,9 @@
 							Current: self.currentObj.Current
 						};
 						var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
-						lastCurrent.Current = false;
+						if (!_.isUndefined) {
+							lastCurrent.Current = false;	
+						}
 						self.activeBreadcrumb.push(cloneCurrentObj);
 						break;
 					case 'linkBack':
@@ -140,6 +206,230 @@
 				self.limit = self.origLimit;
 			}
 		});
+	};
+
+	NavListController.prototype.interestClicked = function (subLevel) {
+		var self = this;
+		var currentName = subLevel.Name;
+		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name) {
+			return;
+		}
+		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
+		var classesByInterest = [self.allClasses[subLevel.NodeOrder - 1]];
+		self.getValues(classesByInterest, 0, self.resultsByKeywords);
+
+		var locationPath = self.location.path();
+		var locationObj = seperateSlicersFromUrl(locationPath);
+		var locationSlicers = locationObj.removed;
+		self.populateSlicers(locationSlicers);
+
+		if (_.isUndefined(self.currentObj)) {
+			self.currentObj = {};
+		}
+		self.activeBreadcrumb = [];
+		if (_.isUndefined(self.lastLocationPath)) {
+			self.lastLocationPath = '';
+		}
+		self.currentObj.Level = 0;
+		self.currentObj.Name = currentName;
+		self.currentObj.NodeID = subLevel.NodeID;
+		self.currentObj.Current = true;
+		self.JumpNav = { To: currentName, Type: 'linkTo' };
+		self.setUrl(currentName, 'replace');
+	};
+
+	NavListController.prototype.displayMicroSites = function (currentUrl) {
+		var self = this;
+		if (currentUrl.indexOf('School Of The Arts') >= 0) {
+			if (_.isUndefined(self.microsites) || self.microsites.length === 0) {
+				self.microsites = _.clone(MICROSITELIST);
+				if (currentUrl.indexOf('/Dance') >= 0) {
+					_.pull(self.microsites, 
+						_.find(self.microsites, { 'id' : 'fineart'}), 
+						_.find(self.microsites, { 'id' : 'ceramics'}), 
+						_.find(self.microsites, { 'id' : 'jewelry'}), 
+						_.find(self.microsites, { 'id' : 'music'}), 
+						_.find(self.microsites, { 'id' : 'instruct'})
+					);
+				}
+				if (currentUrl.indexOf('/Fine Art & Design') >= 0) {
+					_.pull(self.microsites, 
+						_.find(self.microsites, { 'id' : 'dance'}), 
+						_.find(self.microsites, { 'id' : 'ceramics'}), 
+						_.find(self.microsites, { 'id' : 'jewelry'}), 
+						_.find(self.microsites, { 'id' : 'music'}), 
+						_.find(self.microsites, { 'id' : 'instruct'})
+					);
+				}
+				if (currentUrl.indexOf('/Ceramics') >= 0) {
+					_.pull(self.microsites, 
+						_.find(self.microsites, { 'id' : 'fineart'}), 
+						_.find(self.microsites, { 'id' : 'dance'}), 
+						_.find(self.microsites, { 'id' : 'jewelry'}), 
+						_.find(self.microsites, { 'id' : 'music'}), 
+						_.find(self.microsites, { 'id' : 'instruct'})
+					);
+				}
+				if (currentUrl.indexOf('/Music') >= 0) {
+					_.pull(self.microsites, 
+						_.find(self.microsites, { 'id' : 'fineart'}), 
+						_.find(self.microsites, { 'id' : 'dance'}), 
+						_.find(self.microsites, { 'id' : 'jewelry'}), 
+						_.find(self.microsites, { 'id' : 'ceramics'})
+					);
+				}
+				if (currentUrl.indexOf('/Jewelry') >= 0) {
+					_.pull(self.microsites, 
+						_.find(self.microsites, { 'id' : 'fineart'}), 
+						_.find(self.microsites, { 'id' : 'dance'}), 
+						_.find(self.microsites, { 'id' : 'ceramics'}), 
+						_.find(self.microsites, { 'id' : 'music'}), 
+						_.find(self.microsites, { 'id' : 'instruct'})
+					);
+				}
+			} else {
+				var subFolderPresent = false;
+				if (currentUrl.indexOf('/Dance') >= 0) {
+					subFolderPresent = true;
+					var fineart = _.find(self.microsites, { 'id' : 'fineart'});
+					if (_.isObject(fineart)) {
+						_.pull(self.microsites, fineart);
+					}
+					var ceramics = _.find(self.microsites, { 'id' : 'ceramics'});
+					if (_.isObject(ceramics)) {
+						_.pull(self.microsites, ceramics);
+					}
+					var jewelry = _.find(self.microsites, { 'id' : 'jewelry'});
+					if (_.isObject(jewelry)) {
+						_.pull(self.microsites, jewelry);
+					}
+					var music = _.find(self.microsites, { 'id' : 'music'});
+					if (_.isObject(music)) {
+						_.pull(self.microsites, music);
+					}
+					var instruct = _.find(self.microsites, { 'id' : 'instruct'});
+					if (_.isObject(instruct)) {
+						_.pull(self.microsites, instruct);
+					}
+				}
+				if (currentUrl.indexOf('/Fine Art & Design') >= 0) {
+					subFolderPresent = true;
+					var dance = _.find(self.microsites, { 'id' : 'dance'});
+					if (_.isObject(dance)) {
+						_.pull(self.microsites, dance);
+					}
+					var ceramics = _.find(self.microsites, { 'id' : 'ceramics'});
+					if (_.isObject(ceramics)) {
+						_.pull(self.microsites, ceramics);
+					}
+					var jewelry = _.find(self.microsites, { 'id' : 'jewelry'});
+					if (_.isObject(jewelry)) {
+						_.pull(self.microsites, jewelry);
+					}
+					var music = _.find(self.microsites, { 'id' : 'music'});
+					if (_.isObject(music)) {
+						_.pull(self.microsites, music);
+					}
+					var instruct = _.find(self.microsites, { 'id' : 'instruct'});
+					if (_.isObject(instruct)) {
+						_.pull(self.microsites, instruct);
+					}
+				}
+				if (currentUrl.indexOf('/Ceramics') >= 0) {
+					subFolderPresent = true;
+					var fineart = _.find(self.microsites, { 'id' : 'fineart'});
+					if (_.isObject(fineart)) {
+						_.pull(self.microsites, fineart);
+					}
+					var dance = _.find(self.microsites, { 'id' : 'dance'});
+					if (_.isObject(dance)) {
+						_.pull(self.microsites, dance);
+					}
+					var jewelry = _.find(self.microsites, { 'id' : 'jewelry'});
+					if (_.isObject(jewelry)) {
+						_.pull(self.microsites, jewelry);
+					}
+					var music = _.find(self.microsites, { 'id' : 'music'});
+					if (_.isObject(music)) {
+						_.pull(self.microsites, music);
+					}
+					var instruct = _.find(self.microsites, { 'id' : 'instruct'});
+					if (_.isObject(instruct)) {
+						_.pull(self.microsites, instruct);
+					}
+				}
+				if (currentUrl.indexOf('/Jewelry') >= 0) {
+					subFolderPresent = true;
+					var fineart = _.find(self.microsites, { 'id' : 'fineart'});
+					if (_.isObject(fineart)) {
+						_.pull(self.microsites, fineart);
+					}
+					var dance = _.find(self.microsites, { 'id' : 'dance'});
+					if (_.isObject(dance)) {
+						_.pull(self.microsites, dance);
+					}
+					var ceramics = _.find(self.microsites, { 'id' : 'ceramics'});
+					if (_.isObject(ceramics)) {
+						_.pull(self.microsites, ceramics);
+					}
+					var music = _.find(self.microsites, { 'id' : 'music'});
+					if (_.isObject(music)) {
+						_.pull(self.microsites, music);
+					}
+					var instruct = _.find(self.microsites, { 'id' : 'instruct'});
+					if (_.isObject(instruct)) {
+						_.pull(self.microsites, instruct);
+					}
+				}
+				if (currentUrl.indexOf('/Music') >= 0) {
+					subFolderPresent = true;
+					var fineart = _.find(self.microsites, { 'id' : 'fineart'});
+					if (_.isObject(fineart)) {
+						_.pull(self.microsites, fineart);
+					}
+					var ceramics = _.find(self.microsites, { 'id' : 'ceramics'});
+					if (_.isObject(ceramics)) {
+						_.pull(self.microsites, ceramics);
+					}
+					var jewelry = _.find(self.microsites, { 'id' : 'jewelry'});
+					if (_.isObject(jewelry)) {
+						_.pull(self.microsites, jewelry);
+					}
+					var dance = _.find(self.microsites, { 'id' : 'dance'});
+					if (_.isObject(dance)) {
+						_.pull(self.microsites, dance);
+					}
+				}
+				if (!subFolderPresent) {
+					var fineart = _.find(self.microsites, { 'id' : 'fineart'});
+					if (_.isUndefined(fineart)) {
+						self.microsites.push(MICROSITEFINEART);
+					}
+					var ceramics = _.find(self.microsites, { 'id' : 'ceramics'});
+					if (_.isUndefined(ceramics)) {
+						self.microsites.push(MICROSITECERAMICS);
+					}
+					var jewelry = _.find(self.microsites, { 'id' : 'jewelry'});
+					if (_.isUndefined(jewelry)) {
+						self.microsites.push(MICROSITEJEWELRY);
+					}
+					var dance = _.find(self.microsites, { 'id' : 'dance'});
+					if (_.isUndefined(dance)) {
+						self.microsites.push(MICROSITEDANCE);
+					}
+					var music = _.find(self.microsites, { 'id' : 'music'});
+					if (_.isUndefined(music)) {
+						self.microsites.push(MICROSITEMUSIC);
+					}
+					var instruct = _.find(self.microsites, { 'id' : 'instruct'});
+					if (_.isUndefined(instruct)) {
+						self.microsites.push(MICROSITEINSTRUCT);
+					}
+				}
+			}
+		} else {
+			self.microsites = [];
+		}
 	};
 
 	NavListController.prototype.slicerPicked = function (whichDateTime, whatTime) {
@@ -238,55 +528,60 @@
 
 	NavListController.prototype.displayTiles = function () {
 		var self = this;
-		if (self.currentObj.Level === 0) {
-			self.getClassesByNodeId(self.classesByNodeId);
+		var onscreenResultsQueue = [];
+		if (_.isUndefined(self.currentObj.NodeID)) {
+			//if logo is clicked to reset the entire page
+			self.onscreenResults = [];
+			self.activeBreadcrumb = [];
+			adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
+			self.initialized = false;
+			self.microsites = [];
 		} else {
-			self.getClassesByNodeId(self.currentObj.NodeID);
+			var foundNode = findNodeDeep(self.classesByNodeId, self.currentObj.NodeID);
+			if (foundNode.results.length) {
+				_.forEach(foundNode.results, function (res) {
+					var classInfoObj = formatDataFromJson(res, self.currentObj.NodeID);
+					onscreenResultsQueue.push(classInfoObj);
+				});
+			} else {
+				var allNodeIds = pluckAllKeys(foundNode);
+				_.forEach(allNodeIds, function (nid) {
+					var foundNode = findNodeDeep(self.classesByNodeId, nid);
+					_.forEach(foundNode.results, function (res) {
+						var classInfoObj = formatDataFromJson(res, nid);
+						onscreenResultsQueue.push(classInfoObj);
+					});
+				});
+			}
+			self.getClassesByNodeId(onscreenResultsQueue);
 		}
 	};
 
-	NavListController.prototype.getClassesByNodeId = function (id) {
+	NavListController.prototype.getClassesByNodeId = function (onscreenResultsQueue) {
 		var self = this;
 		var locationPath = self.location.path();
-		if (_.isObject(id)) {
-			self.onscreenResults = [];
-			var cni;
-			for (cni in id) {
-				_.forEach(self.classesByNodeId[cni], function (arr) {
-					var classInfoObj = formatDataFromJson(arr, cni);
-					var checkPropExists = _.find(self.onscreenResults, { 'ProdNo': classInfoObj.ProdNo });
+		var lastLocationPath = self.lastLocationPath;
+		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+		var lastLocArr = lastLocationPath.split("/");
+
+		var locationParts = seperateSlicersFromUrl(locationPath);
+		locationPath = locationParts.path;
+		var locationPathRemoved = locationParts.removed;
+		var locArr = locationPath.split("/");
+
+		if (_.difference(locArr, lastLocArr).length === 1) {
+			if (self.onscreenResults.length) {
+				_.forEach(_.clone(self.onscreenResults), function (arr) {
+					var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
 					if (_.isUndefined(checkPropExists)) {
-						self.onscreenResults.push(classInfoObj);
+						_.pull(self.onscreenResults, arr);
 					}
 				});
-			}
-		} else {
-			var onscreenResultsQueue = [];
-			_.forEach(self.classesByNodeId[id], function (arr) {
-				var classInfoObj = formatDataFromJson(arr, id);
-				onscreenResultsQueue.push(classInfoObj);
-			});
-			var lastLocationPath = self.lastLocationPath;
-			lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-			var lastLocArr = lastLocationPath.split("/");
-
-			locationPath = seperateSlicersFromUrl(locationPath).path;
-			var locArr = locationPath.split("/");
-
-			if (_.difference(locArr, lastLocArr).length === 1) {
-				if (self.onscreenResults.length) {
-					_.forEach(_.clone(self.onscreenResults), function (arr) {
-						var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-						if (_.isUndefined(checkPropExists)) {
-							_.pull(self.onscreenResults, arr);
-						}
-					});
-				} else {
-					self.onscreenResults = _.clone(onscreenResultsQueue);
-				}
 			} else {
 				self.onscreenResults = _.clone(onscreenResultsQueue);
 			}
+		} else {
+			self.onscreenResults = _.clone(onscreenResultsQueue);
 		}
 
 		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
@@ -307,15 +602,15 @@
 		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
 
 		var sortBy;
-		var sortUrlLocation = locationPath.indexOf(SORTSLICEURL);
+		var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
 		if (sortUrlLocation < 0) {
 			sortBy = 'all';
 		} else {
-			var endSlashLocation = locationPath.indexOf("/", sortUrlLocation + 1);
+			var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
 			if (endSlashLocation < 0) {
-				endSlashLocation = locationPath.length;
+				endSlashLocation = locationPathRemoved.length;
 			}
-			sortBy = locationPath.substring(sortUrlLocation + 7, endSlashLocation);
+			sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
 		}
 		switch (sortBy) {
 			case 'progress':
@@ -398,13 +693,13 @@
 		var locationSlicers = locationObj.removed;
 		if (locationPath.length && locationPath !== '/') {
 			self.lastLocationPath = self.location.path();
-			var subfolders = locationPath.split('/');
+			var subfolders = locationPath.substring(1).split('/');
 			var findChild, foundChildParent, findObj, foundChild;
 			self.activeBreadcrumb = [];
 			_.forEachRight(subfolders, function (folder, index) {
 				if (folder.length) {
 					if (_.isUndefined(foundChildParent)) {
-						if (index === 1) {
+						if (index === 0) {
 							//if this is only one level above then we can safely assume there are no duplicate children
 							findObj = { 'Name': folder };
 						} else {
@@ -434,13 +729,6 @@
 						foundChild.Current = true;
 						self.currentObj = _.clone(foundChild);
 					}
-				} else {
-					foundChild = {
-						Level: 0,
-						Name: 'School of the Arts',
-						NodeID: 3446,
-						Current: false
-					};
 				}
 				if (!_.isUndefined(foundChild)) {
 					self.activeBreadcrumb.push(_.clone(foundChild));	
@@ -448,13 +736,8 @@
 			});
 			self.activeBreadcrumb.reverse();
 		} else {
-			self.currentObj = {
-				Level: 0,
-				Name: 'School of the Arts',
-				NodeID: 3446,
-				Current: true
-			};
-			self.activeBreadcrumb = [ _.clone(self.currentObj) ];
+			self.currentObj = {};
+			self.activeBreadcrumb = [];
 			self.lastLocationPath = '';
 		}
 		self.populateSlicers(locationSlicers);
@@ -497,35 +780,38 @@
 			//this is so the slash doesn't get interpreted as another level
 			currentId = currentId.replace(/\//g,'%2F');
 		}
+		var newLocationPath;
 		switch (urlMethod) {
 			case 'parse':
-				if (currentId === 'School of the Arts'){
-					locationPath = '';
-				} else {
-					var folderPosition = locationPath.indexOf('/'+ currentId +'/');
-					locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
-				}
-				location.path(fixUrl(locationPath + locationPathRemoved));
+				var folderPosition = locationPath.indexOf('/'+ currentId +'/');
+				locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
+				newLocationPath = fixUrl(locationPath + locationPathRemoved);
 				break;
 			case 'build':
 				var newLocation = '';
 				for (var x = 1; x <= currentId; x++) {
 					newLocation += ('/' + self.activeBreadcrumb[x].Name);
 				}
-				location.path(fixUrl(newLocation === '' ? '/'+ newLocation : newLocation + locationPathRemoved));
+				newLocationPath = fixUrl(newLocation === '' ? '/'+ newLocation : newLocation + locationPathRemoved);
+				break;
+			case 'replace':
+				newLocationPath = fixUrl('/'+ currentId + locationPathRemoved);
 				break;
 			default:
 				if (locationPath === '/') {
 					locationPath = '';
 				}
-				location.path(fixUrl(locationPath + '/'+ currentId + locationPathRemoved));
+				newLocationPath = fixUrl(locationPath + '/'+ currentId + locationPathRemoved);
 		}
+		location.path(newLocationPath);
+		self.displayMicroSites(newLocationPath);
 	};
 
-	NavListController.prototype.getValues = function (nodes, level) {
+	NavListController.prototype.getValues = function (nodes, level, resultsByKeywords) {
 		var self = this;
 		var tempArr = [];
 		_.forEach(nodes, function (node) {
+			//console.log(nodes);
 			if ((node.ChildNode.length === 0 && node.Keywords.length) || node.ChildNode.length > 0) {
 				tempArr.push({ 
 					Name: node.Name.trim(), 
@@ -536,30 +822,41 @@
 				});
 				if (node.Keywords.length) {
 					var keywordsToLookForArr = node.Keywords.toLowerCase().split(',');
-					var filteredResults = filterListByKeywords(self.resultsByKeywords, keywordsToLookForArr);
-					if (filteredResults.length) {
-						self.classesByNodeId[node.NodeID] = filteredResults;
+					var filteredResults = filterListByKeywords(resultsByKeywords, keywordsToLookForArr);
+					var foundNode = findNodeDeep(self.classesByNodeId, node.ParentNodeID);
+					if (_.isObject(foundNode)) {
+						foundNode[node.NodeID] = { 
+							results: filteredResults, 
+							parent: node.ParentNodeID 
+						};
+					} else {
+						self.classesByNodeId[node.NodeID] = { 
+							results: filteredResults, 
+							parent: node.ParentNodeID 
+						};
 					}
 				}
 				if (level > MAXLEVEL) {
 					MAXLEVEL = level;
 				}
 				if (node.ChildNode.length) {
-					var childNodeValue = self.getValues(node.ChildNode, ++level);
+					var childNodeValue = self.getValues(node.ChildNode, ++level, resultsByKeywords);
 					if (!childNodeValue) {
 						tempArr.pop();
 					}
 					--level;
 				}
 			}
-		});
+		}, nodes);
 		if (tempArr.length === 0) {
 			return false;
 		}
 		if (STARTINGLEVEL < MAXLEVEL) {
 			STARTINGLEVEL = adjustLevelArray(self.arrCategory, STARTINGLEVEL, MAXLEVEL);
 		}
-		self.arrCategory[level] = self.arrCategory[level].concat(tempArr);
+		if (self.arrCategory.length) {
+			self.arrCategory[level] = self.arrCategory[level].concat(tempArr);
+		}
 		return true;
 	};
 
@@ -574,13 +871,8 @@
 		var locationPath = self.location.path();
 		var locationObj = seperateSlicersFromUrl(locationPath);
 		locationPath = locationObj.path;
-		var folderToAdd;
-		if (locationPath == '' || locationPath == '/') {
-			folderToAdd = "School of the Arts";
-		} else {
-			var foldersToAdd = locationPath.split('/');
-			folderToAdd = _.last(foldersToAdd);
-		}
+		var foldersToAdd = locationPath.split('/');
+		var folderToAdd = _.last(foldersToAdd);
 		var locationPathRemoved = locationObj.removed;
 
 		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL, SEARCHSLICEURL, SORTSLICEURL];
@@ -608,9 +900,23 @@
 		}
 	};
 
-	NavListController.prototype.deleteSavedSearch = function (index) {
+	NavListController.prototype.saveProgram = function (title, img) {
 		var self = this;
-		self.savedSearches.splice(index, 1);
+		var urlToAdd = self.location.absUrl();
+		var savedProgram = { 
+			Url: urlToAdd,
+			Title: title,
+			Img: img
+		};
+		if (!_.filter(self.savedPrograms, function (ss) {
+			return ss.Url === savedProgram.Url && ss.Title === savedProgram.Title && ss.Img === savedProgram.Img;
+		}).length){
+			self.savedPrograms.push(savedProgram);
+		}
+	};
+
+	NavListController.prototype.deleteSaved = function (index, savedItems) {
+		savedItems.splice(index, 1);
 	};
 
 	NavListController.prototype.loadMore = function () {
@@ -721,6 +1027,48 @@
 				self.ageSlice = _.clone(self.origAgeSlice);
 			}
 		}
+	};
+
+	var pluckAllKeys = function (obj, res) {
+		var res = res || [];
+		_.forOwn(obj, function(v, k) {
+			if (isActualNumber(k)) {
+				res.push(Number(k));
+			} else {
+				return;
+			}
+			if (_.isObject(v)) {
+				pluckAllKeys(v, res);
+			}
+		});
+		return res;
+	}
+
+	var findNodeDeep = function (items, prop) {
+		function traverse(value) {
+			var result;
+			if (value.hasOwnProperty(prop)) {
+				result = value[prop];
+			} else {
+				if (value.hasOwnProperty('CategoryProductionKeywords')) {
+					return false;
+				}
+				_.forEach(value, function (val) {
+					if (val.hasOwnProperty(prop)) {
+						result = val[prop];
+						return false;
+					}
+					if (_.isObject(val)) {
+						result = traverse(val);
+					}
+					if (result) {
+						return false;
+					}
+				});
+			}
+			return result;
+		}
+		return traverse(items);
 	};
 
 	var rewriteUrlLocation = function (sliceUrl, sliceVal, locationPath) {
@@ -919,7 +1267,6 @@
 				}
 			});
 		}
-		//shortDesc += "<div class='detailLink'>" + "<a href=\"http://www.92y.org"+ arr.URL +"\" target=\"_blank\">Learn More &#10148;</a>" + "</div>";
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -972,13 +1319,16 @@
 
 	TileInfoService.prototype.getAllClasses = function () {
 		var self = this;
-		return self.http.get('arc-response_AllClasses.json').success(function (data) {
+		return self.http.get('items/Filters.json').success(function (data) {
 			return data;
 		});
+		// return self.http.get('arc-response_AllClasses.json').success(function (data) {
+		// 	return data;
+		// });
 	};
 	// TileInfoService.prototype.getAllEvents = function () {
 	// 	var self = this;
-	// 	return self.http.get('arc-response_AllClasses.json').success(function (data) {
+	// 	return self.http.get('arc-response_Events.json').success(function (data) {
 	// 		return data;
 	// 	});
 	// };
