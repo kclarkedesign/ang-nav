@@ -207,8 +207,9 @@
 			}
 		});
 	};
-
+//todo:  enable clear button for date and age dropdowns
 	NavListController.prototype.interestClicked = function (subLevel) {
+//todo:  see why stuff is coming up under Jewish Life and Talks when there shouldn't be
 		var self = this;
 		var currentName = subLevel.Name;
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name) {
@@ -1375,11 +1376,11 @@ var resizeTileDisplay = function (scope) {
 		numColumns = 3;
 		tileHeight = 340;
 	} else if (window.matchMedia( "(min-width: 768px)" ).matches) {
-		numColumns = 2;
-		tileHeight = 340;
+		numColumns = 4;
+		tileHeight = 141;
 	} else {
-		numColumns = 1;
-		tileHeight = 193;
+		numColumns = 4;
+		tileHeight = 196;
 	}
 	var headerHeight = $("#isoContainer").offset().top;
 	var pageHeight = $(window).height();
