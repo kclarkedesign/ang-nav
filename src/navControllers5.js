@@ -543,16 +543,24 @@
 			var foundNode = findNodeDeep(self.classesByNodeId, self.currentObj.NodeID);
 			if (foundNode.results.length) {
 				_.forEach(foundNode.results, function (res) {
-					var classInfoObj = formatDataFromJson(res, self.currentObj.NodeID);
-					onscreenResultsQueue.push(classInfoObj);
+					var prodNo = res.ProductionSeasonNumber === 0 ? res.PackageNo : res.ProductionSeasonNumber;
+					var foundClass = _.find(onscreenResultsQueue, {'ProdNo': prodNo});
+					if (_.isUndefined(foundClass)) {
+						var classInfoObj = formatDataFromJson(res, self.currentObj.NodeID);
+						onscreenResultsQueue.push(classInfoObj);
+					}
 				});
 			} else {
 				var allNodeIds = pluckAllKeys(foundNode);
 				_.forEach(allNodeIds, function (nid) {
 					var foundNode = findNodeDeep(self.classesByNodeId, nid);
 					_.forEach(foundNode.results, function (res) {
-						var classInfoObj = formatDataFromJson(res, nid);
-						onscreenResultsQueue.push(classInfoObj);
+						var prodNo = res.ProductionSeasonNumber === 0 ? res.PackageNo : res.ProductionSeasonNumber;
+						var foundClass = _.find(onscreenResultsQueue, {'ProdNo': prodNo});
+						if (_.isUndefined(foundClass)) {
+							var classInfoObj = formatDataFromJson(res, nid);
+							onscreenResultsQueue.push(classInfoObj);
+						}
 					});
 				});
 			}
@@ -626,6 +634,7 @@
 				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
 				break;
 		}
+
 		self.sortOrder = sortBy;
 		self.showSpinner = false;
 		self.initialized = true;
