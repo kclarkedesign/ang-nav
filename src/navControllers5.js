@@ -97,6 +97,7 @@
 		self.showSpinner = false;
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
+		self.resultsHistory = [];
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
@@ -215,7 +216,9 @@
 			return;
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
-		var classesByInterest = [self.allClasses[subLevel.NodeOrder - 1]];
+
+		var classIndex = _.findIndex(self.allClasses, {'Name': subLevel.Name});
+		var classesByInterest = [self.allClasses[classIndex]];
 		self.getValues(classesByInterest, 0, self.navsDict[subLevel.Name]);
 
 		var locationPath = self.location.path();
@@ -1017,13 +1020,19 @@
 		return _.isEqual(self.ageSlice, self.initAgeSlice);
 	}
 
-	NavListController.prototype.clearDate = function () {
+	NavListController.prototype.clearDropDown = function (clearWhich) {
 		var self = this;
-		self.daySlice = self.initDaySlice;
-		self.timeSlice = self.initTimeSlice;
-		self.sdateSlice = self.initSdateSlice;
-		self.edateSlice = self.initEdateSlice;
-		self.sliceBy('datetime');
+		if (clearWhich.indexOf('datetime') >= 0) {
+			self.daySlice = self.initDaySlice;
+			self.timeSlice = self.initTimeSlice;
+			self.sdateSlice = self.initSdateSlice;
+			self.edateSlice = self.initEdateSlice;
+		}
+		if (clearWhich.indexOf('age') >= 0) {
+			self.ageSlice = self.initAgeSlice;
+		}
+		var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
+		self.sliceBy(sliceBy);
 	}
 
 	NavListController.prototype.checkAgeState = function (open) {
@@ -1037,12 +1046,6 @@
 			}
 		}
 	};
-
-	NavListController.prototype.clearAge = function () {
-		var self = this;
-		self.ageSlice = self.initAgeSlice;
-		self.sliceBy('age');
-	}
 
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
