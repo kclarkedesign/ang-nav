@@ -79,7 +79,6 @@
 		self.JumpNav = {};
 		self.navsDict = {};
 		self.onscreenResults = [];
-		self.resultsByKeywords = [];
 		self.classesByNodeId = {};
 		self.opened = {};
 		self.minBegDate = new Date();
@@ -104,7 +103,8 @@
 
 		self.tileInfoSrv = tileInfoSrv;
 		self.tileInfoSrv.getSOAItems().then(function (items) {
-			self.resultsByKeywords = self.navsDict["School of the Arts"] = items.data;
+			//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
+			self.navsDict["School Of The Arts"] = items.data;
 			self.tileInfoSrv.getAllClasses().then(function (data) {
 				self.allClasses.push.apply(self.allClasses, data.data);
 				var locationPath = self.location.path();
@@ -113,7 +113,7 @@
 					var interestFolder = match[1];
 					var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
 					self.displayMicroSites(locationPath);
-					self.getValues(classesByInterest, 0, self.resultsByKeywords);
+					self.getValues(classesByInterest, 0, self.navsDict["School Of The Arts"]);
 					self.buildCurrentObj();
 					self.displayTiles();
 				}
@@ -209,7 +209,6 @@
 	};
 
 	NavListController.prototype.interestClicked = function (subLevel) {
-//todo:  see why stuff is coming up under Jewish Life and Talks when there shouldn't be
 		var self = this;
 		var currentName = subLevel.Name;
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name) {
@@ -217,7 +216,7 @@
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
 		var classesByInterest = [self.allClasses[subLevel.NodeOrder - 1]];
-		self.getValues(classesByInterest, 0, self.resultsByKeywords);
+		self.getValues(classesByInterest, 0, self.navsDict[subLevel.Name]);
 
 		var locationPath = self.location.path();
 		var locationObj = seperateSlicersFromUrl(locationPath);
