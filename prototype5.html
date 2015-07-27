@@ -374,7 +374,7 @@
 														</div>
 														<div class="text-center">
 															<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetime')">Apply</button>
-															<a class="clearBtn pl10" ng-click="navListCtrl.clearDate()"> Clear </a>
+															<a class="clearBtn pl10" ng-click="navListCtrl.clearDropDown('datetime')"> Clear </a>
 														</div>
 													</div>
 												</li>
@@ -464,7 +464,7 @@
 														</div>
 														<div class="text-center">
 															<button id="btnAgeSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('age')">Apply</button>
-															<a class="clearBtn pl10" ng-click="navListCtrl.clearAge()"> Clear </a>
+															<a class="clearBtn pl10" ng-click="navListCtrl.clearDropDown('age')"> Clear </a>
 														</div>
 													</div>
 												</li>
@@ -524,7 +524,7 @@
 															<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
 														</div>
 														<div class="getTickets">
-															<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target=\"_blank\">Buy Now <i class="fa fa-arrow-right"></i></a>
+															<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Buy Now <i class="fa fa-arrow-right"></i></a>
 														</div>
 													</div>
 												</div>
@@ -750,7 +750,7 @@
 								</div>
 								<div class="text-center">
 									<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
-									<a class="clearBtn pl10" href="javascript:void(0);"> Clear </a>
+									<a class="clearBtn pl10" href="navListCtrl.clearDropDown('datetimeage')"> Clear </a>
 								</div>
 							</div>
 						</div>
