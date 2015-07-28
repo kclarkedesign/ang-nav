@@ -47,27 +47,34 @@
 	<!-- TO BE ADDED TO ANGULAR -->
 	<script type="text/javascript">
 	$(document).ready(function() {
-		// var refineBar = $('#refine-bar');
-		// var refineSlicers = $('.refine-slicers'); 
-		// var refineClose = $('#refine-close');
 		var mainNavIntList = $('#interest-list');
 		var sideBar = $("#sidebar");
 		mainNavIntList.click(function(e) {
 			e.preventDefault();
+<<<<<<< HEAD
 			//sideBar.toggleClass('in');
 			//$("body").toggleClass('sidebar-open');
 			//$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
 			//mainNavIntList.toggleClass('active');
+=======
+>>>>>>> master
 			$("#savedSidebar").removeClass('in');
 		});
 		$("#sidebar-interest-list").click(function(e) {
 			e.preventDefault();
 			sideBar.toggleClass('inMobile');
 			// To add the overlay back once selecting a option for the find menu
+<<<<<<< HEAD
 				setTimeout(function () {
 					$("body").addClass('sidebar-open');
             		$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
         		}, 100);	
+=======
+			setTimeout(function () {
+				$("body").addClass('sidebar-open');
+            	$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+        	}, 100);	
+>>>>>>> master
 			$(this).addClass('active');
 		});
 		$("#relatedProgramsBtn").click(function(e) {
@@ -132,16 +139,23 @@
 			e.preventDefault();
 			$("html, body").animate({ scrollTop: -10 }, "fast");
 			// To remove affix from problem elements
+<<<<<<< HEAD
 				setTimeout(function () {
 					$("header, #filterBtn-container, #backToTop").removeClass('affix');
             		
         		}, 50);
+=======
+			setTimeout(function () {
+				$("header, #filterBtn-container, #backToTop").removeClass('affix');
+            }, 50);
+>>>>>>> master
   			return false;
 		});
 		//Removes affix when scrolled to top
 		function topScroll(ev){
 		    if(window.pageYOffset<1) {
 		    	$("header, #filterBtn-container, #backToTop").removeClass('affix');
+<<<<<<< HEAD
 		    	// console.log($("header, #filterBtn-container, #backToTop"));
 		    }
 		    if(window.pageYOffset>0) {
@@ -151,11 +165,19 @@
 		}
 		window.onscroll=topScroll
 
+=======
+		    }
+		    if(window.pageYOffset>0) {
+		    	$("header, #filterBtn-container, #backToTop").addClass('affix');
+		    }
+		}
+		window.onscroll=topScroll
+>>>>>>> master
 		$(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
 			e.stopPropagation();
 		});
 	});
-</script>
+	</script>
 </head>
 <body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 
@@ -183,6 +205,7 @@
 												<li class="container" style="margin: auto;">
 													<ul class="col-sm-12 no-p">
 														<li class="dropdown-header">FILTER BY INTEREST</li>
+<<<<<<< HEAD
 														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pr0"><a href="#">Talks</a>
 														</li>
 														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pr0"><a href="#">Camps &amp; After School</a>
@@ -205,6 +228,9 @@
 														<li class="dropdown-header">Tops</li>
 														<li><a href="#"></a>
 														</li> -->
+=======
+														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
+>>>>>>> master
 													</ul>
 												</li>s
 											</ul>
@@ -242,6 +268,7 @@
 									</ul>
 								</div>
 							</div>
+<<<<<<< HEAD
 							<!-- <div id="utilnav" role="navigation" class="navbar-nav hidden-xs hidden-sm">
 								<ul>
 									<li><span class="greeting">Howdy!</span>
@@ -251,37 +278,43 @@
 									</li>
 								</ul>
 							</div> -->
+=======
+>>>>>>> master
 							<ul class="nav navbar-nav navbar-right">
 								<li id="navSavedBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 									<a href="javascript:;" data-toggle="dropdown">
 										<i class="fa fa-heart"></i>
+<<<<<<< HEAD
 							
+=======
+>>>>>>> master
 									</a>
 								</li>
 								<li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 									<a href="javascript:;" data-toggle="dropdown">
 										<i class="fa fa-shopping-cart"></i>
+<<<<<<< HEAD
 										<!-- <div class="badge badge-top bg-danger animated flash">
 											<span>3</span>
 										</div> -->
+=======
+>>>>>>> master
 									</a>
 								</li>
 								<li id="filterBtn-container" class="nav navbar-nav navbar-right hidden-lg hidden-xl filter" affix>
 									<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown">
+<<<<<<< HEAD
 										<!-- <span class="navtext">Filter</span>  --><i class="fa fa-filter fa-lg"></i>
+=======
+										<i class="fa fa-filter fa-lg"></i>
+>>>>>>> master
 									</a>
 								</li>
-								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
-									<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Filters
-										<span class="caret"></span>
-									</button>
-								</div> -->
-								</ul>
-							</div>
+							</ul>
 						</div>
 					</div>
 				</div>
+<<<<<<< HEAD
 			</header>
 			<div class="container-fluid">
 				<div class="row">
@@ -296,24 +329,33 @@
 										<div class="rowHeading">
 											I'm looking for &hellip;
 										</div>
+=======
+			</div>
+		</header>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="main-area" class="col-xs-12">
+					<section class="main-content">
+						<div id="backToTop" class="btn" affix>
+							<a href="#"><i class="fa fa-chevron-circle-up"></i> Back to Top</a>
+						</div>
+						<div id="interest-areaRow" class="row" style="display:none">
+							<div class="container pl10 pr10 mt25 mb25">
+								<div class="col-md-2">
+									<div class="rowHeading">
+										I'm looking for &hellip;
+>>>>>>> master
 									</div>
-									<div class="col-md-10">
-										<div class="">
-											<div class="selections">
-												<a class="">Talks</a>
-												<a class="">Camps &amp; After School</a>
-												<a class="">Continuing Education &amp; Enrichment</a>
-												<a class="">Parenting &amp; Early Childhood</a>
-												<a class="">Health &amp; Fitness</a>
-												<a class="">Jewish Life</a>
-												<a class="">Concerts &amp; Performances</a>
-												<a class="active">School of the Arts</a>
-												<a class="">Literary</a>
-											</div>
+								</div>
+								<div class="col-md-10">
+									<div class="">
+										<div class="selections">
+											<a ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 										</div>
 									</div>
 								</div>
 							</div>
+<<<<<<< HEAD
 
 							<!-- <div class="filter-browse-container" affix> -->
 							<div class="filter-browse-container">
@@ -341,6 +383,24 @@
 												</div>
 											</div>
 										</div> -->
+=======
+						</div>
+						<div class="filter-browse-container">
+							<div class="filter-content container pl10 pr10 mt10 mb15">
+								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p mb5" ng-show="navListCtrl.activeBreadcrumb.length > 1">
+									<ol class="breadcrumb mb5">
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										</li>
+									</ol>
+								</div>
+								<div id="filter-container">
+									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 no-p">
+										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+										<a id="savedSidebarBtn" class="save-link" ng-click="navListCtrl.saveSearch()">
+											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length"></sup>
+										</a>
+>>>>>>> master
 									</div>
 									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
 										<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
@@ -350,12 +410,15 @@
 									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 visible-xs visible-sm visible-md">
 										<div class="row">
 											<div id="browseBtns" class="col-xs-12 col-sm-6 mb10">
+<<<<<<< HEAD
 												<!-- <div class="col-xs-6 pl0 pr5">
 													<button id="relatedProgramsBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														Related Programs
 														<span class="caret"></span>
 													</button>
 												</div> -->
+=======
+>>>>>>> master
 												<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
 													<button id="browseBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														Subcategories
@@ -363,7 +426,10 @@
 													</button>
 												</div>
 											</div>
+<<<<<<< HEAD
 											<!-- <div class="col-xs-12 col-sm-6 hidden-lg hidden-xl"> -->
+=======
+>>>>>>> master
 											<div class="col-xs-9 col-sm-4 hidden-lg hidden-xl">
 												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g. course or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
 											</div>
@@ -372,6 +438,7 @@
 													<span class="hidden-xs">Filter</span>
 													<i class="fa fa-filter fa-lg"></i>
 												</button>
+<<<<<<< HEAD
 												<!-- <div id="filterBtn-container" class="nav navbar-nav hidden-lg hidden-xl filter">
 													<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown">
 														<!-- <span class="navtext">Filter</span>  
@@ -439,14 +506,21 @@
 												Filters
 												<span class="caret"></span>
 											</button>
+=======
+											</div>
 										</div>
-									</div> -->
-	 								<!-- <div id="filter-nav" class="col-xs-6 mt10 pr0 visible-xs">
-										<button id="filterSidebarBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Filters
-											<span class="caret"></span>
-										</button>
-									</div> -->
+										<!-- Promo Art -->
+										<div class="promo-top promo-art" data-myorder="1" ng-show="navListCtrl.microsites.length">
+											<span class="promo-msg">Related programs:</span>
+											<div id="promo-item-container-top" masonry>
+												<div class="promo-item-top masonry-brick {{ms.classes}}" ng-repeat="ms in navListCtrl.microsites">
+													<a class="{{ms.aClass}}" href="http://www.92y.org{{ms.aHref}}" target="_blank" ng-bind-html="ms.img | unsafe"></a>
+												</div>
+											</div>
+>>>>>>> master
+										</div>
+										<!-- End Promo Area-->
+									</div>
 								</div>
 							</div>
 						</div>
@@ -457,7 +531,7 @@
 										Refine Filters
 									</div>
 								</div>
-								<div class="refine-slicers container pt15 pb15">
+								<div class="refine-slicers container pt15 pb15" ng-show="navListCtrl.activeBreadcrumb.length">
 									<div class="row">
 										<div id="refine-close" class="collapse">
 											<i class="fa fa-times"></i>
@@ -538,9 +612,13 @@
 														</div>
 														<div class="text-center">
 															<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetime')">Apply</button>
+<<<<<<< HEAD
 
 															<a class="clearBtn pl10" href="javascript:void(0);"> Clear </a>
 
+=======
+															<a class="clearBtn pl10" href="javascript:void(0);"> Clear </a>
+>>>>>>> master
 														</div>
 													</div>
 												</li>
@@ -590,10 +668,6 @@
 																<label class="checkbox fw-normal" for="allAdults">All Adults</label>
 																<div id="adultAgeRanges" class="col-xs-12">
 																	<ul>
-																		<!-- <li>
-																			<input id="adults" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
-																			<label class="checkbox fw-normal" for="adults">Adults</label>
-																		</li> -->
 																		<li>
 																			<input id="seniors" type="checkbox" class="selectAll" value="seniors" ng-click="navListCtrl.slicerPicked('age', 'seniors')" ng-checked="navListCtrl.ageSlice.indexOf('seniors') > -1">
 																			<label class="checkbox fw-normal" for="seniors">Seniors</label>
@@ -667,13 +741,15 @@
 							<div id="Container" class="tileContainer container">
 								
 								<div id="tiles" class="row">
+<<<<<<< HEAD
 									<div class="col-md-12 col-lg-10 pl0 pr0">
+=======
+									<div class="col-md-12 col-lg-10  pl0 pr0">
+>>>>>>> master
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 											<span class="noResults">No items were found matching the selected filters</span>
 
 											<span class="removeFilters">Try removing "FILTERTYPE" filters to see: <a>Blah Results</a></span>
-
-											<!-- <span class="removeFilters">Remove Age filters to see: <a>Blah Results</a></span> -->
 										</div>
 										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
@@ -684,7 +760,7 @@
 													</a>
 													<div class="item-details">
 														<div class="classTitle">
-															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark"><i class="fa fa-heart"></i></a>
+															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart"></i></a>
 														</div>
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
@@ -710,7 +786,12 @@
 															</div>
 															<div class="item-details col-xs-7 pull-right pt10">
 																<div class="classTitleMobile ">
+<<<<<<< HEAD
 																	<a class="bookmark"><i class="fa fa-heart fa-lg"></i></a>
+=======
+																	<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg"></i></a>
+																	<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+>>>>>>> master
 																	<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 																</div>
 																<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
@@ -725,51 +806,15 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-md-2 pl0">
-										<div id="utility-bar" class="hidden-xs hidden-sm hidden-md" affix>
+									<div class="col-md-2 pl0" ng-show="navListCtrl.activeBreadcrumb.length">
+										<div id="utility-bar" class="hidden-xs hidden-sm hidden-md" affix ng-show="navListCtrl.microsites.length">
 											<div id="utility-container">
 												<!-- Promo Art -->
-												<div class="promo promo-art" data-myorder="1">
-													<span class="promo-msg">Related programs:</span>
-													<div id="promo-item-container">
-														<div class="promo-item SOA">
-															<a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">
-															</a>
-														</div>
-														<div class="promo-item Art studioArt">
-															<a href="http://www.92y.org/SOA/Studio-Art" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">
-															</a>
-														</div>
-														<div class="promo-item Art ceramics">
-															<a href="http://www.92y.org/SOA/Ceramics" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">
-															</a>
-														</div>
-														<div class="promo-item Art jewelry">
-															<a href="http://www.92y.org/SOA/Jewelry.aspx" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">
-															</a>
-														</div>
-														<div class="promo-item Music">
-															<a href="http://www.92y.org/SOA/School-of-Music" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">
-															</a>
-														</div>
-														<div class="promo-item Music instruct">
-															<a class="group-private" href="http://www.92y.org/Uptown/School-of-the-Arts/School-of-Music/Private-Instruction.aspx" target="_blank">
-																Private &amp; Semi-Private Instruction
-															</a>
-														</div>
-														<div class="promo-item Dance">
-															<a href="http://www.92y.org/Uptown/School-of-the-Arts/Harkness-Dance-Center" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">
-															</a>
-														</div>
-														<div class="promo-item rk-program">
-															<a href="http://www.92y.org/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts" target="_blank">
-																<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">
+												<span class="promo-msg">Related programs:</span>
+												<div class="promo promo-art" data-myorder="1" masonry>
+													<div id="promo-item-container" class="masonry-brick" ng-repeat="ms in navListCtrl.microsites">
+														<div class="{{ms.classes}}">
+															<a class="{{ms.aClass}}" href="http://www.92y.org{{ms.aHref}}" target="_blank" ng-bind-html="ms.img | unsafe">
 															</a>
 														</div>
 													</div>
@@ -787,12 +832,13 @@
 		</div>
 	</div>
 
-	
-
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Filter Sidebar  -->
+<<<<<<< HEAD
 			<!-- <div class="col-xs-12 col-sm-5 col-lg-5 sidebar-offcanvas no-p" id="filterSidebar"> -->
+=======
+>>>>>>> master
 			<div class="sidebar-offcanvas no-p" id="filterSidebar">
 				<div class="list-group">
 					<span class="list-group-item col-xs-10 active">Filter Results</span>
@@ -801,6 +847,26 @@
 				<div class="container-fluid scroll">
 					<div class="scroll-container">
 						<div class="scroll-nav">
+ 							<div class="row">
+ 								<div class="col-xs-12">
+ 									<div role="separator" class="divider"></div>
+ 								</div>
+ 								<div class="col-xs-12 col-sm-12 col-md-12" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
+ 									<button id="btn-sortMobile" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
+ 										Sort By
+ 										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu col-xs-12" role="menu">
+										<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
+										<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
+										<li role="separator" class="divider"></li>
+										<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
+									</ul>
+								</div>
+								<div class="col-xs-12">
+									<div role="separator" class="divider"></div>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-xs-12">
 									<div role="separator" class="divider"></div>
@@ -919,10 +985,6 @@
 										<label class="checkbox fw-normal" for="allAdults">All Adults</label>
 										<div id="adultAgeRangesMobile" class="col-xs-12">
 											<ul>
-												<!-- <li>
-													<input id="adultsMobile" type="checkbox" class="selectAll" value="adults" ng-click="navListCtrl.slicerPicked('age', 'adults')" ng-checked="navListCtrl.ageSlice.indexOf('adults') > -1">
-													<label class="checkbox fw-normal" for="adults">Adults</label>
-												</li> -->
 												<li>
 													<input id="seniorsMobile" type="checkbox" class="selectAll" value="seniors" ng-click="navListCtrl.slicerPicked('age', 'seniors')" ng-checked="navListCtrl.ageSlice.indexOf('seniors') > -1">
 													<label class="checkbox fw-normal" for="seniors">Seniors</label>
@@ -964,7 +1026,10 @@
 								</div>
 								<div class="text-center">
 									<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 									<a class="clearBtn pl10" href="javascript:void(0);"> Clear </a>
 								</div>
 							</div>
@@ -978,21 +1043,13 @@
 			<div class="sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
 					<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
-					<a href="#" class="list-group-item">Talks</a>
-					<a href="#" class="list-group-item">Camps &amp; After School</a>
-					<a href="#" class="list-group-item">Continuing Education &amp; Enrichment</a>
-					<a href="#" class="list-group-item">Parenting &amp; Early Childhood</a>
-					<a href="#" class="list-group-item">Health &amp; Fitness</a>
-					<a href="#" class="list-group-item">Jewish Life</a>
-					<a href="#" class="list-group-item">Concerts &amp; Performances</a>
-					<a href="#" class="list-group-item active">School of the Arts</a>
-					<a href="#" class="list-group-item">Literary</a>
+					<a class="list-group-item" ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 				</div>
 			</div>
 			<!-- Browse  -->
 			<div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas hidden-lg hidden-xl" id="browseSidebar">
 				<div class="list-group">
-					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span><a id="browseSidebarClose"class="center active pull-right"><i class="fa fa-times fa-lg"></i></a></span>
+					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span><a id="browseSidebarClose" class="center active pull-right"><i class="fa fa-times fa-lg"></i></a></span>
 					<span class="browse-item col-xs-12 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
 						<a class="list-group-item" ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 					</span>
@@ -1017,7 +1074,6 @@
 					<li class="dropdown">
 						<a id="sidebar-interest-list">
 							<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
-							<!-- <b class="caret"></b> -->
 						</a>
 					</li>
 					<li class="dropdown">
@@ -1069,7 +1125,6 @@
 					<li class="dropdown">
 						<a id="sidebar-interest-list">
 							<span id="advancedFilters" class="mainNavHighlight">Find Programs &amp; Classes</span>
-							<!-- <b class="caret"></b> -->
 						</a>
 					</li>
 					<li class="dropdown">
@@ -1137,7 +1192,7 @@
 								<a ng-href="{{savedSearch.url}}">
 									{{savedSearch.folder}} {{savedSearch.filter}}
 								</a>
-								<a class="savedSearchClose" ng-click="navListCtrl.deleteSavedSearch($index)" ng-show="savedSearch.url.length">
+								<a class="savedSearchClose" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedSearches)" ng-show="savedSearch.url.length">
 									<i class="fa fa-times"></i>
 								</a>
 							</li>
@@ -1155,19 +1210,19 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="itemContents">
-										<div class="container-fluid">
+										<div class="container-fluid" ng-repeat="savedProgram in navListCtrl.savedPrograms">
 											<div class="row">
 												<div class="removeContainer">
-													<a id="removeItem"class="center active"><i class="fa fa-times fa-lg"></i></a>
+													<a id="removeItem"class="center active" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedPrograms)"><i class="fa fa-times fa-lg"></i></a>
 												</div>
 												<div id="tileImg" class="col-xs-12 no-p">
-													<a ng-href="http://www.92y.org/Class/Egg-Tempera-Painting" target="_blank" class="" href="http://www.92y.org/Class/Egg-Tempera-Painting">
-														<img ng-src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg" border="0" alt="Egg Tempera Painting" width="" class="" src="http://www.92y.org/_ui/uptown/img/default_lrg_516x311.jpg">
+													<a ng-href="http://www.92y.org{{savedProgram.Url}}" target="_blank" class="">
+														<img ng-src="http://www.92y.org{{savedProgram.Img}}" border="0" alt="{{savedProgram.Title}}" width="300">
 													</a>
 												</div>
 												<div class="item-details col-xs-12 pull-right pt10 pb10">
 													<div class="classTitleMobile ">
-														<a ng-href="http://www.92y.org/Class/Egg-Tempera-Painting" target="_blank" class="ng-binding" href="http://www.92y.org/Class/Egg-Tempera-Painting">Egg Tempera Painting</a>
+														<a ng-href="http://www.92y.org{{savedProgram.Url}}" target="_blank" class="ng-binding">{{savedProgram.Title}}</a>
 													</div>
 												</div>
 											</div>

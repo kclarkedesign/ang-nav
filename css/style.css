@@ -442,8 +442,9 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(http://cdn-img.easyicon.net/png/36/3653.png) no-repeat;
+	background: #fff 98%/22px url(http://v2.iconizer.net/files/Brightmix/orig/monotone_search_zoom.png) no-repeat;
 	/*padding: 6px 20px 6px;*/
+	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
 #searchText.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
