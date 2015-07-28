@@ -97,7 +97,6 @@
 		self.showSpinner = false;
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
-		self.resultsHistory = [];
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
@@ -120,6 +119,9 @@
 				}
 			});
 		});
+		self.log = function (variable) {
+			console.log(variable);
+		};
 
 		var w = angular.element($window);
 		w.bind('resize', function () {
@@ -634,7 +636,6 @@
 				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
 				break;
 		}
-
 		self.sortOrder = sortBy;
 		self.showSpinner = false;
 		self.initialized = true;
@@ -823,7 +824,6 @@
 		var self = this;
 		var tempArr = [];
 		_.forEach(nodes, function (node) {
-			//console.log(nodes);
 			if ((node.ChildNode.length === 0 && node.Keywords.length) || node.ChildNode.length > 0) {
 				tempArr.push({ 
 					Name: node.Name.trim(), 
@@ -859,7 +859,7 @@
 					--level;
 				}
 			}
-		}, nodes);
+		});
 		if (tempArr.length === 0) {
 			return false;
 		}
@@ -905,9 +905,13 @@
 			folder: folderToAdd,
 			filter: formatCommaString(slicerTexts.toString())
 		};
-		if (!_.filter(self.savedSearches, function (ss) {
+		
+		var foundSearch = _.findIndex(self.savedSearches, function (ss) {
 			return ss.url === savedSearch.url && ss.folder === savedSearch.folder && ss.filter === savedSearch.filter;
-		}).length){
+		});
+		if (foundSearch >= 0) {
+			self.deleteSaved(foundSearch, self.savedSearches);
+		} else {
 			self.savedSearches.push(savedSearch);
 		}
 	};
@@ -920,9 +924,13 @@
 			Title: title,
 			Img: img
 		};
-		if (!_.filter(self.savedPrograms, function (ss) {
-			return ss.Url === savedProgram.Url && ss.Title === savedProgram.Title && ss.Img === savedProgram.Img;
-		}).length){
+
+		var foundProgram = _.findIndex(self.savedPrograms, function (sp) {
+			return sp.Url === savedProgram.Url && sp.Title === savedProgram.Title && sp.Img === savedProgram.Img;
+		});
+		if (foundProgram >= 0) {
+			self.deleteSaved(foundProgram, self.savedPrograms);
+		} else {
 			self.savedPrograms.push(savedProgram);
 		}
 	};
@@ -1055,6 +1063,18 @@
 			}
 		}
 	};
+
+	NavListController.prototype.checkSearchSaved = function () {
+		var self = this;
+		var isSearchSaved = !_.isUndefined(_.find(self.savedSearches, {'url' : self.location.absUrl()}));
+		return isSearchSaved;			
+	}
+
+	NavListController.prototype.checkProgramSaved = function (title) {
+		var self = this;
+		var isSearchSaved = !_.isUndefined(_.find(self.savedPrograms, {'Title' : title}));
+		return isSearchSaved;			
+	}
 
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
