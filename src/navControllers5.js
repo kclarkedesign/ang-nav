@@ -596,7 +596,7 @@
 		} else {
 			self.onscreenResults = _.clone(onscreenResultsQueue);
 		}
-
+		
 		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
 		if (!_.isUndefined(self.daySlice) && self.daySlice !== 'all') {
 			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.daySlice);
@@ -1297,22 +1297,27 @@
 		var futurePerfCount = Number(arr.FuturePerformanceCount);
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
-			shortDesc += "<div class='startPrice'>" + "<b>Starting From:</b>  "+ arr.LowestPrice + "</div>";
+			shortDesc += "<div class='startPrice'>" + "<b>Price:</b>  from "+ arr.LowestPrice + "</div>";
 			var performances = arr.FuturePerformances;
-			_.forEach(performances, function(p, ind) {
-				var perfDate = p.perf_dt;
-				perfDate = new Date(parseInt(perfDate.substr(6)));
-				var futureDate = formatDateOutput(perfDate);
-				if (ind === 0) {
-					shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
-				} else {
-					if (ind >= 3) {
-						shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
-						return false;
+			if (performances.length > 1) {
+				_.forEach(performances, function(p, ind) {
+					var perfDate = p.perf_dt;
+					perfDate = new Date(parseInt(perfDate.substr(6)));
+					var futureDate = formatDateOutput(perfDate);
+					if (ind === 0) {
+						shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
+					} else {
+						if (ind >= 3) {
+							shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
+							return false;
+						}
+						shortDesc += "<div class='dates'>"+ futureDate + "</div>";
 					}
-					shortDesc += "<div class='dates'>"+ futureDate + "</div>";
-				}
-			});
+				});
+			}
+			if (teachers.length) {
+				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
+			}
 		}
 		var classInfoObj = {
 			Title: arr.Title,
