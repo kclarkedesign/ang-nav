@@ -499,9 +499,7 @@
 								<div id="tiles" class="row">
 									<div class="col-md-12 col-lg-10  pl0 pr0">
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-											<span class="noResults">No items were found matching the selected filters</span>
-
-											<span class="removeFilters">Try removing "FILTERTYPE" filters to see: <a>Blah Results</a></span>
+											<span class="noResults">No items were found</span>
 										</div>
 										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
@@ -886,9 +884,9 @@
 						<i class="fa fa-shopping-cart"></i>
 					</a>
 				</div>
-				<div id="floatSavedBtn" class="notifications dropdown">
+				<div id="floatSavedBtn" class="notifications dropdown" ng-class="{'in': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}">
 					<a href="javascript:;" data-toggle="dropdown">
-						<i class="fa fa-heart"></i>
+						<i class="fa" ng-class="{'fa-heart': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}"></i>
 					</a>
 				</div>
 				<div class="sidebarHeading pt10 pl15">
