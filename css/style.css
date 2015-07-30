@@ -699,23 +699,33 @@ width: 280px;
 	}
 }
 @media (min-width: 768px) {
-	#floatSavedBtn {
+	#floatSavedBtn,
+	#floatCartBtn {
 	  position: absolute;
-	  left: -50px;
+	  left: 0;
 	  top: calc(40% - 10px);
-	  background-color: #000;
+	  background-color: #333;
 	  font-size: 20px;
-	  z-index: 2;
+	  z-index: 1003;
 	  height: 50px;
 	  width: 50px;
 	  text-align: center;
 	  line-height: 48px;
+	  -webkit-transition: all .5s ease;
+	  -moz-transition: all .5s ease;
+	  transition: all .5s ease;
 	}
+	#floatSavedBtn.in,
+	#floatCartBtn.in {
+		left: -50px;
+		z-index: 2;
+	}
+	#floatCartBtn,
 	#floatCartBtn {
 		 position: absolute;
 	  left: -50px;
 	  top: 45%;
-	  background-color: #000;
+	  background-color: #333;
 	  font-size: 20px;
 	  z-index: 2;
 	  height: 50px;
@@ -723,11 +733,12 @@ width: 280px;
 	  text-align: center;
 	  line-height: 48px;
 	}
-	#floatSavedBtn.out {
+	#floatSavedBtn.out,
+	#floatCartBtn.out {
 	  right: 300px;
 	  /* position: relative; */
 	  z-index: 4;
-	  background-color: #333;
+	  /*background-color: #333;*/
 
 	}
 }
@@ -1019,7 +1030,7 @@ a {
 		color: #BDC3C7;
 }
 #current-interest .save-link:hover,
-.bookmark:hover {
+.bookmark:hover, .fa-heart.active{
 	color: #428BCA;
 }
 #interest-areaRow {
@@ -1811,7 +1822,8 @@ input[type="date"]::-webkit-inner-spin-button{
 		border-top: 0;
   		border-left: 0;
 	}
-	.classDateMobile {
+	.classDateMobile,
+	.shortDescriptionMobile {
 		font-size: 11px;
 	}
 	.itemBox {
@@ -1858,7 +1870,8 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (min-width: 468px) and (max-width: 767px) {
 	.detailLink,
 	.dates,
-	.shortDescTxt {
+	.shortDescTxt,
+	.teach {
 		display: none;
 	}
 	#tileImg {
@@ -1895,7 +1908,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.shortDescTxt,
 	.startPrice,
-	.dates {
+	.dates,
+	.teach {
 		display: none;
 	}
 	#mainNavSidebar,

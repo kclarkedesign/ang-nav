@@ -382,7 +382,7 @@
 									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 no-p">
 										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 										<a id="savedSidebarBtn" class="save-link" ng-click="navListCtrl.saveSearch()">
-											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length"></sup>
+											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
 										</a>
 									</div>
 									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
@@ -638,9 +638,7 @@
 
 									<div class="col-md-12 col-lg-10 pl0 pr0">
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-											<span class="noResults">No items were found matching the selected filters</span>
-
-											<span class="removeFilters">Try removing "FILTERTYPE" filters to see: <a>Blah Results</a></span>
+											<span class="noResults">No items were found</span>
 										</div>
 										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
@@ -651,7 +649,7 @@
 													</a>
 													<div class="item-details">
 														<div class="classTitle">
-															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart"></i></a>
+															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
 														</div>
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
@@ -677,7 +675,7 @@
 															</div>
 															<div class="item-details col-xs-7 pull-right pt10">
 																<div class="classTitleMobile ">
-																	<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg"></i></a>
+																	<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
 																	<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 																</div>
 																<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
@@ -729,26 +727,6 @@
 				<div class="container-fluid scroll">
 					<div class="scroll-container">
 						<div class="scroll-nav">
- 							<div class="row">
- 								<div class="col-xs-12">
- 									<div role="separator" class="divider"></div>
- 								</div>
- 								<div class="col-xs-12 col-sm-12 col-md-12" dropdown ng-class="{'active': navListCtrl.sortOrder !== navListCtrl.initSortOrder}">
- 									<button id="btn-sortMobile" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
- 										Sort By
- 										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu col-xs-12" role="menu">
-										<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
-										<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
-										<li role="separator" class="divider"></li>
-										<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
-									</ul>
-								</div>
-								<div class="col-xs-12">
-									<div role="separator" class="divider"></div>
-								</div>
-							</div>
 							<div class="row">
 								<div class="col-xs-12">
 									<div role="separator" class="divider"></div>
@@ -916,7 +894,7 @@
 
 				</div>
 			</div>
-
+			<!-- End Filter Sidebar -->
 			<!-- Sidebar  -->
 			<div class="sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
@@ -1039,14 +1017,14 @@
 			</div>
 			<!-- Saved Sidebar -->
 			<div id="savedSidebar" class="no-p">
-				<div id="floatCartBtn" class="notifications dropdown">
+				<div id="floatCartBtn" class="notifications dropdown inactive">
 					<a href="javascript:;" data-toggle="dropdown">
 						<i class="fa fa-shopping-cart"></i>
 					</a>
 				</div>
-				<div id="floatSavedBtn" class="notifications dropdown">
+				<div id="floatSavedBtn" class="notifications dropdown" ng-class="{'in': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}">
 					<a href="javascript:;" data-toggle="dropdown">
-						<i class="fa fa-heart"></i>
+						<i class="fa" ng-class="{'fa-heart': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}"></i>
 					</a>
 				</div>
 				<div class="sidebarHeading pt10 pl15">
