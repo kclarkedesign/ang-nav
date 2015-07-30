@@ -999,8 +999,7 @@ a {
 		font-size: 22px;
 		color: #BDC3C7;
 }
-#current-interest .save-link:hover,
-.bookmark:hover, .fa-heart.active{
+.fa-heart.active{
 	color: #428BCA;
 }
 #interest-areaRow {
