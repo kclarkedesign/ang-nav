@@ -133,7 +133,6 @@
 				$scope.$apply();
 			}
 		});
-
 		$scope.$watch(function () {
 			return self.location.path();
 		}, function (){
@@ -200,6 +199,12 @@
 						break;
 					default:
 						// if browser back and forward buttons used for unpredictable jumps
+						if (self.arrCategory[0].length === 0) {
+							var subfolders = locationPath.substring(1).split('/');
+							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
+							var classesByInterest = [self.allClasses[classIndex]];
+							self.getValues(classesByInterest, 0, self.navsDict[subfolders[0]]);
+						}
 						self.buildCurrentObj();
 						break;
 				}
