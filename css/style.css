@@ -94,7 +94,7 @@ For NAV Example
 		transition: all .5s ease;
 	}
 	#utility-bar.affix {
-  		top: 120px;
+  		top: 170px;
 	}
  	#utility-container {
  		width:100%;
@@ -139,7 +139,13 @@ For NAV Example
  		vertical-align: top;
 		border-radius: 3px;
 		overflow: hidden;
+		font-weight: bold;
  	}
+ 	.promo-item a {
+	    width: 170px;
+	    display: block;
+	    padding: 3px;
+	}
  	.promo-item-top {
 	  display: block;
 	  text-align: center;
@@ -169,7 +175,7 @@ For NAV Example
  	}
  	.promo-msg {
  		text-align: center;
- 		width: 100%;
+ 		width: 188px;
  		display: block;
  		margin: 0 0 8px 0;
  		font-weight: bold;
@@ -242,7 +248,7 @@ body.sidebar-open {
 }
 .header {
 	background-color: #000000;
-	height: 50px;
+	/*height: 50px;*/
 }
 .header {
 	/*max-height: 50px;*/
@@ -522,7 +528,7 @@ width: 280px;
 	    border-left: 17px solid transparent;
 	    border-right: 17px solid transparent;
 	    content: "";
-	    left: 43%;
+	    left: calc(45% - 10px);
 	    position: absolute;
 	    top: 50px;
 	    z-index: 1500;
@@ -550,8 +556,8 @@ width: 280px;
     padding: 5px 8px;
     clear: both;
     font-weight: normal;
-    line-height: 1.8;
-    color: #999;
+    line-height: 1.5;
+    color: #fff;
     white-space: normal;
     font-size: 14px;
     font-weight: bold;
@@ -562,9 +568,10 @@ width: 280px;
     background-color: #f5f5f5;
 }
 .mega-dropdown-menu .dropdown-header {
-    color: #428bca;
+    color: #8C8E8E;
     font-size: 18px;
     font-weight:bold;
+    padding-left: 8px;
 }
 .mega-dropdown-menu form {
     margin:3px 20px;
@@ -786,6 +793,9 @@ a {
 #main-navigation span {
 	color: #FFF;
 }
+#main-navigation a:hover span {
+	color: #444;
+}
 #breadcrumb-content {
 
 	border-bottom: 1px solid #bdc3c7;
@@ -910,6 +920,9 @@ a {
 	border: 1px solid #ccc;
 	margin-right: 10px;*/
 }
+.savedSearches ul {
+	overflow: hidden;
+}
 .savedSearches a {
 	display: inline-block;
 	color: #ffffff;
@@ -927,6 +940,18 @@ a {
 	z-index: 1;
 	background-color: #5BC0DE;
 	border-radius: 0 9px 9px 0px;
+}
+.savedProdItem {
+	margin-bottom: 10px;
+    border-bottom: 1px solid #525252;
+    padding-bottom: 10px;
+}
+.savedProdItem a {
+    color: #fff;
+   /* overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap;*/
 }
 .tabs-left .nav-tabs {
 	float: left;
@@ -1050,6 +1075,16 @@ label.btn.active,
 .active #btn-sortMobile {
 	background-color: #4F93CD;
 	color: #fff;
+}
+.secondary {
+    background-color: #1c1c1c;
+     /*padding: 5px 50px 8px 50px; */
+    text-transform: uppercase;
+}
+.secondary a {
+    color: #fff;
+     /*padding: 5px 50px 8px 50px; */
+    text-transform: uppercase;
 }
 
 /*
@@ -1700,7 +1735,7 @@ label.btn.active,
 }
 #slicerContainer.affix {
 	/*top: 99px;*/
-	top: 50px;
+	top: 100px;
 	z-index: 2;
 	background-color: #eff0f2;
 	/*background-color: #333333;*/

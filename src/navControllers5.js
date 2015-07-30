@@ -13,37 +13,37 @@
 	var SEARCHSLICEURL = '/search__';
 	var MICROSITESOA = {
 		classes: 'promo-item SOA',
-		aClass: 'group-private',
+		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">',
+		img: 'School of the Arts',
 		id: 'SOA'
 	};
 	var MICROSITEFINEART = {
 		classes: 'promo-item Art studioArt',
 		aClass: '',
 		aHref: '/SOA/Studio-Art',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">',
+		img: 'Fine Art &amp; Design',
 		id: 'fineart'
 	};
 	var MICROSITECERAMICS = {
 		classes: 'promo-item Art ceramics',
 		aClass: '',
 		aHref: '/SOA/Ceramics',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">',
+		img: 'Ceramics',
 		id: 'ceramics'
 	};
 	var MICROSITEJEWELRY = {
 		classes: 'promo-item Art jewelry',
 		aClass: '',
 		aHref: '/SOA/Jewelry.aspx',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">',
+		img: 'Jewelry Center',
 		id: 'jewelry'
 	};
 	var MICROSITEMUSIC = {
 		classes: 'promo-item Music',
 		aClass: '',
 		aHref: '/SOA/School-of-Music',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">',
+		img: 'Music',
 		id: 'music'
 	};
 	var MICROSITEINSTRUCT = {
@@ -57,14 +57,14 @@
 		classes: 'promo-item Dance',
 		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts/Harkness-Dance-Center',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">',
+		img: 'Dance',
 		id: 'dance'
 	};
 	var MICROSITERK = {
 		classes: 'promo-item rk-program',
 		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">',
+		img: 'Recanati Kaplan Scholars',
 		id: 'rk'
 	};
 	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
