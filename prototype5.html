@@ -381,7 +381,7 @@
 								<div id="filter-container">
 									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 no-p">
 										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
-										<a id="savedSidebarBtn" class="save-link" ng-click="navListCtrl.saveSearch()">
+										<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
 											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
 										</a>
 									</div>
