@@ -13,37 +13,37 @@
 	var SEARCHSLICEURL = '/search__';
 	var MICROSITESOA = {
 		classes: 'promo-item SOA',
-		aClass: 'group-private',
+		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/NEWTEMPLATE/SOA_Logo.png">',
+		img: 'School of the Arts',
 		id: 'SOA'
 	};
 	var MICROSITEFINEART = {
 		classes: 'promo-item Art studioArt',
 		aClass: '',
 		aHref: '/SOA/Studio-Art',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/StudioArt_btn.jpg">',
+		img: 'Fine Art &amp; Design',
 		id: 'fineart'
 	};
 	var MICROSITECERAMICS = {
 		classes: 'promo-item Art ceramics',
 		aClass: '',
 		aHref: '/SOA/Ceramics',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Ceramics_btn.jpg">',
+		img: 'Ceramics',
 		id: 'ceramics'
 	};
 	var MICROSITEJEWELRY = {
 		classes: 'promo-item Art jewelry',
 		aClass: '',
 		aHref: '/SOA/Jewelry.aspx',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Jewelry_btn.jpg">',
+		img: 'Jewelry Center',
 		id: 'jewelry'
 	};
 	var MICROSITEMUSIC = {
 		classes: 'promo-item Music',
 		aClass: '',
 		aHref: '/SOA/School-of-Music',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Music_btn.jpg">',
+		img: 'Music',
 		id: 'music'
 	};
 	var MICROSITEINSTRUCT = {
@@ -57,14 +57,14 @@
 		classes: 'promo-item Dance',
 		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts/Harkness-Dance-Center',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Dance_btn.jpg">',
+		img: 'Dance',
 		id: 'dance'
 	};
 	var MICROSITERK = {
 		classes: 'promo-item rk-program',
 		aClass: '',
 		aHref: '/Uptown/School-of-the-Arts/Scholarship-Programs/Recanati-Kaplan-Program-for-Excellence-in-the-Arts',
-		img: '<img src="http://www.92y.org/92StreetY/media/MICROSITES/SOA/Recanati_btn.jpg">',
+		img: 'Recanati Kaplan Scholars',
 		id: 'rk'
 	};
 	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
@@ -1478,7 +1478,8 @@ $(document).on('click','.showMore',function(){
 		$content.slideUp(function () {
 			$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
 		});
-	} else {
+	} 
+	else {
 		$wrapper.css( "bottom", "5px" );
 		$wrapper.animate({bottom: "164px"});
 		$classTitle.animate({bottom: "164px"});
@@ -1490,3 +1491,46 @@ $(document).on('click','.showMore',function(){
 	}
 	return false;
 });
+// $(document).on('mouseout','span.showMore',function(){
+// 	console.log("leave");
+// 		var $showMore = $(this).parent(".getMore");
+// 		var $wrapper = $showMore.next(".contentWrap");
+// 		var $classTitle = $showMore.prevAll(".classTitle");
+// 		var $classDate = $showMore.prevAll(".classDate");
+// 		var $warning = $showMore.prevAll(".warning");
+// 		var $content = $wrapper.find("div");
+// 		var titleHeight = $classTitle.height();
+// 		var warnHeight = $warning.height();
+		
+// 			$classTitle.animate({bottom: "0"});
+// 			$classDate.animate({bottom: "0"});
+// 			$warning.animate({bottom: "0"});
+// 			$content.slideUp(function () {
+// 				$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
+// 			});
+		
+// 		return false;
+// 	});
+
+// $(document).on('mouseover','span.showMore',function(){
+// 	console.log("enter");
+// 		var $showMore = $(this).parent(".getMore");
+// 		var $wrapper = $showMore.next(".contentWrap");
+// 		var $classTitle = $showMore.prevAll(".classTitle");
+// 		var $classDate = $showMore.prevAll(".classDate");
+// 		var $warning = $showMore.prevAll(".warning");
+// 		var $content = $wrapper.find("div");
+// 		var titleHeight = $classTitle.height();
+// 		var warnHeight = $warning.height();
+		
+// 			$wrapper.css( "bottom", "5px" );
+// 			$wrapper.animate({bottom: "164px"});
+// 			$classTitle.animate({bottom: "164px"});
+// 			$classDate.animate({bottom: "164px"});
+// 			$warning.animate({bottom: "164px"});
+// 			$content.slideDown(function () {
+// 				$showMore.html($showMore.html().replace('More Info <i class="fa fa-chevron-up"></i></span>', 'Less Info <i class="fa fa-chevron-down"></i></span>'));
+// 			});
+		
+// 		return false;
+// 	});
