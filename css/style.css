@@ -239,9 +239,6 @@ a:hover {
 .affix #affix-breadcrumb-content {
 	display: block;
 }
-header .secondary {
-    height: 28px;
-}
 header.affix .container-fluid-max-lg {
     /* top: -28px; */
     /* position: relative; */
@@ -881,6 +878,9 @@ width: 280px;
 	}
 }
 @media (min-width: 768px) {
+	header .secondary {
+    	height: 28px;
+	}
 	#floatSavedBtn,
 	#floatCartBtn {
 	  position: absolute;
@@ -2059,8 +2059,11 @@ input[type="date"]::-webkit-inner-spin-button{
   		float: none;
 	}
 	.item-details {
-	  line-height: 16px;
+	  	line-height: 16px;
 	}
+	.bookmark {
+    	vertical-align: 0px; 
+	}	
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
