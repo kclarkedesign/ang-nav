@@ -94,7 +94,7 @@ For NAV Example
 		transition: all .5s ease;
 	}
 	#utility-bar.affix {
-  		top: 190px;
+  		top: 140px;
 	}
  	#utility-container {
  		width:100%;
@@ -229,6 +229,7 @@ a:hover {
 	text-decoration: none;
 	outline: 0;
 }
+/*** Affix styling -- yay!!!! ***/
 #affix-breadcrumb .dropdown-menu-form {
 	min-width: 320px;
 }
@@ -238,6 +239,41 @@ a:hover {
 .affix #affix-breadcrumb-content {
 	display: block;
 }
+header .secondary {
+    height: 28px;
+}
+header.affix .container-fluid-max-lg {
+    /* top: -28px; */
+    /* position: relative; */
+    background-color: #000;
+}
+/*** Transitions ***/
+
+.secondary .navbar-collapse {
+	-o-transition: margin-top .5s ease-out;
+    -ms-transition: margin-top .5s ease-out;
+    -moz-transition: margin-top .5s ease-out;
+    -webkit-transition: margin-top .5s ease-out;
+    transition: margin-top .5s ease-out;
+}
+.affix .secondary .navbar-collapse {
+	-o-transition: margin-top .5s ease-out;
+    -ms-transition: margin-top .5s ease-out;
+    -moz-transition: margin-top .5s ease-out;
+    -webkit-transition: margin-top .5s ease-out;
+    transition: margin-top .5s ease-out;
+    margin-top: 10px;
+}
+
+.affix section.secondary {
+    height: 0;
+    transition: height .5s ease-out;
+}
+
+
+
+/*** End Affix styling ***/
+ 
 body {
   position: relative;
 }
@@ -561,6 +597,7 @@ width: 280px;
 }
 .interest-col.more-sub {
     display: inline-block;
+    margin-right: -4px;
 }
 #main-navigation .interest-title {
     /*position: absolute;
@@ -570,6 +607,9 @@ width: 280px;
     background-color: rgb(0, 0, 0);
     padding: 3px 0 6px 8px;
     display: block;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     /* text-align: center; */
     -o-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -577,6 +617,15 @@ width: 280px;
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
 }
+/** Two styles for lesser programs in programs dropdown
+/*#main-navigation .more-sub .interest-title {
+	background-color: #000;
+    color: #FFF;
+    text-align: center;
+    padding: 6px 8px;
+    font-size: .9em;
+    line-height: 1.3;
+}*/
 #main-navigation .more-sub .interest-title {
     background-color: transparent;
     color: #000;
@@ -584,6 +633,8 @@ width: 280px;
     padding: 6px 8px;
     font-size: .9em;
     line-height: 1.3;
+    border: 1px solid #999;
+    /*border-radius: 4px;*/
 }
 .mega-dropdown span {
 	color: #FFF;
@@ -699,13 +750,13 @@ width: 280px;
 .navbar-nav .open>.dropdown-menu {
     /* display: inline-block; */
     opacity: 1;
-    height: 300px;
+    height: 310px;
     -o-transition: all .3s ease .15s;
     -ms-transition: all .3s ease .15s;
     -moz-transition: all .3s ease .15s;
     -webkit-transition: all .3s ease .15s;
     transition: all .3s ease .15s;
-	padding-top: 20px;
+	padding-top: 16px;
     overflow: hidden; 
    /* min-height: 1px;*/
 }
@@ -1215,11 +1266,20 @@ label.btn.active,
     background-color: #1c1c1c;
      /*padding: 5px 50px 8px 50px; */
     text-transform: uppercase;
+    -o-transition: height .5s ease-out;
+    -ms-transition: height .5s ease-out;
+    -ms-transition: height .5s ease-out;
+    -webkit-transition: height .5s ease-out;
+    transition: height .5s ease-out;
 }
 .secondary a {
     color: #fff;
      /*padding: 5px 50px 8px 50px; */
     text-transform: uppercase;
+}
+.secondary .navbar-nav>li>a {
+    padding: 4px 8px 4px 8px;
+    font-size: 12px;
 }
 
 /*
@@ -1866,10 +1926,16 @@ label.btn.active,
   	position: relative;
 }
 #slicerContainer {
-}
+	-o-transition: top .5s ease-out;
+    -ms-transition: top .5s ease-out;
+    -moz-transition: top .5s ease-out;
+    -webkit-transition: top .5s ease-out;
+    transition: top .5s ease-out;
+    top: 0;
+}	
 #slicerContainer.affix {
 	/*top: 99px;*/
-	top: 100px;
+	top: 48px;
 	z-index: 2;
 	background-color: #eff0f2;
 	/*background-color: #333333;*/
@@ -1877,6 +1943,11 @@ label.btn.active,
 	margin: 0 auto;
 	left: 0;
 	right: 0;
+	-o-transition: top .5s ease-out;
+    -ms-transition: top .5s ease-out;
+    -moz-transition: top .5s ease-out;
+    -webkit-transition: top .5s ease-out;
+    transition: top .5s ease-out;
 }
 #interest-list.active,
 #sidebar-interest-list.active {
@@ -1930,6 +2001,15 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 1200px) {
 
   	}
+@media (min-width: 1200px) {
+  .seven-cols .col-md-2,
+  .seven-cols .col-sm-2,
+  .seven-cols .col-lg-2 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+  }
+}
+/* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 768px) {
 	.header {
 		height: 50px;
