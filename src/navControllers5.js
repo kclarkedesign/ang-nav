@@ -103,20 +103,13 @@
 
 		self.tileInfoSrv = tileInfoSrv;
 		self.tileInfoSrv.getSOAItems().then(function (items) {
-			//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
 			self.navsDict["School Of The Arts"] = items.data;
-			self.tileInfoSrv.getAllClasses().then(function (data) {
-				self.allClasses.push.apply(self.allClasses, data.data);
-				var locationPath = self.location.path();
-				if (locationPath.length && locationPath !== '/') {
-					var match = locationPath.match(/^\/(.+?)(\/|$)/);
-					var interestFolder = match[1];
-					var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
-					self.displayMicroSites(locationPath);
-					self.getValues(classesByInterest, 0, self.navsDict["School Of The Arts"]);
-					self.buildCurrentObj();
-					self.displayTiles();
-				}
+			self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
+				self.getAllInitialClasses(data);
+			}, function (respData) {
+				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
+					self.getAllInitialClasses(data);
+				});
 			});
 		});
 		self.log = function (variable) {
@@ -214,6 +207,22 @@
 				self.limit = self.origLimit;
 			}
 		});
+	};
+
+	NavListController.prototype.getAllInitialClasses = function (data) {
+		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
+		var self = this;
+		self.allClasses.push.apply(self.allClasses, data.data);
+		var locationPath = self.location.path();
+		if (locationPath.length && locationPath !== '/') {
+			var match = locationPath.match(/^\/(.+?)(\/|$)/);
+			var interestFolder = match[1];
+			var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
+			self.displayMicroSites(locationPath);
+			self.getValues(classesByInterest, 0, self.navsDict["School Of The Arts"]);
+			self.buildCurrentObj();
+			self.displayTiles();
+		}
 	};
 
 	NavListController.prototype.interestClicked = function (subLevel) {
@@ -587,20 +596,20 @@
 		var locationPathRemoved = locationParts.removed;
 		var locArr = locationPath.split("/");
 
-		if (_.difference(locArr, lastLocArr).length === 1) {
-			if (self.onscreenResults.length) {
-				_.forEach(_.clone(self.onscreenResults), function (arr) {
-					var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-					if (_.isUndefined(checkPropExists)) {
-						_.pull(self.onscreenResults, arr);
-					}
-				});
-			} else {
-				self.onscreenResults = _.clone(onscreenResultsQueue);
-			}
-		} else {
+		// if (_.difference(locArr, lastLocArr).length === 1) {
+		// 	if (self.onscreenResults.length) {
+		// 		_.forEach(_.clone(self.onscreenResults), function (arr) {
+		// 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+		// 			if (_.isUndefined(checkPropExists)) {
+		// 				_.pull(self.onscreenResults, arr);
+		// 			}
+		// 		});
+		// 	} else {
+		// 		self.onscreenResults = _.clone(onscreenResultsQueue);
+		// 	}
+		// } else {
 			self.onscreenResults = _.clone(onscreenResultsQueue);
-		}
+		// }
 		
 		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
 		if (!_.isUndefined(self.daySlice) && self.daySlice !== 'all') {
@@ -1231,6 +1240,7 @@
 				}
 				var filtered = _.filter(foundClassKeywordsArray, function(keyword){
 					var returnVal;
+					var keyword = keyword.trim();
 					switch (keyword) {
 						case 'multigenerational':
 							returnVal = navKeywords.indexOf('parenting & family') != -1;
@@ -1374,15 +1384,13 @@
 	};
 	TileInfoService.$inject = ['$http'];
 
-	TileInfoService.prototype.getAllClasses = function () {
+	TileInfoService.prototype.getAllClasses = function (url) {
 		var self = this;
-		return self.http.get('items/Filters.json').success(function (data) {
+		return self.http.get(url).success(function (data) {
 			return data;
 		});
-		// return self.http.get('arc-response_AllClasses.json').success(function (data) {
-		// 	return data;
-		// });
 	};
+
 	// TileInfoService.prototype.getAllEvents = function () {
 	// 	var self = this;
 	// 	return self.http.get('arc-response_Events.json').success(function (data) {
