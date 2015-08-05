@@ -1281,6 +1281,9 @@ label.btn.active,
     padding: 4px 8px 4px 8px;
     font-size: 12px;
 }
+.secondary .navbar-nav>li.social-icon>a {
+    padding: 4px 4px 4px 4px;
+}
 
 /*
  *
