@@ -489,7 +489,7 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(http://v2.iconizer.net/files/Brightmix/orig/monotone_search_zoom.png) no-repeat;
+	background: #fff 98%/22px url(/img/search-iconizer.png) no-repeat;
 	/*padding: 6px 20px 6px;*/
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -948,6 +948,7 @@ a {
   font-weight: bold;
   font-size: 14px;
   right: -1px;
+  color: #fff;
 }
 #backToTop.affix {
   display: block;
