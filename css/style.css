@@ -1913,6 +1913,42 @@ label.btn.active,
 .defaultTextActive { 
 	color: #a1a1a1; 
 }
+
+/**** FEATURED ITEM *****/
+
+.itemBox .featured img {
+    width: 50%;
+}
+.featured .shortDescription {
+    height: 101px !important;
+    top: 13px;
+	/*height: 116px !important;
+    top: 14px;
+    width: 85%;*/
+}
+.featured .contentWrap {
+    bottom: -18px;
+}
+.featured .warning, 
+.featured .classTitle, 
+.featured .classDate {
+    bottom: 90px !important;
+}
+.featured .item-details {
+    width: 50%;
+    float: right;
+    top: 90px;
+    position: relative;
+    height: 80px;
+}
+.tileContainer .itemContents.featured {
+    height: 170px;
+    overflow: hidden;
+}
+
+
+
+
 #refine-bar {
   background-color: #EFF0F2;
   border-bottom: 1px solid #BDC3C7;
