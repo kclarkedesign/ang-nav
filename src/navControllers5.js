@@ -1046,12 +1046,12 @@
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
-	}
+	};
 
 	NavListController.prototype.checkAgeInit = function () {
 		var self = this;
 		return _.isEqual(self.ageSlice, self.initAgeSlice);
-	}
+	};
 
 	NavListController.prototype.clearDropDown = function (clearWhich) {
 		var self = this;
@@ -1066,7 +1066,7 @@
 		}
 		var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
 		self.sliceBy(sliceBy);
-	}
+	};
 
 	NavListController.prototype.checkAgeState = function (open) {
 		var self = this;
@@ -1084,13 +1084,69 @@
 		var self = this;
 		var isSearchSaved = !_.isUndefined(_.find(self.savedSearches, {'url' : self.location.absUrl()}));
 		return isSearchSaved;			
-	}
+	};
 
 	NavListController.prototype.checkProgramSaved = function (title) {
 		var self = this;
 		var isSearchSaved = !_.isUndefined(_.find(self.savedPrograms, {'Title' : title}));
 		return isSearchSaved;			
-	}
+	};
+
+	NavListController.prototype.displayFilterOptions = function () {
+		var self = this;
+		var enabledFilters = [];
+		var isDateFilterEnabled = !self.checkDateInit() && self.initialized;
+		if (isDateFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Date or Time',
+				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'datetime\')">X</a>'
+			});
+		}
+		var isTypeFilterEnabled = self.typeSlice !== 'all';
+		if (isTypeFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Class/Event',
+				//filterClear: '<a ng-click="navListCtrl.typeSlice=\'all\'">X</a>'
+			});
+		}
+		var isTimeFilterEnabled = !self.checkAgeInit() && self.initialized;
+		if (isTimeFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Age Range',
+				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'age\')">X</a>'
+			});
+		}
+		var isSearchFilterEnabled = self.textboxSearch !== '';
+		if (isSearchFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Search',
+				//filterClear: '<a ng-click="navListCtrl.textboxSearch=\'\'">X</a>'
+			});
+		}
+		var returnMessage;
+		switch (enabledFilters.length) {
+			case 0:
+				returnMessage = '';
+				break;
+			case 1:
+				returnMessage = 'Try resetting the '+ enabledFilters[0] +' filter';
+				break;
+			default:
+				returnMessage = 'Try resetting the ';
+				_.forEach(enabledFilters, function (arr, ind) {
+					if (ind === (enabledFilters.length -1)) {
+						returnMessage += 'or '+ arr.filterName +' '+ arr.filterClear +' filter';
+					} else {
+						if (ind === (enabledFilters.length -2)) {
+							returnMessage += arr.filterName +' '+ arr.filterClear +' ';
+						} else {
+							returnMessage += arr.filterName +' '+ arr.filterClear +', ';	
+						}
+					}
+				});
+		}
+		return returnMessage;
+	};
 
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
@@ -1105,7 +1161,7 @@
 			}
 		});
 		return res;
-	}
+	};
 
 	var findNodeDeep = function (items, prop) {
 		function traverse(value) {
