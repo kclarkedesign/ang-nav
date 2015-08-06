@@ -68,6 +68,8 @@
 		id: 'rk'
 	};
 	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
+	var weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+	var dayParts = ['morning', 'afternoon', 'evening'];
 
 	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
@@ -85,8 +87,10 @@
 		self.minEndDate = new Date();
 		self.maxDate = new Date();
 		self.maxDate = self.maxDate.setFullYear(self.maxDate.getFullYear() + 1);
-		self.times = ['morning', 'afternoon', 'evening'];
-		self.days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+		self.times = _.clone(dayParts);
+		self.days = _.clone(weekdays);
+		var shiftDay = self.days.shift();
+		self.days.push(shiftDay);
 		self.initDaySlice = 'all';
 		self.initTimeSlice = 'all';
 		self.initSdateSlice = undefined;
@@ -596,6 +600,7 @@
 		var locationPathRemoved = locationParts.removed;
 		var locArr = locationPath.split("/");
 
+		//note:  until we get a proper top-down pattern with the keywords, we can't use this code
 		// if (_.difference(locArr, lastLocArr).length === 1) {
 		// 	if (self.onscreenResults.length) {
 		// 		_.forEach(_.clone(self.onscreenResults), function (arr) {
@@ -612,12 +617,9 @@
 		// }
 		
 		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
-		if (!_.isUndefined(self.daySlice) && self.daySlice !== 'all') {
-			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.daySlice);
-		}
-		if (!_.isUndefined(self.timeSlice) && self.timeSlice !== 'all') {
-			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.timeSlice);
-		}
+
+		self.onscreenResults = filterListWithFutureDates(self.onscreenResults, self.daySlice, self.timeSlice);
+
 		if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
 			self.onscreenResults = _.filter(self.onscreenResults, function(res) {
 				return res.ItemType.toLowerCase() === self.typeSlice;
@@ -1044,12 +1046,12 @@
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
-	}
+	};
 
 	NavListController.prototype.checkAgeInit = function () {
 		var self = this;
 		return _.isEqual(self.ageSlice, self.initAgeSlice);
-	}
+	};
 
 	NavListController.prototype.clearDropDown = function (clearWhich) {
 		var self = this;
@@ -1064,7 +1066,7 @@
 		}
 		var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
 		self.sliceBy(sliceBy);
-	}
+	};
 
 	NavListController.prototype.checkAgeState = function (open) {
 		var self = this;
@@ -1082,13 +1084,69 @@
 		var self = this;
 		var isSearchSaved = !_.isUndefined(_.find(self.savedSearches, {'url' : self.location.absUrl()}));
 		return isSearchSaved;			
-	}
+	};
 
 	NavListController.prototype.checkProgramSaved = function (title) {
 		var self = this;
 		var isSearchSaved = !_.isUndefined(_.find(self.savedPrograms, {'Title' : title}));
 		return isSearchSaved;			
-	}
+	};
+
+	NavListController.prototype.displayFilterOptions = function () {
+		var self = this;
+		var enabledFilters = [];
+		var isDateFilterEnabled = !self.checkDateInit() && self.initialized;
+		if (isDateFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Date or Time',
+				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'datetime\')">X</a>'
+			});
+		}
+		var isTypeFilterEnabled = self.typeSlice !== 'all';
+		if (isTypeFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Class/Event',
+				//filterClear: '<a ng-click="navListCtrl.typeSlice=\'all\'">X</a>'
+			});
+		}
+		var isTimeFilterEnabled = !self.checkAgeInit() && self.initialized;
+		if (isTimeFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Age Range',
+				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'age\')">X</a>'
+			});
+		}
+		var isSearchFilterEnabled = self.textboxSearch !== '';
+		if (isSearchFilterEnabled) {
+			enabledFilters.push({
+				filterName: 'Search',
+				//filterClear: '<a ng-click="navListCtrl.textboxSearch=\'\'">X</a>'
+			});
+		}
+		var returnMessage;
+		switch (enabledFilters.length) {
+			case 0:
+				returnMessage = '';
+				break;
+			case 1:
+				returnMessage = 'Try resetting the '+ enabledFilters[0] +' filter';
+				break;
+			default:
+				returnMessage = 'Try resetting the ';
+				_.forEach(enabledFilters, function (arr, ind) {
+					if (ind === (enabledFilters.length -1)) {
+						returnMessage += 'or '+ arr.filterName +' '+ arr.filterClear +' filter';
+					} else {
+						if (ind === (enabledFilters.length -2)) {
+							returnMessage += arr.filterName +' '+ arr.filterClear +' ';
+						} else {
+							returnMessage += arr.filterName +' '+ arr.filterClear +', ';	
+						}
+					}
+				});
+		}
+		return returnMessage;
+	};
 
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
@@ -1103,7 +1161,7 @@
 			}
 		});
 		return res;
-	}
+	};
 
 	var findNodeDeep = function (items, prop) {
 		function traverse(value) {
@@ -1214,7 +1272,7 @@
 		var pattern = new RegExp(searchVal, "i");
 		if (!_.isUndefined(searchVal) && searchVal.length) {
 			filteredNavs = _.filter(results, function (result) {
-				return pattern.test(result.Teachers) || pattern.test(result.Title) || pattern.test(result.KeyWord.toString());
+				return pattern.test(result.Teachers) || pattern.test(result.Title) || pattern.test(result.KeyWord.toString()) || pattern.test(result.DescText);
 			});
 		} else {
 			filteredNavs = results;
@@ -1222,9 +1280,69 @@
 		return filteredNavs;
 	};
 
-	var filterListByKeywords = function (navArr, foundClassKeywordsArray) {
+	var isBlankSlice = function (slice) {
+		return (_.isUndefined(slice) || slice === 'all');
+	};
+
+	var filterListWithFutureDates = function (navArr, daySlices, timeSlices) {
 		var filteredNavs;
-		if (!_.isUndefined(foundClassKeywordsArray) && foundClassKeywordsArray.length) {
+		if (isBlankSlice(daySlices) && isBlankSlice(timeSlices)) {
+			filteredNavs = navArr;
+		} else {
+			if (daySlices === 'all') {
+				daySlices = _.clone(weekdays);
+				var shiftDay = daySlices.shift();
+				daySlices.push(shiftDay);
+			}
+			if (timeSlices === 'all') {
+				timeSlices = _.clone(dayParts);
+			}
+			filteredNavs = _.filter(navArr, function (navs) {
+				var isSlicing = false;
+				if (navs.FuturePerformances) {
+					// when page first loads
+					var navFutureDates = _.map(navs.FuturePerformances, function (futurePerf) {
+						return new Date(parseInt(futurePerf.perf_dt.substr(6)));
+					});
+				} else {
+					var navFutureDates = _.map(navs.FutureDates, function (futurePerf) {
+						return new Date(parseInt(futurePerf.substr(6)));
+					});
+					isSlicing = true;
+				}
+				var filtered = _.filter(daySlices, function(daySlice) {
+					var returnVal = false;
+					_.forEach(navFutureDates, function (fDate) {
+						var dayNum = fDate.getDay();
+						var hourNum = fDate.getHours();
+						var minNum = fDate.getMinutes();
+						var dayPart;
+						if (hourNum < 12) {
+							if (hourNum == 11 && minNum >= 30) {
+								dayPart = 'afternoon';
+							} else {
+								dayPart = 'morning';	
+							}
+						} else if (hourNum >= 12 && hourNum < 17) {
+							dayPart = 'afternoon';
+						} else if (hourNum >= 17) {
+							dayPart = 'evening';
+						}
+						if (weekdays[dayNum] === daySlice && _.includes(timeSlices, dayPart)) {
+							returnVal = true;
+						}
+					});
+					return returnVal;
+				});
+				return isSlicing ? filtered.length > 0 : filtered.length === slices.length;
+			});
+		}
+		return filteredNavs;
+	};
+
+	var filterListByKeywords = function (navArr, keywords) {
+		var filteredNavs;
+		if (!_.isUndefined(keywords) && keywords.length) {
 			filteredNavs = _.filter(navArr, function (navs) {
 				var isSlicing = false;
 				if (navs.CategoryProductionKeywords) {
@@ -1238,9 +1356,9 @@
 					});
 					isSlicing = true;
 				}
-				var filtered = _.filter(foundClassKeywordsArray, function(keyword){
+				var filtered = _.filter(keywords, function(keyword) {
 					var returnVal;
-					var keyword = keyword.trim();
+					keyword = keyword.trim();
 					switch (keyword) {
 						case 'multigenerational':
 							returnVal = navKeywords.indexOf('parenting & family') != -1;
@@ -1262,7 +1380,7 @@
 					}
 					return returnVal;
 				});
-				return isSlicing ? filtered.length > 0 : filtered.length === foundClassKeywordsArray.length;
+				return isSlicing ? filtered.length > 0 : filtered.length === keywords.length;
 			});
 		} else {
 			filteredNavs = navArr;
@@ -1273,6 +1391,7 @@
 	var formatDataFromJson = function (arr, nodeId) {
 		var prodNo = arr.ProductionSeasonNumber === 0 ? arr.PackageNo : arr.ProductionSeasonNumber;
 		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
+		var futurePerformanceDates = _.pluck(arr.FuturePerformances, 'perf_dt');
 		var itemTypes = _.remove(keyWords, function (n) { 
 			return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
 		});
@@ -1340,6 +1459,7 @@
 			ProdNo: prodNo,
 			NodeID: nodeId,
 			Desc: shortDesc,
+			DescText: arr.ShortDesc,
 			Img: image,
 			FriendlyDate: startDate,
 			SortDate1: sortDate1,
@@ -1349,7 +1469,8 @@
 			ItemType: itemType,
 			Teachers: teachers,
 			InProgress: inProgress,
-			Featured: featured
+			Featured: featured,
+			FutureDates: futurePerformanceDates
 		};
 		return classInfoObj;
 	}
