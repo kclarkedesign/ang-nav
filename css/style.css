@@ -89,6 +89,8 @@ For NAV Example
 		z-index: 1;
 		top: 100px;
 		width: 200px;
+		-o-transition: all .5s ease;
+		-ms-transition: all .5s ease;
 		-webkit-transition: all .5s ease;
 		-moz-transition: all .5s ease;
 		transition: all .5s ease;
@@ -489,8 +491,8 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(http://v2.iconizer.net/files/Brightmix/orig/monotone_search_zoom.png) no-repeat;
-	/*padding: 6px 20px 6px;*/
+	background: #fff 98%/22px url(/img/search-iconizer.png) no-repeat;
+	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
 #searchText.form-control+a,
@@ -889,9 +891,9 @@ width: 280px;
 	}
 }
 @media (min-width: 768px) {
-	header .secondary {
+	/*header .secondary {
     	height: 28px;
-	}
+	}*/
 	#floatSavedBtn,
 	#floatCartBtn {
 	  position: absolute;
@@ -959,6 +961,7 @@ a {
   font-weight: bold;
   font-size: 14px;
   right: -1px;
+  color: #fff;
 }
 #backToTop.affix {
   display: block;
@@ -1861,8 +1864,8 @@ label.btn.active,
 .shortDescription {
 	position: relative;
 	width: 100%;
-	height: 190px;
-	display: none;
+	height: 0;
+	/*display: none;*/
 	padding: 6px 18px 0;
 	box-sizing: border-box;
 	font-size: 12px;
@@ -1923,6 +1926,41 @@ label.btn.active,
 .defaultTextActive { 
 	color: #a1a1a1; 
 }
+
+
+
+/**** FEATURED ITEM *****/
+
+.itemBox .featured img {
+    width: 50%;
+}
+.featured .shortDescription {
+    height: 101px !important;
+    top: 13px;
+	/*height: 116px !important;
+    top: 14px;
+    width: 85%;*/
+}
+.featured .contentWrap {
+    bottom: -18px;
+}
+.featured .warning, 
+.featured .classTitle, 
+.featured .classDate {
+    bottom: 90px !important;
+}
+.featured .item-details {
+    width: 50%;
+    float: right;
+    top: 90px;
+    position: relative;
+    height: 80px;
+}
+.tileContainer .itemContents.featured {
+    height: 170px;
+    overflow: hidden;
+}
+
 #refine-bar {
   background-color: #EFF0F2;
   border-bottom: 1px solid #BDC3C7;
@@ -2264,6 +2302,121 @@ input[type="date"]::-webkit-inner-spin-button{
 	.navbar-nav>li {
   		float: left;
 	}
+	/***** ItemBox Rollover ******/
+	.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
+	bottom: 0;
+	}
+
+	.itemBox:hover .classTitle, .itemBox:hover .classDate, .itemBox:hover .warning {
+		bottom: 164px;
+	}
+	.itemBox:hover .contentWrap {
+		top: -165px;
+		position: relative;
+	}
+
+	.itemBox .shortDescription {
+		background-color: #fff;
+	}
+
+	.itemBox:hover .shortDescription {
+		height: 174px;
+		opacity: 1;
+	    overflow-y: auto;
+	}
+
+	.shortDescription {
+		height: 150px;
+		overflow-y: hidden;
+	    opacity: 0;
+	}
+	.contentWrap {
+		top: 0;
+	}
+	.getMore {
+    	display: none;
+	}
+	.getLink {
+		border-left: 1px solid #EDEDED;
+	}
+	.tileContainer .itemContents.hidden-xs {
+		overflow: hidden;
+	}
+	.itemBox .classTitle,
+	.itemBox .classDate, 
+	.itemBox .warning,
+	.itemBox:hover .classTitle, 
+	.itemBox:hover .classDate, 
+	.itemBox:hover .warning, 
+	.itemBox:hover .contentWrap, 
+	.itemBox:hover .shortDescription, 
+	.shortDescription, 
+	.contentWrap { 
+		-o-transition: all .3s ease-out;
+	    -ms-transition: all .3s ease-out;
+	    -moz-transition: all .3s ease-out;
+	    -webkit-transition: all .3s ease-out;
+	    transition: all .3s ease-out;
+	}
+	/***** End ItemBox Rollover ******/
+
+	/***** Item-details Rollover - When you roll over detail instead of entire tile ******/
+	/*.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
+	bottom: 0;
+	}
+
+	.item-details:hover .classTitle, .item-details:hover .classDate, .item-details:hover .warning {
+		bottom: 164px;
+	}
+	.item-details:hover .contentWrap {
+		top: -165px;
+		position: relative;
+	}
+
+	.itemBox .shortDescription {
+		background-color: #fff;
+	}
+
+	.item-details:hover .shortDescription {
+		height: 174px;
+		opacity: 1;
+	    overflow-y: auto;
+	}
+
+	.shortDescription {
+		height: 150px;
+		overflow-y: hidden;
+	    opacity: 0;
+	}
+	.contentWrap {
+		top: 0;
+	}
+	.getMore {
+    	display: none;
+	}
+	.getLink {
+		border-left: 1px solid #EDEDED;
+	}
+	.tileContainer .itemContents.hidden-xs {
+		overflow: hidden;
+	}
+	.itemBox .classTitle,
+	.itemBox .classDate, 
+	.itemBox .warning,
+	.item-details:hover .classTitle, 
+	.item-details:hover .classDate, 
+	.item-details:hover .warning, 
+	.item-details:hover .contentWrap, 
+	.item-details:hover .shortDescription, 
+	.shortDescription, 
+	.contentWrap { 
+		-o-transition: all .3s ease-out;
+	    -ms-transition: all .3s ease-out;
+	    -moz-transition: all .3s ease-out;
+	    -webkit-transition: all .3s ease-out;
+	    transition: all .3s ease-out;
+	}*/
+	/***** End ItemBox Rollover ******/
 }
 
 /* this only works with the modification in ui-bootstrap-tpls-0.13.0.js that adds this class to the button */
@@ -2302,6 +2455,16 @@ input[type="date"]::-webkit-inner-spin-button{
   font-size: 16px;
   margin: 5px 0;
   display: block;
+}
+.removable {
+    padding: 4px;
+    border-bottom: 1px solid;
+    /* border-radius: 3px; */
+    margin-left: 3px;
+    display: block;
+}
+.removable a {
+    padding-left: 3px;
 }
 
 /** Material Design
