@@ -733,7 +733,8 @@
 												</div>
 											</div>
 											<div class="col-xs-9 col-sm-4 hidden-lg hidden-xl">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											<div class="col-xs-3 col-sm-2 hidden-lg hidden-xl pl0">
 												<button id="filterSidebarBtnMobile" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -986,7 +987,8 @@
 										<div class="col-sm-4 pull-right">
 											<div class="row">
 												<div class="col-md-12 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 												<div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
