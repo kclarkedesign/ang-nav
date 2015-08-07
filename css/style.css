@@ -495,13 +495,24 @@ width: 280px;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
+#searchText.form-control+a,
+#mobileSearchText.form-control+a {
+	display: none;
+}
+#searchText.form-control.active,
+#mobileSearchText.form-control.active {
+	background: none;
+}
 #searchText.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
 	background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
 	padding-right: 24px;
 }
-
+#searchText.form-control.active+a,
+#mobileSearchText.form-control.active+a {
+	display: block;
+}
 .scroll {
 	height: 100%;
 }
@@ -2432,7 +2443,6 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 .container .fail-message span {
 	display: inline-block;
-	vertical-align: middle;
 	font-size: 20px;
 	font-weight: 700;
 	color: black;

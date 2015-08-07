@@ -99,8 +99,9 @@
 		self.initSortOrder = 'all';
 		self.soonestSortSelected = false;
 		self.showSpinner = false;
-		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(); }, 2000);
+		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
+		self.enabledFilters = {};
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
@@ -525,7 +526,7 @@
 		}
 	};
 
-	NavListController.prototype.modifyUrlSearch = function () {
+	NavListController.prototype.modifyUrlSearch = function (fromLink) {
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
@@ -535,8 +536,10 @@
 
 		self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 
-		self.debounceSearch.cancel();
-		self.applyScope();
+		if (!fromLink) {
+			self.debounceSearch.cancel();
+			self.applyScope();
+		}
 	};
 
 	NavListController.prototype.searchByWord = function () {
@@ -545,7 +548,7 @@
 			self.showSpinner = true;
 			self.debounceSearch();
 		} else {
-			self.modifyUrlSearch();
+			self.modifyUrlSearch(false);
 		}
 	};
 
@@ -1094,58 +1097,59 @@
 
 	NavListController.prototype.displayFilterOptions = function () {
 		var self = this;
-		var enabledFilters = [];
+		self.enabledFilters = {};
 		var isDateFilterEnabled = !self.checkDateInit() && self.initialized;
+		var index = 0;
 		if (isDateFilterEnabled) {
-			enabledFilters.push({
-				filterName: 'Date or Time',
-				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'datetime\')">X</a>'
-			});
+			self.enabledFilters['Date or Time'] = {
+				pre: '',
+				suf: '',
+				ind: ++index
+			};
 		}
 		var isTypeFilterEnabled = self.typeSlice !== 'all';
 		if (isTypeFilterEnabled) {
-			enabledFilters.push({
-				filterName: 'Class/Event',
-				//filterClear: '<a ng-click="navListCtrl.typeSlice=\'all\'">X</a>'
-			});
+			self.enabledFilters['Class/Event'] = {
+				pre: '',
+				suf: '',
+				ind: ++index
+			};
 		}
 		var isTimeFilterEnabled = !self.checkAgeInit() && self.initialized;
 		if (isTimeFilterEnabled) {
-			enabledFilters.push({
-				filterName: 'Age Range',
-				//filterClear: '<a ng-click="navListCtrl.clearDropDown(\'age\')">X</a>'
-			});
+			self.enabledFilters['Age Range'] = {
+				pre: '',
+				suf: '',
+				ind: ++index
+			};
 		}
 		var isSearchFilterEnabled = self.textboxSearch !== '';
 		if (isSearchFilterEnabled) {
-			enabledFilters.push({
-				filterName: 'Search',
-				//filterClear: '<a ng-click="navListCtrl.textboxSearch=\'\'">X</a>'
+			self.enabledFilters.Search = {
+				pre: '',
+				suf: '',
+				ind: ++index
+			};
+		}
+		if (_.size(self.enabledFilters) > 1) {
+			_.forEach(self.enabledFilters, function (arr, ind) {
+				if (arr.ind === _.size(self.enabledFilters)) {
+					arr.pre = 'or&nbsp;';
+				} else {
+					if (arr.ind === (_.size(self.enabledFilters) -1)) {
+						if (_.size(self.enabledFilters) > 2) {
+							arr.suf = ',&nbsp;';
+						} else {
+							arr.suf = '&nbsp;';	
+						}
+					} else {
+						arr.suf = ',&nbsp;';
+					}
+				}
 			});
 		}
-		var returnMessage;
-		switch (enabledFilters.length) {
-			case 0:
-				returnMessage = '';
-				break;
-			case 1:
-				returnMessage = 'Try resetting the '+ enabledFilters[0] +' filter';
-				break;
-			default:
-				returnMessage = 'Try resetting the ';
-				_.forEach(enabledFilters, function (arr, ind) {
-					if (ind === (enabledFilters.length -1)) {
-						returnMessage += 'or '+ arr.filterName +' '+ arr.filterClear +' filter';
-					} else {
-						if (ind === (enabledFilters.length -2)) {
-							returnMessage += arr.filterName +' '+ arr.filterClear +' ';
-						} else {
-							returnMessage += arr.filterName +' '+ arr.filterClear +', ';	
-						}
-					}
-				});
-		}
-		return returnMessage;
+		console.log(self.enabledFilters);
+		return _.size(self.enabledFilters) > 0;
 	};
 
 	var pluckAllKeys = function (obj, res) {
@@ -1579,8 +1583,11 @@ var resizeTileDisplay = function (scope) {
 }
 
 var adjustLevelArray = function (arr, start, end) {
+	//creates a blank new level in self.arrCategory
 	for (var x = start; x <= end; x++){
-		arr[x] = [];
+		if (_.isUndefined(arr[x])) {
+			arr[x] = [];	
+		}
 	}
 	return end;
 }

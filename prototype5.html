@@ -733,7 +733,8 @@
 												</div>
 											</div>
 											<div class="col-xs-9 col-sm-4 hidden-lg hidden-xl">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											<div class="col-xs-3 col-sm-2 hidden-lg hidden-xl pl0">
 												<button id="filterSidebarBtnMobile" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -986,7 +987,8 @@
 										<div class="col-sm-4 pull-right">
 											<div class="row">
 												<div class="col-md-12 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 												<div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
@@ -1010,11 +1012,17 @@
 							<div id="Container" class="tileContainer container">
 								
 								<div id="tiles" class="row">
-
 									<div class="col-md-12 col-lg-10 pl0 pr0">
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 											<span class="noResults">No items were found</span>
-											<p><span class="noResults" ng-bind-html="navListCtrl.displayFilterOptions() | unsafe"></span></p>
+											<div ng-show="navListCtrl.displayFilterOptions()">
+												<span class="noResults">Try resetting the</span>
+												<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized"><span>Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'"><span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span><span>Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized"><span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span><span>Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.textboxSearch !== ''"><span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span><span>Search<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a></span></span>
+												<span class="noResults">Filter</span>
+											</div>
 										</div>
 										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
