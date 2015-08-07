@@ -2290,7 +2290,6 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 .container .fail-message span {
 	display: inline-block;
-	vertical-align: middle;
 	font-size: 20px;
 	font-weight: 700;
 	color: black;
