@@ -236,7 +236,7 @@
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name) {
 			return;
 		}
-		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
+		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
 
 		var classIndex = _.findIndex(self.allClasses, {'Name': subLevel.Name});
 		var classesByInterest = [self.allClasses[classIndex]];
@@ -559,7 +559,7 @@
 			//if logo is clicked to reset the entire page
 			self.onscreenResults = [];
 			self.activeBreadcrumb = [];
-			adjustLevelArray(self.arrCategory, 0, self.arrCategory.length);
+			adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
 			self.initialized = false;
 			self.microsites = [];
 		} else {
@@ -633,29 +633,32 @@
 		}
 		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
 
-		var sortBy;
-		var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
-		if (sortUrlLocation < 0) {
-			sortBy = 'all';
-		} else {
-			var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
-			if (endSlashLocation < 0) {
-				endSlashLocation = locationPathRemoved.length;
-			}
-			sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
-		}
-		switch (sortBy) {
-			case 'progress':
-				self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
-				break;
-			case 'featured':
-				self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-				break;
-			default:
-				self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
-				break;
-		}
-		self.sortOrder = sortBy;
+		// var sortBy;
+		// var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
+		// if (sortUrlLocation < 0) {
+		// 	sortBy = 'all';
+		// } else {
+		// 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
+		// 	if (endSlashLocation < 0) {
+		// 		endSlashLocation = locationPathRemoved.length;
+		// 	}
+		// 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
+		// }
+		// switch (sortBy) {
+		// 	case 'progress':
+		// 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+		// 		break;
+		// 	case 'featured':
+		// 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+		// 		break;
+		// 	default:
+		// 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+		// 		break;
+		// }
+		// self.sortOrder = sortBy;
+
+		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+
 		self.showSpinner = false;
 		self.initialized = true;
 	};
@@ -883,7 +886,7 @@
 			return false;
 		}
 		if (STARTINGLEVEL < MAXLEVEL) {
-			STARTINGLEVEL = adjustLevelArray(self.arrCategory, STARTINGLEVEL, MAXLEVEL);
+			STARTINGLEVEL = adjustLevelArray(self.arrCategory, STARTINGLEVEL, MAXLEVEL, false);
 		}
 		if (self.arrCategory.length) {
 			self.arrCategory[level] = self.arrCategory[level].concat(tempArr);
@@ -1148,7 +1151,6 @@
 				}
 			});
 		}
-		console.log(self.enabledFilters);
 		return _.size(self.enabledFilters) > 0;
 	};
 
@@ -1582,10 +1584,10 @@ var resizeTileDisplay = function (scope) {
 	scope.navListCtrl.origLimit = limitToSet + numColumns;
 }
 
-var adjustLevelArray = function (arr, start, end) {
+var adjustLevelArray = function (arr, start, end, clear) {
 	//creates a blank new level in self.arrCategory
 	for (var x = start; x <= end; x++){
-		if (_.isUndefined(arr[x])) {
+		if (_.isUndefined(arr[x]) || clear) {
 			arr[x] = [];	
 		}
 	}
