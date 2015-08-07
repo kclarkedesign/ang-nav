@@ -1931,8 +1931,11 @@ label.btn.active,
 
 /**** FEATURED ITEM *****/
 
-.itemBox .featured img {
+.featured img {
     width: 50%;
+}
+.featured .itemContents.hidden-xs {
+	height: 140px;
 }
 .featured .shortDescription {
     height: 101px !important;
@@ -1943,6 +1946,9 @@ label.btn.active,
 }
 .featured .contentWrap {
     bottom: -18px;
+}
+.featured .getTickets {
+	display: none;
 }
 .featured .warning, 
 .featured .classTitle, 
@@ -1956,8 +1962,11 @@ label.btn.active,
     position: relative;
     height: 80px;
 }
-.tileContainer .itemContents.featured {
-    height: 170px;
+.featured .itemContents .bookmark {
+	right: 10px;
+}
+.tileContainer .featured {
+    height: 150px;
     overflow: hidden;
 }
 
