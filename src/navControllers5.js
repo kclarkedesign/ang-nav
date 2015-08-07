@@ -1134,16 +1134,21 @@
 		if (_.size(self.enabledFilters) > 1) {
 			_.forEach(self.enabledFilters, function (arr, ind) {
 				if (arr.ind === _.size(self.enabledFilters)) {
-					arr.pre = 'or ';
+					arr.pre = 'or&nbsp;';
 				} else {
 					if (arr.ind === (_.size(self.enabledFilters) -1)) {
-						arr.suf = ' ';
+						if (_.size(self.enabledFilters) > 2) {
+							arr.suf = ',&nbsp;';
+						} else {
+							arr.suf = '&nbsp;';	
+						}
 					} else {
-						arr.suf = ', ';
+						arr.suf = ',&nbsp;';
 					}
 				}
 			});
 		}
+		console.log(self.enabledFilters);
 		return _.size(self.enabledFilters) > 0;
 	};
 

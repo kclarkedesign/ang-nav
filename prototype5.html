@@ -1016,25 +1016,11 @@
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 											<span class="noResults">No items were found</span>
 											<div ng-show="navListCtrl.displayFilterOptions()">
-												<span class="noResults">Try resetting the </span>
-												<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
-													<span>Date or Time <a class="clearFilterNoResults" ng-click="navListCtrl.clearDropDown('datetime')">X</a></span>
-													<span ng-bind="navListCtrl.enabledFilters['Date or Time'].suf"></span>
-												</span>
-												<span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
-													<span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind="navListCtrl.enabledFilters['Class/Event'].pre"></span>
-													<span>Class/Event <a class="clearFilterNoResults" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">X</a></span>
-													<span ng-bind="navListCtrl.enabledFilters['Class/Event'].suf"></span>
-												</span>
-												<span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
-													<span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind="navListCtrl.enabledFilters['Age Range'].pre"></span>
-													<span>Age Range <a class="X" ng-click="navListCtrl.clearDropDown('age')">X</a></span>
-													<span ng-bind="navListCtrl.enabledFilters['Age Range'].suf"></span>
-												</span>
-												<span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
-													<span ng-bind="navListCtrl.enabledFilters['Search'].pre"></span>
-													<span>Search <a class="clearFilterNoResults" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)">X</a></span>
-												</span>
+												<span class="noResults">Try resetting the</span>
+												<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized"><span>Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'"><span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span><span>Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized"><span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span><span>Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.textboxSearch !== ''"><span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span><span>Search<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a></span></span>
 												<span class="noResults">Filter</span>
 											</div>
 										</div>
