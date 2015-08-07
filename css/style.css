@@ -2456,6 +2456,16 @@ input[type="date"]::-webkit-inner-spin-button{
   margin: 5px 0;
   display: block;
 }
+.removable {
+    padding: 4px;
+    border-bottom: 1px solid;
+    /* border-radius: 3px; */
+    margin-left: 3px;
+    display: block;
+}
+.removable a {
+    padding-left: 3px;
+}
 
 /** Material Design
  * (overlay adopted for ang-nav) 
