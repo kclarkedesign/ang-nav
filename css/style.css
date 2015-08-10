@@ -131,7 +131,8 @@ For NAV Example
   border: 1px solid #ccc;
   border-radius: 6px;
 }*/
- 	.promo-item {
+ 	.promo-item,
+ 	.browse-item a {
  		display: inline-block;
  		text-align: center;
  		width: 170px;
@@ -147,6 +148,7 @@ For NAV Example
 	    width: 170px;
 	    display: block;
 	    padding: 3px;
+	    font-size: 12px;
 	}
  	.promo-item-top {
 	  display: block;
@@ -233,7 +235,7 @@ a:hover {
 }
 /*** Affix styling -- yay!!!! ***/
 #affix-breadcrumb .dropdown-menu-form {
-	min-width: 320px;
+	min-width: 390px;
 }
 #affix-breadcrumb-content {
 	display: none;
@@ -999,7 +1001,7 @@ a {
 }
 #breadcrumb-content {
 
-	border-bottom: 1px solid #bdc3c7;
+	/*border-bottom: 1px solid #bdc3c7;*/
 }
 .breadcrumb {
 	background: transparent;
@@ -1055,6 +1057,11 @@ a {
   margin: 3px -4px;
   box-sizing: border-box;
   border-bottom: 1px solid #fff;
+  width: 184px;
+    margin-bottom: 6px;
+        white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
 }
 /*.browse-item a {
   padding: 5px 8px;
@@ -1090,7 +1097,7 @@ a {
 }
 .defaultBc,
 .current {
-	font-size: 4.8rem;
+	font-size: 3.2rem;
 	font-weight: bold;
 	line-height: 1.1;
 }
@@ -1215,7 +1222,7 @@ a {
 }
 #current-interest .save-link,
 .bookmark {
-		vertical-align: 10px;
+		/*vertical-align: 10px;*/
 		font-size: 22px;
 		color: #BDC3C7;
 }
@@ -1268,9 +1275,9 @@ a {
 	border-radius: 0px;
 	margin: 0;
 }
-.active #btn-dayTime,
+/*.active #btn-dayTime,*/
 label.btn.active,
-.active #btn-ageRange,
+/*.active #btn-ageRange,*/
 .active #btn-sort, 
 .active #btn-sortMobile {
 	background-color: #4F93CD;
@@ -1696,13 +1703,16 @@ label.btn.active,
  * Container/Target Styles
  */
 
-#isoContainer {
-	margin: 0 auto;
+#isoContainer,
+#isoContainerMobile {
+	/*margin: 0 auto;*/
 	width: 100% !important;
 }
 
 #isoContainer:before, 
-#isoContainer:after {
+#isoContainer:after,
+#isoContainerMobile:before,
+#isoContainerMobile:after {
 	content: "";
 	display: table;
 }
@@ -1959,9 +1969,11 @@ label.btn.active,
 	/*top: 99px;*/
 	top: 48px;
 	z-index: 2;
-	background-color: #eff0f2;
+	/*background-color: #eff0f2;*/
+	background-color: #ffffff;
 	/*background-color: #333333;*/
-	border-bottom: 1px solid #ccc;
+	/*border-bottom: 1px solid #ccc;*/
+	    border-bottom: 3px solid #eff0f2;
 	margin: 0 auto;
 	left: 0;
 	right: 0;
@@ -1976,7 +1988,8 @@ label.btn.active,
 	background-color: #8EBADF;
 }
 #slicers {
-	background-color: #eff0f2;
+	/*background-color: #eff0f2;*/
+	    border-top: 3px solid #eff0f2;
 }
 /* slicers */
 /*#slicers .row-dropdown {
@@ -1999,6 +2012,41 @@ label.btn.active,
 	width: 100%;
 	background: #fff;
 }*/
+.dropdown-ch,
+.open>.dropdown-toggle.dropdown-ch {
+    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
+    max-height: 26px;
+    line-height: 1.1;
+    text-align: left;
+    display: inline-block;
+    width: auto;
+    padding-right: 36px;
+    font-size: 12px;
+}
+.toggleBar-ch {
+    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
+    max-height: 26px;
+    line-height: 1.1;
+    text-align: left;
+    display: inline-block;
+    width: auto;
+    /*padding-right: 36px;*/
+    font-size: 12px;
+}
+.active .dropdown-ch {
+    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
+    color: #fff;
+}
+.active.open>.dropdown-ch {
+	color: #333;
+}
+.active.toggleBar-ch {
+	    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
+}
+.active.toggleBar-ch:hover {
+	color: #fff;
+	   
+}
 
 /* angular UI */
 .nav, 
@@ -2021,7 +2069,14 @@ input[type="date"]::-webkit-inner-spin-button{
 	display: block !important;
 }
 @media (max-width: 1200px) {
-
+	.browse-item a {
+		width: 100%;
+	}
+	/*#current-interest,
+	#breadcrumb-content {
+    display: inline-block;
+    width: auto;
+}*/
   	}
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
@@ -2030,6 +2085,15 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
+  #current-interest,
+  #breadcrumb-content {
+    display: inline-block;
+    width: auto;
+}
+  #breadcrumb-content {
+	/*max-width: 50%;*/
+	min-width: 33.333%;
+	}
 }
 /* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 768px) {
@@ -2082,7 +2146,10 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.bookmark {
     	vertical-align: 0px; 
-	}	
+	}
+	sup {
+    	top: -.2em;
+	}
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
@@ -2427,8 +2494,14 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .classTitle {
 		padding: 10px 18px 0;
 	}
+	.featured .classTitle a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: -5px;
+}
 	.itemBox.featured  .shortDescription {
-		height: 224px
+		height: 210px
 	}
 	 .itemBox.featured:hover .contentWrap {
 	    top: -278px;
@@ -2440,7 +2513,11 @@ input[type="date"]::-webkit-inner-spin-button{
 	    background: transparent;
 	}
 	.featured .getTickets {
-		display: none;
+		opacity: 0;
+	}
+	.featured:hover .getTickets {
+		opacity: 1;
+		bottom: 200px;
 	}
 	.featured:hover .classTitle,
 	.featured:hover .classDate,
