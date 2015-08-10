@@ -1573,7 +1573,7 @@ var resizeTileDisplay = function (scope) {
 		numColumns = 4;
 		tileHeight = 196;
 	}
-	var headerHeight = $("#isoContainer").offset().top;
+	var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
