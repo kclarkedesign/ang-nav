@@ -531,11 +531,15 @@ width: 280px;
   position: relative;
   /*height: 41px;*/
 }
+#recentSaves {
+	background-color: #337ab7;
+}
 #savedSidebarClose {
   position: absolute;
   top: 10px;
   right: 5px;
   text-align: right;
+  color: #ffffff;
 }
 #savedPrograms img {
   width: 100%;
@@ -1147,7 +1151,6 @@ a {
 	padding-left: 4px;
 	z-index: 1;
 	background-color: #5BC0DE;
-	border-radius: 0 9px 9px 0px;
 }
 .savedProdItem {
 	margin-bottom: 10px;
