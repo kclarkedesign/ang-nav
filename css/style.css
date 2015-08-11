@@ -2577,7 +2577,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	    /*height: 80px;*/
 	}
 	.featured .itemContents .bookmark {
-		/*right: 10px;*/
+		top: 40px;
 	}
 	.featured .classDate,
 	.featured .titleLink {
@@ -2593,6 +2593,18 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.featured .item-details:hover .titleLink {
 		color: #4F93CD;
+	}
+	.featured .itemContents:before {
+		content: "Featured";
+		padding: 8px 18px;
+		display: block;
+		background: linear-gradient(rgba(251, 251, 251, 0.38), rgba(204, 204, 204, 0.44));
+		color: #A7A7A7;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		position: relative;
+		z-index: 1;
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
