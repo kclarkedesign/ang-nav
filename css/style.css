@@ -2538,7 +2538,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		padding: 10px 18px 0;
 	}
 	.itemBox.featured  .shortDescription {
-		height: 315px
+		height: 224px
 	}
 	 .itemBox.featured .item-details:hover .contentWrap {
 	    top: -278px;
@@ -2549,12 +2549,12 @@ input[type="date"]::-webkit-inner-spin-button{
 	    bottom: -18px;
 	    background: transparent;
 	}
-	.featured .getTickets {
+	.featured .item-details .getTickets {
 		opacity: 0;
 	}
-	.featured:hover .getTickets {
+	.featured .item-details:hover .getTickets {
 		opacity: 1;
-		bottom: 200px;
+		bottom: 218px;
 	}
 	.featured .item-details:hover .classTitle,
 	.featured .item-details:hover .classDate,
@@ -2606,6 +2606,9 @@ input[type="date"]::-webkit-inner-spin-button{
 		letter-spacing: 1px;
 		position: relative;
 		z-index: 1;
+	}
+	.featured .getTickets {
+		width: 100%;
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
