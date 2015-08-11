@@ -1025,18 +1025,17 @@
 												<span class="noResults">filters</span>
 											</div>
 										</div>
-
-										<!-- For Large and Xlarge screen sizes -->
-										<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm hidden-md ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 81.26, "gutter": 0 }'>
+										<div id="isoContainer" ng-cloak class="seven-cols ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 81.26, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
 											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 												<div class="itemContents hidden-xs">
+													<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
 													<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
 														<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 													</a>
 													<div class="item-details">
 														<div class="classTitle">
-															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
+															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 														</div>
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
@@ -1056,13 +1055,14 @@
 													<div class="container-fluid">
 														<div class="row">
 															<div id="tileImg" class="col-xs-5 no-p">
+																<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
 																<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank" class="">
 																	<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
 																</a>
 															</div>
 															<div class="item-details col-xs-7 pull-right pt10">
 																<div class="classTitleMobile ">
-																	<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
+																	
 																	<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 																</div>
 																<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
@@ -1076,58 +1076,6 @@
 												</div>
 											</div>
 										</div>
-
-										<!-- For Medium and below screen sizes -->
-										<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
-											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
-											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
-												<div class="itemContents hidden-xs">
-													<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
-														<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
-													</a>
-													<div class="item-details">
-														<div class="classTitle">
-															<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a><a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
-														</div>
-														<div class="classDate">{{classInfo.FriendlyDate}}</div>
-														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-														<div class="getMore">
-															<span class="showMore">More Info <i class="fa fa-chevron-up"></i></span><br />
-														</div>
-														
-														<div class="contentWrap">
-															<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
-														</div>
-														<div class="getTickets">
-															<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Buy Now <i class="fa fa-arrow-right"></i></a>
-														</div>
-													</div>
-												</div>
-												<div class="itemContents visible-xs">
-													<div class="container-fluid">
-														<div class="row">
-															<div id="tileImg" class="col-xs-5 no-p">
-																<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank" class="">
-																	<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
-																</a>
-															</div>
-															<div class="item-details col-xs-7 pull-right pt10">
-																<div class="classTitleMobile ">
-																	<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
-																	<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
-																</div>
-																<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
-																<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-																<div class="contentWrapMobile">
-																	<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
 									</div>
 									<div class="col-md-2 pl0" ng-show="navListCtrl.activeBreadcrumb.length">
 										<div id="utility-bar" class="hidden-xs hidden-sm hidden-md" affix ng-show="navListCtrl.microsites.length">

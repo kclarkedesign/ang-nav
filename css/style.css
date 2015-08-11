@@ -6,7 +6,7 @@ For NAV Example
 
 /** For Promo  **/
 
-/*	#utility-bar {
+/*    #utility-bar {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		border-bottom: 1px solid #D6D6D6;
@@ -96,7 +96,7 @@ For NAV Example
 		transition: all .5s ease;
 	}
 	#utility-bar.affix {
-  		top: 140px;
+  		top: 148px;
 	}
  	#utility-container {
  		width:100%;
@@ -493,7 +493,7 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(/img/search-iconizer.png) no-repeat;
+	background: #fff 98%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -515,6 +515,10 @@ width: 280px;
 #mobileSearchText.form-control.active+a {
 	display: block;
 }
+.form-control-feedback.form-control-clear {
+    height: 26px;
+    line-height: 26px;
+}
 .scroll {
 	height: 100%;
 }
@@ -531,15 +535,12 @@ width: 280px;
   position: relative;
   /*height: 41px;*/
 }
-#recentSaves {
-	background-color: #337ab7;
-}
 #savedSidebarClose {
   position: absolute;
   top: 10px;
   right: 5px;
   text-align: right;
-  color: #ffffff;
+  color: #fff;
 }
 #savedPrograms img {
   width: 100%;
@@ -952,6 +953,9 @@ a {
 	cursor: pointer;
 	color: #4F93CD;
 }
+.blue-bg {
+	background-color: #337ab7
+}
 #backToTop {
   right: 16%;
   display: none;
@@ -981,13 +985,18 @@ a {
 	box-shadow: none;
 }
 .itemContents .bookmark {
-	position: absolute;
-	padding: 5px 8px;
-	border-radius: 3px;
-	top: 5px;
-	right: 5px;
-	z-index: 1;
-}
+		position: absolute;
+		padding: 3px 5px 1px 5px;
+		border-radius: 3px;
+		top: 5px;
+		right: 5px;
+		z-index: 1;
+		background-color: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		font-size: 13px;
+		height: 24px;
+		width: 24px;
+	}
 /*.itemContents .bookmark {
   position: absolute;
   padding: 8px 8px;
@@ -1058,10 +1067,10 @@ a {
   -moz-transition: all .2s ease;
   transition: all .2s ease;
   background-color: #eff0f2;
-  margin: 3px -4px;
+  margin: 3px 6px;
   box-sizing: border-box;
   border-bottom: 1px solid #fff;
-  width: 184px;
+  width: 95%;
     margin-bottom: 6px;
         white-space: nowrap;
     text-overflow: ellipsis;
@@ -1151,6 +1160,7 @@ a {
 	padding-left: 4px;
 	z-index: 1;
 	background-color: #5BC0DE;
+	border-radius: 0 9px 9px 0px;
 }
 .savedProdItem {
 	margin-bottom: 10px;
@@ -1652,6 +1662,7 @@ label.btn.active,
 		margin-bottom: 15px;
 		padding-left: 0;
 			padding-right: 0;
+			margin-top: 5px;
 	}
 	.savedSearches a {
 		padding: 4px 8px 4px;
@@ -1675,14 +1686,16 @@ label.btn.active,
 		/*padding: 6px 0 10px;*/
 	}
 	.itemContents .bookmark {
-		position: relative;
-		padding: 5px 8px;
-		background-color: #fff;
-		border-radius: 3px;
-		top: -8px;
-  		right: -14px;
-		float: right;
-		z-index: 1;
+		position: absolute;
+    padding: 5px 8px;
+    background-color: #fff;
+    border-radius: 3px;
+    top: 3px;
+    right: 3px;
+    float: right;
+    z-index: 1;
+    width: 34px;
+    height: 30px;
 	}
 
 	/*#slicerContainer.affix {
@@ -1700,6 +1713,12 @@ label.btn.active,
 	/*#utilnav {
 		display: none;
 	}*/
+	#filterSidebarBtnMobile:after {
+    content: "Filter";
+    position: relative;
+    font-size: 10px;
+    display: block;
+}
 }
 
 /**
@@ -1829,7 +1848,7 @@ label.btn.active,
 .getLink {
 	cursor: pointer;
   font-size: 12px;
-  padding: 18px 22px;
+  padding: 10px 22px;
   display: inline-block;
   background: #ffffff;
   /* border-radius: 4px; */
@@ -1919,10 +1938,11 @@ label.btn.active,
 }
 .warning {
 	text-align: left;
-	font-size: 12px;
-	color: red;
-	font-size: 12px;
-	padding-bottom: 3px;
+    font-size: 12px;
+    color: red;
+    font-size: 12px;
+    padding-bottom: 8px;
+    padding-top: 2px;
 }
 .warning {
 
@@ -2017,7 +2037,7 @@ label.btn.active,
 }*/
 .dropdown-ch,
 .open>.dropdown-toggle.dropdown-ch {
-    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
     max-height: 26px;
     line-height: 1.1;
     text-align: left;
@@ -2027,7 +2047,7 @@ label.btn.active,
     font-size: 12px;
 }
 .toggleBar-ch {
-    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
     max-height: 26px;
     line-height: 1.1;
     text-align: left;
@@ -2037,14 +2057,14 @@ label.btn.active,
     font-size: 12px;
 }
 .active .dropdown-ch {
-    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
     color: #fff;
 }
 .active.open>.dropdown-ch {
 	color: #333;
 }
 .active.toggleBar-ch {
-	    background: url("//cdn.course-horse.com//template/common/images/sprites/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
+	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
 }
 .active.toggleBar-ch:hover {
 	color: #fff;
@@ -2088,6 +2108,9 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
+  #current-interest {
+  	max-width: 438px;
+  }
   #current-interest,
   #breadcrumb-content {
     display: inline-block;
@@ -2095,7 +2118,7 @@ input[type="date"]::-webkit-inner-spin-button{
 }
   #breadcrumb-content {
 	/*max-width: 50%;*/
-	min-width: 33.333%;
+	/*min-width: 33.333%;*/
 	}
 }
 /* 14% = 100% (full-width row) divided by 7 */
@@ -2215,29 +2238,33 @@ input[type="date"]::-webkit-inner-spin-button{
 	  overflow-y: scroll;
 	}
 	.itemContents .bookmark {
-		padding: 5px 8px;
-		/*background-color: rgba(255, 255, 255, 0.7);*/
 		border-radius: 3px;
 		top: -3px;
-		right: -8px;
+		right: -3px;
 		z-index: 1;
-		position: relative;
+		position: absolute;
+		width: 28px;
+		height: 24px;
+		font-size: 11px;
+		padding: 3px 6px;
 	}
-	.classTitle, .classDate, .warning {
+	.classTitle, .classDate, .warning, .warning h4 {
 		position: relative;
 		background-color: white;
 		line-height: 14px;
   		font-size: 11px;
 	}
 	.classTitleMobile a {
-		white-space: nowrap;
+		/*white-space: nowrap;
 		overflow: hidden;
-		text-overflow: ellipsis;
+		text-overflow: ellipsis;*/
 		display: block;
 		font-size: 11px;
+		line-height: 1.4;
 	}
 	.classDateMobile {
   		font-size: 11px;
+  		line-height: 1.2;
 	}
 	
 }
@@ -2343,16 +2370,14 @@ input[type="date"]::-webkit-inner-spin-button{
   		float: left;
 	}
 	/***** ItemBox Rollover ******/
-	.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
+	/*.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
 	bottom: 0;
 	}
 
 	.itemBox:hover .classTitle, .itemBox:hover .classDate, .itemBox:hover .warning {
-		/*bottom: 164px;*/
 		bottom: 124px;
 	}
 	.itemBox:hover .contentWrap {
-		/*top: -165px;*/
 		top: -125px;
 		position: relative;
 	}
@@ -2399,19 +2424,19 @@ input[type="date"]::-webkit-inner-spin-button{
 	    -moz-transition: all .3s ease-out;
 	    -webkit-transition: all .3s ease-out;
 	    transition: all .3s ease-out;
-	}
+	}*/
 	/***** End ItemBox Rollover ******/
 
 	/***** Item-details Rollover - When you roll over detail instead of entire tile ******/
-	/*.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
+	.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
 	bottom: 0;
 	}
 
 	.item-details:hover .classTitle, .item-details:hover .classDate, .item-details:hover .warning {
-		bottom: 164px;
+		bottom: 124px;
 	}
 	.item-details:hover .contentWrap {
-		top: -165px;
+		top: -125px;
 		position: relative;
 	}
 
@@ -2457,7 +2482,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	    -moz-transition: all .3s ease-out;
 	    -webkit-transition: all .3s ease-out;
 	    transition: all .3s ease-out;
-	}*/
+	}
 	/***** End ItemBox Rollover ******/
 
 
@@ -2475,6 +2500,21 @@ input[type="date"]::-webkit-inner-spin-button{
 		/*height: 140px;*/
 		    height: 340px;
 	}
+	.featured .itemContents:before {
+    content: "Featured";
+    padding: 8px 18px;
+    display: block;
+	background-color: #FFFFFF;
+    color: #BCBDC0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.featured.itemBox img {
+    top: 0px;
+    position: relative;
+    width: 110%;
+}
 	.featured .shortDescription {
 	    /*height: 101px !important;
 	    top: 13px;*/
@@ -2487,7 +2527,7 @@ input[type="date"]::-webkit-inner-spin-button{
     	padding-bottom: 15px;
 	}
 
-	.featured .itemBox:hover .shortDescription {
+	.featured .itemBox .item-details:hover .shortDescription {
     height: 254px;
     opacity: 1;
     overflow-y: auto;
@@ -2497,16 +2537,10 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .classTitle {
 		padding: 10px 18px 0;
 	}
-	.featured .classTitle a {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-bottom: -5px;
-}
 	.itemBox.featured  .shortDescription {
-		height: 210px
+		height: 315px
 	}
-	 .itemBox.featured:hover .contentWrap {
+	 .itemBox.featured .item-details:hover .contentWrap {
 	    top: -278px;
 	    position: relative;
 	    background: transparent;
@@ -2522,9 +2556,9 @@ input[type="date"]::-webkit-inner-spin-button{
 		opacity: 1;
 		bottom: 200px;
 	}
-	.featured:hover .classTitle,
-	.featured:hover .classDate,
-	.featured:hover .warning {
+	.featured .item-details:hover .classTitle,
+	.featured .item-details:hover .classDate,
+	.featured .item-details:hover .warning {
 		 background: #fff;
 		     bottom: 250px;
 	}
@@ -2532,7 +2566,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .classTitle, 
 	.featured .classDate {
 	    /*bottom: 90px !important;*/
-	    background-color: rgba(255, 255, 255, 0.72);
+	    /*background-color: rgba(255, 255, 255, 0.72);*/
+	    background-color: rgba(0, 0, 0, 0.46);
 	}
 	.featured .item-details {
 	    width: 100%;
@@ -2543,6 +2578,21 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.featured .itemContents .bookmark {
 		/*right: 10px;*/
+	}
+	.featured .classDate,
+	.featured .titleLink {
+    	color: #fff;
+    	-o-transition: all .3s ease-out;
+	    -ms-transition: all .3s ease-out;
+	    -moz-transition: all .3s ease-out;
+	    -webkit-transition: all .3s ease-out;
+	    transition: all .3s ease-out;
+	}
+	.featured .item-details:hover .classDate {
+    	color: #515151;
+	}
+	.featured .item-details:hover .titleLink {
+		color: #4F93CD;
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
