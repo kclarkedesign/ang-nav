@@ -1438,6 +1438,9 @@
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
 			shortDesc += "<div class='startPrice'>" + "<b>Price:</b>  from "+ arr.LowestPrice + "</div>";
+			if (teachers.length) {
+				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
+			}
 			var performances = arr.FuturePerformances;
 			if (performances.length > 1) {
 				_.forEach(performances, function(p, ind) {
@@ -1447,16 +1450,13 @@
 					if (ind === 0) {
 						shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
 					} else {
-						if (ind >= 3) {
-							shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
-							return false;
-						}
+						// if (ind >= 3) {
+						// 	shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
+						// 	return false;
+						// }
 						shortDesc += "<div class='dates'>"+ futureDate + "</div>";
 					}
 				});
-			}
-			if (teachers.length) {
-				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
 			}
 		}
 		var classInfoObj = {
@@ -1500,7 +1500,7 @@
 		if (dateHour > 12) {
 			dateHour = dateHour - 12;
 		}
-		var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ uglyDate.getMinutes() : "";
+		var dateMinute = uglyDate.getMinutes() > 0 ? ":"+ (uglyDate.getMinutes().toString().length === 1 ? "0"+ uglyDate.getMinutes() : uglyDate.getMinutes()) : "";
 		var prettyDate = short ? monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +" "+ yearNumber : dayAbbr[uglyDate.getDay()] +", "+ monthAbbr[uglyDate.getMonth()] +" " + uglyDate.getDate() +", "+ yearNumber +", "+ dateHour + dateMinute + " " + ampm;
 		return prettyDate;
 	}
@@ -1573,7 +1573,7 @@ var resizeTileDisplay = function (scope) {
 		numColumns = 4;
 		tileHeight = 196;
 	}
-	var headerHeight = $("#isoContainer").offset().top;
+	var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
