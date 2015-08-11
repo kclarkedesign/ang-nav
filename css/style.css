@@ -2598,7 +2598,8 @@ input[type="date"]::-webkit-inner-spin-button{
 		content: "Featured";
 		padding: 8px 18px;
 		display: block;
-		background: linear-gradient(rgba(251, 251, 251, 0.38), rgba(204, 204, 204, 0.44));
+		/*background: linear-gradient(rgba(251, 251, 251, 0.38), rgba(204, 204, 204, 0.44));*/
+		background: #000;
 		color: #A7A7A7;
 		font-weight: bold;
 		text-transform: uppercase;
