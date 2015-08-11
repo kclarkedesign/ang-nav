@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
 	<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/ang-nav/css/style.css">
+	<link rel="stylesheet" href="/ang-nav/css/style-pt5-gd.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
 	<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
@@ -21,8 +21,9 @@
 	<script src="/ang-nav/src/angularLocalStorage.js"></script>
 	<script src="/ang-nav/src/ng-infinite-scroll.min.js"></script>
 	<script src="/ang-nav/src/navControllers5.js"></script>
+</html>
 	<!-- TO BE ADDED TO ANGULAR -->
-	<script type="text/javascript">
+    <script type="text/javascript">
 	$(document).ready(function() {
 		var mainNavIntList = $('#interest-list');
 		var sideBar = $("#sidebar");
@@ -733,7 +734,8 @@
 												</div>
 											</div>
 											<div class="col-xs-9 col-sm-4 hidden-lg hidden-xl">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											<div class="col-xs-3 col-sm-2 hidden-lg hidden-xl pl0">
 												<button id="filterSidebarBtnMobile" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -986,7 +988,8 @@
 										<div class="col-sm-4 pull-right">
 											<div class="row">
 												<div class="col-md-12 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, course, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 												<div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
@@ -1010,14 +1013,21 @@
 							<div id="Container" class="tileContainer container">
 								
 								<div id="tiles" class="row">
-
 									<div class="col-md-12 col-lg-10 pl0 pr0">
 										<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 											<span class="noResults">No items were found</span>
+											<div ng-show="navListCtrl.displayFilterOptions()">
+												<span class="noResults">Try resetting the</span>
+												<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized"><span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'"><span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span><span class="removable">Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized"><span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span><span class="removable">Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span><span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+												</span><span class="noResults" ng-show="navListCtrl.textboxSearch !== ''"><span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span><span class="removable">Search<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a></span></span>
+												<span class="noResults">filters</span>
+											</div>
 										</div>
-										<div id="isoContainer" ng-cloak class="ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": grid-sizer, "isFitWidth": true, "gutter": 0 }'>
-											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
-											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-4 col-lg-4 pl10 pr10">
+										<div id="isoContainer" ng-cloak class="seven-cols ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" preserve-order="true" masonry='{ "columnWidth": 81.26, "gutter": 0 }'>
+											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 												<div class="itemContents hidden-xs">
 													<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
 														<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
