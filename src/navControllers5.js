@@ -70,12 +70,13 @@
 	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
 	var WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 	var DAYPARTS = ['morning', 'afternoon', 'evening'];
-	var ERRORLOADING = 'Error loading data.  Click to refresh.';
+	var LOADINGNODEID = 0;
+	var ERRORLOADINGNODEID = -1;
 
 	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
-		self.allClasses = [{Name: 'Loading...'}];
+		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
 		self.arrCategory = [];
 		self.location = $location;
 		self.timeout = $timeout;
@@ -118,7 +119,7 @@
 					self.getAllInitialClasses(data);
 				}).finally(function() {
 					if (self.allClasses.length === 0) {
-						self.allClasses = [{Name: ERRORLOADING}];
+						self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
 					}
 				});
 			});
@@ -239,10 +240,10 @@
 	NavListController.prototype.interestClicked = function (subLevel) {
 		var self = this;
 		var currentName = subLevel.Name;
-		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && currentName === 'Loading...')) {
+		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && subLevel.NodeID === LOADINGNODEID)) {
 			return;
 		}
-		if (_.isUndefined(self.currentObj) && currentName === ERRORLOADING) {
+		if (_.isUndefined(self.currentObj) && subLevel.NodeID === ERRORLOADINGNODEID) {
 			location.reload();
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);

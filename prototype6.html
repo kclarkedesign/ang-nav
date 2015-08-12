@@ -181,8 +181,12 @@
 											<ul class="dropdown-menu mega-dropdown-menu row" style="max-height: 180px;">
 												<li class="container" style="margin: auto;">
 													<ul class="col-sm-12 no-p">
-														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?</li>
-														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
+														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+															<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+														</li>
+														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
+															<a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
+														</li>
 													</ul>
 												</li>
 											</ul>
