@@ -68,13 +68,14 @@
 		id: 'rk'
 	};
 	var MICROSITELIST = [MICROSITESOA, MICROSITEFINEART, MICROSITECERAMICS, MICROSITEJEWELRY, MICROSITEMUSIC, MICROSITEINSTRUCT, MICROSITEDANCE, MICROSITERK];
-	var weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-	var dayParts = ['morning', 'afternoon', 'evening'];
+	var WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+	var DAYPARTS = ['morning', 'afternoon', 'evening'];
+	var ERRORLOADING = 'Error loading data.  Click to refresh.';
 
 	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
-		self.allClasses = [];
+		self.allClasses = [{Name: 'Loading...'}];
 		self.arrCategory = [];
 		self.location = $location;
 		self.timeout = $timeout;
@@ -87,8 +88,8 @@
 		self.minEndDate = new Date();
 		self.maxDate = new Date();
 		self.maxDate = self.maxDate.setFullYear(self.maxDate.getFullYear() + 1);
-		self.times = _.clone(dayParts);
-		self.days = _.clone(weekdays);
+		self.times = _.clone(DAYPARTS);
+		self.days = _.clone(WEEKDAYS);
 		var shiftDay = self.days.shift();
 		self.days.push(shiftDay);
 		self.initDaySlice = 'all';
@@ -113,7 +114,12 @@
 				self.getAllInitialClasses(data);
 			}, function (respData) {
 				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
+					self.allClasses = [];
 					self.getAllInitialClasses(data);
+				}).finally(function() {
+					if (self.allClasses.length === 0) {
+						self.allClasses = [{Name: ERRORLOADING}];
+					}
 				});
 			});
 		});
@@ -233,8 +239,11 @@
 	NavListController.prototype.interestClicked = function (subLevel) {
 		var self = this;
 		var currentName = subLevel.Name;
-		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name) {
+		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && currentName === 'Loading...')) {
 			return;
+		}
+		if (_.isUndefined(self.currentObj) && currentName === ERRORLOADING) {
+			location.reload();
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
 
@@ -1296,12 +1305,12 @@
 			filteredNavs = navArr;
 		} else {
 			if (daySlices === 'all') {
-				daySlices = _.clone(weekdays);
+				daySlices = _.clone(WEEKDAYS);
 				var shiftDay = daySlices.shift();
 				daySlices.push(shiftDay);
 			}
 			if (timeSlices === 'all') {
-				timeSlices = _.clone(dayParts);
+				timeSlices = _.clone(DAYPARTS);
 			}
 			filteredNavs = _.filter(navArr, function (navs) {
 				var isSlicing = false;
@@ -1334,7 +1343,7 @@
 						} else if (hourNum >= 17) {
 							dayPart = 'evening';
 						}
-						if (weekdays[dayNum] === daySlice && _.includes(timeSlices, dayPart)) {
+						if (WEEKDAYS[dayNum] === daySlice && _.includes(timeSlices, dayPart)) {
 							returnVal = true;
 						}
 					});
