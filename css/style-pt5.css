@@ -6,7 +6,7 @@ For NAV Example
 
 /** For Promo  **/
 
-/*    #utility-bar {
+/*	#utility-bar {
  		width: 100%;
  		padding: 10px 0 10px 16px;
  		border-bottom: 1px solid #D6D6D6;
@@ -96,7 +96,7 @@ For NAV Example
 		transition: all .5s ease;
 	}
 	#utility-bar.affix {
-  		top: 148px;
+  		top: 140px;
 	}
  	#utility-container {
  		width:100%;
@@ -131,8 +131,7 @@ For NAV Example
   border: 1px solid #ccc;
   border-radius: 6px;
 }*/
- 	.promo-item,
- 	.browse-item a {
+ 	.promo-item {
  		display: inline-block;
  		text-align: center;
  		width: 170px;
@@ -148,7 +147,6 @@ For NAV Example
 	    width: 170px;
 	    display: block;
 	    padding: 3px;
-	    font-size: 12px;
 	}
  	.promo-item-top {
 	  display: block;
@@ -235,7 +233,7 @@ a:hover {
 }
 /*** Affix styling -- yay!!!! ***/
 #affix-breadcrumb .dropdown-menu-form {
-	min-width: 390px;
+	min-width: 320px;
 }
 #affix-breadcrumb-content {
 	display: none;
@@ -493,7 +491,7 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
+	background: #fff 98%/22px url(/img/search-iconizer.png) no-repeat;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -514,10 +512,6 @@ width: 280px;
 #searchText.form-control.active+a,
 #mobileSearchText.form-control.active+a {
 	display: block;
-}
-.form-control-feedback.form-control-clear {
-    height: 26px;
-    line-height: 26px;
 }
 .scroll {
 	height: 100%;
@@ -540,7 +534,6 @@ width: 280px;
   top: 10px;
   right: 5px;
   text-align: right;
-  color: #fff;
 }
 #savedPrograms img {
   width: 100%;
@@ -953,9 +946,6 @@ a {
 	cursor: pointer;
 	color: #4F93CD;
 }
-.blue-bg {
-	background-color: #337ab7
-}
 #backToTop {
   right: 16%;
   display: none;
@@ -985,18 +975,18 @@ a {
 	box-shadow: none;
 }
 .itemContents .bookmark {
-		position: absolute;
-		padding: 3px 5px 1px 5px;
-		border-radius: 3px;
-		top: 5px;
-		right: 5px;
-		z-index: 1;
-		background-color: #fff;
-		border: 1px solid rgba(0, 0, 0, 0.15);
-		font-size: 13px;
-		height: 24px;
-		width: 24px;
-	}
+    position: absolute;
+    padding: 3px 5px 1px 5px;
+    border-radius: 3px;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    height: 24px;
+    width: 24px;
+}
 /*.itemContents .bookmark {
   position: absolute;
   padding: 8px 8px;
@@ -1014,7 +1004,7 @@ a {
 }
 #breadcrumb-content {
 
-	/*border-bottom: 1px solid #bdc3c7;*/
+	border-bottom: 1px solid #bdc3c7;
 }
 .breadcrumb {
 	background: transparent;
@@ -1067,14 +1057,9 @@ a {
   -moz-transition: all .2s ease;
   transition: all .2s ease;
   background-color: #eff0f2;
-  margin: 3px 6px;
+  margin: 3px -4px;
   box-sizing: border-box;
   border-bottom: 1px solid #fff;
-  width: 95%;
-    margin-bottom: 6px;
-        white-space: nowrap;
-    text-overflow: ellipsis;
-    text-align: left;
 }
 /*.browse-item a {
   padding: 5px 8px;
@@ -1110,7 +1095,7 @@ a {
 }
 .defaultBc,
 .current {
-	font-size: 3.2rem;
+	font-size: 4.8rem;
 	font-weight: bold;
 	line-height: 1.1;
 }
@@ -1235,7 +1220,7 @@ a {
 }
 #current-interest .save-link,
 .bookmark {
-		/*vertical-align: 10px;*/
+		vertical-align: 10px;
 		font-size: 22px;
 		color: #BDC3C7;
 }
@@ -1288,9 +1273,9 @@ a {
 	border-radius: 0px;
 	margin: 0;
 }
-/*.active #btn-dayTime,*/
+.active #btn-dayTime,
 label.btn.active,
-/*.active #btn-ageRange,*/
+.active #btn-ageRange,
 .active #btn-sort, 
 .active #btn-sortMobile {
 	background-color: #4F93CD;
@@ -1662,7 +1647,6 @@ label.btn.active,
 		margin-bottom: 15px;
 		padding-left: 0;
 			padding-right: 0;
-			margin-top: 5px;
 	}
 	.savedSearches a {
 		padding: 4px 8px 4px;
@@ -1686,7 +1670,7 @@ label.btn.active,
 		/*padding: 6px 0 10px;*/
 	}
 	.itemContents .bookmark {
-		position: absolute;
+		    position: absolute;
     padding: 5px 8px;
     background-color: #fff;
     border-radius: 3px;
@@ -1713,28 +1697,19 @@ label.btn.active,
 	/*#utilnav {
 		display: none;
 	}*/
-	#filterSidebarBtnMobile:after {
-    content: "Filter";
-    position: relative;
-    font-size: 10px;
-    display: block;
-}
 }
 
 /**
  * Container/Target Styles
  */
 
-#isoContainer,
-#isoContainerMobile {
-	/*margin: 0 auto;*/
+#isoContainer {
+	margin: 0 auto;
 	width: 100% !important;
 }
 
 #isoContainer:before, 
-#isoContainer:after,
-#isoContainerMobile:before,
-#isoContainerMobile:after {
+#isoContainer:after {
 	content: "";
 	display: table;
 }
@@ -1938,11 +1913,10 @@ label.btn.active,
 }
 .warning {
 	text-align: left;
-    font-size: 12px;
-    color: red;
-    font-size: 12px;
-    padding-bottom: 8px;
-    padding-top: 2px;
+	font-size: 12px;
+	color: red;
+	font-size: 12px;
+	padding-bottom: 3px;
 }
 .warning {
 
@@ -1992,11 +1966,9 @@ label.btn.active,
 	/*top: 99px;*/
 	top: 48px;
 	z-index: 2;
-	/*background-color: #eff0f2;*/
-	background-color: #ffffff;
+	background-color: #eff0f2;
 	/*background-color: #333333;*/
-	/*border-bottom: 1px solid #ccc;*/
-	    border-bottom: 3px solid #eff0f2;
+	border-bottom: 1px solid #ccc;
 	margin: 0 auto;
 	left: 0;
 	right: 0;
@@ -2011,8 +1983,7 @@ label.btn.active,
 	background-color: #8EBADF;
 }
 #slicers {
-	/*background-color: #eff0f2;*/
-	    border-top: 3px solid #eff0f2;
+	background-color: #eff0f2;
 }
 /* slicers */
 /*#slicers .row-dropdown {
@@ -2035,41 +2006,6 @@ label.btn.active,
 	width: 100%;
 	background: #fff;
 }*/
-.dropdown-ch,
-.open>.dropdown-toggle.dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
-    max-height: 26px;
-    line-height: 1.1;
-    text-align: left;
-    display: inline-block;
-    width: auto;
-    padding-right: 36px;
-    font-size: 12px;
-}
-.toggleBar-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
-    max-height: 26px;
-    line-height: 1.1;
-    text-align: left;
-    display: inline-block;
-    width: auto;
-    /*padding-right: 36px;*/
-    font-size: 12px;
-}
-.active .dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
-    color: #fff;
-}
-.active.open>.dropdown-ch {
-	color: #333;
-}
-.active.toggleBar-ch {
-	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
-}
-.active.toggleBar-ch:hover {
-	color: #fff;
-	   
-}
 
 /* angular UI */
 .nav, 
@@ -2092,14 +2028,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	display: block !important;
 }
 @media (max-width: 1200px) {
-	.browse-item a {
-		width: 100%;
-	}
-	/*#current-interest,
-	#breadcrumb-content {
-    display: inline-block;
-    width: auto;
-}*/
+
   	}
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
@@ -2108,18 +2037,6 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
-  #current-interest {
-  	max-width: 438px;
-  }
-  #current-interest,
-  #breadcrumb-content {
-    display: inline-block;
-    width: auto;
-}
-  #breadcrumb-content {
-	/*max-width: 50%;*/
-	/*min-width: 33.333%;*/
-	}
 }
 /* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 768px) {
@@ -2172,10 +2089,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.bookmark {
     	vertical-align: 0px; 
-	}
-	sup {
-    	top: -.2em;
-	}
+	}	
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
@@ -2248,23 +2162,21 @@ input[type="date"]::-webkit-inner-spin-button{
 		font-size: 11px;
 		padding: 3px 6px;
 	}
-	.classTitle, .classDate, .warning, .warning h4 {
+	.classTitle, .classDate, .warning {
 		position: relative;
 		background-color: white;
 		line-height: 14px;
   		font-size: 11px;
 	}
 	.classTitleMobile a {
-		/*white-space: nowrap;
+		white-space: nowrap;
 		overflow: hidden;
-		text-overflow: ellipsis;*/
+		text-overflow: ellipsis;
 		display: block;
 		font-size: 11px;
-		line-height: 1.4;
 	}
 	.classDateMobile {
   		font-size: 11px;
-  		line-height: 1.2;
 	}
 	
 }
@@ -2500,21 +2412,6 @@ input[type="date"]::-webkit-inner-spin-button{
 		/*height: 140px;*/
 		    height: 340px;
 	}
-	.featured .itemContents:before {
-    content: "Featured";
-    padding: 8px 18px;
-    display: block;
-	background-color: #FFFFFF;
-    color: #BCBDC0;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.featured.itemBox img {
-    top: 0px;
-    position: relative;
-    width: 110%;
-}
 	.featured .shortDescription {
 	    /*height: 101px !important;
 	    top: 13px;*/
@@ -2554,7 +2451,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.featured .item-details:hover .getTickets {
 		opacity: 1;
-		bottom: 218px;
+		bottom: 211px;
 	}
 	.featured .item-details:hover .classTitle,
 	.featured .item-details:hover .classDate,
@@ -2566,8 +2463,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .classTitle, 
 	.featured .classDate {
 	    /*bottom: 90px !important;*/
-	    /*background-color: rgba(255, 255, 255, 0.72);*/
-	    background-color: rgba(0, 0, 0, 0.46);
+	    background-color: rgba(255, 255, 255, 0.72);
 	}
 	.featured .item-details {
 	    width: 100%;
@@ -2577,38 +2473,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	    /*height: 80px;*/
 	}
 	.featured .itemContents .bookmark {
-		top: 40px;
-	}
-	.featured .classDate,
-	.featured .titleLink {
-    	color: #fff;
-    	-o-transition: all .3s ease-out;
-	    -ms-transition: all .3s ease-out;
-	    -moz-transition: all .3s ease-out;
-	    -webkit-transition: all .3s ease-out;
-	    transition: all .3s ease-out;
-	}
-	.featured .item-details:hover .classDate {
-    	color: #515151;
-	}
-	.featured .item-details:hover .titleLink {
-		color: #4F93CD;
-	}
-	.featured .itemContents:before {
-		content: "Featured";
-		padding: 8px 18px;
-		display: block;
-		/*background: linear-gradient(rgba(251, 251, 251, 0.38), rgba(204, 204, 204, 0.44));*/
-		background: #000;
-		color: #A7A7A7;
-		font-weight: bold;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		position: relative;
-		z-index: 1;
-	}
-	.featured .getTickets {
-		width: 100%;
+		/*right: 10px;*/
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
