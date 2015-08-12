@@ -1420,7 +1420,6 @@
 			sortDate2 = begDate;
 			//10 is an arbirtary number to set the secondary sorting
 			sortDate1 = begDate.setFullYear(yearNumber + 10);
-			startDate = "";
 			inProgress = true;
 		} else {
 			sortDate1 = begDate;
