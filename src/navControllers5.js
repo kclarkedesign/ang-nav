@@ -223,7 +223,11 @@
 
 	NavListController.prototype.getSublevels = function () {
 		var self = this;
-		return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });
+		if (self.currentObj) {
+			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
+		} else {
+			return;
+		}
 	};
 
 	NavListController.prototype.getAllInitialClasses = function (data) {
