@@ -1040,7 +1040,7 @@
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="getMore">
-															<span class="showMore">More Info <i class="fa fa-chevron-up"></i></span><br />
+															<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Wish List <i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i></a>
 														</div>
 														
 														<div class="contentWrap">

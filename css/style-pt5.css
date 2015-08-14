@@ -491,7 +491,7 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(/img/search-iconizer.png) no-repeat;
+	background: #fff 98%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -1224,7 +1224,8 @@ a {
 		font-size: 22px;
 		color: #BDC3C7;
 }
-.fa-heart.active{
+.fa-heart.active,
+.wishList.active {
 	color: #428BCA;
 }
 #interest-areaRow {
@@ -1774,6 +1775,25 @@ label.btn.active,
   /*background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;*/
   z-index: 1;
 }
+.getMore .bookmark {
+    padding: 10px 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    left: 0;
+    text-align: center;
+    border-radius: 0;
+    border-right: 0;
+    top: 1px;
+    right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-top: 0;
+}
+.wishList {
+    padding: 0;
+}
 .getTickets {
   bottom: 0;
   right: 0;
@@ -1799,7 +1819,7 @@ label.btn.active,
 .showMore {
   cursor: pointer;
   font-size: 12px;
-  padding: 18px 22px;
+  padding: 10px 22px;
   display: inline-block;
   background: #ffffff;
   /* border-radius: 4px; */
@@ -2370,9 +2390,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	.contentWrap {
 		top: 0;
 	}
-	.getMore {
+	/*.getMore {
     	display: none;
-	}
+	}*/
 	.getLink {
 		border-left: 1px solid #EDEDED;
 	}
@@ -2474,6 +2494,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.featured .itemContents .bookmark {
 		/*right: 10px;*/
+	}
+	.featured .getTickets {
+		width: 100%;
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
