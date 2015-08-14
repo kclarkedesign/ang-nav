@@ -112,6 +112,7 @@
 		self.tileInfoSrv.getSOAItems().then(function (items) {
 			self.navsDict["School Of The Arts"] = items.data;
 			self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
+				self.allClasses = [];
 				self.getAllInitialClasses(data);
 			}, function (respData) {
 				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
