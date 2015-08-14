@@ -112,11 +112,9 @@
 		self.tileInfoSrv.getSOAItems().then(function (items) {
 			self.navsDict["School Of The Arts"] = items.data;
 			self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
-				self.allClasses = [];
 				self.getAllInitialClasses(data);
 			}, function (respData) {
 				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
-					self.allClasses = [];
 					self.getAllInitialClasses(data);
 				}).finally(function() {
 					if (self.allClasses.length === 0) {
@@ -234,6 +232,7 @@
 	NavListController.prototype.getAllInitialClasses = function (data) {
 		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
 		var self = this;
+		self.allClasses = [];
 		self.allClasses.push.apply(self.allClasses, data.data);
 		var locationPath = self.location.path();
 		if (locationPath.length && locationPath !== '/') {
