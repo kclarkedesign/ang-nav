@@ -762,12 +762,10 @@
 									</div>
 								</div>
 							</div>
-							<!-- Refine slicers -->
+							<!-- Desktop Refine slicers -->
 							<div class="refine-slicers container hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.activeBreadcrumb.length">
 									
 									<div class="row">
-										
-										<!--edit -->
 										
 										<div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
@@ -783,7 +781,7 @@
 													</ul>
 											
 										</div>
-										<div class="dropdown col-sm-2 pr0" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" style="max-width: 136px;">
+										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
 											</button>
@@ -865,9 +863,9 @@
 											</ul>
 										</div>
 
-										<div class="dropdown col-sm-3" style="max-width: 270px; padding-right: 0;">
+										<div class="dropdown col-sm-3 pr0 snav-btnGroup-pgtype">
 											<div class="row">
-												<div class="col-xs-12 pull-left btn-group" role="group" data-toggle="buttons">
+												<div class="col-xs-12 pull-left btn-group pr0" role="group" data-toggle="buttons">
 													<label class="btn btn-default toggleBar-ch" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
 														<span class="pr5">All</span>
 													</label>
@@ -882,7 +880,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
+										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
 											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Age Range
 											</button>
@@ -953,9 +951,9 @@
 												</li>
 											</ul>
 										</div>
-										<div class="col-sm-12 pt10 pb10">
+										<div class="col-sm-12 pb10 snav-filter-container">
 											<div class="row">
-												<div class="col-md-12 pull-right">
+												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
@@ -1065,9 +1063,11 @@
 										</div>
 
 									</div> -->
+
+									<!--Desktop Affixed refine filter -->
 									<div class="row">
 										
-										<!--edit -->
+										
 										
 										<div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
@@ -1083,7 +1083,7 @@
 													</ul>
 											
 										</div>
-										<div class="dropdown col-sm-2 pr0" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" style="max-width: 136px;">
+										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" style="max-width: 136px;">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
 											</button>
@@ -1165,9 +1165,9 @@
 											</ul>
 										</div>
 
-										<div class="dropdown col-sm-3" style="max-width: 270px; padding-right: 0;">
+										<div class="dropdown col-sm-3 pr0 snav-btnGroup-pgtype">
 											<div class="row">
-												<div class="col-xs-12 pull-left btn-group" role="group" data-toggle="buttons">
+												<div class="col-xs-12 pull-left btn-group pr0" role="group" data-toggle="buttons">
 													<label class="btn btn-default toggleBar-ch" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
 														<span class="pr5">All</span>
 													</label>
@@ -1182,7 +1182,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="dropdown col-sm-2" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
+										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
 											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Age Range
 											</button>
@@ -1253,13 +1253,13 @@
 												</li>
 											</ul>
 										</div>
-										<div class="col-sm-12 pt10 pb10">
+										<div class="col-sm-12 pb10 snav-filter-container">
 											<div class="row">
-												<div class="col-md-12 pull-right">
+												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
-												<div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
+												<!-- <div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
 													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
 														Sort By
 														<span class="caret"></span>
@@ -1270,7 +1270,7 @@
 														<li role="separator" class="divider"></li>
 														<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
 													</ul>
-												</div>
+												</div> -->
 											</div>
 										</div>
 									</div>
@@ -1734,7 +1734,7 @@
 					</a>
 				</div>
 				<div class="sidebarHeading pt10 pb10 pl15 blue-bg">
-					Favorites
+					Wish List
 				</div>
 				<a id="savedSidebarClose"class="col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
 				<div class="col-xs-12 pb10">
