@@ -1053,6 +1053,9 @@ a {
 
 	/*border-bottom: 1px solid #bdc3c7;*/
 }
+#breadcrumb-content .dropdown-flexible {
+    max-width: 300px;
+}
 .breadcrumb {
 	background: transparent;
 	padding: 0;
@@ -1061,6 +1064,11 @@ a {
 	font-size: 14px;
 	font-weight: bold;
 }
+.breadcrumb>li {
+	display: block;
+	float: none;
+}
+
 .breadcrumb>li.current {
 	display: block;
 }
@@ -1071,9 +1079,17 @@ a {
 	padding: 0 0 0 6px;
 	content: "\f105\00a0";
 	font-family: FontAwesome;
+	display: none;
 }
 .browse-item {
   padding: 0 8px 0;
+}
+.icon-sort {
+	height: 28px;
+    display: block;
+    line-height: 40px;
+    float: right;
+    padding-left: 10px;
 }
 /*.browse-item a {
 	padding: 2px 5px;

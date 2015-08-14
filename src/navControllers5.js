@@ -229,6 +229,15 @@
 		}
 	};
 
+	NavListController.prototype.getSiblevels = function () {
+		var self = this;
+		if (self.currentObj) {
+			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
+		} else {
+			return;
+		}
+	};
+
 	NavListController.prototype.getAllInitialClasses = function (data) {
 		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
 		var self = this;
