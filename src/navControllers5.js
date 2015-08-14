@@ -221,6 +221,11 @@
 		});
 	};
 
+	NavListController.prototype.getSublevels = function () {
+		var self = this;
+		return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });
+	};
+
 	NavListController.prototype.getAllInitialClasses = function (data) {
 		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
 		var self = this;
