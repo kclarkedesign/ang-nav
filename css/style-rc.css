@@ -243,6 +243,12 @@ a:hover {
 .affix #affix-breadcrumb-content {
 	display: block;
 }
+#slicerContainer #affix-browse-nav{
+		display:none;
+	}
+	#slicerContainer.affix #affix-browse-nav{
+		display:block;
+	}
 header.affix .container-fluid-max-lg {
     /* top: -28px; */
     /* position: relative; */
@@ -333,7 +339,7 @@ header .bottom-nav {
 	background-color: #8EBADF;
 }
 .full-width {
-	width: 100%
+	width: 100% !important;
 }
 #utilnav {
 	/*display: inline-block;*/
@@ -491,9 +497,13 @@ width: 280px;
 	position: fixed;
 	z-index: 1001;
 }
+#searchText.form-control {
+	font-size: 12px;
+    max-height: 26px;
+}
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 98%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
+	background: #fff 99%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -518,6 +528,27 @@ width: 280px;
 .form-control-feedback.form-control-clear {
     height: 26px;
     line-height: 26px;
+}
+.form-control-feedback {
+	width: 22px;
+}
+.snav-filter {
+	display: inline-block;
+}
+.snav-filter-container {
+	display: inline-block;
+    width: auto;
+    min-width: 292px;
+}
+.snav-ageRange {
+	padding-left: 0;
+    max-width: 130px;
+}
+.snav-btnGroup-pgtype {
+	max-width: 262px;
+}
+.snav-dayTime {
+	max-width: 132px;
 }
 .scroll {
 	height: 100%;
@@ -1011,6 +1042,12 @@ a {
 .titleLink {
 	max-width: 89%;
 	display: inline-block;
+}
+.affix .current {
+	font-size: 1.5em;
+}
+.affix #savedSidebarBtn sup{
+	top: -0.2em;
 }
 #breadcrumb-content {
 
@@ -2056,9 +2093,23 @@ label.btn.active,
 	width: 100%;
 	background: #fff;
 }*/
+.dropdown-lg,
+.pull-right>.dropdown-lg {
+	    min-width: 480px;
+    margin-top: 10px;
+    left: 0;
+}
+.dropdown-flexible .dropdown-ch,
+#browseBtns .dropdown-ch {
+	background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+}
+.dropdown-flexible {
+	display: inline-block;
+	width: auto;
+}
 .dropdown-ch,
 .open>.dropdown-toggle.dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
     max-height: 26px;
     line-height: 1.1;
     text-align: left;
@@ -2129,9 +2180,9 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
-  #current-interest {
+  /*#current-interest {
   	max-width: 438px;
-  }
+  }*/
   #current-interest,
   #breadcrumb-content {
     display: inline-block;
