@@ -1,5 +1,5 @@
 (function () {
-	'use strict';
+    'use strict';
 	var STARTINGLEVEL = 0;
 	var MAXLEVEL = 0;
 	var INITIALIZING = true;

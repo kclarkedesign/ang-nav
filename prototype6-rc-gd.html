@@ -182,7 +182,9 @@
 											<ul class="dropdown-menu mega-dropdown-menu row" style="max-height: 180px;">
 												<li class="container" style="margin: auto;">
 													<ul class="col-sm-12 no-p">
-														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?</li>
+														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+															<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+														</li>
 														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
 													</ul>
 												</li>
@@ -734,10 +736,6 @@
 											<a id="" class="btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
 												<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span> 
 												<span class="icon-sort" ng-show="navListCtrl.getSublevels().length"><i class="fa fa-sort fa-lg"></i></span>
-												<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
-													<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
-
-												</a>
 											</a>
 
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
@@ -799,7 +797,7 @@
 										
 										<!-- <div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
-												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: Subcategories
+												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
 														<li>
@@ -1101,7 +1099,7 @@
 										
 										<div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
-												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: Subcategories
+												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
 														<li>
@@ -1761,7 +1759,9 @@
 				<div id="floatSavedBtn" class="notifications dropdown" ng-class="{'in': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}">
 					<a href="javascript:;" data-toggle="dropdown">
 						<i class="fa" ng-class="{'fa-heart': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}"></i>
+						<span class="floatBtnTitle">Wish List</span>
 					</a>
+
 				</div>
 				<div class="sidebarHeading pt10 pb10 pl15 blue-bg">
 					Wish List
