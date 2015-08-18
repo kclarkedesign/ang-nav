@@ -1,5 +1,5 @@
 (function () {
-	'use strict';
+    'use strict';
 	var STARTINGLEVEL = 0;
 	var MAXLEVEL = 0;
 	var INITIALIZING = true;
@@ -221,6 +221,15 @@
 	};
 
 	NavListController.prototype.getSublevels = function () {
+		var self = this;
+		if (self.currentObj) {
+			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
+		} else {
+			return;
+		}
+	};
+
+	NavListController.prototype.getSiblevels = function () {
 		var self = this;
 		if (self.currentObj) {
 			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	

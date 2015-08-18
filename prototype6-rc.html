@@ -182,7 +182,9 @@
 											<ul class="dropdown-menu mega-dropdown-menu row" style="max-height: 180px;">
 												<li class="container" style="margin: auto;">
 													<ul class="col-sm-12 no-p">
-														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?</li>
+														<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+															<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+														</li>
 														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
 													</ul>
 												</li>
@@ -714,33 +716,59 @@
 						</div>
 						<div class="filter-browse-container">
 							<div class="filter-content container pl10 pr10 mt25 mb25">
-								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p">
+								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p" ng-show="navListCtrl.activeBreadcrumb.length > 0">
 									<ol class="breadcrumb mb5">
-										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
-											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										<li class="dropdown col-sm-2 dropdown-flexible pt5 pr0 pl0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a id="" class="btn btn-default full-width dropdown-ch dropdown-toggle" ng-bind-html="bc.Name | unsafe" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+											</a>
+											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu">
+												<li>
+													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
+														<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+													</span>
+
+												</li>
+											</ul>
+										</li>
+										<li class="dropdown pt5" dropdown auto-close="outsideClick">
+
+											<a id="" class="btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+												<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span> 
+												<span class="icon-sort" ng-show="navListCtrl.getSublevels().length"><i class="fa fa-sort fa-lg"></i></span>
+											</a>
+
+											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
+												<li>
+													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
+														<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+													</span>
+
+												</li>
+											</ul>
 										</li>
 									</ol>
-									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl0 pr0">
+									<!-- <div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl0 pr0">
 										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 										
 										<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
 											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
 
 										</a>
-									</div>
+									</div> -->
 
 								</div>
 								<div id="filter-container">
 									
-									<!-- <div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
-										<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+									<!-- <div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.getSublevels().length">
+										<span class="browse-item col-xs-6 col-sm-4 col-md-4 col-lg-3 no-p" ng-repeat="sl in navListCtrl.getSublevels()">
 											<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 										</span>
 									</div> -->
 									<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 visible-xs visible-sm visible-md">
 										<div class="row">
 											<div id="browseBtns" class="col-xs-12 col-sm-6 mb10">
-												<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+												<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.getSublevels().length">
 													<button id="browseBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														Subcategories
 														<span class="caret"></span>
@@ -767,20 +795,20 @@
 									
 									<div class="row">
 										
-										<div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
+										<!-- <div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
-												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: Subcategories
+												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
-											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu">
+											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
 														<li>
-															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 															</span>
 															
 														</li>
 													</ul>
 											
-										</div>
+										</div> -->
 										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
@@ -1006,12 +1034,12 @@
 													
 													<a id="" class="dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
 														<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
-														<span class="caret" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]"></span>
+														<span class="caret" ng-show="navListCtrl.getSublevels().length"></span>
 													</a>
 
 													<ul class="dropdown-menu dropdown-menu-form" role="menu">
 														<li>
-															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 															</span>
 															
@@ -1024,7 +1052,7 @@
 									</div>
 									<!-- <div class="row">
 										<div id="browseBtns" class="col-xs-12 col-sm-6 mb10">
-											<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+											<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.getSublevels().length">
 												<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl0 pr0">
 													<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 
@@ -1033,13 +1061,13 @@
 													</a>
 
 
-													<span class="dropdown pt5 pl15 pr0 pull-right" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+													<span class="dropdown pt5 pl15 pr0 pull-right" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" ng-show="navListCtrl.getSublevels().length">
 														<button id="" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 															Subcategories
 														</button>
 														<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu">
 															<li>
-																<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+																<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																	<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 																</span>
 
@@ -1071,11 +1099,11 @@
 										
 										<div class="dropdown col-sm-2 dropdown-flexible pr0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" >
 											<button id="" class="btn btn-default full-width dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
-												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: Subcategories
+												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
-											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu">
+											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
 														<li>
-															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 															</span>
 															
@@ -1286,7 +1314,7 @@
 								
 								<div id="tiles" class="row">
 									<!-- <div class="col-md-2 pl0" ng-show="navListCtrl.activeBreadcrumb.length">
-										<div id="utility-bar" class="hidden-xs hidden-sm hidden-md" affix ng-show="navListCtrl.arrCategory[navListCtrl.currentObj.Level+1]">
+										<div id="utility-bar" class="hidden-xs hidden-sm hidden-md" affix ng-show="navListCtrl.getSublevels().length">
 											
 										</div>
 									</div> -->
@@ -1612,7 +1640,7 @@
 			<div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas" id="browseSidebar">
 				<div class="list-group">
 					<span class="list-group-item active"><span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span><a id="browseSidebarClose" class="center active pull-right"><i class="fa fa-times fa-lg"></i></a></span>
-					<span class="browse-item full-width col-xs-12 no-p" ng-repeat="sl in navListCtrl.arrCategory[navListCtrl.currentObj.Level+1] | filter: { Parent: navListCtrl.currentObj.NodeID }">
+					<span class="browse-item full-width col-xs-12 no-p" ng-repeat="sl in navListCtrl.getSublevels()">
 						<a class="list-group-item" ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
 					</span>
 				</div>
@@ -1731,7 +1759,9 @@
 				<div id="floatSavedBtn" class="notifications dropdown" ng-class="{'in': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}">
 					<a href="javascript:;" data-toggle="dropdown">
 						<i class="fa" ng-class="{'fa-heart': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}"></i>
+						<span class="floatBtnTitle">Wish List</span>
 					</a>
+
 				</div>
 				<div class="sidebarHeading pt10 pb10 pl15 blue-bg">
 					Wish List
