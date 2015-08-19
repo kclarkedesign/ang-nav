@@ -1,5 +1,5 @@
 (function () {
-    'use strict';
+	'use strict';
 	var STARTINGLEVEL = 0;
 	var MAXLEVEL = 0;
 	var INITIALIZING = true;
@@ -220,19 +220,14 @@
 		});
 	};
 
-	NavListController.prototype.getSublevels = function () {
+	NavListController.prototype.getSublevels = function (level, nodeid) {
 		var self = this;
 		if (self.currentObj) {
-			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
-		} else {
-			return;
-		}
-	};
-
-	NavListController.prototype.getSiblevels = function () {
-		var self = this;
-		if (self.currentObj) {
-			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
+			if (_.isUndefined(level)) {
+				level = self.currentObj.Level;
+				nodeid = self.currentObj.NodeID;
+			}
+			return _.filter(self.arrCategory[level+1], { 'Parent': nodeid });	
 		} else {
 			return;
 		}
@@ -806,6 +801,14 @@
 		self.populateSlicers(locationSlicers);
 	};
 
+	NavListController.prototype.setNewPath = function (subLevel) {
+		var self = this;
+		if (subLevel.Name === self.currentObj.Name && subLevel.Level === self.currentObj.Level && subLevel.NodeID === self.currentObj.NodeID) {
+			return;
+		}
+		self.setUrl(subLevel.Name, 'jump', subLevel.Level);
+	};
+
 	NavListController.prototype.setCurrent = function (currentId) {
 		var self = this;
 		var currentName, currentLevel, currentNode, jumpType, currentIndex;
@@ -831,7 +834,7 @@
 		self.setUrl(currentIndex || currentName, urlMethod);
 	};
 
-	NavListController.prototype.setUrl = function (currentId, urlMethod) {
+	NavListController.prototype.setUrl = function (currentId, urlMethod, jumpTo) {
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
@@ -859,6 +862,14 @@
 				break;
 			case 'replace':
 				newLocationPath = fixUrl('/'+ currentId + locationPathRemoved);
+				break;
+			case 'jump':
+				var folderSplit = locationPath.split("/");
+				var newLocation = '';
+				for (var x = 0; x <= jumpTo; x++) {
+					newLocation += ('/' + folderSplit[x]);
+				}
+				newLocationPath = fixUrl(newLocation +'/'+ currentId + locationPathRemoved);
 				break;
 			default:
 				if (locationPath === '/') {
