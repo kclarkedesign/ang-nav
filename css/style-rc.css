@@ -538,7 +538,7 @@ width: 280px;
 .snav-filter-container {
 	display: inline-block;
     width: auto;
-    min-width: 292px;
+    min-width: 270px;
 }
 .snav-ageRange {
 	padding-left: 0;
@@ -1079,7 +1079,7 @@ a {
 	padding: 0;
 }
 .breadcrumb a {
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: bold;
 }
 .breadcrumb>li {
@@ -1103,10 +1103,8 @@ a {
   padding: 0 8px 0;
 }
 .icon-sort {
-	height: 28px;
+	height: 26px;
     display: block;
-    line-height: 40px;
-    float: right;
     padding-left: 10px;
 }
 /*.browse-item a {
@@ -1165,7 +1163,20 @@ a {
 /*.browse-item a:hover {
 	background-color: #D8ECFD;
 }*/
-
+.current-level-btn {
+	/*background: linear-gradient(#FBFBFB, #E9E9E9);
+	max-height: 26px;
+    line-height: 1;*/
+    background: linear-gradient(#545454, #272727);
+    max-height: 26px;
+    line-height: 1;
+    color: #fff;
+    min-width: 159px;
+	padding: 4px 10px;
+}
+.current-level-btn:hover {
+	color: #fff;
+}
 #browseSidebar .current {
   font-size: 1.6em;
 }
@@ -1181,9 +1192,10 @@ a {
 }
 .defaultBc,
 .current {
-	font-size: 3.2rem;
+	/*font-size: 3.2rem;*/
+	font-size: 16px;
 	font-weight: bold;
-	line-height: 1.1;
+	line-height: .9;
 }
 .divider {
 	height: 1px;
@@ -2131,7 +2143,7 @@ right: 0;
 .dropdown-lg,
 .pull-right>.dropdown-lg {
 	    min-width: 480px;
-    margin-top: 10px;
+    margin-top: 4px;
     left: 0;
 }
 .dropdown-flexible .dropdown-ch,
@@ -2146,7 +2158,7 @@ right: 0;
 .open>.dropdown-toggle.dropdown-ch {
     background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
     max-height: 26px;
-    line-height: 1.1;
+    line-height: 1;
     text-align: left;
     display: inline-block;
     width: auto;
@@ -2688,7 +2700,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	    float: right;
 	    top: 275px;
 	    position: absolute;
-	    z-index: 2;
+	    z-index: 1;
 	}
 	.featured .itemContents .bookmark {
 		top: -1px;

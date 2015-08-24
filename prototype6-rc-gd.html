@@ -715,25 +715,24 @@
 							</div>
 						</div>
 						<div class="filter-browse-container">
-							<div class="filter-content container pl10 pr10 mt25 mb25">
+							<div class="filter-content container pl10 pr10 mt25 mb10">
 								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p" ng-show="navListCtrl.activeBreadcrumb.length > 0">
 									<ol class="breadcrumb mb5">
-										<li class="dropdown col-sm-2 dropdown-flexible pt5 pr0 pl0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+										<li class="dropdown col-sm-2 dropdown-flexible pt5 pr0 pl0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)" ng-init="parentIndex = $index">
 											<a id="" class="btn btn-default full-width dropdown-ch dropdown-toggle" ng-bind-html="bc.Name | unsafe" dropdown-toggle aria-haspopup="true" aria-expanded="true">
 												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 											</a>
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu">
 												<li>
-													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
-														<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels(parentIndex, bc.NodeID)">
+														<a ng-click="navListCtrl.setNewPath(sl);" ng-bind-html="sl.Name | unsafe"></a>
 													</span>
-
 												</li>
 											</ul>
 										</li>
 										<li class="dropdown pt5" dropdown auto-close="outsideClick">
 
-											<a id="" class="btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+											<a id="" class="current-level-btn btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
 												<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span> 
 												<span class="icon-sort" ng-show="navListCtrl.getSublevels().length"><i class="fa fa-sort fa-lg"></i></span>
 											</a>
@@ -1348,7 +1347,7 @@
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="getMore">
-															<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img); toggle = !toggle" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> <span ng-hide="toggle">Wish List</span><span ng-show="toggle">Saved</span></a>
+															<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> <span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span><span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span></a>
 														</div>
 														
 														<div class="contentWrap">
@@ -1401,7 +1400,7 @@
 														<div class="classDate">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="getMore">
-															<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img); toggle = !toggle" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> <span ng-hide="toggle">Wish List</span><span ng-show="toggle">Saved</span></a>
+															<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> <span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span><span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span></a>
 														</div>
 														
 														<div class="contentWrap">
