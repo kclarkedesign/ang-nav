@@ -111,20 +111,29 @@
 		self.tileInfoSrv = tileInfoSrv;
 		self.tileInfoSrv.getSOAItems().then(function (items) {
 			self.navsDict["School Of The Arts"] = items.data;
-			self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
+		});
+		self.tileInfoSrv.getTalksItems().then(function (items) {
+			self.navsDict["Talks"] = items.data;
+		});
+
+		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
+			self.getAllInitialClasses(data);
+		}, function (respData) {
+			self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
 				self.getAllInitialClasses(data);
-			}, function (respData) {
-				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
-					self.getAllInitialClasses(data);
-				}).finally(function() {
-					if (self.allClasses.length === 0) {
-						self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
-					}
-				});
+			}).finally(function() {
+				if (self.allClasses.length === 0) {
+					self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
+				}
 			});
 		});
+
 		self.log = function (variable) {
 			console.log(variable);
+		};
+
+		self.table = function (variable) {
+			console.table(variable);
 		};
 
 		var w = angular.element($window);
@@ -220,6 +229,46 @@
 		});
 	};
 
+	NavListController.prototype.printReport = function (nodes, keywords, kwArr) {
+		var self = this;
+		_.forEach(nodes, function (node) {
+			if (_.isUndefined(node.parent)) {
+				if (_.isArray(node)) {
+					_.forEach(node, function (n) {
+						var kwStringArr = [];
+						_.forEach(keywords, function (kw) {
+							kwStringArr.push(kw.Level +':  '+ kw.Keywords);
+						});
+						var levelAndKeywords = kwStringArr.toString();
+						var foundArr = _.find(kwArr, { 'id' : n.ProductionSeasonNumber });
+						if (_.isUndefined(foundArr)) {
+							kwArr.push({ id : n.ProductionSeasonNumber, name: n.Title, keywords: keywords[0].Keywords, kws_0: levelAndKeywords });
+						} else {
+						 	var keywordArr = foundArr.keywords.split(',')
+						 	var kwSplit = keywords[0].Keywords.split(',');
+						 	_.forEach(kwSplit, function (kw) {
+						 		keywordArr.push(kw);
+						 	});
+						 	var kwUniq = _.uniq(keywordArr).toString();
+						 	foundArr.keywords = kwUniq;
+							for (var x = 1; x <=10; x++) {
+								if (_.isUndefined(foundArr['kws_' +x])) {
+									foundArr['kws_' +x] = levelAndKeywords;
+									break;
+								}
+							}
+						}
+					});
+					keywords.pop();
+				}
+				return;
+			}
+			keywords.push({ Level: node.name, Keywords: node.keywords });
+			self.printReport(node, keywords, kwArr);
+		});
+		return _.sortByOrder(kwArr, ['kws_6'], ['asc']);
+	};
+
 	NavListController.prototype.getSublevels = function (level, nodeid) {
 		var self = this;
 		if (self.currentObj) {
@@ -234,7 +283,6 @@
 	};
 
 	NavListController.prototype.getAllInitialClasses = function (data) {
-		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
 		var self = this;
 		self.allClasses = [];
 		self.allClasses.push.apply(self.allClasses, data.data);
@@ -244,7 +292,7 @@
 			var interestFolder = match[1];
 			var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
 			self.displayMicroSites(locationPath);
-			self.getValues(classesByInterest, 0, self.navsDict["School Of The Arts"]);
+			self.getValues(classesByInterest, 0, self.navsDict[interestFolder]);
 			self.buildCurrentObj();
 			self.displayTiles();
 		}
@@ -900,12 +948,16 @@
 					if (_.isObject(foundNode)) {
 						foundNode[node.NodeID] = { 
 							results: filteredResults, 
-							parent: node.ParentNodeID 
+							parent: node.ParentNodeID,
+							keywords: node.Keywords,
+							name: node.Name 
 						};
 					} else {
 						self.classesByNodeId[node.NodeID] = { 
 							results: filteredResults, 
-							parent: node.ParentNodeID 
+							parent: node.ParentNodeID,
+							keywords: node.Keywords,
+							name: node.Name
 						};
 					}
 				}
@@ -1556,12 +1608,12 @@
 		});
 	};
 
-	// TileInfoService.prototype.getAllEvents = function () {
-	// 	var self = this;
-	// 	return self.http.get('arc-response_Events.json').success(function (data) {
-	// 		return data;
-	// 	});
-	// };
+	TileInfoService.prototype.getTalksItems = function () {
+		var self = this;
+		return self.http.get('items/CatProdPkg_Talks.json').success(function (data) {
+			return data;
+		});
+	};
 	TileInfoService.prototype.getSOAItems = function () {
 		var _this = this;
 		return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
