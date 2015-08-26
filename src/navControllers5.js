@@ -115,6 +115,24 @@
 		self.tileInfoSrv.getTalksItems().then(function (items) {
 			self.navsDict["Talks"] = items.data;
 		});
+		self.tileInfoSrv.getSpecialItems().then(function (items) {
+			self.navsDict["Special Events"] = items.data;
+		});
+		self.tileInfoSrv.getConcertItems().then(function (items) {
+			self.navsDict["Concerts & Performances"] = items.data;
+		});
+		self.tileInfoSrv.getContinuingItems().then(function (items) {
+			self.navsDict["Continuing Education & Enrichment"] = items.data;
+		});
+		self.tileInfoSrv.getFitnessItems().then(function (items) {
+			self.navsDict["Health & Fitness"] = items.data;
+		});
+		self.tileInfoSrv.getJewishItems().then(function (items) {
+			self.navsDict["Jewish Life"] = items.data;
+		});
+		self.tileInfoSrv.getLiteraryItems().then(function (items) {
+			self.navsDict["Literary"] = items.data;
+		});
 
 		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
 			self.getAllInitialClasses(data);
@@ -1617,6 +1635,42 @@
 	TileInfoService.prototype.getSOAItems = function () {
 		var _this = this;
 		return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getSpecialItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_SpecialEvents.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getConcertItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_ConcertsPerformances.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getContinuingItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_ContinuingEd.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getFitnessItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_FitnessClasses.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getJewishItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_JewishLife.json').success(function (data) {
+			return data;
+		});
+	};
+	TileInfoService.prototype.getLiteraryItems = function () {
+		var _this = this;
+		return _this.http.get('items/CatProdPkg_Literary.json').success(function (data) {
 			return data;
 		});
 	};
