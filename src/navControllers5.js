@@ -109,36 +109,38 @@
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
 		self.tileInfoSrv = tileInfoSrv;
-		self.tileInfoSrv.getSOAItems().then(function (items) {
-			self.navsDict["School Of The Arts"] = items.data;
-		});
-		self.tileInfoSrv.getTalksItems().then(function (items) {
-			self.navsDict["Talks"] = items.data;
-		});
-		self.tileInfoSrv.getSpecialItems().then(function (items) {
-			self.navsDict["Special Events"] = items.data;
-		});
-		self.tileInfoSrv.getConcertItems().then(function (items) {
-			self.navsDict["Concerts & Performances"] = items.data;
-		});
-		self.tileInfoSrv.getContinuingItems().then(function (items) {
-			self.navsDict["Continuing Education & Enrichment"] = items.data;
-		});
-		self.tileInfoSrv.getFitnessItems().then(function (items) {
-			self.navsDict["Health & Fitness"] = items.data;
-		});
-		self.tileInfoSrv.getJewishItems().then(function (items) {
-			self.navsDict["Jewish Life"] = items.data;
-		});
-		self.tileInfoSrv.getLiteraryItems().then(function (items) {
-			self.navsDict["Literary"] = items.data;
-		});
+		// self.tileInfoSrv.getSOAItems().then(function (items) {
+		// 	self.navsDict["School Of The Arts"] = items.data;
+		// });
+		// self.tileInfoSrv.getTalksItems().then(function (items) {
+		// 	self.navsDict["Talks"] = items.data;
+		// });
+		// self.tileInfoSrv.getSpecialItems().then(function (items) {
+		// 	self.navsDict["Special Events"] = items.data;
+		// });
+		// self.tileInfoSrv.getConcertItems().then(function (items) {
+		// 	self.navsDict["Concerts & Performances"] = items.data;
+		// });
+		// self.tileInfoSrv.getContinuingItems().then(function (items) {
+		// 	self.navsDict["Continuing Education & Enrichment"] = items.data;
+		// });
+		// self.tileInfoSrv.getFitnessItems().then(function (items) {
+		// 	self.navsDict["Health & Fitness"] = items.data;
+		// });
+		// self.tileInfoSrv.getJewishItems().then(function (items) {
+		// 	self.navsDict["Jewish Life"] = items.data;
+		// });
+		// self.tileInfoSrv.getLiteraryItems().then(function (items) {
+		// 	self.navsDict["Literary"] = items.data;
+		// });
 
 		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
-			self.getAllInitialClasses(data);
+			//self.getAllInitialClasses(data);
+			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
 			self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
-				self.getAllInitialClasses(data);
+				//self.getAllInitialClasses(data);
+				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (self.allClasses.length === 0) {
 					self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
@@ -300,10 +302,7 @@
 		}
 	};
 
-	NavListController.prototype.getAllInitialClasses = function (data) {
-		var self = this;
-		self.allClasses = [];
-		self.allClasses.push.apply(self.allClasses, data.data);
+	NavListController.prototype.getAllInitialClasses = function (self) {
 		var locationPath = self.location.path();
 		if (locationPath.length && locationPath !== '/') {
 			var match = locationPath.match(/^\/(.+?)(\/|$)/);
@@ -316,8 +315,35 @@
 		}
 	};
 
-	NavListController.prototype.interestClicked = function (subLevel) {
+	NavListController.prototype.getInterestItems = function (func, arg) {
 		var self = this;
+		var subLevelName;
+		if (_.isUndefined(arg.Name)) {
+			//if page load
+			self.allClasses = [];
+			self.allClasses.push.apply(self.allClasses, arg.data);
+			var locationPath = self.location.path();
+			if (locationPath.length && locationPath !== '/') {
+				var match = locationPath.match(/^\/(.+?)(\/|$)/);
+				subLevelName = match[1];
+			}
+		} else {
+			//if interest link clicked
+			subLevelName = arg.Name;
+		}
+		if (subLevelName !== '') {
+			if (_.isUndefined(self.navsDict[subLevelName])) {
+				self.tileInfoSrv.getItems(subLevelName).then(function (items) {
+					self.navsDict[subLevelName] = items.data;
+					func(self, arg);
+				});
+			} else {
+				func(self, arg);
+			}
+		}
+	};
+
+	NavListController.prototype.interestClicked = function (self, subLevel) {
 		var currentName = subLevel.Name;
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && subLevel.NodeID === LOADINGNODEID)) {
 			return;
@@ -1625,6 +1651,43 @@
 			return data;
 		});
 	};
+
+	TileInfoService.prototype.getItems = function (subLevelName) {
+		var self = this;
+		var jsonFile;
+		switch (subLevelName) {
+			case 'School Of The Arts':
+				jsonFile = 'items/CatProdPkg_SOA.json';
+				break;
+			case 'Talks':
+				jsonFile = 'items/CatProdPkg_Talks.json';
+				break;
+			case 'Special Events':
+				jsonFile = 'items/CatProdPkg_SpecialEvents.json';
+				break;
+			case 'Concerts & Performances':
+				jsonFile = 'items/CatProdPkg_ConcertsPerformances.json';
+				break;
+			case 'Continuing Education & Enrichment':
+				jsonFile = 'items/CatProdPkg_ContinuingEd.json';
+				break;
+			case 'Health & Fitness':
+				jsonFile = 'items/CatProdPkg_FitnessClasses.json';
+				break;
+			case 'Jewish Life':
+				jsonFile = 'items/CatProdPkg_JewishLife.json';
+				break;
+			case 'Literary':
+				jsonFile = 'items/CatProdPkg_Literary.json';
+				break;
+		}
+		return self.http.get(jsonFile).success(function (data) {
+			return data;
+		});
+	};
+
+
+
 
 	TileInfoService.prototype.getTalksItems = function () {
 		var self = this;
