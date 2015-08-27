@@ -109,37 +109,10 @@
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
 		self.tileInfoSrv = tileInfoSrv;
-		// self.tileInfoSrv.getSOAItems().then(function (items) {
-		// 	self.navsDict["School Of The Arts"] = items.data;
-		// });
-		// self.tileInfoSrv.getTalksItems().then(function (items) {
-		// 	self.navsDict["Talks"] = items.data;
-		// });
-		// self.tileInfoSrv.getSpecialItems().then(function (items) {
-		// 	self.navsDict["Special Events"] = items.data;
-		// });
-		// self.tileInfoSrv.getConcertItems().then(function (items) {
-		// 	self.navsDict["Concerts & Performances"] = items.data;
-		// });
-		// self.tileInfoSrv.getContinuingItems().then(function (items) {
-		// 	self.navsDict["Continuing Education & Enrichment"] = items.data;
-		// });
-		// self.tileInfoSrv.getFitnessItems().then(function (items) {
-		// 	self.navsDict["Health & Fitness"] = items.data;
-		// });
-		// self.tileInfoSrv.getJewishItems().then(function (items) {
-		// 	self.navsDict["Jewish Life"] = items.data;
-		// });
-		// self.tileInfoSrv.getLiteraryItems().then(function (items) {
-		// 	self.navsDict["Literary"] = items.data;
-		// });
-
 		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
-			//self.getAllInitialClasses(data);
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
 			self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
-				//self.getAllInitialClasses(data);
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (self.allClasses.length === 0) {
@@ -1682,58 +1655,6 @@
 				break;
 		}
 		return self.http.get(jsonFile).success(function (data) {
-			return data;
-		});
-	};
-
-
-
-
-	TileInfoService.prototype.getTalksItems = function () {
-		var self = this;
-		return self.http.get('items/CatProdPkg_Talks.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getSOAItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getSpecialItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_SpecialEvents.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getConcertItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_ConcertsPerformances.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getContinuingItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_ContinuingEd.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getFitnessItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_FitnessClasses.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getJewishItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_JewishLife.json').success(function (data) {
-			return data;
-		});
-	};
-	TileInfoService.prototype.getLiteraryItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_Literary.json').success(function (data) {
 			return data;
 		});
 	};
