@@ -1105,6 +1105,13 @@
 												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
+														<!-- <li>
+															<ol class="breadcrumb mb5">
+																<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+																	<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+																</li>
+															</ol>
+														</li> -->
 														<li>
 															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
