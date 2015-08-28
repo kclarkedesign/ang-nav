@@ -304,7 +304,7 @@
 			//if interest link clicked
 			subLevelName = arg.Name;
 		}
-		if (subLevelName !== '') {
+		if (!_.isUndefined(subLevelName)) {
 			if (_.isUndefined(self.navsDict[subLevelName])) {
 				self.tileInfoSrv.getItems(subLevelName).then(function (items) {
 					self.navsDict[subLevelName] = items.data;
