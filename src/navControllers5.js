@@ -116,7 +116,7 @@
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (self.allClasses.length === 0) {
-					self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
+					self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
 				}
 			});
 		});
@@ -308,6 +308,9 @@
 			if (_.isUndefined(self.navsDict[subLevelName])) {
 				self.tileInfoSrv.getItems(subLevelName).then(function (items) {
 					self.navsDict[subLevelName] = items.data;
+					func(self, arg);
+				}, function () {
+					self.navsDict[subLevelName] = [];
 					func(self, arg);
 				});
 			} else {
@@ -1517,8 +1520,8 @@
 		begDate = new Date(parseInt(begDate.substr(6)));
 		var yearNumber = begDate.getFullYear();
 
-		var multDates = arr.IsMultipleDatesTimes;
-		var startDate = multDates ? "Multiple dates/times" : formatDateOutput(begDate);
+		var futurePerfCount = Number(arr.FuturePerformanceCount);
+		var startDate = futurePerfCount > 1 ? "Multiple dates/times" : formatDateOutput(begDate);
 
 		var sortDate1 = "";
 		var sortDate2 = "";
@@ -1541,7 +1544,6 @@
 			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
 		});
 		var teachers = instructors.toString();
-		var futurePerfCount = Number(arr.FuturePerformanceCount);
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
 			shortDesc += "<div class='startPrice'>" + "<b>Price:</b>  from "+ arr.LowestPrice + "</div>";
