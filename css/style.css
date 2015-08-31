@@ -1141,9 +1141,10 @@ a {
   margin: 3px -4px;
 }*/
 .browse-item a {
-  padding: 2px 8px;
+  /*padding: 2px 8px;*/
+  padding: 3px 3px 5px 0px;
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
@@ -1198,8 +1199,9 @@ a {
 	padding: 10px 15px;
 }
 .browse-item a:hover {
-	background-color: #D8ECFD;
+	/*background-color: #D8ECFD;*/
 	/*border-bottom: 1px solid #ccc;*/
+	text-decoration: underline;
 }
 .current {
 	font-weight: bold;
