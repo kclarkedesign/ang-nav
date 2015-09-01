@@ -104,6 +104,7 @@
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
+		self.bottomContainerStyle = { 'overflow': 'scroll', 'overflow-x': 'hidden', 'height': '100%' };
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
@@ -215,6 +216,9 @@
 						break;
 				}
 				self.displayTiles();
+
+
+
 				self.lastLocationPath = locationPath + locationObj.removed;
 				self.JumpNav = {};
 				self.limit = self.origLimit;
@@ -1675,6 +1679,21 @@
 		};
 	});
 
+	navApp.directive('getElementPosition', function () {
+		return {
+			link: function (scope, elem, attrs) {
+				scope.$watch(function() {
+					return elem[0].offsetTop;
+				}, function(newValue, oldValue) {
+					var winHeight = $(window).height();
+					var headerHeight = $('header').height();
+					var containerHeight = winHeight - (newValue + headerHeight);
+					scope.navListCtrl.bottomContainerStyle.height = containerHeight +'px';
+				});
+			}
+		};
+	});
+
 	navApp.filter('unsafe', function($sce) {
 		return function(val) {
 			return $sce.trustAsHtml(val);
@@ -1685,7 +1704,7 @@
 
 var isDate = function (checkDate) {
 	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
-}
+};
 
 var resizeTileDisplay = function (scope) {
 
@@ -1712,7 +1731,7 @@ var resizeTileDisplay = function (scope) {
 	scope.navListCtrl.limit = limitToSet;
 	scope.navListCtrl.numOfColumns = numColumns;
 	scope.navListCtrl.origLimit = limitToSet + numColumns;
-}
+};
 
 var adjustLevelArray = function (arr, start, end, clear) {
 	//creates a blank new level in self.arrCategory
@@ -1722,7 +1741,7 @@ var adjustLevelArray = function (arr, start, end, clear) {
 		}
 	}
 	return end;
-}
+};
 
 var isActualNumber = function (num) {
 	return !isNaN(parseFloat(num)) && isFinite(num);
@@ -1759,46 +1778,3 @@ $(document).on('click','.showMore',function(){
 	}
 	return false;
 });
-// $(document).on('mouseout','span.showMore',function(){
-// 	console.log("leave");
-// 		var $showMore = $(this).parent(".getMore");
-// 		var $wrapper = $showMore.next(".contentWrap");
-// 		var $classTitle = $showMore.prevAll(".classTitle");
-// 		var $classDate = $showMore.prevAll(".classDate");
-// 		var $warning = $showMore.prevAll(".warning");
-// 		var $content = $wrapper.find("div");
-// 		var titleHeight = $classTitle.height();
-// 		var warnHeight = $warning.height();
-		
-// 			$classTitle.animate({bottom: "0"});
-// 			$classDate.animate({bottom: "0"});
-// 			$warning.animate({bottom: "0"});
-// 			$content.slideUp(function () {
-// 				$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
-// 			});
-		
-// 		return false;
-// 	});
-
-// $(document).on('mouseover','span.showMore',function(){
-// 	console.log("enter");
-// 		var $showMore = $(this).parent(".getMore");
-// 		var $wrapper = $showMore.next(".contentWrap");
-// 		var $classTitle = $showMore.prevAll(".classTitle");
-// 		var $classDate = $showMore.prevAll(".classDate");
-// 		var $warning = $showMore.prevAll(".warning");
-// 		var $content = $wrapper.find("div");
-// 		var titleHeight = $classTitle.height();
-// 		var warnHeight = $warning.height();
-		
-// 			$wrapper.css( "bottom", "5px" );
-// 			$wrapper.animate({bottom: "164px"});
-// 			$classTitle.animate({bottom: "164px"});
-// 			$classDate.animate({bottom: "164px"});
-// 			$warning.animate({bottom: "164px"});
-// 			$content.slideDown(function () {
-// 				$showMore.html($showMore.html().replace('More Info <i class="fa fa-chevron-up"></i></span>', 'Less Info <i class="fa fa-chevron-down"></i></span>'));
-// 			});
-		
-// 		return false;
-// 	});
