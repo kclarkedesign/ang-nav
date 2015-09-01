@@ -1392,7 +1392,7 @@
 										</div>
 
 										<!-- For Medium and below screen sizes -->
-										<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
+										<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
 											<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
 											<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 												<div class="itemContents hidden-xs">
