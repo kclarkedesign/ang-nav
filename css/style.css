@@ -1077,7 +1077,7 @@ a {
 	font-size: 1.5em;
 }*/
 .affix #savedSidebarBtn sup{
-	top: -0.2em;
+	/*top: -0.2em;*/
 }
 #breadcrumb-content {
 
@@ -1091,7 +1091,7 @@ a {
 	padding: 0;
 }
 .breadcrumb a {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
 }
 .breadcrumb>li {
@@ -1144,7 +1144,7 @@ a {
   /*padding: 2px 8px;*/
   padding: 3px 3px 5px 0px;
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
@@ -1159,6 +1159,7 @@ a {
         white-space: nowrap;
     /*text-overflow: ellipsis;*/
     text-align: left;
+	color: #C747B8;
 }
 /*.browse-item a {
   padding: 5px 8px;
@@ -1208,8 +1209,8 @@ a {
 }
 .defaultBc,
 .current {
-	font-size: 3.2rem;
-	/*font-size: 16px;*/
+	/*font-size: 3.2rem;*/
+	font-size: 2.5rem;
 	font-weight: bold;
 	line-height: 1.1;
 }
@@ -1334,7 +1335,7 @@ a {
 }
 #current-interest .save-link,
 .bookmark {
-		/*vertical-align: 10px;*/
+		vertical-align: -7px;
 		font-size: 22px;
 		color: #909192;
 }
@@ -2244,8 +2245,9 @@ input[type="date"]::-webkit-inner-spin-button{
     *width: 14.285714285714285714285714285714%;
   }
   #current-interest {
-  	max-width: 438px;
-  	min-width: 250px;
+  	/*max-width: 438px;*/
+  	max-width: 398px;
+  	/*min-width: 250px;*/
   }
   #current-interest,
   #breadcrumb-content {
@@ -2488,6 +2490,9 @@ input[type="date"]::-webkit-inner-spin-button{
 
 }
 @media (min-width: 768px) {
+	#browse-nav {
+		width: 64%;
+	}
 	.filter-browse-container {
 		margin-right: -15px;
   		margin-left: -15px;

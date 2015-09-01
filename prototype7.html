@@ -728,9 +728,15 @@
 									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl5 pr0">
 										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 										
-										<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
+										<!-- 	<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
 											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
-										</a>
+
+											
+										</a> -->
+									
+
+
+										<!-- <a id="savedSidebarBtn" class="bookmark wishList" ng-click="navListCtrl.saveSearch()" ng-class="{'active': navListCtrl.checkSearchSaved()}"><sup><i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkSearchSaved()}"></i></sup><span ng-show="navListCtrl.checkSearchSaved()" class="ng-hide">Saved</span></a> -->
 
 									</div>
 								</div>
@@ -974,20 +980,16 @@
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
-												<div class="col-sm-12 col-md-4 pull-right hidden-lg" dropdown ng-class="{'active': (navListCtrl.sortOrder !== navListCtrl.initSortOrder || navListCtrl.soonestSortSelected) && navListCtrl.initialized}">
-													<button id="btn-sort" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false" class="dropdown-toggle col-xs-12 pull-right btn btn-default">
-														Sort By
-														<span class="caret"></span>
-													</button>
-													<ul class="dropdown-menu col-xs-12" role="menu">
-														<li><a ng-click="navListCtrl.sortResults('all')" ng-class="{'active': navListCtrl.soonestSortSelected}">Soonest Available</a></li>
-														<li><a ng-click="navListCtrl.sortResults('featured')" ng-class="{'active': navListCtrl.sortOrder === 'featured'}">Featured</a></li>
-														<li role="separator" class="divider"></li>
-														<li><a ng-click="navListCtrl.sortResults('progress')" ng-class="{'active': navListCtrl.sortOrder === 'progress'}">In Progess</a></li>
-													</ul>
-												</div>
+												
 											</div>
 										</div>
+										<!-- <div class="col-sm-12 pb10 snav-filter-container">
+											<div class="row">
+												<div class="col-md-12 snav-filter full-width pull-right">
+													Save for Later
+												</div>
+											</div>
+										</div> -->
 									</div>
 								</div>
 
@@ -1094,11 +1096,9 @@
 								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-4 no-p">
 									
 									<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl5 pr0">
-										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
-										
-										<a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
+										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span><!-- <a id="savedSidebarBtn" class="bookmark" ng-click="navListCtrl.saveSearch()">
 											<sup class="fa fa-heart" ng-show="navListCtrl.activeBreadcrumb.length" ng-class="{'active': navListCtrl.checkSearchSaved()}"></sup>
-										</a>
+										</a> -->
 
 									</div>
 								</div>
