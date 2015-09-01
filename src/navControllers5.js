@@ -1686,7 +1686,12 @@
 					return elem[0].offsetTop;
 				}, function(newValue, oldValue) {
 					var winHeight = $(window).height();
-					var headerHeight = $('header').height();
+					var headerHeight;
+					if (attrs.skipHeader == "true") {
+						headerHeight = 0;
+					} else {
+						headerHeight = $('header').height();
+					}
 					var containerHeight = winHeight - (newValue + headerHeight);
 					scope.navListCtrl.bottomContainerStyle.height = containerHeight +'px';
 				});
