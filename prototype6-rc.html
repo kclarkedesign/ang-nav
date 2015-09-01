@@ -715,7 +715,7 @@
 							</div>
 						</div>
 						<div class="filter-browse-container">
-							<div class="filter-content container pl10 pr10 mt25 mb25">
+							<div class="filter-content container pl10 pr10 mt25">
 								<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-12 no-p" ng-show="navListCtrl.activeBreadcrumb.length > 0">
 									<ol class="breadcrumb mb5">
 										<li class="dropdown col-sm-2 dropdown-flexible pt5 pr0 pl0 hidden-xs hidden-sm hidden-md" dropdown auto-close="outsideClick" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)" ng-init="parentIndex = $index">
@@ -730,22 +730,7 @@
 												</li>
 											</ul>
 										</li>
-										<li class="dropdown pt5" dropdown auto-close="outsideClick">
-
-											<a id="" class="btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-												<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span> 
-												<span class="icon-sort" ng-show="navListCtrl.getSublevels().length"><i class="fa fa-sort fa-lg"></i></span>
-											</a>
-
-											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
-												<li>
-													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
-														<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
-													</span>
-
-												</li>
-											</ul>
-										</li>
+										
 									</ol>
 									<!-- <div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl0 pr0">
 										<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
@@ -808,6 +793,25 @@
 													</ul>
 											
 										</div> -->
+										
+										<div class="dropdown pl10 pull-left" dropdown auto-close="outsideClick">
+
+											<a id="" class="current-level-btn btn btn-default dropdown-toggle" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+												<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+
+												<span class="icon-sort pull-right" ng-show="navListCtrl.getSublevels().length"><i class="fa fa-sort"></i></span>
+											</a>
+
+											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
+												<li>
+													<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
+														<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>
+													</span>
+
+												</li>
+											</ul>
+										</div>
+										
 										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
@@ -1101,6 +1105,13 @@
 												<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>: <span ng-show="navListCtrl.getSublevels().length">Subcategories</span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-form dropdown-lg" role="menu" ng-show="navListCtrl.getSublevels().length">
+														<!-- <li>
+															<ol class="breadcrumb mb5">
+																<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+																	<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+																</li>
+															</ol>
+														</li> -->
 														<li>
 															<span class="browse-item col-lg-6 pl0 pr0" ng-repeat="sl in navListCtrl.getSublevels()">
 																<a ng-click="navListCtrl.setCurrent(sl);" ng-bind-html="sl.Name | unsafe"></a>

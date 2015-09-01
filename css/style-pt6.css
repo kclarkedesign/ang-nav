@@ -243,12 +243,6 @@ a:hover {
 .affix #affix-breadcrumb-content {
 	display: block;
 }
-#slicerContainer #affix-browse-nav{
-		display:none;
-	}
-	#slicerContainer.affix #affix-browse-nav{
-		display:block;
-	}
 header.affix .container-fluid-max-lg {
     /* top: -28px; */
     /* position: relative; */
@@ -339,7 +333,7 @@ header .bottom-nav {
 	background-color: #8EBADF;
 }
 .full-width {
-	width: 100% !important;
+	width: 100%
 }
 #utilnav {
 	/*display: inline-block;*/
@@ -497,13 +491,9 @@ width: 280px;
 	position: fixed;
 	z-index: 1001;
 }
-#searchText.form-control {
-	font-size: 12px;
-    max-height: 26px;
-}
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 99%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
+	background: #fff 98%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -528,27 +518,6 @@ width: 280px;
 .form-control-feedback.form-control-clear {
     height: 26px;
     line-height: 26px;
-}
-.form-control-feedback {
-	width: 22px;
-}
-.snav-filter {
-	display: inline-block;
-}
-.snav-filter-container {
-	display: inline-block;
-    width: auto;
-    min-width: 270px;
-}
-.snav-ageRange {
-	padding-left: 0;
-    max-width: 130px;
-}
-.snav-btnGroup-pgtype {
-	max-width: 262px;
-}
-.snav-dayTime {
-	max-width: 132px;
 }
 .scroll {
 	height: 100%;
@@ -940,36 +909,18 @@ width: 280px;
 	  background-color: #333;
 	  font-size: 20px;
 	  z-index: 1003;
-	  height: 60px;
-	  width: 62px;
+	  height: 50px;
+	  width: 50px;
 	  text-align: center;
 	  line-height: 48px;
 	  -webkit-transition: all .5s ease;
 	  -moz-transition: all .5s ease;
 	  transition: all .5s ease;
 	}
-	#floatSavedBtn a {
-    	color: #C747B8;
-	}
 	#floatSavedBtn.in,
 	#floatCartBtn.in {
-		left: -62px;
+		left: -50px;
 		z-index: 2;
-	}
-	.floatBtnTitle {
-		opacity: 0
-	}
-	#floatSavedBtn.in .floatBtnTitle {
-		font-size: 12px;
-	    position: absolute;
-	    height: 40px;
-	    display: block;
-	    left: 0;
-	    white-space: nowrap;
-	    top: 21px;
-	    color: #fff;
-	    right: 0;
-	    opacity: 1;
 	}
 	#floatCartBtn,
 	#floatCartBtn {
@@ -1061,32 +1012,18 @@ a {
 	max-width: 89%;
 	display: inline-block;
 }
-.affix .current {
-	font-size: 1.5em;
-}
-.affix #savedSidebarBtn sup{
-	top: -0.2em;
-}
 #breadcrumb-content {
 
 	/*border-bottom: 1px solid #bdc3c7;*/
-}
-#breadcrumb-content .dropdown-flexible {
-    max-width: 300px;
 }
 .breadcrumb {
 	background: transparent;
 	padding: 0;
 }
 .breadcrumb a {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
 }
-.breadcrumb>li {
-	display: block;
-	float: none;
-}
-
 .breadcrumb>li.current {
 	display: block;
 }
@@ -1097,15 +1034,9 @@ a {
 	padding: 0 0 0 6px;
 	content: "\f105\00a0";
 	font-family: FontAwesome;
-	display: none;
 }
 .browse-item {
   padding: 0 8px 0;
-}
-.icon-sort {
-	height: 26px;
-    display: block;
-    padding-left: 10px;
 }
 /*.browse-item a {
 	padding: 2px 5px;
@@ -1163,20 +1094,7 @@ a {
 /*.browse-item a:hover {
 	background-color: #D8ECFD;
 }*/
-.current-level-btn {
-	/*background: linear-gradient(#FBFBFB, #E9E9E9);
-	max-height: 26px;
-    line-height: 1;*/
-    background: linear-gradient(#545454, #272727);
-    max-height: 26px;
-    line-height: 1;
-    color: #fff;
-    min-width: 159px;
-	padding: 4px 10px;
-}
-.current-level-btn:hover {
-	color: #fff;
-}
+
 #browseSidebar .current {
   font-size: 1.6em;
 }
@@ -1192,10 +1110,9 @@ a {
 }
 .defaultBc,
 .current {
-	/*font-size: 3.2rem;*/
-	font-size: 16px;
+	font-size: 3.2rem;
 	font-weight: bold;
-	line-height: .9;
+	line-height: 1.1;
 }
 .divider {
 	height: 1px;
@@ -1965,7 +1882,6 @@ label.btn.active,
   position: absolute;
   bottom: 0;
   text-align: center;
-right: 0;
 }
 .getLink:hover {
 	background: #E8E8E8;
@@ -2140,25 +2056,11 @@ right: 0;
 	width: 100%;
 	background: #fff;
 }*/
-.dropdown-lg,
-.pull-right>.dropdown-lg {
-	    min-width: 480px;
-    margin-top: 4px;
-    left: 0;
-}
-.dropdown-flexible .dropdown-ch,
-#browseBtns .dropdown-ch {
-	background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
-}
-.dropdown-flexible {
-	display: inline-block;
-	width: auto;
-}
 .dropdown-ch,
 .open>.dropdown-toggle.dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -172px no-repeat;
     max-height: 26px;
-    line-height: 1;
+    line-height: 1.1;
     text-align: left;
     display: inline-block;
     width: auto;
@@ -2227,9 +2129,9 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
   }
-  /*#current-interest {
+  #current-interest {
   	max-width: 438px;
-  }*/
+  }
   #current-interest,
   #breadcrumb-content {
     display: inline-block;
@@ -2656,15 +2558,13 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .classTitle {
 		padding: 10px 18px 0;
 	}
-	.itemBox.featured .shortDescription {
-		height: 200px
+	.itemBox.featured  .shortDescription {
+		height: 224px
 	}
 	 .itemBox.featured .item-details:hover .contentWrap {
-		top: -274px;
-		position: relative;
-		background: #FFF;
-		height: 250px;
-		z-index: -1;
+	    top: -278px;
+	    position: relative;
+	    background: transparent;
 	}
 	.featured .contentWrap {
 	    bottom: -18px;
@@ -2675,12 +2575,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.featured .item-details:hover .getTickets {
 		opacity: 1;
-		top: 65px;
-    	bottom: initial;
-	}
-	.featured .item-details:hover .getMore {
-		top: 28px;
-    	bottom: initial;
+		bottom: 218px;
 	}
 	.featured .item-details:hover .classTitle,
 	.featured .item-details:hover .classDate,
@@ -2698,12 +2593,12 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .item-details {
 	    width: 100%;
 	    float: right;
-	    top: 275px;
+	    top: 282px;
 	    position: absolute;
-	    z-index: 1;
+	    /*height: 80px;*/
 	}
 	.featured .itemContents .bookmark {
-		top: -1px;
+		top: 40px;
 	}
 	.featured .classDate,
 	.featured .titleLink {
@@ -2734,7 +2629,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		z-index: 1;
 	}
 	.featured .getTickets {
-		width: 50%;
+		width: 100%;
 	}
 	.tileContainer .featured {
 	    /*height: 150px;*/
