@@ -1665,6 +1665,9 @@
 			case 'Literary':
 				jsonFile = 'items/CatProdPkg_Literary.json';
 				break;
+			case 'Kids & Family':
+				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
+				break;
 		}
 		return self.http.get(jsonFile).success(function (data) {
 			return data;
