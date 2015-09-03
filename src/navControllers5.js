@@ -105,6 +105,8 @@
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
 		self.bottomContainerStyle = { 'overflow': 'scroll', 'overflow-x': 'hidden', 'height': '100%' };
+		self.affixed = false;
+		self.scrollingUp = false;
 
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
@@ -216,12 +218,10 @@
 						break;
 				}
 				self.displayTiles();
-
-
-
 				self.lastLocationPath = locationPath + locationObj.removed;
 				self.JumpNav = {};
 				self.limit = self.origLimit;
+				self.affixed = false;
 			}
 		});
 	};
@@ -608,7 +608,8 @@
 			self.edateSlice = self.sdateSlice;
 		}
 	};
-
+//todo: see if you can get any versions of the calendar working
+//filed issue: https://github.com/angular-ui/bootstrap/issues/4333
 	NavListController.prototype.openCalendar = function ($event, which) {
 		var self = this;
 		$event.preventDefault();
@@ -1053,11 +1054,10 @@
 		}
 	};
 
-	NavListController.prototype.saveProgram = function (title, img) {
+	NavListController.prototype.saveProgram = function (title, img, url) {
 		var self = this;
-		var urlToAdd = self.location.absUrl();
 		var savedProgram = { 
-			Url: urlToAdd,
+			Url: url,
 			Title: title,
 			Img: img
 		};
@@ -1267,6 +1267,12 @@
 			});
 		}
 		return _.size(self.enabledFilters) > 0;
+	};
+
+	NavListController.prototype.scrollReset = function () {
+		var self = this;
+		self.scrollingUp = true;
+		self.affixed = false;
 	};
 
 	var pluckAllKeys = function (obj, res) {
@@ -1681,9 +1687,10 @@
 
 	navApp.directive('getElementPosition', function () {
 		return {
-			link: function (scope, elem, attrs) {
+			link: function (scope, element, attrs) {
+				var raw = element[0];
 				scope.$watch(function() {
-					return elem[0].offsetTop;
+					return raw.offsetTop;
 				}, function(newValue, oldValue) {
 					var winHeight = $(window).height();
 					var headerHeight;
@@ -1694,6 +1701,32 @@
 					}
 					var containerHeight = winHeight - (newValue + headerHeight);
 					scope.navListCtrl.bottomContainerStyle.height = containerHeight +'px';
+
+					element.bind('scroll', function () {
+						if (raw.scrollTop > 0 && scope.navListCtrl.scrollingUp === false) {
+							scope.navListCtrl.affixed = true;
+						} else {
+							scope.navListCtrl.affixed = false;
+							if (raw.scrollTop === 0) {
+								scope.navListCtrl.scrollingUp = false;	
+							}
+						}
+						scope.$apply();
+					});
+				});
+			}
+		};
+	});
+
+	navApp.directive('backToTopButton', function () {
+		return {
+			link: function (scope, element, attrs) {
+				scope.$watch(function() {
+					return scope.navListCtrl.affixed;
+				}, function(newValue, oldValue) {
+					if (newValue === false) {
+						$("#bottomContainer").animate({ scrollTop: -10 }, "fast");
+					}
 				});
 			}
 		};
