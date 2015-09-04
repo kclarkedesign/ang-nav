@@ -1161,6 +1161,7 @@
 											<div class="item-details">
 												<div class="classTitle">
 													<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+													<div ng-bind-html="classInfo.PartOfSeries | unsafe"></div>
 												</div>
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>

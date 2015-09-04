@@ -608,8 +608,7 @@
 			self.edateSlice = self.sdateSlice;
 		}
 	};
-//todo: see if you can get any versions of the calendar working
-//filed issue: https://github.com/angular-ui/bootstrap/issues/4333
+
 	NavListController.prototype.openCalendar = function ($event, which) {
 		var self = this;
 		$event.preventDefault();
@@ -1578,6 +1577,12 @@
 				});
 			}
 		}
+		var thisIsPartOfSeries = '';
+		if (arr.ThisIsPartOfSeries && arr.ThisIsPartOfSeries.length) {
+			_.forEach(arr.ThisIsPartOfSeries, function (series) {
+				thisIsPartOfSeries += "<div>"+ series +"</div>";
+			});
+		}
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -1595,7 +1600,8 @@
 			Teachers: teachers,
 			InProgress: inProgress,
 			Featured: featured,
-			FutureDates: futurePerformanceDates
+			FutureDates: futurePerformanceDates,
+			PartOfSeries: thisIsPartOfSeries
 		};
 		return classInfoObj;
 	}
@@ -1664,6 +1670,9 @@
 				break;
 			case 'Literary':
 				jsonFile = 'items/CatProdPkg_Literary.json';
+				break;
+			case 'Kids & Family':
+				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
 				break;
 		}
 		return self.http.get(jsonFile).success(function (data) {
