@@ -221,8 +221,6 @@ For NAV Example
  		display:block;
  	}
 
-
-
 /*
  *
  * Updated NAV
@@ -1115,13 +1113,33 @@ a {
 	/*display: none;*/
 }
 .browse-item {
-  display: block;
+  display: inline-block;
 }
 .icon-sort {
 	height: 26px;
     display: block;
     padding-left: 10px;
 }
+/*.browse-item a {
+	padding: 2px 5px;
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	-webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	transition: all .2s ease;
+}*/
+/*.browse-item a {
+  padding: 5px 8px;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  transition: all .2s ease;
+  background-color: #eff0f2;
+  margin: 3px -4px;
+}*/
 .browse-item a {
   /*padding: 2px 8px;*/
   padding: 3px 3px 5px 0px;
@@ -1143,16 +1161,24 @@ a {
     text-align: left;
 	color: #C747B8;
 }
-.filter-content td.column {
-    padding: 3px 40px 0 0px;
-    /*width: 140px;*/
-}
-.filter-content #sub tr td {
-    vertical-align: top;
-}
-.filter-content #sub tr td[nowrap] {
-    padding: 0 60px 0 0;
-}
+/*.browse-item a {
+  padding: 5px 8px;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  transition: all .2s ease;
+  background-color: #eff0f2;
+  margin: 3px -4px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #fff;
+  white-space: nowrap;
+  overflow: hidden;
+}*/	
+/*.browse-item a:hover {
+	background-color: #D8ECFD;
+}*/
 .current-level-btn {
 	/*background: linear-gradient(#FBFBFB, #E9E9E9);
 	max-height: 26px;
@@ -2220,7 +2246,7 @@ input[type="date"]::-webkit-inner-spin-button{
   }
   #current-interest {
   	/*max-width: 438px;*/
-  	/*max-width: 398px;*/
+  	max-width: 398px;
   	/*min-width: 250px;*/
   }
   #current-interest,
@@ -2542,64 +2568,6 @@ input[type="date"]::-webkit-inner-spin-button{
 	}*/
 	/***** End ItemBox Rollover ******/
 
-	/***
-	* 
-	* List View - Large 
-	*
-
-	/*****   */
-	.list-lg .itemContents {
-		height: auto;
-	}
-	.list-lg .classTitle {
-		padding-top: 0;
-		font-size: 16px;
-    	line-height: 21px;
-	}
-	.list-lg .shortDescription,
-	.list-lg .item-details:hover .shortDescription {
-		opacity: 1;
-		overflow: visible;
-		height: auto;
-	}
-	.list-lg .getMore .bookmark,
-	.list-lg .getMore,
-	.list-lg .getTickets {
-		top: 0;
-	}
-	.list-lg .getMore,
-	.list-lg .getTickets {
-		margin: 0;
-		position: relative;
-		width: 100%;
-	}
-	.list-lg .startPrice {
-		display: none;
-	}
-	.list-lg .getLink {
-		position: relative;
-		border: 1px solid #EDEDED;
-
-	}
-
-	.list-lg .itemBox .classTitle, 
-	.list-lg .itemBox .classDate, 
-	.list-lg .itemBox .warning {
-		bottom: 0;
-	}
-
-	.list-lg .item-details:hover .classTitle,
-	.list-lg .item-details:hover .classDate,
-	.list-lg .item-details:hover .warning,
-	.list-lg .item-details:hover .contentWrap {
-		top: 0;
-		bottom: initial;
-	}
-	/***
-	* 
-	* Grid View 
-	*
-
 	/***** Item-details Rollover - When you roll over detail instead of entire tile ******/
 	.itemBox .classTitle, .itemBox .classDate, .itemBox .warning {
 	bottom: 0;
@@ -2663,50 +2631,14 @@ input[type="date"]::-webkit-inner-spin-button{
 
 @media (min-width: 1200px) {
 	/**** FEATURED ITEM *****/
-	.corner-ribbon {
-		display: none;
-	}
-	.featured.list-lg .itemContents {
-    	border: 2px solid #4F93CD;
-	}
-	.featured .corner-ribbon {
-	  width: 200px;
-	  background: #4F93CD;
-	  position: absolute;
-	  top: 25px;
-	  left: -50px;
-	  text-align: center;
-	  line-height: 38px;
-	  letter-spacing: 1px;
-	  color: #f0f0f0;
-	  display: block;
-	  font-weight: bold;
-      text-transform: uppercase;
-	  -ms-transform: rotate(-45deg);
-	  -moz-transform: rotate(-45deg);
-	  -o-transform: rotate(-45deg);
-	  -webkit-transform: rotate(-45deg);
-	  transform: rotate(-45deg);
-	}
-	.featured .corner-ribbon.top-left {
-		top: 0px;
-		left: -75px;
-		-ms-transform: rotate(-45deg);
-	  	-moz-transform: rotate(-45deg);
-	  	-o-transform: rotate(-45deg);
-	  	-webkit-transform: rotate(-45deg);
-	  	transform: rotate(-45deg);
-	}
-	.featured .corner-ribbon.sticky {
-  		position: fixed;
-	}
 
 	/*.featured img {
 	    width: 50%;
 	    width: 32%;
 	}*/
 	
-	/*.featured .itemContents.hidden-xs {
+	.featured .itemContents.hidden-xs {
+		/*height: 140px;*/
 		    height: 340px;
 	}
 	.featured .itemContents:before {
@@ -2725,6 +2657,12 @@ input[type="date"]::-webkit-inner-spin-button{
     width: 110%;
 }
 	.featured .shortDescription {
+	    /*height: 101px !important;
+	    top: 13px;*/
+		/*height: 116px !important;
+	    top: 14px;
+	    width: 85%;*/
+		/*height: 125px !important;*/
     	top: 24px;
     	padding-right: 50px;
     	padding-bottom: 15px;
@@ -2775,6 +2713,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	.featured .warning, 
 	.featured .classTitle, 
 	.featured .classDate {
+	    /*bottom: 90px !important;*/
+	    /*background-color: rgba(255, 255, 255, 0.72);*/
 	    background-color: rgba(0, 0, 0, 0.46);
 	}
 	.featured .item-details {
@@ -2806,6 +2746,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		content: "Featured";
 		padding: 8px 18px;
 		display: block;
+		/*background: linear-gradient(rgba(251, 251, 251, 0.38), rgba(204, 204, 204, 0.44));*/
 		background: #000;
 		color: #A7A7A7;
 		font-weight: bold;
@@ -2818,8 +2759,10 @@ input[type="date"]::-webkit-inner-spin-button{
 		width: 50%;
 	}
 	.tileContainer .featured {
+	    /*height: 150px;*/
 	    height: 340px;
-	}*/
+	    /*overflow: hidden;*/
+	}
 }
 /* this only works with the modification in ui-bootstrap-tpls-0.13.0.js that adds this class to the button */
 .text-muted {
