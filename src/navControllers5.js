@@ -105,9 +105,9 @@
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
 		self.bottomContainerStyle = { 'overflow': 'scroll', 'overflow-x': 'hidden', 'height': '100%' };
+		self.chunkLevels = [];
 		self.affixed = false;
 		self.scrollingUp = false;
-
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
@@ -273,11 +273,31 @@
 				level = self.currentObj.Level;
 				nodeid = self.currentObj.NodeID;
 			}
-			return _.filter(self.arrCategory[level+1], { 'Parent': nodeid });	
+			return _.filter(self.arrCategory[level+1], { 'Parent': nodeid });
+
 		} else {
 			return;
 		}
+		
 	};
+
+	NavListController.prototype.chunkSublevels = function () {
+		var self = this;
+		var subLevels = self.getSublevels();
+		var tempChunkLevels = [];
+		if (!_.isUndefined(subLevels)) {
+			var chunkSize = (Math.ceil(subLevels.length/4));
+			tempChunkLevels = _.chunk(subLevels, chunkSize);
+			if (tempChunkLevels.length < 3) {
+				tempChunkLevels.push([]);
+			}
+		}
+		if (!_.isEqual(tempChunkLevels, self.chunkLevels)) {
+			
+			self.chunkLevels = tempChunkLevels;
+		}
+		return self.chunkLevels;
+	}
 
 	NavListController.prototype.getAllInitialClasses = function (self) {
 		var locationPath = self.location.path();
@@ -1608,6 +1628,7 @@
 			Warning: warning,
 			ItemType: itemType,
 			Teachers: teachers,
+			LowestPrice: arr.LowestPrice,
 			InProgress: inProgress,
 			Featured: featured,
 			FutureDates: futurePerformanceDates,
