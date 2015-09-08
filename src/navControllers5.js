@@ -1159,10 +1159,10 @@
 		var self = this;
 		//https://github.com/angular-ui/bootstrap/issues/3701 - clear date issue
 		//since fields don't get cleared directly due to bug, we must explicitly set date fields to undefined
-		if (_.isNull(self.sdateSlice)) {
+		if (_.isNull(self.sdateSlice) || (self.sdateSlice && (self.sdateSlice).getTime() === 0)) {
 			delete self.sdateSlice;
 		}
-		if (_.isNull(self.edateSlice)) {
+		if (_.isNull(self.edateSlice) || (self.edateSlice && (self.edateSlice).getTime() === 0)) {
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
