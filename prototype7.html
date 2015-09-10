@@ -696,7 +696,7 @@
 								<!-- Desktop Refine slicers -->
 								<div class="refine-slicers container hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.activeBreadcrumb.length">
 									<div class="row">
-										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}">
+										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" is-open="navListCtrl.opened.dayOrTime">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
 											</button>
@@ -796,7 +796,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
+										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;" is-open="navListCtrl.opened.ageRange">
 											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">Age Range</button>
 											<ul class="dropdown-menu dropdown-menu-form col-xs-12 p15" role="menu" style="min-width: 240px;left: -10%;">
 												<li>
@@ -1161,6 +1161,7 @@
 											<div class="item-details">
 												<div class="classTitle">
 													<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+													<div ng-bind-html="classInfo.PartOfSeries | unsafe"></div>
 												</div>
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>

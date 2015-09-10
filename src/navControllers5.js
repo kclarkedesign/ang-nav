@@ -628,8 +628,7 @@
 			self.edateSlice = self.sdateSlice;
 		}
 	};
-//todo: see if you can get any versions of the calendar working
-//filed issue: https://github.com/angular-ui/bootstrap/issues/4333
+
 	NavListController.prototype.openCalendar = function ($event, which) {
 		var self = this;
 		$event.preventDefault();
@@ -1105,6 +1104,7 @@
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
+		var origLocationPath = locationPath;
 		var sliceUrl, sliceArr;
 		switch (slicer) {
 			case 'day':
@@ -1153,7 +1153,12 @@
 			} else {
 				locationPath = rewriteUrlLocation(sliceUrl, sliceArr, locationPath);
 			}
-			location.path(locationPath);
+			if (locationPath === origLocationPath) {
+				self.opened.dayOrTime = false;
+				self.opened.ageRange = false;
+			} else {
+				location.path(locationPath);	
+			}
 			self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 		}
 	};
@@ -1166,6 +1171,7 @@
 			self.origTimeSlice = _.clone(self.timeSlice);
 			self.origSdateSlice = self.sdateSlice;
 			self.origEdateSlice = self.edateSlice;
+			self.opened.dayOrTime = true;
 		} else {
 			if (!self.dateApplyClicked) {
 				self.daySlice = _.clone(self.origDaySlice);
@@ -1173,6 +1179,7 @@
 				self.sdateSlice = self.origSdateSlice;
 				self.edateSlice = self.origEdateSlice;
 			}
+			self.opened.dayOrTime = false;
 		}
 	};
 
@@ -1180,10 +1187,10 @@
 		var self = this;
 		//https://github.com/angular-ui/bootstrap/issues/3701 - clear date issue
 		//since fields don't get cleared directly due to bug, we must explicitly set date fields to undefined
-		if (_.isNull(self.sdateSlice)) {
+		if (_.isNull(self.sdateSlice) || (self.sdateSlice && (self.sdateSlice).getTime() === 0)) {
 			delete self.sdateSlice;
 		}
-		if (_.isNull(self.edateSlice)) {
+		if (_.isNull(self.edateSlice) || (self.edateSlice && (self.edateSlice).getTime() === 0)) {
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
@@ -1214,10 +1221,12 @@
 		if (open) {
 			self.ageApplyClicked = false;
 			self.origAgeSlice = _.clone(self.ageSlice);
+			self.opened.ageRange = true;
 		} else {
 			if (!self.ageApplyClicked) {
 				self.ageSlice = _.clone(self.origAgeSlice);
 			}
+			self.opened.ageRange = false;
 		}
 	};
 
@@ -1598,6 +1607,12 @@
 				});
 			}
 		}
+		var thisIsPartOfSeries = '';
+		if (arr.ThisIsPartOfSeries && arr.ThisIsPartOfSeries.length) {
+			_.forEach(arr.ThisIsPartOfSeries, function (series) {
+				thisIsPartOfSeries += "<div>"+ series +"</div>";
+			});
+		}
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -1616,7 +1631,8 @@
 			LowestPrice: arr.LowestPrice,
 			InProgress: inProgress,
 			Featured: featured,
-			FutureDates: futurePerformanceDates
+			FutureDates: futurePerformanceDates,
+			PartOfSeries: thisIsPartOfSeries
 		};
 		return classInfoObj;
 	}
