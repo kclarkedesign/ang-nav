@@ -161,7 +161,8 @@
 							Level: self.currentObj.Level,
 							Name: self.currentObj.Name,
 							NodeID: self.currentObj.NodeID,
-							Current: self.currentObj.Current
+							Current: self.currentObj.Current,
+							FeaturedItemsHeader: self.currentObj.FeaturedItemsHeader
 						};
 						var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
 						if (!_.isUndefined) {
@@ -903,7 +904,7 @@
 
 	NavListController.prototype.setCurrent = function (currentId) {
 		var self = this;
-		var currentName, currentLevel, currentNode, jumpType, currentIndex;
+		var currentName, currentLevel, currentNode, jumpType, currentIndex, currentFeaturedContent;
 		var urlMethod = 'default';
 		if (isActualNumber(currentId)) {
 			jumpType = 'linkBack';
@@ -912,16 +913,19 @@
 			currentName = breadCrumb.Name;
 			currentLevel = breadCrumb.Level;
 			currentNode = breadCrumb.NodeID;
+			currentFeaturedContent = breadCrumb.FeaturedItemsHeader;
 		} else {
 			var subLevel = currentId;
 			currentName = subLevel.Name;
 			currentLevel = self.currentObj.Level + 1;
 			currentNode = subLevel.NodeID;
 			jumpType = 'linkTo';
+			currentFeaturedContent = subLevel.FeaturedItemsHeader;
 		}
 		self.currentObj.Level = currentLevel;
 		self.currentObj.Name = currentName;
 		self.currentObj.NodeID = currentNode;
+		self.currentObj.FeaturedItemsHeader = currentFeaturedContent;
 		self.JumpNav = { To: currentName, Type: jumpType };
 		self.setUrl(currentIndex || currentName, urlMethod);
 	};
@@ -983,7 +987,8 @@
 					NodeID: node.NodeID, 
 					Level: level, 
 					Parent: node.ParentNodeID, 
-					KeyWords: node.Keywords 
+					KeyWords: node.Keywords,
+					FeaturedItemsHeader: node.FeatureItemsContent
 				});
 				if (node.Keywords.length) {
 					var keywordsToLookForArr = node.Keywords.toLowerCase().split(',');
