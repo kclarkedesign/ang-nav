@@ -2907,3 +2907,26 @@ html, body{
     padding:0;
     overflow:hidden;
 }
+
+div.futurePerfs.tbl {
+	display: table;
+	width: 100%;
+	padding-top: 10px;
+}
+
+div.futurePerfs>div.tblrow {
+	display: table-row;
+}
+
+div.futurePerfs>div.tblhead {
+	font-weight: bold;
+}
+
+div.futurePerfs>div.tblrow>span.tblcell {
+	display: table-cell;
+}
+
+div.partof {
+	padding-top: 10px;
+	font-weight: bold;
+}

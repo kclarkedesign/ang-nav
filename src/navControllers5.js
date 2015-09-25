@@ -1590,34 +1590,85 @@
 		var teachers = instructors.toString();
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
-			shortDesc += "<div class='startPrice'>" + "<b>Price:</b>  from "+ arr.LowestPrice + "</div>";
 			if (teachers.length) {
 				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
 			}
 			var performances = arr.FuturePerformances;
-			if (performances.length > 1) {
+			if (performances.length > 0) {
+				if (performances.length > 1) {
+					shortDesc += "Multiple Dates/Times ("+ performances.length +")";
+				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
 					perfDate = new Date(parseInt(perfDate.substr(6)));
 					var futureDate = formatDateOutput(perfDate);
+					var rawDaysOfWeek = p.days_of_week;
+					var dowArr = rawDaysOfWeek.split(',');
+					var daysOfWeek = '';
+					_.forEach(dowArr, function (dow, index) {
+						daysOfWeek += dow;
+						if ((index + 1) < dowArr.length) {
+							daysOfWeek += ', ';
+						}
+					});
+					var numSessions = p.number_of_sessions;
+					var fromPrice = p.lowest_price;
+					var rawTeachers = p.instructors;
+					if (!_.isNull(rawTeachers)) {
+						var teachArr = rawTeachers.split(',');
+						var classInstructors = '';
+						_.forEach(teachArr, function (tch, index) {
+							classInstructors += tch;
+							if ((index + 1) < teachArr.length) {
+								classInstructors += ', ';
+							}
+						});
+					}
 					if (ind === 0) {
-						shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
-					} else {
-						// if (ind >= 3) {
-						// 	shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
-						// 	return false;
-						// }
-						shortDesc += "<div class='dates'>"+ futureDate + "</div>";
+						shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>" +
+							"<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
+							"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>";
+							if (!_.isNull(rawTeachers)) {
+								shortDesc += "<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
+							}
+							shortDesc += "</div>";
+					}
+					shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span><span class='tblcell'>" + daysOfWeek +"</span>" +
+						"<span class='tblcell'>" + numSessions + "</span><span class='tblcell'>from " + fromPrice +"</span>";
+						if (!_.isNull(rawTeachers)) {
+							shortDesc += "<span class='tblcell'>" + classInstructors + "</span>";
+						}
+						shortDesc += "</div>";
+					if ((ind + 1) === performances.length) {
+						shortDesc += "</div>";
 					}
 				});
 			}
 		}
-		var thisIsPartOfSeries = '';
+
 		if (arr.ThisIsPartOfSeries && arr.ThisIsPartOfSeries.length) {
-			_.forEach(arr.ThisIsPartOfSeries, function (series) {
-				thisIsPartOfSeries += "<div>"+ series +"</div>";
+			shortDesc += "<div class='partof'>This is part of:  ";
+			var moreLinks = [];
+			_.forEach(arr.ThisIsPartOfSeries, function (series, index) {
+				if ((index + 1) < arr.ThisIsPartOfSeries.length) {
+					if (index <= 1) {
+						shortDesc += series + (index < 1 ? ', ' : '');
+					} else {
+						moreLinks.push(series);
+					}
+				} else {
+					moreLinks.push(series);
+				}
 			});
+			if (moreLinks.length > 0) {
+				shortDesc += ', and more ('+ moreLinks.length +')';
+				_.forEach(moreLinks, function (ml) {
+					shortDesc += "<div class='morelink'>" + ml + "</div>";
+				});
+			}
+			shortDesc += "</div>";
 		}
+
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -1633,11 +1684,9 @@
 			Warning: warning,
 			ItemType: itemType,
 			Teachers: teachers,
-			LowestPrice: arr.LowestPrice,
 			InProgress: inProgress,
 			Featured: featured,
-			FutureDates: futurePerformanceDates,
-			PartOfSeries: thisIsPartOfSeries
+			FutureDates: futurePerformanceDates
 		};
 		return classInfoObj;
 	}
