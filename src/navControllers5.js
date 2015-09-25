@@ -1602,20 +1602,12 @@
 					var perfDate = p.perf_dt;
 					perfDate = new Date(parseInt(perfDate.substr(6)));
 					var futureDate = formatDateOutput(perfDate);
-					var rawDaysOfWeek = p.days_of_week;
-					var dowArr = rawDaysOfWeek.split(',');
-					var daysOfWeek = '';
-					_.forEach(dowArr, function (dow, index) {
-						daysOfWeek += dow;
-						if ((index + 1) < dowArr.length) {
-							daysOfWeek += ', ';
-						}
-					});
-					var numSessions = p.number_of_sessions;
 					var fromPrice = p.lowest_price;
-					var rawTeachers = p.instructors;
-					if (!_.isNull(rawTeachers)) {
-						var teachArr = rawTeachers.split(',');
+					var numSessions = p.number_of_sessions;
+					var dowArr, teachArr;
+					if (itemType.toLowerCase() === 'class') {
+						var rawTeachers = p.instructors;
+						teachArr = rawTeachers.split(',');
 						var classInstructors = '';
 						_.forEach(teachArr, function (tch, index) {
 							classInstructors += tch;
@@ -1623,22 +1615,35 @@
 								classInstructors += ', ';
 							}
 						});
+						var rawDaysOfWeek = p.days_of_week;
+						dowArr = rawDaysOfWeek.split(',');
+						var daysOfWeek = '';
+						_.forEach(dowArr, function (dow, index) {
+							daysOfWeek += dow;
+							if ((index + 1) < dowArr.length) {
+								daysOfWeek += ', ';
+							}
+						});
 					}
 					if (ind === 0) {
-						shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>" +
-							"<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
-							"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>";
-							if (!_.isNull(rawTeachers)) {
-								shortDesc += "<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
-							}
-							shortDesc += "</div>";
-					}
-					shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span><span class='tblcell'>" + daysOfWeek +"</span>" +
-						"<span class='tblcell'>" + numSessions + "</span><span class='tblcell'>from " + fromPrice +"</span>";
-						if (!_.isNull(rawTeachers)) {
-							shortDesc += "<span class='tblcell'>" + classInstructors + "</span>";
+						shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>";
+						if (itemType.toLowerCase() === 'class') {
+							shortDesc += "<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
+								"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>" +
+								"<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
+						} else {
+							shortDesc += "<span class='tblcell'>Date</span><span class='tblcell'>Price</span>";
 						}
 						shortDesc += "</div>";
+					}
+					shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span>"
+					if (itemType.toLowerCase() === 'class') {
+						shortDesc += "<span class='tblcell'>" + daysOfWeek +"</span><span class='tblcell'>" + numSessions + "</span>" +
+							"<span class='tblcell'>from " + fromPrice +"</span><span class='tblcell'>" + classInstructors + "</span>";
+					} else {
+						shortDesc += "<span class='tblcell'>" + fromPrice +"</span>";
+					}
+					shortDesc += "</div>";
 					if ((ind + 1) === performances.length) {
 						shortDesc += "</div>";
 					}
