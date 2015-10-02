@@ -1655,7 +1655,7 @@
 			shortDesc += "<div class='partof'>This is part of:  ";
 			var moreLinks = [];
 			_.forEach(arr.ThisIsPartOfSeries, function (series, index) {
-				if ((index + 1) < arr.ThisIsPartOfSeries.length) {
+				if ((index + 1) <= arr.ThisIsPartOfSeries.length) {
 					if (index <= 1) {
 						shortDesc += series + (index < 1 ? ', ' : '');
 					} else {
