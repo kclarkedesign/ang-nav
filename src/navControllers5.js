@@ -1596,7 +1596,7 @@
 			var performances = arr.FuturePerformances;
 			if (performances.length > 0) {
 				if (performances.length > 1) {
-					shortDesc += "Multiple Dates/Times ("+ performances.length +")";
+					shortDesc += "<a class='expand-collapse' nav-expand-collapse>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
 				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
@@ -1626,7 +1626,7 @@
 						});
 					}
 					if (ind === 0) {
-						shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>";
+						shortDesc += "<div class='expand-collapse-container'><div class='futurePerfs tbl'><div class='tblrow tblhead'>";
 						if (itemType.toLowerCase() === 'class') {
 							shortDesc += "<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
 								"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>" +
@@ -1641,11 +1641,11 @@
 						shortDesc += "<span class='tblcell'>" + daysOfWeek +"</span><span class='tblcell'>" + numSessions + "</span>" +
 							"<span class='tblcell'>from " + fromPrice +"</span><span class='tblcell'>" + classInstructors + "</span>";
 					} else {
-						shortDesc += "<span class='tblcell'>" + fromPrice +"</span>";
+						shortDesc += "<span class='tblcell'>from " + fromPrice +"</span>";
 					}
 					shortDesc += "</div>";
 					if ((ind + 1) === performances.length) {
-						shortDesc += "</div>";
+						shortDesc += "</div></div>";
 					}
 				});
 			}
@@ -1665,11 +1665,13 @@
 					moreLinks.push(series);
 				}
 			});
-			if (moreLinks.length > 0) {
-				shortDesc += ', and more ('+ moreLinks.length +')';
-				_.forEach(moreLinks, function (ml) {
-					shortDesc += "<div class='morelink'>" + ml + "</div>";
-				});
+			if (moreLinks.length > 1) {
+				shortDesc += ', and <a class="expand-collapse" href="javascript:void(0)" nav-expand-collapse> more ('+ moreLinks.length +') <i class="fa fa-lg fa-caret-down"></i></a>';
+				shortDesc += '<div class="expand-collapse-container">'
+					_.forEach(moreLinks, function (ml) {
+						shortDesc += "<div class='morelink'>" + ml + "</div>";
+					});
+				shortDesc += "</div>";
 			}
 			shortDesc += "</div>";
 		}
@@ -1830,7 +1832,23 @@
 			}
 		};
 	});
+	navApp.directive('navExpandCollapse', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attrs) {
+				//Basic Expand Collapse
+				$("a.expand-collapse").on('click', function(){
+					
+					console.log("clicked");
 
+					//Targets next div after clicked element
+					$(this).find(".expand-collapse-container").slideToggle('200', function() {
+
+					});
+				});
+			}
+		};
+	});
 	navApp.filter('unsafe', function($sce) {
 		return function(val) {
 			return $sce.trustAsHtml(val);

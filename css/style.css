@@ -2057,7 +2057,10 @@ right: 0;
 }
 
 
-
+.expand-collapse {
+    font-weight: bold;
+    text-decoration: underline;
+}
 
 
 #refine-bar {
@@ -2579,7 +2582,14 @@ input[type="date"]::-webkit-inner-spin-button{
 	.list-lg .getLink {
 		position: relative;
 		border: 1px solid #EDEDED;
-
+		background: #4F93CD;
+		color: #fff;
+		font-size: 14px;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	.list-lg .getLink:hover {
+		background: #23527c;
 	}
 
 	.list-lg .itemBox .classTitle, 
@@ -2681,6 +2691,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	  color: #f0f0f0;
 	  display: block;
 	  font-weight: bold;
+	  pointer-events: none;
       text-transform: uppercase;
 	  -ms-transform: rotate(-45deg);
 	  -moz-transform: rotate(-45deg);
