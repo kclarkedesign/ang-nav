@@ -505,7 +505,7 @@ width: 280px;
   padding: 0 15px;
 }*/
 #main-area {
-    background-color: #e9e9e9;
+    /*background-color: #e9e9e9;*/
 }
 #menu-container {
 	position: fixed;
@@ -1846,6 +1846,15 @@ label.btn.active,
 .itemBox img {
 		width: 100%;
 }
+#brandContent {
+    margin: 0 auto;
+    display: block;
+    padding: 20px 15px;
+    background-color: #fff;
+}
+#brandContent h3 {
+	margin-top: 0;
+}
 /*.getMore{
 	bottom: 0;
 	position: absolute;
@@ -2918,26 +2927,71 @@ html, body{
     padding:0;
     overflow:hidden;
 }
-
-div.futurePerfs.tbl {
+.schedule tr {
+    border-bottom: 1px solid #DBDCDC;
+}
+.schedule td {
+    height: 26px;
+}
+/*.futurePerfs.tbl {
 	display: table;
 	width: 100%;
-	padding-top: 10px;
+	table-layout: fixed;
 }
 
-div.futurePerfs>div.tblrow {
+.futurePerfs>.tblrow {
 	display: table-row;
 }
 
-div.futurePerfs>div.tblhead {
+.futurePerfs>.tblhead {
 	font-weight: bold;
 }
 
-div.futurePerfs>div.tblrow>span.tblcell {
+.futurePerfs>.tblrow>.tblcell {
 	display: table-cell;
-}
+}*/
 
-div.partof {
+.partof {
 	padding-top: 10px;
 	font-weight: bold;
 }
+
+/*!
+ * SNIPPET ******  table-grid (http://mdo.github.io/table-grid)
+ * Released under MIT, (c) 2014 Mark Otto
+ */
+
+
+/*
+ * The Grid
+ */
+
+@media (min-width: 600px) {
+ 
+
+  /* Set the widths */
+  .wid-1 { width: 8.333333%; }
+  .wid-2 { width: 16.666667%; }
+  .wid-3 { width: 25%; }
+  .wid-4 { width: 33.333333%; }
+  .wid-5 { width: 41.666667%; }
+  .wid-6 { width: 50%; }
+  .wid-7 { width: 58.333333%; }
+  .wid-8 { width: 66.666667%; }
+  .wid-9 { width: 75%; }
+  .wid-10 { width: 83.333333%; }
+  .wid-11 { width: 91.666667%; }
+  .wid-12 { width: 100%; }
+
+}
+
+
+/*
+ * Vertically center grid content
+ *
+ * Requires content within the column to be inline or inline-block.
+ */
+
+/*.grid-align-middle .col {
+  vertical-align: middle;
+}*/

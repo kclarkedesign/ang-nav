@@ -1582,7 +1582,7 @@
 			inProgress = false;
 		}
 
-		var shortDescription = "<div class='shortDescTxt'>" + arr.ShortDesc + "</div>";
+		var shortDescription = "<div class='shortDescTxt pb10'>" + arr.ShortDesc + "</div>";
 		var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
 		var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
 			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
@@ -1591,12 +1591,12 @@
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
 			if (teachers.length) {
-				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
+				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/g, ", ") + "</div>";	
 			}
 			var performances = arr.FuturePerformances;
 			if (performances.length > 0) {
 				if (performances.length > 1) {
-					shortDesc += "<a class='expand-collapse' nav-expand-collapse>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					shortDesc += "<a class='expand-collapse'>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
 				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
@@ -1626,27 +1626,31 @@
 						});
 					}
 					if (ind === 0) {
-						shortDesc += "<div class='expand-collapse-container'><div class='futurePerfs tbl'><div class='tblrow tblhead'>";
+						shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
 						if (itemType.toLowerCase() === 'class') {
-							shortDesc += "<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
-								"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>" +
-								"<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
+							shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
+								"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
+								"<th>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</th>";
 						} else {
-							shortDesc += "<span class='tblcell'>Date</span><span class='tblcell'>Price</span>";
+							shortDesc += "<th width='185'>Date</th><th>Price</th>";
 						}
-						shortDesc += "</div>";
+						shortDesc += "</tr>";
 					}
-					shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span>"
+					shortDesc += "<tr><td>" + futureDate + "</td>"
 					if (itemType.toLowerCase() === 'class') {
-						shortDesc += "<span class='tblcell'>" + daysOfWeek +"</span><span class='tblcell'>" + numSessions + "</span>" +
-							"<span class='tblcell'>from " + fromPrice +"</span><span class='tblcell'>" + classInstructors + "</span>";
+						shortDesc += "<td>" + daysOfWeek +"</td><td>" + numSessions + "</td>" +
+							"<td>from " + fromPrice +"</td><td>" + classInstructors + "</td>";
 					} else {
-						shortDesc += "<span class='tblcell'>from " + fromPrice +"</span>";
+						shortDesc += "<td>from " + fromPrice +"</td>";
 					}
-					shortDesc += "</div>";
+					shortDesc += "</tr>";
+
+					//Closes the table and expand/collapse div
 					if ((ind + 1) === performances.length) {
-						shortDesc += "</div></div>";
+						shortDesc += "</tbody></table></div>";
 					}
+
+					
 				});
 			}
 		}
@@ -1657,7 +1661,7 @@
 			_.forEach(arr.ThisIsPartOfSeries, function (series, index) {
 				if ((index + 1) <= arr.ThisIsPartOfSeries.length) {
 					if (index <= 1) {
-						shortDesc += series + (index < 1 ? ', ' : '');
+						shortDesc += (index >= 1 ? ', '+ series : series);
 					} else {
 						moreLinks.push(series);
 					}
@@ -1666,8 +1670,8 @@
 				}
 			});
 			if (moreLinks.length > 1) {
-				shortDesc += ', and <a class="expand-collapse" href="javascript:void(0)" nav-expand-collapse> more ('+ moreLinks.length +') <i class="fa fa-lg fa-caret-down"></i></a>';
-				shortDesc += '<div class="expand-collapse-container">'
+				shortDesc += ', and <a class="expand-collapse mt5"> more ('+ moreLinks.length +') <i class="fa fa-lg fa-caret-down"></i></a>';
+				shortDesc += '<div class="expand-collapse-container collapse">'
 					_.forEach(moreLinks, function (ml) {
 						shortDesc += "<div class='morelink'>" + ml + "</div>";
 					});
@@ -1832,23 +1836,25 @@
 			}
 		};
 	});
-	navApp.directive('navExpandCollapse', function() {
-		return {
-			restrict: 'A',
-			link: function(scope, element, attrs) {
-				//Basic Expand Collapse
-				$("a.expand-collapse").on('click', function(){
+	// angular.module('collapser', ['ngAnimate'])
+	// navApp.controller('navCollapser', function() {
+	// 	return {
+	// 		restrict: 'A',
+	// 		scope: true,
+	// 		link: function(scope, element, attrs) {
+	// 			//Basic Expand Collapse
+	// 			$("a.expand-collapse").on('click', function(){
 					
-					console.log("clicked");
+	// 				console.log("clicked");
 
-					//Targets next div after clicked element
-					$(this).find(".expand-collapse-container").slideToggle('200', function() {
+	// 				//Targets next div after clicked element
+	// 				$(this).find(".expand-collapse-container").slideToggle('200', function() {
 
-					});
-				});
-			}
-		};
-	});
+	// 				});
+	// 			});
+	// 		}
+	// 	};
+	// });
 	navApp.filter('unsafe', function($sce) {
 		return function(val) {
 			return $sce.trustAsHtml(val);
@@ -1901,6 +1907,25 @@ var adjustLevelArray = function (arr, start, end, clear) {
 var isActualNumber = function (num) {
 	return !isNaN(parseFloat(num)) && isFinite(num);
 };
+
+
+$(document).on('click','.expand-collapse', function(){
+	
+	//Basic Expand Collapse
+
+	//(Clicked Element)Expand/collapse button
+	expandBtn = $(this);
+
+	//Targets next div after clicked element
+	//Get isoContainer in Angular, slideToggle, then reload angular-masonry
+	var scope = angular.element("#isoContainer, #isoContainerMobile").scope();
+	scope.$apply(function(){
+		expandBtn.next(".expand-collapse-container").slideToggle('800', function() {
+			scope.$broadcast('masonry.reload');
+		});
+	});
+});
+
 
 $(document).on('click','.showMore',function(){
 	var $showMore = $(this).parent(".getMore");

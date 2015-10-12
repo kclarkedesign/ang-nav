@@ -37,8 +37,8 @@
 					// To add the overlay back once selecting a option for the find menu
 					setTimeout(function () {
 						$("body").addClass('sidebar-open');
-			$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
-				}, 100);
+						$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+					}, 100);
 					$(this).addClass('active');
 				});
 				$("#relatedProgramsBtn").click(function(e) {
@@ -708,7 +708,7 @@
 								<!-- Desktop Refine slicers -->
 								<div class="refine-slicers container hidden-xs hidden-sm hidden-md" ng-show="navListCtrl.activeBreadcrumb.length">
 									<div class="row">
-										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}">
+										<div class="dropdown col-sm-2 pr0 snav-dayTime" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkDateState(open)" ng-class="{'active': !navListCtrl.checkDateInit() && navListCtrl.initialized}" is-open="navListCtrl.opened.dayOrTime">
 											<button id="btn-dayTime" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">
 												Day or Time
 											</button>
@@ -808,7 +808,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;">
+										<div class="dropdown col-sm-2 snav-ageRange" dropdown auto-close="outsideClick" on-toggle="navListCtrl.checkAgeState(open)" ng-class="{'active': !navListCtrl.checkAgeInit() && navListCtrl.initialized}" style="padding-left: 0;" is-open="navListCtrl.opened.ageRange">
 											<button id="btn-ageRange" class="btn btn-default full-width dropdown-toggle dropdown-ch" type="button" dropdown-toggle aria-haspopup="true" aria-expanded="false">Age Range</button>
 											<ul class="dropdown-menu dropdown-menu-form col-xs-12 p15" role="menu" style="min-width: 240px;left: -10%;">
 												<li>
@@ -891,6 +891,10 @@
 					</div>
 				</div>
 				<div id="bottomContainer" class="row pt15" ng-style="navListCtrl.bottomContainerStyle" skip-header="true" get-element-position>
+
+					
+					<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe"></span>
+					
 					<div id="Container" class="tileContainer container">
 						<div id="tiles" class="row">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
@@ -921,6 +925,9 @@
 										<span class="noResults">filters</span>
 									</div>
 								</div>
+
+
+
 								<!-- For Large and Xlarge screen sizes -->
 								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm hidden-md ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "columnWidth": 292.5, "gutter": 0 }'>
 									<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
@@ -937,7 +944,6 @@
 													<div class="classTitle">
 														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
 													</div>
-													<div class="classDate">{{classInfo.FriendlyDate}}</div>
 													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 													<div class="contentWrap">
 														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
@@ -946,12 +952,8 @@
 												</div>
 											</div>
 											<div class="col-xs-2 pr0">
-												<div class="price center pb5">
-													<b>Price:</b> from {{classInfo.LowestPrice}}
-												</div>
-												
 												<div class="getTickets">
-													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn/Buy <i class="fa fa-arrow-right"></i></a>
+													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 												<div class="getMore">
 														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
@@ -986,7 +988,7 @@
 									</div>
 								</div>
 								<!-- For Medium and below screen sizes -->
-								<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
+								<!-- <div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
 									<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
@@ -1010,7 +1012,7 @@
 													<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
 												</div>
 												<div class="getTickets">
-													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn/Buy <i class="fa fa-arrow-right"></i></a>
+													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 											</div>
 										</div>
@@ -1039,7 +1041,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
