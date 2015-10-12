@@ -890,12 +890,17 @@
 						</section>
 					</div>
 				</div>
-				<div id="bottomContainer" class="row pt15" ng-style="navListCtrl.bottomContainerStyle" skip-header="true" get-element-position>
+				<div id="bottomContainer" class="row" ng-style="navListCtrl.bottomContainerStyle" skip-header="true" get-element-position>
 
 					
-					<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe"></span>
-					
-					<div id="Container" class="tileContainer container">
+					<div id="brandContent" >
+						<div class="container">
+							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe"></span>
+						</div>
+					</div>
+	
+
+					<div id="Container" class="tileContainer container pt15">
 						<div id="tiles" class="row">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
@@ -988,7 +993,7 @@
 									</div>
 								</div>
 								<!-- For Medium and below screen sizes -->
-								<!-- <div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
+								<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
 									<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
@@ -1041,7 +1046,7 @@
 											</div>
 										</div>
 									</div>
-								</div> -->
+								</div>
 							</div>
 						</div>
 					</div>
