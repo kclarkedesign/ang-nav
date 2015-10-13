@@ -214,6 +214,16 @@
 							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
 							var classesByInterest = [self.allClasses[classIndex]];
 							self.getValues(classesByInterest, 0, self.navsDict[subfolders[0]]);
+						} else {
+							var subfolders = locationPath.substring(1).split('/');
+							var rootFolder = subfolders[0];
+							var currentRootFolder = self.arrCategory[0][0].Name;
+							if (currentRootFolder !== rootFolder) {
+								adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+								var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
+								var classesByInterest = [self.allClasses[classIndex]];
+								self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+							}
 						}
 						self.buildCurrentObj();
 						break;
@@ -374,6 +384,7 @@
 		self.currentObj.Name = currentName;
 		self.currentObj.NodeID = subLevel.NodeID;
 		self.currentObj.Current = true;
+		self.currentObj.FeaturedItemsHeader = '';
 		self.JumpNav = { To: currentName, Type: 'linkTo' };
 		self.setUrl(currentName, 'replace');
 	};
@@ -1550,7 +1561,8 @@
 	};
 
 	var formatDataFromJson = function (arr, nodeId) {
-		var prodNo = arr.ProductionSeasonNumber === 0 ? arr.PackageNo : arr.ProductionSeasonNumber;
+		var packageNo = arr.PackageNo;
+		var prodNo = arr.ProductionSeasonNumber === 0 ? packageNo : arr.ProductionSeasonNumber;
 		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
 		var futurePerformanceDates = _.pluck(arr.FuturePerformances, 'perf_dt');
 		var itemTypes = _.remove(keyWords, function (n) { 
@@ -1596,7 +1608,11 @@
 			var performances = arr.FuturePerformances;
 			if (performances.length > 0) {
 				if (performances.length > 1) {
-					shortDesc += "Multiple Dates/Times ("+ performances.length +")";
+					if (packageNo === 0) {
+						shortDesc += "Multiple Dates/Times ("+ performances.length +")";
+					} else {
+						shortDesc += "This Subscription Includes ("+ performances.length +")";
+					}
 				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
@@ -1625,27 +1641,37 @@
 							}
 						});
 					}
-					if (ind === 0) {
-						shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>";
+					if (packageNo === 0) {
+						if (ind === 0) {
+							shortDesc += "<div class='futurePerfs tbl'><div class='tblrow tblhead'>";
+							if (itemType.toLowerCase() === 'class') {
+								shortDesc += "<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
+									"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>" +
+									"<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
+							} else {
+								shortDesc += "<span class='tblcell'>Date</span><span class='tblcell'>Price</span>";
+							}
+							shortDesc += "</div>";
+						}
+						shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span>"
 						if (itemType.toLowerCase() === 'class') {
-							shortDesc += "<span class='tblcell'>Start Date</span><span class='tblcell'>Day"+ (dowArr.length > 1 ? "s" : "") +"</span>" +
-								"<span class='tblcell'>Session"+ (numSessions > 1 ? "s" : "") +"</span><span class='tblcell'>Price</span>" +
-								"<span class='tblcell'>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</span>";
+							shortDesc += "<span class='tblcell'>" + daysOfWeek +"</span><span class='tblcell'>" + numSessions + "</span>" +
+								"<span class='tblcell'>from " + fromPrice +"</span><span class='tblcell'>" + classInstructors + "</span>";
 						} else {
-							shortDesc += "<span class='tblcell'>Date</span><span class='tblcell'>Price</span>";
+							shortDesc += "<span class='tblcell'>" + fromPrice +"</span>";
 						}
 						shortDesc += "</div>";
-					}
-					shortDesc += "<div class='tblrow'><span class='tblcell'>" + futureDate + "</span>"
-					if (itemType.toLowerCase() === 'class') {
-						shortDesc += "<span class='tblcell'>" + daysOfWeek +"</span><span class='tblcell'>" + numSessions + "</span>" +
-							"<span class='tblcell'>from " + fromPrice +"</span><span class='tblcell'>" + classInstructors + "</span>";
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</div>";
+						}
 					} else {
-						shortDesc += "<span class='tblcell'>" + fromPrice +"</span>";
-					}
-					shortDesc += "</div>";
-					if ((ind + 1) === performances.length) {
-						shortDesc += "</div>";
+						if (ind === 0) {
+							shortDesc += "<div class='futurePerfs tbl'><div class='tblrow'>";
+						}
+						shortDesc += "<span class='tblcell'>" + p.thumbnail +"<br />" + p.title +"<br />" + futureDate +"</span>";
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</div></div>";
+						}
 					}
 				});
 			}
