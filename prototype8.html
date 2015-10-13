@@ -896,7 +896,7 @@
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 									<span class="noResults">No items were found</span>
 									<div ng-show="navListCtrl.displayFilterOptions()">
-										<span class="noResults">Try resetting the</span>
+										<span class="noResults">Clear</span>
 										<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
 											<span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span>
 											<span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
@@ -913,11 +913,10 @@
 										</span>
 										<span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
 											<span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-											<span class="removable">Search
+											<span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
 												<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
 											</span>
 										</span>
-										<span class="noResults">filters</span>
 									</div>
 								</div>
 
