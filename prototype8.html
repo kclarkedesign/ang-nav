@@ -900,7 +900,7 @@
 					
 					<div id="brandContent" >
 						<div class="container">
-							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe"></span>
+							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe" ng-show="navListCtrl.onscreenResults.length > 0"></span>
 						</div>
 					</div>
 	
@@ -928,15 +928,12 @@
 										</span>
 										<span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
 											<span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-											<span class="removable">Search
+											<span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
 												<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
 											</span>
 										</span>
-										<!-- <span class="noResults">filters</span> -->
 									</div>
 								</div>
-
-
 
 								<!-- For Large and Xlarge screen sizes -->
 								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm hidden-md ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "gutter": 0, "transitionDuration": 0 }'>
@@ -1354,29 +1351,9 @@
 								</a>
 							</div>
 							<div class="sidebarHeading pt10 pb10 pl15 blue-bg">Wish List</div>
-							<a id="savedSidebarClose"class="col-xs-2 center active"><span >Close</span> <i class="fa fa-times fa-lg"></i></a>
-							<!-- <div class="col-xs-12 pb10">
-								<div class="pt20">
-									<div class="sidebarHeading">Filters</div>
-									<div role="separator" class="divider mt5"></div>
-								</div>
-							</div>
-							<div class="col-xs-12 pb10">
-								<div class="savedSearches label label-info mr5" ng-repeat="savedSearch in navListCtrl.savedSearches">
-									<ul>
-										<li>
-											<a ng-href="{{savedSearch.url}}">{{savedSearch.folder}} {{savedSearch.filter}}</a>
-											<a class="savedSearchClose" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedSearches)" ng-show="savedSearch.url.length">
-												<i class="fa fa-times"></i>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div> -->
+							<a id="savedSidebarClose" class="col-xs-2 center active"><span >Close</span> <i class="fa fa-times fa-lg"></i></a>
 							<div id="savedPrograms" class="col-xs-12 pb10">
 								<div class="pt20">
-									<!-- <div class="sidebarHeading">Programs</div>
-									<div role="separator" class="divider"></div> -->
 									<div class="savedProdItem container-fluid" ng-repeat="savedProgram in navListCtrl.savedPrograms">
 										<div class="row">
 											<div class="col-xs-12 pl0">

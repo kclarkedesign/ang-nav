@@ -214,6 +214,20 @@
 							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
 							var classesByInterest = [self.allClasses[classIndex]];
 							self.getValues(classesByInterest, 0, self.navsDict[subfolders[0]]);
+						} else {
+							var subfolders = locationPath.substring(1).split('/');
+							var rootFolder = subfolders[0];
+							//if logo clicked to reset let's just skip this
+							if (rootFolder.length > 0) {
+								//if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
+								var currentRootFolder = self.arrCategory[0][0].Name;
+								if (currentRootFolder !== rootFolder) {
+									adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+									var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
+									var classesByInterest = [self.allClasses[classIndex]];
+									self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+								}
+							}
 						}
 						self.buildCurrentObj();
 						break;
@@ -374,6 +388,7 @@
 		self.currentObj.Name = currentName;
 		self.currentObj.NodeID = subLevel.NodeID;
 		self.currentObj.Current = true;
+		self.currentObj.FeaturedItemsHeader = '';
 		self.JumpNav = { To: currentName, Type: 'linkTo' };
 		self.setUrl(currentName, 'replace');
 	};
@@ -1550,7 +1565,8 @@
 	};
 
 	var formatDataFromJson = function (arr, nodeId) {
-		var prodNo = arr.ProductionSeasonNumber === 0 ? arr.PackageNo : arr.ProductionSeasonNumber;
+		var packageNo = arr.PackageNo;
+		var prodNo = arr.ProductionSeasonNumber === 0 ? packageNo : arr.ProductionSeasonNumber;
 		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
 		var futurePerformanceDates = _.pluck(arr.FuturePerformances, 'perf_dt');
 		var itemTypes = _.remove(keyWords, function (n) { 
@@ -1596,7 +1612,11 @@
 			var performances = arr.FuturePerformances;
 			if (performances.length > 0) {
 				if (performances.length > 1) {
-					shortDesc += "<a class='expand-collapse'>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					if (packageNo === 0) {
+						shortDesc += "<a class='expand-collapse'>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					} else {
+						shortDesc += "<a class='expand-collapse'>" + "This Subscription Includes ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					}
 				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
@@ -1625,32 +1645,42 @@
 							}
 						});
 					}
-					if (ind === 0) {
-						shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+					if (packageNo === 0) {
+						if (ind === 0) {
+							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+							if (itemType.toLowerCase() === 'class') {
+								shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
+									"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
+									"<th>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</th>";
+							} else {
+								shortDesc += "<th width='185'>Date</th><th>Price</th>";
+							}
+							shortDesc += "</tr>";
+						}
+						shortDesc += "<tr><td>" + futureDate + "</td>"
 						if (itemType.toLowerCase() === 'class') {
-							shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
-								"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
-								"<th>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</th>";
+							shortDesc += "<td>" + daysOfWeek +"</td><td>" + numSessions + "</td>" +
+							"<td>from " + fromPrice +"</td><td>" + classInstructors + "</td>";
 						} else {
-							shortDesc += "<th width='185'>Date</th><th>Price</th>";
+							shortDesc += "<td>from " + fromPrice +"</td>";
 						}
 						shortDesc += "</tr>";
-					}
-					shortDesc += "<tr><td>" + futureDate + "</td>"
-					if (itemType.toLowerCase() === 'class') {
-						shortDesc += "<td>" + daysOfWeek +"</td><td>" + numSessions + "</td>" +
-							"<td>from " + fromPrice +"</td><td>" + classInstructors + "</td>";
+
+						//Closes the table and expand/collapse div
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</tbody></table></div>";
+						}
 					} else {
-						shortDesc += "<td>from " + fromPrice +"</td>";
-					}
-					shortDesc += "</tr>";
+						if (ind === 0) {
+							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+						}
+						shortDesc += "<td>" + p.thumbnail +"<br />" + p.title +"<br />" + futureDate +"</td>";
 
-					//Closes the table and expand/collapse div
-					if ((ind + 1) === performances.length) {
-						shortDesc += "</tbody></table></div>";
+						//Closes the table and expand/collapse div
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</tr></tbody></table></div>";
+						}
 					}
-
-					
 				});
 			}
 		}
