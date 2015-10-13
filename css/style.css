@@ -1809,11 +1809,6 @@ label.btn.active,
     font-size: 10px;
     display: block;
 }
-	.current {
-		font-size: 2.0rem;
-		font-weight: bold;
-		line-height: 1.1;
-	}
 }
 
 /**
@@ -1869,6 +1864,10 @@ label.btn.active,
     margin: 0 auto;
     display: block;
     background-color: #fff;
+}
+#brandContent .container > span {
+	 padding: 20px 0;
+	 display: block;
 }
 #brandContent h3 {
 	margin-top: 0;
