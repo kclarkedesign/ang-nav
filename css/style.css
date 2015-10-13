@@ -1386,7 +1386,7 @@ label.btn.active,
 	color: #fff;
 }
 .secondary {
-    background-color: #1c1c1c;
+    /*background-color: #1c1c1c;*/
      /*padding: 5px 50px 8px 50px; */
     text-transform: uppercase;
     -o-transition: height .5s ease-out;
