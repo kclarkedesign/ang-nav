@@ -1342,29 +1342,9 @@
 								</a>
 							</div>
 							<div class="sidebarHeading pt10 pb10 pl15 blue-bg">Wish List</div>
-							<a id="savedSidebarClose"class="col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
-							<div class="col-xs-12 pb10">
-								<div class="pt20">
-									<div class="sidebarHeading">Filters</div>
-									<div role="separator" class="divider mt5"></div>
-								</div>
-							</div>
-							<div class="col-xs-12 pb10">
-								<div class="savedSearches label label-info mr5" ng-repeat="savedSearch in navListCtrl.savedSearches">
-									<ul>
-										<li>
-											<a ng-href="{{savedSearch.url}}">{{savedSearch.folder}} {{savedSearch.filter}}</a>
-											<a class="savedSearchClose" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedSearches)" ng-show="savedSearch.url.length">
-												<i class="fa fa-times"></i>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
+							<a id="savedSidebarClose" class="col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
 							<div id="savedPrograms" class="col-xs-12 pb10">
 								<div class="pt20">
-									<div class="sidebarHeading">Programs</div>
-									<div role="separator" class="divider"></div>
 									<div class="savedProdItem container-fluid" ng-repeat="savedProgram in navListCtrl.savedPrograms">
 										<div class="row">
 											<div class="col-xs-12 pl0">
