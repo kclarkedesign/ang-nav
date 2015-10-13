@@ -1686,7 +1686,8 @@
 						if (ind === 0) {
 							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
 						}
-						shortDesc += "<td><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\"><br />" + p.title +"<br />" + futureDate +"</td>";
+						shortDesc += "<td><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\">"
+						shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no +"' target='_blank'>" + p.title +"</a><br />" + futureDate +"</td>";
 
 						//Closes the table and expand/collapse div
 						if ((ind + 1) === performances.length) {
