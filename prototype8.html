@@ -46,7 +46,6 @@
 				});
 				$("#browseBtn, #browseBtnMobile").click(function(e) {
 					e.preventDefault();
-					console.log("hi");
 					$("#browseSidebar").toggleClass('in');
 					$("body").toggleClass('sidebar-open');
 					$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
@@ -642,7 +641,12 @@
 							</div>
 							<div class="filter-browse-container pt10 pl10 pr10 pb5">
 								<div class="filter-content container pl10 pr10 pb15">
-									<ol class="breadcrumb mb5 pl5">
+									<ol class="breadcrumb mb5 pl5 hidden-xs hidden-sm hidden-md">
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										</li>
+									</ol>
+									<ol class="breadcrumb mb0 pl0 hidden-lg hidden-xl">
 										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
 											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
 										</li>
