@@ -217,12 +217,16 @@
 						} else {
 							var subfolders = locationPath.substring(1).split('/');
 							var rootFolder = subfolders[0];
-							var currentRootFolder = self.arrCategory[0][0].Name;
-							if (currentRootFolder !== rootFolder) {
-								adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
-								var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
-								var classesByInterest = [self.allClasses[classIndex]];
-								self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+							//if logo clicked to reset let's just skip this
+							if (rootFolder.length > 0) {
+								//if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
+								var currentRootFolder = self.arrCategory[0][0].Name;
+								if (currentRootFolder !== rootFolder) {
+									adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+									var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
+									var classesByInterest = [self.allClasses[classIndex]];
+									self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+								}
 							}
 						}
 						self.buildCurrentObj();
