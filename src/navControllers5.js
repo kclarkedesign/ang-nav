@@ -1324,6 +1324,11 @@
 		self.affixed = false;
 	};
 
+	NavListController.prototype.showFeaturedHeader = function () {
+		var self = this;
+		return ((self.getBreadcrumbs(true)).FeaturedItemsHeader).length > 0 && self.onscreenResults.length > 0;
+	};	
+
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
 		_.forOwn(obj, function(v, k) {
@@ -1636,14 +1641,16 @@
 							}
 						});
 						var rawDaysOfWeek = p.days_of_week;
-						dowArr = rawDaysOfWeek.split(',');
-						var daysOfWeek = '';
-						_.forEach(dowArr, function (dow, index) {
-							daysOfWeek += dow;
-							if ((index + 1) < dowArr.length) {
-								daysOfWeek += ', ';
-							}
-						});
+							if (!_.isNull(rawDaysOfWeek)) {
+							dowArr = rawDaysOfWeek.split(',');
+							var daysOfWeek = '';
+							_.forEach(dowArr, function (dow, index) {
+								daysOfWeek += dow;
+								if ((index + 1) < dowArr.length) {
+									daysOfWeek += ', ';
+								}
+							});
+						}
 					}
 					if (packageNo === 0) {
 						if (ind === 0) {
@@ -1674,7 +1681,7 @@
 						if (ind === 0) {
 							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
 						}
-						shortDesc += "<td>" + p.thumbnail +"<br />" + p.title +"<br />" + futureDate +"</td>";
+						shortDesc += "<td><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\"><br />" + p.title +"<br />" + futureDate +"</td>";
 
 						//Closes the table and expand/collapse div
 						if ((ind + 1) === performances.length) {
