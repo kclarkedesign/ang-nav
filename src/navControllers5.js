@@ -1326,7 +1326,12 @@
 
 	NavListController.prototype.showFeaturedHeader = function () {
 		var self = this;
-		return ((self.getBreadcrumbs(true)).FeaturedItemsHeader).length > 0 && self.onscreenResults.length > 0;
+		var breadcrumbs = self.getBreadcrumbs(true);
+		if (_.isUndefined(breadcrumbs)) {
+			return false;
+		} else {
+			return ((self.getBreadcrumbs(true)).FeaturedItemsHeader).length > 0 && self.onscreenResults.length > 0;
+		}
 	};	
 
 	var pluckAllKeys = function (obj, res) {
