@@ -1659,7 +1659,8 @@
 					}
 					if (packageNo === 0) {
 						if (ind === 0) {
-							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+							shortDesc += "<div class='expand-collapse-container "+ ((ind + 1) === performances.length ? "" : "collapse") +"'>"
+							shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
 							if (itemType.toLowerCase() === 'class') {
 								shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
 									"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
