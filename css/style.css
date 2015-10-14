@@ -2969,6 +2969,10 @@ html, body{
 }
 .schedule td {
     height: 26px;
+    vertical-align: top;
+    padding-right: 14px;
+    max-width: 100px;
+    padding-bottom: 14px;
 }
 /*.futurePerfs.tbl {
 	display: table;
