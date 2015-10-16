@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-	<!-- 		<base href="/prototype5.html"> -->
+	<!--  <base href="/prototype5.html"> -->
 	<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
 	<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 	<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
 	<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
-	<script src="/ang-nav/src/angular-masonry.min.js"></script>
+	<!--<script src="/ang-nav/src/angular-masonry.min.js"></script>-->
 	<script src="/ang-nav/src/ngScrollSpy.js"></script>
 	<!-- the script below has custom modifications - look for "-djf" to see changes -->
 	<script src="/ang-nav/src/ui-bootstrap-tpls-0.13.0.js"></script>
@@ -47,7 +47,6 @@
 				});
 				$("#browseBtn, #browseBtnMobile").click(function(e) {
 					e.preventDefault();
-					console.log("hi");
 					$("#browseSidebar").toggleClass('in');
 					$("body").toggleClass('sidebar-open');
 					$(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
@@ -116,35 +115,23 @@
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 		<div id="site-container" style="height: 100%">
-			<header class="header navbar left-slide" affix>
-				<section id="" class="secondary">
+			<header class="header navbar left-slide">
+				<!-- <section id="" class="secondary">
 					<div class="container">
-						<div class="navbar-collapse navbar-right collapse pl0 pr0">
-							<div class="container-fluid no-p">
-								<ul class="nav navbar-nav">
-									<li><a><i class="fa fa-search"></i></a></li>
-									<li><a>Log In</a></li>
-									<li class="social-icon"><a><i class="fa fa-facebook"></i></a></li>
-									<li class="social-icon"><a><i class="fa fa-twitter"></i></a></li>
-									<li class="social-icon"><a><i class="fa fa-instagram"></i></a></li>
-									<li class="social-icon"><a><i class="fa fa-tumblr"></i></a></li>
-									<li class="social-icon"><a><i class="fa fa-youtube-play"></i></a></li>
-								</ul>
-							</div>
-						</div>
+						
 					</div>
-				</section>
+				</section> -->
 				<div class="container container-fluid-max-lg">
 					<div class="brand top-nav center">
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<a id="mainNavBtn" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse"></a>
+									<a id="mainNavBtnTwo" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed"></a>
 									<a href="#" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
 									</a>
 								</div>
-								<div class="navbar-collapse pull-left collapse pl0 pr0" id="hor-menu">
+								<div class="navbar-collapse pull-left collapse pl0 pr0" id="hor-menu" ng-class="!navCollapsed && 'in'">
 									<div class="container-fluid no-p">
 										<ul id="main-navigation" class="nav navbar-nav">
 											<li class="dropdown mega-dropdown" dropdown is-open="status.isopen">
@@ -603,14 +590,27 @@
 										</ul>
 									</div>
 								</div>
-								<ul class="nav navbar-nav navbar-right">
+								<div class="secondary navbar-collapse navbar-right collapse pl0">
+									<div class="container-fluid no-p">
+										<ul class="nav navbar-nav">
+											<li><a><i class="fa fa-search"></i></a></li>
+											<li><a>Log In</a></li>
+											<li class="social-icon"><a><i class="fa fa-facebook"></i></a></li>
+											<li class="social-icon"><a><i class="fa fa-twitter"></i></a></li>
+											<li class="social-icon"><a><i class="fa fa-instagram"></i></a></li>
+											<li class="social-icon"><a><i class="fa fa-tumblr"></i></a></li>
+											<li class="social-icon"><a><i class="fa fa-youtube-play"></i></a></li>
+										</ul>
+									</div>
+								</div>
+								<ul id="action-container" class="nav navbar-nav navbar-right">
 									<li id="navSavedBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
 									</li>
 									<li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
 									</li>
-									<li id="filterBtn-container" class="nav navbar-nav navbar-right hidden-lg hidden-xl filter" affix>
+									<li id="filterBtn-container" class="nav navbar-nav navbar-right hidden-lg hidden-xl filter">
 										<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown"><i class="fa fa-sliders fa-lg"></i></a>
 									</li>
 								</ul>
@@ -620,8 +620,8 @@
 				</div>
 			</header>
 			<div class="container-fluid" style="height: 100%">
-				<div class="row">
-					<div id="main-area" class="col-xs-12">
+				<div class="row" style="background: #ffffff;">
+					<div id="main-area">
 						<section class="main-content">
 							<div id="backToTop" class="btn" ng-class="{'affix': navListCtrl.affixed}" back-to-top-button>
 								<a ng-click="navListCtrl.scrollReset()"><i class="fa fa-chevron-circle-up"></i> Back to Top</a>
@@ -640,19 +640,25 @@
 									</div>
 								</div>
 							</div>
-							<div class="filter-browse-container pt25 pb15">
-								<div class="filter-content container">
-									<ol class="breadcrumb mb5">
+							<div class="filter-browse-container pt10 pl10 pr10 pb5">
+								<div class="filter-content container pl10 pr10 pb15">
+									<ol class="breadcrumb mb5 pl5 hidden-xs hidden-sm hidden-md">
 										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
 											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
 										</li>
 									</ol>
-								</div>
-								<div class="filter-content container pl10 pr10 pb25">
+									<ol class="breadcrumb mb0 pl0 hidden-lg hidden-xl">
+										<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
+											<a id="saveSearch" ng-click="navListCtrl.setCurrent($index);" ng-bind-html="bc.Name | unsafe"></a>
+										</li>
+									</ol>
+									<div id="current-interestMobile" class="hidden-lg hidden-xl col-xs-12 col-sm-12 col-md-12 mb5 pl0 pr0">
+										<span class="current ng-binding" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+									</div>
 									<table id="sub">
 										<tbody>
 											<tr>
-												<td nowrap>
+												<td nowrap class="hidden-xs hidden-sm hidden-md">
 													<div id="breadcrumb-content" class="col-xs-12 col-sm-12 col-md-4 no-p">
 														<div id="current-interest" class="col-xs-12 col-sm-12 col-md-12 mb5 pl5 pr15">
 															<span class="current" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
@@ -673,9 +679,9 @@
 										
 										<div id="browse-nav" class="col-xs-12 mt10 pl0 pr0 visible-xs visible-sm visible-md">
 											<div class="row">
-												<div id="browseBtns" class="col-xs-12 col-sm-6 mb10">
+												<div id="browseBtns" class="col-xs-12 col-sm-6 mb10" ng-show="navListCtrl.getSublevels().length">
 													<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.getSublevels().length">
-														<button id="browseBtn" class="btn btn-default full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														<button id="browseBtn" class="btn btn-default full-width dropdown-ch-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 															Subcategories
 															<span class="caret"></span>
 														</button>
@@ -895,7 +901,7 @@
 					
 					<div id="brandContent" >
 						<div class="container">
-							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe"></span>
+							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe" ng-show="navListCtrl.showFeaturedHeader()"></span>
 						</div>
 					</div>
 	
@@ -906,7 +912,7 @@
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 									<span class="noResults">No items were found</span>
 									<div ng-show="navListCtrl.displayFilterOptions()">
-										<span class="noResults">Try resetting the</span>
+										<span class="noResults">Clear</span>
 										<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
 											<span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span>
 											<span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
@@ -923,20 +929,16 @@
 										</span>
 										<span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
 											<span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-											<span class="removable">Search
+											<span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
 												<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
 											</span>
 										</span>
-										<span class="noResults">filters</span>
 									</div>
 								</div>
 
-
-
-								<!-- For Large and Xlarge screen sizes -->
-								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm hidden-md ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "columnWidth": 292.5, "gutter": 0 }'>
-									<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
+								<!-- For Medium, Large and Xlarge screen sizes -->
+								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "gutter": 0, "transitionDuration": 0 }'>
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-12 col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
 										<div class="itemContents hidden-xs p20">
 											<div class="col-xs-3 no-p">
 												<div class="corner-ribbon top-left red shadow">Featured</div>
@@ -992,9 +994,70 @@
 										</div>
 									</div>
 								</div>
-								<!-- For Medium and below screen sizes -->
-								<div id="isoContainerMobile" ng-cloak class="hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0 }'>
-									<div class="grid-sizer col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+
+
+								<!-- Medium screen size only -->
+								<!-- <div id="isoContainerMedium" ng-cloak class="hidden-xs hidden-sm hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "gutter": 0, "transitionDuration": 0 }'>
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
+										<div class="itemContents hidden-xs p20">
+											<div class="col-xs-3 no-p">
+												<div class="corner-ribbon top-left red shadow">Featured</div>
+												<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
+													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
+												</a>
+											</div>
+											<div class="col-xs-7 pl0">
+												<div class="item-details">
+													<div class="classTitle">
+														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+													</div>
+													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+													<div class="contentWrap">
+														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
+													</div>
+													
+												</div>
+											</div>
+											<div class="col-xs-2 pr0">
+												<div class="getTickets">
+													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More <i class="fa fa-arrow-right"></i></a>
+												</div>
+												<div class="getMore">
+														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
+															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
+															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
+														</a>
+												</div>
+											</div>
+										</div>
+										<div class="itemContents visible-xs">
+											<div class="container-fluid">
+												<div class="row">
+													<div id="tileImg" class="col-xs-5 no-p">
+														<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank" class="">
+															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
+														</a>
+													</div>
+													<div class="item-details col-xs-7 pull-right pt10">
+														<div class="classTitleMobile ">
+															<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
+														</div>
+														<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
+														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
+														<div class="contentWrapMobile">
+															<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div> -->
+
+
+								<!-- For below Medium screen sizes -->
+								<!-- <div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0, "transitionDuration": 0 }'>
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
@@ -1046,7 +1109,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -1210,12 +1273,12 @@
 						</div>
 						<!-- End Filter Sidebar -->
 						<!-- Sidebar  -->
-						<div class="sidebar-offcanvas" id="sidebar">
+						<!-- <div class="sidebar-offcanvas" id="sidebar">
 							<div class="list-group">
 								<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
 								<a class="list-group-item" ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 							</div>
-						</div>
+						</div> -->
 						<!-- Browse  -->
 						<div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas" id="browseSidebar">
 							<div class="list-group">
@@ -1349,29 +1412,9 @@
 								</a>
 							</div>
 							<div class="sidebarHeading pt10 pb10 pl15 blue-bg">Wish List</div>
-							<a id="savedSidebarClose"class="col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
-							<!-- <div class="col-xs-12 pb10">
-								<div class="pt20">
-									<div class="sidebarHeading">Filters</div>
-									<div role="separator" class="divider mt5"></div>
-								</div>
-							</div>
-							<div class="col-xs-12 pb10">
-								<div class="savedSearches label label-info mr5" ng-repeat="savedSearch in navListCtrl.savedSearches">
-									<ul>
-										<li>
-											<a ng-href="{{savedSearch.url}}">{{savedSearch.folder}} {{savedSearch.filter}}</a>
-											<a class="savedSearchClose" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedSearches)" ng-show="savedSearch.url.length">
-												<i class="fa fa-times"></i>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div> -->
+							<a id="savedSidebarClose" class="col-xs-2 center active"><span >Close</span> <i class="fa fa-times fa-lg"></i></a>
 							<div id="savedPrograms" class="col-xs-12 pb10">
 								<div class="pt20">
-									<div class="sidebarHeading">Programs</div>
-									<div role="separator" class="divider"></div>
 									<div class="savedProdItem container-fluid" ng-repeat="savedProgram in navListCtrl.savedPrograms">
 										<div class="row">
 											<div class="col-xs-12 pl0">

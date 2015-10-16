@@ -73,7 +73,7 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
+	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
@@ -1685,10 +1685,10 @@
 						}
 					} else {
 						if (ind === 0) {
-							shortDesc += "<div class='expand-collapse-container collapse'><table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+							shortDesc += "<div class='expand-collapse-container collapse'><table cellpadding='0' cellspacing='0' class='schedule schedule-subs mt5'><tbody><tr>";
 						}
-						shortDesc += "<td><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\">"
-						shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no +"' target='_blank'>" + p.title +"</a><br />" + futureDate +"</td>";
+						shortDesc += "<td width='100'><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\">"
+						shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no +"' target='_blank'>" + p.title +"</a><span class='futureDate'>" + futureDate +"</span></td>";
 
 						//Closes the table and expand/collapse div
 						if ((ind + 1) === performances.length) {
