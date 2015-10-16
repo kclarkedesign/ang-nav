@@ -3,7 +3,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-		<!-- 		<base href="/prototype5.html"> -->
 		<link rel="stylesheet" href="/css/font-awesome.css" />
 		<link rel="stylesheet" href="/css/themify-icons.css" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -12,7 +11,6 @@
 		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
 		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
-		<!--<script src="/src/angular-masonry.min.js"></script>-->
 		<script src="/src/ngScrollSpy.js"></script>
 		<!-- the script below has custom modifications - look for "-djf" to see changes -->
 		<script src="/src/ui-bootstrap-tpls-0.13.0.js"></script>
@@ -115,11 +113,6 @@
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
-				<!-- <section id="" class="secondary">
-					<div class="container">
-						
-					</div>
-				</section> -->
 				<div class="container container-fluid-max-lg">
 					<div class="brand top-nav center">
 						<div>
@@ -700,8 +693,8 @@
 											<!-- Promo Area -->
 											<div class="promo-top promo-art" data-myorder="1" ng-show="navListCtrl.microsites.length">
 												<span class="promo-msg">About our programs:</span>
-												<div id="promo-item-container-top" masonry>
-													<div class="promo-item-top masonry-brick {{ms.classes}}" ng-repeat="ms in navListCtrl.microsites">
+												<div id="promo-item-container-top">
+													<div class="promo-item-top {{ms.classes}}" ng-repeat="ms in navListCtrl.microsites">
 														<a class="{{ms.aClass}}" href="http://www.92y.org{{ms.aHref}}" target="_blank" ng-bind-html="ms.img | unsafe"></a>
 													</div>
 												</div>
@@ -936,8 +929,8 @@
 								</div>
 
 								<!-- For Medium, Large and Xlarge screen sizes -->
-								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "gutter": 0, "transitionDuration": 0 }'>
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-12 col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
+								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst col-xs-12 col-sm-12 col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
 										<div class="itemContents hidden-xs p20">
 											<div class="col-xs-3 no-p">
 												<div class="corner-ribbon top-left red shadow">Featured</div>
@@ -994,70 +987,9 @@
 									</div>
 								</div>
 
-
-								<!-- Medium screen size only -->
-								<!-- <div id="isoContainerMedium" ng-cloak class="hidden-xs hidden-sm hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "gutter": 0, "transitionDuration": 0 }'>
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
-										<div class="itemContents hidden-xs p20">
-											<div class="col-xs-3 no-p">
-												<div class="corner-ribbon top-left red shadow">Featured</div>
-												<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
-													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
-												</a>
-											</div>
-											<div class="col-xs-7 pl0">
-												<div class="item-details">
-													<div class="classTitle">
-														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
-													</div>
-													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-													<div class="contentWrap">
-														<div class="shortDescription" ng-bind-html="classInfo.Desc | unsafe"></div>
-													</div>
-													
-												</div>
-											</div>
-											<div class="col-xs-2 pr0">
-												<div class="getTickets">
-													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">Learn More <i class="fa fa-arrow-right"></i></a>
-												</div>
-												<div class="getMore">
-														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
-															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
-															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
-															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</a>
-												</div>
-											</div>
-										</div>
-										<div class="itemContents visible-xs">
-											<div class="container-fluid">
-												<div class="row">
-													<div id="tileImg" class="col-xs-5 no-p">
-														<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank" class="">
-															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
-														</a>
-													</div>
-													<div class="item-details col-xs-7 pull-right pt10">
-														<div class="classTitleMobile ">
-															<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">{{classInfo.Title}}</a>
-														</div>
-														<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
-														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-														<div class="contentWrapMobile">
-															<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div> -->
-
-
 								<!-- For below Medium screen sizes -->
-								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0, "transitionDuration": 0 }'>
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
+								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
 												<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
