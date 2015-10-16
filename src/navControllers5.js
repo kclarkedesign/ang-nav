@@ -108,6 +108,7 @@
 		self.chunkLevels = [];
 		self.affixed = false;
 		self.scrollingUp = false;
+		self.environment = "desktop";
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
@@ -138,7 +139,7 @@
 				resizeTileDisplay($scope);
 				self.onscreenResults = [];
 				self.displayTiles();
-				self.loadMore();
+				self.loadMore(self.environment);
 				$scope.$apply();
 			}
 		});
@@ -1115,9 +1116,11 @@
 		savedItems.splice(index, 1);
 	};
 
-	NavListController.prototype.loadMore = function () {
+	NavListController.prototype.loadMore = function (env) {
 		var self = this;
-		self.limit += self.numOfColumns;
+		if (env === self.environment) {
+			self.limit += self.numOfColumns;	
+		}
 	};
 
 	NavListController.prototype.sliceBy = function (slicer) {
@@ -1909,8 +1912,10 @@ var resizeTileDisplay = function (scope) {
 	} else {
 		numColumns = 1;
 		tileHeight = 135;
+		scope.navListCtrl.environment = "mobile";
 	}
-	var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
+	//var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
+	var headerHeight = $("#Container").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
