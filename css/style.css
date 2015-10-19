@@ -541,6 +541,10 @@ width: 280px;
 	display: block;
 }
 .form-control-feedback.form-control-clear {
+	top: 4px;
+    right: 14px;
+}
+.form-control-feedback.form-control-clear {
     height: 26px;
     line-height: 26px;
 }
@@ -594,12 +598,18 @@ width: 280px;
 #savedPrograms img {
   width: 100%;
 }
-#filterBtn-container {
+#savedSidebar .scroll-nav {
+    width: 330px;
+}
+#savedSidebar .scroll-container {
+    width: 310px;
+}
+/*#filterBtn-container {
 	display: none;
-}
-#filterBtn-container.affix {
+}*/
+/*#filterBtn-container.affix {
 	display: block;
-}
+}*/
 #mainNavClose {
   position: absolute;
   right: 14px;
@@ -861,6 +871,7 @@ width: 280px;
 		margin-right: auto;
 		margin-left: auto;
 		width: 100%;
+		background: #000;
 	}
 }
 
@@ -1256,10 +1267,35 @@ a {
 }
 .savedProdItem a {
     color: #fff;
+    display: block;
    /* overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
     white-space: nowrap;*/
+}
+.savedProdItem a:hover {
+    color: #919191;
+}
+.savedProdItem .getLink {
+    position: relative;
+    width: 100%;
+    display: block;
+    background: transparent;
+    white-space: nowrap;
+    border: none;
+    text-align: left;
+    border-top: 1px solid #525252;
+    padding: 4px 0 0;
+    margin: 4px 0 0;
+}
+.savedProdItem .getLink:hover {
+	background: transparent;
+}
+.savedProdItem .getTickets {
+    bottom: 0;
+    left: 0;
+    position: relative;
+    width: 100%;
+    background: #337AB7;
 }
 .tabs-left .nav-tabs {
 	float: left;
@@ -1749,10 +1785,10 @@ label.btn.active,
 			top: -2px;
 	}
 	.filter-content {
-		/*margin-bottom: 15px;*/
+		margin-bottom: 0;
 		padding-left: 0;
 		padding-right: 0;
-		/*margin-top: 5px;*/
+		padding-bottom: 0;
 	}
 	.savedSearches a {
 		padding: 4px 8px 4px;
@@ -1803,6 +1839,9 @@ label.btn.active,
 	/*#utilnav {
 		display: none;
 	}*/
+	.breadcrumb a {
+    font-size: 12px;
+}
 	#filterSidebarBtnMobile:after {
     content: "Filter";
     position: relative;
@@ -1811,7 +1850,10 @@ label.btn.active,
 }
 
 	.current {
-		font-size: 2.0rem;
+		font-size: 1.8rem;
+	}
+	#brandContent h3 {
+		font-size: 1.5rem;
 	}
 }
 
@@ -2339,9 +2381,17 @@ input[type="date"]::-webkit-inner-spin-button{
     	top: -.2em;
 	}
 }
+@media (min-width: 992px) {
+	#eventClassFinder.open>.dropdown-menu {
+		height: 180px;
+	}
+}
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
 		height: 380px;
+	}
+	#eventClassFinder.open>.dropdown-menu {
+		height: 220px;
 	}
 }
 @media (min-width: 768px) and (max-width: 786px) {
@@ -2524,6 +2574,23 @@ input[type="date"]::-webkit-inner-spin-button{
 		position: absolute;
     	right: 0;
 	}
+	.navbar-nav .open .dropdown-menu .dropdown-header {
+		padding: 10px 0;
+	} 
+	.navbar-nav .open .dropdown-menu>li>a,
+	.navbar-nav .open>.dropdown-menu {
+		padding: 0 0 10px;
+	}
+	.mega-dropdown-menu .dropdown-header {
+		padding: 10px 0;
+		white-space: normal;
+		line-height: 1.1;
+		font-size: 1.6rem;
+		text-align: center;
+	}
+	.navbar-nav>li>.dropdown-menu {
+		padding: 0;
+	}
 }
 @media (min-width: 768px) {
 	#browse-nav {
@@ -2671,23 +2738,23 @@ input[type="date"]::-webkit-inner-spin-button{
 	bottom: 0;
 	}
 
-	.item-details:hover .classTitle, .item-details:hover .classDate, .item-details:hover .warning {
+	/*.item-details:hover .classTitle, .item-details:hover .classDate, .item-details:hover .warning {
 		bottom: 124px;
-	}
-	.item-details:hover .contentWrap {
+	}*/
+	/*.item-details:hover .contentWrap {
 		top: -125px;
 		position: relative;
-	}
+	}*/
 
 	.itemBox .shortDescription {
 		background-color: #fff;
 	}
 
-	.item-details:hover .shortDescription {
+	/*.item-details:hover .shortDescription {
 		height: 174px;
 		opacity: 1;
 	    overflow-y: auto;
-	}
+	}*/
 
 	.shortDescription {
 		height: 150px;
@@ -2706,7 +2773,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	.tileContainer .itemContents.hidden-xs {
 		overflow: hidden;
 	}
-	.itemBox .classTitle,
+	/*.itemBox .classTitle,
 	.itemBox .classDate, 
 	.itemBox .warning,
 	.item-details:hover .classTitle, 
@@ -2721,8 +2788,13 @@ input[type="date"]::-webkit-inner-spin-button{
 	    -moz-transition: all .3s ease-out;
 	    -webkit-transition: all .3s ease-out;
 	    transition: all .3s ease-out;
-	}
+	}*/
 	/***** End ItemBox Rollover ******/
+
+
+}
+
+@media (min-width: 768px) {
 
 
 }

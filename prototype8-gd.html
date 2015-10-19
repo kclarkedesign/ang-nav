@@ -1057,7 +1057,7 @@
 
 
 								<!-- For below Medium screen sizes -->
-								<!-- <div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0, "transitionDuration": 0 }'>
+								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore()" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer" preserve-order="true" masonry='{ "isFitWidth": true, "gutter": 0, "transitionDuration": 0 }'>
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst masonry-brick col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}" target="_blank">
@@ -1109,7 +1109,7 @@
 											</div>
 										</div>
 									</div>
-								</div> -->
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1190,13 +1190,13 @@
 												<label class="checkbox dropdown-header pl0 fw-normal">Program Type:</label>
 											</div>
 											<div id="programTypeMobile" class="col-xs-12 pull-left btn-group" role="group" data-toggle="buttons">
-												<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
+												<label class="btn btn-default toggleBar-ch" ng-model="navListCtrl.typeSlice" btn-radio="'all'" ng-change="navListCtrl.sliceBy('type')">
 													<span class="pr5">All</span>
 												</label>
-												<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'class'" ng-change="navListCtrl.sliceBy('type')">
+												<label class="btn btn-default toggleBar-ch" ng-model="navListCtrl.typeSlice" btn-radio="'class'" ng-change="navListCtrl.sliceBy('type')">
 													<span class="pr5">Classes only</span>
 												</label>
-												<label class="btn btn-default" ng-model="navListCtrl.typeSlice" btn-radio="'event'" ng-change="navListCtrl.sliceBy('type')">
+												<label class="btn btn-default toggleBar-ch" ng-model="navListCtrl.typeSlice" btn-radio="'event'" ng-change="navListCtrl.sliceBy('type')">
 													<span class="pr5">Events only</span>
 												</label>
 											</div>
@@ -1273,12 +1273,12 @@
 						</div>
 						<!-- End Filter Sidebar -->
 						<!-- Sidebar  -->
-						<!-- <div class="sidebar-offcanvas" id="sidebar">
+						<div class="sidebar-offcanvas" id="sidebar">
 							<div class="list-group">
 								<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
 								<a class="list-group-item" ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 							</div>
-						</div> -->
+						</div>
 						<!-- Browse  -->
 						<div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas" id="browseSidebar">
 							<div class="list-group">
