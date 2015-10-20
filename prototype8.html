@@ -95,7 +95,7 @@
 			}, 50);
 				});
 				//Close these sidebars when they are clicked
-				$("#sidebar, #browseSidebar, #mainNavSidebar, #btnSubmit").click(function(e) {
+				$("#sidebar, #browseSidebar, #mainNavSidebar a, #btnSubmit").click(function(e) {
 					e.preventDefault();
 					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in');
 					$("body").removeClass('sidebar-open');
@@ -118,14 +118,22 @@
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<!-- <a id="mainNavBtnTwo" class="ti-menu navbar-toggle off-left visible-xs visible-sm visible-md collapsed" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed"></a> -->
+									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs collapsed" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" ng-class="!navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
 									<a href="#" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
 									</a>
 								</div>
-								<div class="navbar-collapse pull-left collapse pl0 pr0" id="hor-menu" ng-class="!navCollapsed && 'in'">
+
+								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navCollapsed && 'in'">
 									<div class="container-fluid no-p">
 										<ul id="main-navigation" class="nav navbar-nav">
+											<li ><span class="dropdown-header first-header visible-xs collapse">Event &amp; Class Finder</span>
+											</li>
+											<li class="dropdown mega-dropdown col-xs-12 visible-xs collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
+												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);">
+													<span ng-bind-html="sl.Name | unsafe"></span>
+												</a>
+											</li>
 											<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs" dropdown is-open="status.isopen">
 												<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 													<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
@@ -1034,9 +1042,9 @@
 											<div class="container-fluid">
 												<div class="row">
 													<div id="tileImg" class="col-xs-5 no-p">
-														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
+														<!-- <a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
-														</a>
+														</a> -->
 														<a ng-href="http://www.92y.org{{classInfo.Url}}" class="">
 															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
 														</a>
@@ -1049,7 +1057,14 @@
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 														<div class="contentWrapMobile">
 															<div class="shortDescriptionMobile hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
+															
 														</div>
+
+													</div>
+													<div class="item-details col-xs-12">
+														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
+															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
+															</a>
 													</div>
 												</div>
 											</div>
@@ -1300,59 +1315,7 @@
 								</li>
 							</ul>
 						</div>
-						<!-- Main Nav Sidebar -->
-						<div id="mainNavSidebar" class="col-xs-8 col-sm-3 col-lg-3 no-p">
-							<ul id="main-navigation" class="nav">
-								<li>
-									<div id="utilnav" role="navigation" class="">
-										<ul>
-											<li>
-												<span class="greeting">Howdy!</span>
-												<a id="link_loginLogout" href="/account/logout.aspx">Log Out</a>
-											</li>
-											<li>
-												<a id="link_changeLogin" href="/account/accountupdate.aspx">My Account</a>
-											</li>
-										</ul>
-									</div>
-								</li>
-								<li class="dropdown">
-									<a id="sidebar-interest-list">
-										<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>Talks &amp; Readings</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>Performing Arts</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>School of the Arts</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>Health &amp; Fitness</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>Jewish Life</span>
-									</a>
-								</li>
-								<li class="dropdown">
-									<a href="javascript:;">
-										<span>Kids &amp; Family</span>
-									</a>
-								</li>
-							</ul>
-						</div>
+						
 						<!-- Saved Sidebar -->
 						<div id="savedSidebar" class="no-p">
 							<div id="floatCartBtn" class="notifications dropdown inactive">

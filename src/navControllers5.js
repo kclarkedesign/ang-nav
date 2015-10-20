@@ -1953,7 +1953,7 @@ $(document).on('click','.expand-collapse', function(){
 	var scope = angular.element("#isoContainer, #isoContainerMobile").scope();
 	scope.$apply(function(){
 		expandBtn.next(".expand-collapse-container").slideToggle('800', function() {
-			scope.$broadcast('masonry.reload');
+			// scope.$broadcast('masonry.reload');
 		});
 	});
 });
