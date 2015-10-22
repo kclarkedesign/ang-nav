@@ -546,7 +546,7 @@ width: 280px;
 }
 #searchText.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
-	background: url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
+	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
 	padding-right: 24px;
 }
@@ -1975,13 +1975,14 @@ transform: rotate(-45deg);
 	.itemContents .bookmark {
 		border-radius: 3px;
 		top: 0;
-		left: 14px;
+		right: 0;
 		z-index: 1;
-		position: absolute;
+		position: relative;
 		width: 28px;
 		height: 24px;
 		font-size: 11px;
-		padding: 3px 6px;
+		padding: 6px;
+		left: 0;
 	}
 	
 	/*.itemContents .bookmark {
@@ -2126,10 +2127,10 @@ transform: rotate(-45deg);
 	margin-right: auto;
 	z-index: 1;
 	right: 0;
-	bottom: 0;
+	bottom: 2px;
 }
 .getMore .bookmark {
-    padding: 10px 0;
+    padding: 15px 0;
     display: block;
     width: 100%;
     height: auto;
@@ -2148,7 +2149,7 @@ transform: rotate(-45deg);
     padding: 0;
 }
 .getTickets {
-	bottom: 40px;
+	bottom: 50px;
 	left: 0;
 	position: absolute;
 	width: 50%;
@@ -2569,7 +2570,7 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
-		height: 400px;
+		height: 450px;
 	}
 	#eventClassFinder.open>.dropdown-menu {
 		height: 220px;
@@ -2601,7 +2602,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		padding-bottom: 0;
 	}
 	.itemContents.visible-xs .warning {
-		padding: 4px 0;
+		padding: 4px 0 8px;
 
 	}
 	.shortDescriptionMobile a {
@@ -2630,7 +2631,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	#sidebar {
 	  overflow-y: scroll;
 	}
-	.itemContents .bookmark {
+	/*.itemContents .bookmark {
 		border-radius: 3px;
 		top: 0;
 		right: 0;
@@ -2641,7 +2642,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		font-size: 11px;
 		padding: 3px 6px;
 		left: 0;
-	}
+	}*/
 	.classTitle, .classDate, .warning, .warning h4 {
 		position: relative;
 		background-color: white;

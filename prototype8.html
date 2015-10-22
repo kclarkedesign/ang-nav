@@ -611,7 +611,7 @@
 												</a>
 									</a>
 									</li> -->
-									<li id="navSavedBtn" class="notifications dropdown hidden-lg">
+									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
 									</li>
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
@@ -1061,7 +1061,7 @@
 														</div>
 
 													</div>
-													<div class="item-details col-xs-7 pull-right">
+													<div class="item-details col-xs-7 pull-right pb10">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															</a>
