@@ -118,19 +118,19 @@
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" ng-class="!navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
+									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navCollapsed = !navListCtrl.navCollapsed" ng-class="!navListCtrl.navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
 									<a href="#" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
 									</a>
 								</div>
 
-								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navCollapsed && 'in'">
+								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navListCtrl.navCollapsed && 'in'">
 									<div class="container-fluid no-p">
 										<ul id="main-navigation" class="nav navbar-nav">
 											<li class="pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
 											</li>
 											<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
-												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);">
+												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navCollapsed = true;">
 													<span ng-bind-html="sl.Name | unsafe"></span>
 												</a>
 											</li>
