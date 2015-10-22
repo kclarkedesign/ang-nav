@@ -2098,16 +2098,18 @@ transform: rotate(-45deg);
 	transition: .1s linear;
 }*/
 .getMore {
-  bottom: 0;
-  position: absolute;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  /*background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;*/
-  z-index: 1;
+	left: 0;
+	position: absolute;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1;
+	right: 0;
+	bottom: 0;
 }
 .getMore .bookmark {
-    padding: 10px 0;
+    /*padding: 10px 0;*/
+    padding: 0 0 12px;
     display: block;
     width: 100%;
     height: auto;
@@ -2126,14 +2128,14 @@ transform: rotate(-45deg);
     padding: 0;
 }
 .getTickets {
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  /*background: #ffffff url("http://www.92y.org/92StreetY/media/header_bgs/show_bg.jpg")repeat-x 0 7px;*/
-  z-index: 1;
+	bottom: 40px;
+	left: 0;
+	position: absolute;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1;
+	right: 0;
 }
 /*.showMore {
 	cursor: pointer;
@@ -2172,22 +2174,23 @@ transform: rotate(-45deg);
 	transition: .1s linear;
 }
 .getLink {
+	color: #fff;
 	cursor: pointer;
-  font-size: 12px;
-  padding: 10px 10px;
-  display: inline-block;
-  background: #ffffff;
-  /* border-radius: 4px; */
-  -webkit-transition: .1s linear;
-  -moz-transition: .1s linear;
-  transition: .1s linear;
-  width: 100%;
-  /* background-color: #F5F5F5; */
-  border-top: 1px solid #EDEDED;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-right: 0;
+	font-size: 12px;
+	padding: 10px 10px;
+	display: inline-block;
+	background: #4F93CD;
+	/* border-radius: 4px; */
+	-webkit-transition: .1s linear;
+	-moz-transition: .1s linear;
+	transition: .1s linear;
+	width: 100%;
+	/* background-color: #F5F5F5; */
+	border-top: 1px solid #EDEDED;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	right: 0;
 }
 .getLink:hover {
 	background: #E8E8E8;
@@ -2543,7 +2546,7 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
-		height: 380px;
+		height: 400px;
 	}
 	#eventClassFinder.open>.dropdown-menu {
 		height: 220px;
@@ -2606,14 +2609,15 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.itemContents .bookmark {
 		border-radius: 3px;
-		top: -3px;
-		right: -3px;
+		top: 0;
+		right: 0;
 		z-index: 1;
-		position: absolute;
+		position: relative;
 		width: 28px;
 		height: 24px;
 		font-size: 11px;
 		padding: 3px 6px;
+		left: 0;
 	}
 	.classTitle, .classDate, .warning, .warning h4 {
 		position: relative;
@@ -2962,6 +2966,11 @@ input[type="date"]::-webkit-inner-spin-button{
 	}*/
 	.getLink {
 		border-left: 1px solid #EDEDED;
+		    color: #fff;
+	}
+	.getLink:focus, .getLink:hover {
+		background: #23527c;
+		    color: #fff;
 	}
 	.tileContainer .itemContents.hidden-xs {
 		overflow: hidden;
