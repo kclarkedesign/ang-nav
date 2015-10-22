@@ -7,7 +7,7 @@ For NAV Example
 /** For Promo  **/
 
 /*    #utility-bar {
- 		width: 100%;
+     	width: 100%;
  		padding: 10px 0 10px 16px;
  		border-bottom: 1px solid #D6D6D6;
 		position: fixed;
@@ -529,7 +529,7 @@ width: 280px;
 }
 #searchText.form-control,
 #mobileSearchText.form-control {
-	background: #fff 99%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
+	/*background: #fff 99%/22px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;*/
 	padding: 6px 30px 6px 12px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
@@ -537,9 +537,12 @@ width: 280px;
 #mobileSearchText.form-control+a {
 	display: none;
 }
-#searchText.form-control.active,
-#mobileSearchText.form-control.active {
+#searchText.form-control.active {
 	background: none;
+}
+,
+#mobileSearchText.form-control.active {
+	background: #fff;
 }
 #searchText.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
@@ -552,13 +555,13 @@ width: 280px;
 	display: block;
 }
 .form-control-feedback.form-control-clear {
-	top: 4px;
-    right: 14px;
-}
-.form-control-feedback.form-control-clear {
     height: 26px;
     line-height: 26px;
 }
+#filterSidebar .form-control-feedback.form-control-clear {
+		top: 4px;
+	    right: 14px;
+	}
 .form-control-feedback {
 	width: 22px;
 }
@@ -1486,7 +1489,9 @@ label.btn.active,
 }
 
 .c-hamburger span::before,
-.c-hamburger span::after {
+.c-hamburger span:before,
+.c-hamburger span::after,
+.c-hamburger span:after {
   position: absolute;
   display: block;
   left: 0;
@@ -1497,15 +1502,19 @@ label.btn.active,
 }
 .c-hamburger.is-active span,
 .c-hamburger.is-active span::before,
-.c-hamburger.is-active span::after {
+.c-hamburger.is-active span:before,
+.c-hamburger.is-active span::after,
+.c-hamburger.is-active span:after {
 	background-color: white;
 
 }
-.c-hamburger span::before {
+.c-hamburger span::before,
+.c-hamburger span:before {
   top: -8px;
 }
 
-.c-hamburger span::after {
+.c-hamburger span::after,
+.c-hamburger span:after {
   bottom: -8px;
 }
 
@@ -1523,7 +1532,9 @@ label.btn.active,
 }
 
 .c-hamburger--htx span::before,
-.c-hamburger--htx span::after {
+.c-hamburger--htx span:before,
+.c-hamburger--htx span::after,
+.c-hamburger--htx span:after {
   -ms-transition-duration: 0.3s, 0.3s;
   -moz-transition-duration: 0.3s, 0.3s;
   -o-transition-duration: 0.3s, 0.3s;
@@ -1536,7 +1547,8 @@ label.btn.active,
   transition-delay: 0.3s, 0s;
 }
 
-.c-hamburger--htx span::before {
+.c-hamburger--htx span::before,
+.c-hamburger--htx span:before {
   -ms-transition-property: top, transform;
   -moz-transition-property: top, transform;
   -o-transition-property: top, transform;
@@ -1544,7 +1556,8 @@ label.btn.active,
   transition-property: top, transform;
 }
 
-.c-hamburger--htx span::after {
+.c-hamburger--htx span::after,
+.c-hamburger--htx span:after {
   -ms-transition-property: bottom, transform;
   -moz-transition-property: bottom, transform;
   -o-transition-property: bottom, transform;
@@ -1561,8 +1574,11 @@ label.btn.active,
   background: none;
 }
 
-.c-hamburger--htx.is-active span::before {
+.c-hamburger--htx.is-active span::before,
+.c-hamburger--htx.is-active span:before {
 	top: 0;
+	position: absolute;
+	content: "";
 	-ms-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
@@ -1570,8 +1586,11 @@ label.btn.active,
 	transform: rotate(45deg);
 }
 
-.c-hamburger--htx.is-active span::after {
+.c-hamburger--htx.is-active span::after,
+.c-hamburger--htx.is-active span:after {
   bottom: 0;
+  position: absolute;
+  content: "";
 -ms-transform: rotate(-45deg);
 -moz-transform: rotate(-45deg);
 -o-transform: rotate(-45deg);
@@ -1580,7 +1599,9 @@ transform: rotate(-45deg);
 }
 
 .c-hamburger--htx.is-active span::before,
-.c-hamburger--htx.is-active span::after {
+.c-hamburger--htx.is-active span:before,
+.c-hamburger--htx.is-active span::after,
+.c-hamburger--htx.is-active span:after {
   -ms-transition-delay: 0s, 0.3s;
   -moz-transition-delay: 0s, 0.3s;
   -o-transition-delay: 0s, 0.3s;
@@ -2451,10 +2472,13 @@ input[type="date"]::-webkit-inner-spin-button{
 	#current-interest,
 	#current-interestMobile,
 	#breadcrumb-content {
-    display: inline-block;
-    /*width: auto;*/
+	    display: inline-block;
+	    /*width: auto;*/
+	}
 }
-  	}
+@media (max-width: 1199px) {
+
+}
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
   .seven-cols .col-sm-2,
