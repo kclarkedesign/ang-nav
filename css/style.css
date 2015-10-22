@@ -3280,12 +3280,6 @@ input[type="date"]::-webkit-inner-spin-button{
   transition-delay: 0;
 }
 
-html, body{
-    height:100%;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-}
 .schedule tr {
     border-bottom: 1px solid #DBDCDC;
 }

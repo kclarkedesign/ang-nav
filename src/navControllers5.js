@@ -104,7 +104,8 @@
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
-		self.bottomContainerStyle = { 'overflow': 'scroll', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': '100%' };
+		self.bottomContainerStyle = { 'overflow': 'overflow', 'overflow-x': 'hidden', 'height': '100%' };
+		self.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
 		self.chunkLevels = [];
 		self.affixed = false;
 		self.scrollingUp = false;
@@ -1904,6 +1905,7 @@ var isDate = function (checkDate) {
 var resizeTileDisplay = function (scope) {
 
 	var tileHeight, numColumns;
+	scope.navListCtrl.environment = "desktop";
 	if (window.matchMedia( "(min-width: 1200px)" ).matches) {
 		numColumns = 1;
 		tileHeight = 211;
@@ -1917,6 +1919,14 @@ var resizeTileDisplay = function (scope) {
 		numColumns = 1;
 		tileHeight = 135;
 		scope.navListCtrl.environment = "mobile";
+	}
+
+	if (scope.navListCtrl.environment === "mobile") {
+		scope.navListCtrl.bodyStyle = {};
+		scope.navListCtrl.bottomContainerStyle = { '-webkit-overflow-scrolling': 'touch' };
+	} else {
+		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+		scope.navListCtrl.bottomContainerStyle = { 'overflow': 'overflow', 'overflow-x': 'hidden', 'height': '100%' };
 	}
 
 	var headerHeight = $("#Container").offset().top;
