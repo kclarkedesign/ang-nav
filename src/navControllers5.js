@@ -1914,13 +1914,16 @@ var resizeTileDisplay = function (scope) {
 		tileHeight = 135;
 		scope.navListCtrl.environment = "mobile";
 	}
-	//var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
+
 	var headerHeight = $("#Container").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
 
 	var limitToSet = numColumns * numRows;
+	if (scope.navListCtrl.environment = "mobile") {
+		limitToSet *= 5;
+	}
 	scope.navListCtrl.limit = limitToSet;
 	scope.navListCtrl.numOfColumns = numColumns;
 	scope.navListCtrl.origLimit = limitToSet + numColumns;
