@@ -109,6 +109,7 @@
 		self.affixed = false;
 		self.scrollingUp = false;
 		self.environment = "desktop";
+		self.navCollapsed = true
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 
@@ -348,9 +349,6 @@
 			if (_.isUndefined(self.navsDict[subLevelName])) {
 				self.tileInfoSrv.getItems(subLevelName).then(function (items) {
 					self.navsDict[subLevelName] = items.data;
-					func(self, arg);
-				}, function () {
-					self.navsDict[subLevelName] = [];
 					func(self, arg);
 				});
 			} else {
@@ -1773,11 +1771,12 @@
 		return prettyDate;
 	}
 
-	var TileInfoService = function (http) {
+	var TileInfoService = function (http, q) {
 		var self = this;
 		self.http = http;
+		self.q = q;
 	};
-	TileInfoService.$inject = ['$http'];
+	TileInfoService.$inject = ['$http', '$q'];
 
 	TileInfoService.prototype.getAllClasses = function (url) {
 		var self = this;
@@ -1818,9 +1817,15 @@
 				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
 				break;
 		}
-		return self.http.get(jsonFile).success(function (data) {
-			return data;
-		});
+		if (_.isUndefined(jsonFile)) {
+			return self.q.when([]);
+		} else {
+			return self.http.get(jsonFile).then(function (data) {
+				return data;
+			}, function (error) {
+				return {data: []};
+			});
+		}
 	};
 
 	navApp.service('tileInfoSrv', TileInfoService);
@@ -1877,7 +1882,6 @@
 					return scope.navListCtrl.affixed;
 				}, function(newValue, oldValue) {
 					if (newValue === false) {
-						//$("#bottomContainer").animate({ scrollTop: -10 }, "fast");
 						$("#bottomContainer").scrollTop(0);
 					}
 				});
@@ -1921,9 +1925,6 @@ var resizeTileDisplay = function (scope) {
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
 
 	var limitToSet = numColumns * numRows;
-	if (scope.navListCtrl.environment = "mobile") {
-		limitToSet *= 5;
-	}
 	scope.navListCtrl.limit = limitToSet;
 	scope.navListCtrl.numOfColumns = numColumns;
 	scope.navListCtrl.origLimit = limitToSet + numColumns;
