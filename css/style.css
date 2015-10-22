@@ -2108,8 +2108,7 @@ transform: rotate(-45deg);
 	bottom: 0;
 }
 .getMore .bookmark {
-    /*padding: 10px 0;*/
-    padding: 0 0 12px;
+    padding: 10px 0;
     display: block;
     width: 100%;
     height: auto;
