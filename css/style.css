@@ -1983,8 +1983,12 @@ transform: rotate(-45deg);
 		font-size: 11px;
 		padding: 6px;
 		left: 0;
+		cursor: pointer;
 	}
-	
+	.itemContents .bookmark {
+
+
+	}
 	/*.itemContents .bookmark {
 		position: absolute;
     padding: 5px 8px;
@@ -2144,6 +2148,9 @@ transform: rotate(-45deg);
     border-bottom: 0;
     border-left: 0;
     border-top: 0;
+}
+.getMore .bookmark span {
+    cursor: pointer;
 }
 .wishList {
     padding: 0;

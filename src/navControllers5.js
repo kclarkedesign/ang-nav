@@ -73,7 +73,7 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
+	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
@@ -1928,7 +1928,7 @@ var resizeTileDisplay = function (scope) {
 		headerHeight = $("header").height();
 	} else {
 		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
-		scope.navListCtrl.bottomContainerStyle = { 'overflow-y': 'auto', 'overflow-x': 'hidden', 'height': (window.innerHeight-50) +'px' };
+		scope.navListCtrl.bottomContainerStyle = { 'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-50) +'px' };
 		headerHeight = $("#Container").offset().top;
 	}
 	var pageHeight = $(window).height();
