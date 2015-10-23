@@ -2478,7 +2478,13 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 }
 @media (max-width: 1199px) {
+	.header {
 
+		position: fixed;
+	}
+	#site-container>.container-fluid {
+		margin-top: 50px
+	}
 }
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
