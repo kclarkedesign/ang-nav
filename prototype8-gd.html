@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-	<!--  <base href="/prototype5.html"> -->
 	<link rel="stylesheet" href="/ang-nav/css/font-awesome.css" />
 	<link rel="stylesheet" href="/ang-nav/css/themify-icons.css" />
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -112,7 +111,7 @@
 			});
 		</script>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions>
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle">
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
@@ -120,19 +119,19 @@
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" ng-class="!navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
+									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navCollapsed = !navListCtrl.navCollapsed" ng-class="!navListCtrl.navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
 									<a href="#" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
 									</a>
 								</div>
 
-								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navCollapsed && 'in'">
+								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navListCtrl.navCollapsed && 'in'">
 									<div class="container-fluid no-p">
 										<ul id="main-navigation" class="nav navbar-nav">
 											<li class="pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
 											</li>
 											<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
-												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);">
+												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navCollapsed = true;">
 													<span ng-bind-html="sl.Name | unsafe"></span>
 												</a>
 											</li>
@@ -613,7 +612,7 @@
 												</a>
 									</a>
 									</li> -->
-									<li id="navSavedBtn" class="notifications dropdown hidden-lg">
+									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
 									</li>
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
@@ -1013,7 +1012,7 @@
 									</div>
 								</div>
 								<!-- For below Medium screen sizes -->
-								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
+								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1">
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}">
@@ -1063,7 +1062,7 @@
 														</div>
 
 													</div>
-													<div class="item-details col-xs-7 pull-right">
+													<div class="item-details col-xs-7 pull-right pb10">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															</a>

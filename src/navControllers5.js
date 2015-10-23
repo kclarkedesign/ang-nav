@@ -1906,27 +1906,27 @@ var resizeTileDisplay = function (scope) {
 
 	var tileHeight, numColumns;
 	scope.navListCtrl.environment = "desktop";
-	if (window.matchMedia( "(min-width: 1200px)" ).matches) {
+	if (window.matchMedia( "(min-width: 1199px)" ).matches) {
 		numColumns = 1;
 		tileHeight = 211;
-	} else if (window.matchMedia( "(min-width: 992px)" ).matches) {
+	} else if (window.matchMedia( "(min-width: 991px)" ).matches) {
 		numColumns = 1;
 		tileHeight = 181;
-	} else if (window.matchMedia( "(min-width: 768px)" ).matches) {
+	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
 		numColumns = 2;
-		tileHeight = 380;
+		tileHeight = 450;
 	} else {
 		numColumns = 1;
-		tileHeight = 135;
+		tileHeight = 139;
 		scope.navListCtrl.environment = "mobile";
 	}
 
 	if (scope.navListCtrl.environment === "mobile") {
-		scope.navListCtrl.bodyStyle = {};
-		scope.navListCtrl.bottomContainerStyle = { '-webkit-overflow-scrolling': 'touch' };
+		scope.navListCtrl.bodyStyle = {'overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
+		scope.navListCtrl.bottomContainerStyle = {};
 	} else {
 		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
-		scope.navListCtrl.bottomContainerStyle = { 'overflow': 'overflow', 'overflow-x': 'hidden', 'height': '100%' };
+		scope.navListCtrl.bottomContainerStyle = { 'overflow-y': 'auto', 'overflow-x': 'hidden', 'height': (window.innerHeight-50) +'px' };
 	}
 
 	var headerHeight = $("#Container").offset().top;
