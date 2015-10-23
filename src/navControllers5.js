@@ -1118,7 +1118,7 @@
 	NavListController.prototype.loadMore = function (env) {
 		var self = this;
 		if (env === self.environment) {
-			self.limit += self.numOfColumns;	
+			self.limit += (self.limit * self.numOfColumns);
 		}
 	};
 
@@ -1921,15 +1921,16 @@ var resizeTileDisplay = function (scope) {
 		scope.navListCtrl.environment = "mobile";
 	}
 
+	var headerHeight;
 	if (scope.navListCtrl.environment === "mobile") {
 		scope.navListCtrl.bodyStyle = {'overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
 		scope.navListCtrl.bottomContainerStyle = {};
+		headerHeight = $("header").height();
 	} else {
 		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
 		scope.navListCtrl.bottomContainerStyle = { 'overflow-y': 'auto', 'overflow-x': 'hidden', 'height': (window.innerHeight-50) +'px' };
+		headerHeight = $("#Container").offset().top;
 	}
-
-	var headerHeight = $("#Container").offset().top;
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
