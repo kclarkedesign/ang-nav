@@ -348,7 +348,7 @@
 		}
 		if (!_.isUndefined(subLevelName)) {
 			if (_.isUndefined(self.navsDict[subLevelName])) {
-				self.tileInfoSrv.getItems(subLevelName).then(function (items) {
+				self.tileInfoSrv.getItems(subLevelName, self.allClasses).then(function (items) {
 					self.navsDict[subLevelName] = items.data;
 					func(self, arg);
 				});
@@ -1786,39 +1786,12 @@
 		});
 	};
 
-	TileInfoService.prototype.getItems = function (subLevelName) {
+	TileInfoService.prototype.getItems = function (subLevelName, levels) {
 		var self = this;
-		var jsonFile;
-		switch (subLevelName) {
-			case 'School Of The Arts':
-				jsonFile = 'items/CatProdPkg_SOA.json';
-				break;
-			case 'Talks':
-				jsonFile = 'items/CatProdPkg_Talks.json';
-				break;
-			case 'Special Events':
-				jsonFile = 'items/CatProdPkg_SpecialEvents.json';
-				break;
-			case 'Concerts & Performances':
-				jsonFile = 'items/CatProdPkg_ConcertsPerformances.json';
-				break;
-			case 'Continuing Education & Enrichment':
-				jsonFile = 'items/CatProdPkg_ContinuingEd.json';
-				break;
-			case 'Health & Fitness':
-				jsonFile = 'items/CatProdPkg_FitnessClasses.json';
-				break;
-			case 'Jewish Life':
-				jsonFile = 'items/CatProdPkg_JewishLife.json';
-				break;
-			case 'Literary':
-				jsonFile = 'items/CatProdPkg_Literary.json';
-				break;
-			case 'Kids & Family':
-				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
-				break;
-		}
-		if (_.isUndefined(jsonFile)) {
+		var foundLevel = _.find(levels, { 'Name': subLevelName })
+		var jsonFile = foundLevel.JSONDataURL;
+
+		if (_.isUndefined(jsonFile) || jsonFile === '') {
 			return self.q.when([]);
 		} else {
 			return self.http.get(jsonFile).then(function (data) {
