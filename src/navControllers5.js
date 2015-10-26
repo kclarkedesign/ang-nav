@@ -113,6 +113,9 @@
 		self.navCollapsed = true
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
+		self.eventClassDropdown = {
+			isopen: false
+		};
 
 		self.tileInfoSrv = tileInfoSrv;
 		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
@@ -341,6 +344,8 @@
 			if (locationPath.length && locationPath !== '/') {
 				var match = locationPath.match(/^\/(.+?)(\/|$)/);
 				subLevelName = match[1];
+			} else {
+				self.eventClassDropdown.isopen = !self.eventClassDropdown.isopen;
 			}
 		} else {
 			//if interest link clicked
