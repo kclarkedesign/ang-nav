@@ -1010,7 +1010,7 @@
 									</div>
 								</div>
 								<!-- For below Medium screen sizes -->
-								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1">
+								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="2">
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}">

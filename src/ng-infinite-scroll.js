@@ -38,6 +38,7 @@ mod.directive('infiniteScroll', [
           elementBottom = elem.offset().top + elem.height();
           remaining = elementBottom - windowBottom;
           shouldScroll = remaining <= $window.height() * scrollDistance;
+          scrollDistance += (scrollDistance/100);//-djf - slowly increasing scrollDistance to compensate for mobile scrollbar
           if (shouldScroll && scrollEnabled) {
             if ($rootScope.$$phase) {
               return scope.$eval(attrs.infiniteScroll);
