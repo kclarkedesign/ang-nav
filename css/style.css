@@ -2044,6 +2044,7 @@ transform: rotate(-45deg);
 #isoContainerMobile {
 	/*margin: 0 auto;*/
 	width: 100% !important;
+	overflow: hidden;
 }
 
 #isoContainer:before, 

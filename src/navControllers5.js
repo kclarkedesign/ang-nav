@@ -1915,6 +1915,7 @@ var resizeTileDisplay = function (scope) {
 	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
 		numColumns = 2;
 		tileHeight = 450;
+		scope.navListCtrl.environment = "mobile";
 	} else {
 		numColumns = 1;
 		tileHeight = 139;
@@ -1934,6 +1935,9 @@ var resizeTileDisplay = function (scope) {
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
 	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
+	if (numRows === 0) {
+		numRows++;
+	}
 
 	var limitToSet = numColumns * numRows;
 	scope.navListCtrl.limit = limitToSet;

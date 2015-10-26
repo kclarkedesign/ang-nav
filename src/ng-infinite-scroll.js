@@ -9,10 +9,12 @@ mod.directive('infiniteScroll', [
       link: function(scope, elem, attrs) {
         var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
         $window = angular.element($window);
+        //-djf - added ability to specify container that should scroll
         var targetContainer;
         if (attrs.infiniteScrollTargetContainer != null) {
           targetContainer = angular.element(attrs.infiniteScrollTargetContainer);
         }
+        //end changes
         scrollDistance = 0;
         if (attrs.infiniteScrollDistance != null) {
           scope.$watch(attrs.infiniteScrollDistance, function(value) {
@@ -36,6 +38,7 @@ mod.directive('infiniteScroll', [
           elementBottom = elem.offset().top + elem.height();
           remaining = elementBottom - windowBottom;
           shouldScroll = remaining <= $window.height() * scrollDistance;
+          scrollDistance += (scrollDistance/100);//-djf - slowly increasing scrollDistance to compensate for mobile scrollbar
           if (shouldScroll && scrollEnabled) {
             if ($rootScope.$$phase) {
               return scope.$eval(attrs.infiniteScroll);
@@ -46,6 +49,7 @@ mod.directive('infiniteScroll', [
             return checkWhenEnabled = true;
           }
         };
+        //-djf - added ability to specify container that should scroll
         if (typeof targetContainer === 'undefined') {
           $window.on('scroll', handler);
         } else {
@@ -58,6 +62,7 @@ mod.directive('infiniteScroll', [
             return targetContainer.off('scroll', handler);
           }
         });
+        //end changes
         return $timeout((function() {
           if (attrs.infiniteScrollImmediateCheck) {
             if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
