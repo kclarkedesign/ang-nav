@@ -10,10 +10,11 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="//cdn.jsdelivr.net/isotope/2.2.0/isotope.pkgd.min.js"></script>
 		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.6/angular-touch.min.js"></script>
-		<script src="src/ngScrollSpy.js"></script>
-		<script src="src/ui-bootstrap-tpls-0.13.0.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
+		<script src="src/ngScrollSpy.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
+		<script src="src/ui-bootstrap-tpls-0.13.0.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
 		<script src="src/angularLocalStorage.js"></script>
@@ -92,13 +93,26 @@
 					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar, #savedSidebar").removeClass('in inMobile');
 					setTimeout(function () {
 						$(".qp-ui-mask-modal").toggleClass('qp-ui-mask-visible');
-			}, 50);
+					}, 50);
 				});
 				//Close these sidebars when they are clicked
-				$("#sidebar, #browseSidebarClose, #browseSidebar, #mainNavSidebar a, #btnSubmit").click(function(e) {
+				var browseLinks = $('#browseSidebar').children('span.browse-item');
+				$('#browseSidebar').click(function() {
+					console.log(browseLinks);
+					
+					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in');
+					$("body").removeClass('sidebar-open');
+					setTimeout(function () {
+						$(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+					}, 50);
+				});
+				$("#sidebar, #browseSidebarClose, #mainNavSidebar a, #btnSubmit").click(function(e) {
 					e.preventDefault();
 					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in');
 					$("body").removeClass('sidebar-open');
+					setTimeout(function () {
+						$(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+					}, 50);
 				});
 				sideBar.click(function(e) {
 					e.preventDefault();
@@ -110,7 +124,7 @@
 			});
 		</script>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle">
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="!navListCtrl.navCollapsed ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
@@ -125,469 +139,471 @@
 								</div>
 
 								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navListCtrl.navCollapsed && 'in'">
-									<div class="container-fluid no-p">
-										<ul id="main-navigation" class="nav navbar-nav">
-											<li class="pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
-											</li>
-											<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
-												<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navCollapsed = true;">
-													<span ng-bind-html="sl.Name | unsafe"></span>
-												</a>
-											</li>
-											<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="status.isopen">
-												<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-													<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
-													<i class="fa fa-chevron-down"></i>
-												</a>
-												<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
-													<li class="container" style="margin: auto; overflow: auto; max-height: 300px;">
-														<ul class="col-sm-12 no-p">
-															<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
-																<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
-															</li>
-															<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-											<!-- <li class="dropdown mega-dropdown" dropdown >
-												<a href="" role="button" class="dropdown-toggle" dropdown-toggle>
-													<span>Programs</span>
-													<i class="fa fa-chevron-down"></i>
-												</a>
-												<ul class="dropdown-menu mega-dropdown-menu row">
-													
-													<li class="interest-wrapper container seven-cols" style="margin: auto;">
-														<ul class="col-sm-12 no-p">
-															<li class="dropdown-header">EXPLORE OUR PROGRAMS</li>
-														</ul>
-														<div class="container-fluid">
-															<div class="row">
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Talks &amp; Readings</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Talks</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Readings</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Performing Arts</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>All Concerts</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Classical Concerts</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Jazz &amp; Popular Concerts</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Family Concerts</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Dance Performances</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Special Events</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">School of the Arts</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Ceramics</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Dance</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Fine Art &amp; Design</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Jewelry</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Music</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Continuing Ed</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Professional Development</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Food &amp; Wine</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Games &amp; Crafts</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Tours &amp; Excursions</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Languages</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Health &amp; Fitness</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Membership</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Aquatics</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Sports &amp; Gymnastics</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Personalized Services</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Jewish Life</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Holidays, Shabbat, &amp; Celebrations</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Education</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Arts &amp; Ideas</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Programs in Hebrew</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-																<ul class="interest-col col-sm-2" >
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Kids &amp; Family</span>
-																			<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
-																		</a>
-																		<ul class="col-sm-12 pt5 pl0 pr0 sub">
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>92Y Camps</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Shababa</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Wonderplay</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Parenting Center</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Gymnastics</span>
-																				</a>
-																			</li>
-																			<li class="dropdown">
-																				<a href="javascript:;">
-																					<span>Special Needs</span>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-															</div>
-														</div>
-														<div class="container-fluid">
-															<div class="row">
-																<div role="separator" class="divider col-md-12"></div>
-																<ul class="interest-col more-sub">
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Himan Brown Senior Program</span></a>
-																	</li>
-																</ul>
-																<ul class="interest-col more-sub">
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">Educational Outreach</span></a>
-																	</li>
-																</ul>
-																<ul class="interest-col more-sub">
-																	<li class="tile">
-																		<a href="javascript:;" class="no-p"><span class="interest-title">92YResidence: Student/Intern Housing</span></a>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</li>
-												</ul>
-											</li> -->
-											<!-- <li class="dropdown mega-dropdown" dropdown>
-												<a href="" role="button" class="dropdown-toggle" dropdown-toggle>
-													<span>Event Calendar</span>
-													<i class="fa fa-chevron-down"></i>
-												</a>
-												<ul class="dropdown-menu mega-dropdown-menu row">
-													<li class="container" style="margin: auto;">
-														<ul class="col-sm-4 pl0 pr15">
-															<li>
-																<div id="ui-datepicker-div" class="pl10 ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-																	<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
-																		<a class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev">
-																			<span class="ui-icon ui-icon-circle-triangle-w">Prev</span>
-																		</a>
-																		<a class="ui-datepicker-next ui-corner-all pull-right" data-handler="next" data-event="click" title="Next">
-																			<span class="ui-icon ui-icon-circle-triangle-e">Next</span>
-																		</a>
-																		<div class="ui-datepicker-title center">
-																			<span class="ui-datepicker-month">July</span>&nbsp;<span class="ui-datepicker-year">2015</span>
-																		</div>
-																	</div>
-																	<table class="ui-datepicker-calendar" style="width: 100%; font-size: 1.5em;">
-																		<thead>
-																			<tr>
-																				<th class="ui-datepicker-week-end">
-																					<span title="Sunday">Su</span>
-																				</th>
-																				<th>
-																					<span title="Monday">Mo</span>
-																				</th>
-																				<th>
-																					<span title="Tuesday">Tu</span>
-																				</th>
-																				<th>
-																					<span title="Wednesday">We</span>
-																				</th>
-																				<th>
-																					<span title="Thursday">Th</span>
-																				</th>
-																				<th>
-																					<span title="Friday">Fr</span>
-																				</th>
-																				<th class="ui-datepicker-week-end">
-																					<span title="Saturday">Sa</span>
-																				</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<tr>
-																				<td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-																				<td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-																				<td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">1</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">2</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">3</a>
-																				</td>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">4</a>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">5</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">6</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">7</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">8</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">9</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">10</a>
-																				</td>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">11</a>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">12</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">13</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">14</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">15</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">16</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">17</a>
-																				</td>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">18</a>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">19</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">20</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">21</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">22</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">23</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">24</a>
-																				</td>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">25</a>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">26</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">27</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">28</a>
-																				</td>
-																				<td class=" ui-datepicker-days-cell-over  ui-datepicker-today" data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default ui-state-highlight" href="#">29</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default" href="#">30</a>
-																				</td>
-																				<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
-																					<a class="ui-state-default current" href="#">31</a>
-																				</td>
-																				<td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-																			</tr>
-																		</tbody>
-																	</table>
+									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
+									</div>
+									<div class="scrollable-wrapper">
+										<div class="scrollable container-fluid no-p">
+											<ul id="main-navigation" class="nav navbar-nav">
+												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
+													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navCollapsed = true;">
+														<span ng-bind-html="sl.Name | unsafe"></span>
+													</a>
+												</li>
+												<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="status.isopen">
+													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+														<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
+														<i class="fa fa-chevron-down"></i>
+													</a>
+													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
+														<li class="container" style="margin: auto; overflow: auto; max-height: 300px;">
+															<ul class="col-sm-12 no-p">
+																<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+																	<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+																</li>
+																<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+												<!-- <li class="dropdown mega-dropdown" dropdown >
+													<a href="" role="button" class="dropdown-toggle" dropdown-toggle>
+														<span>Programs</span>
+														<i class="fa fa-chevron-down"></i>
+													</a>
+													<ul class="dropdown-menu mega-dropdown-menu row">
+														
+														<li class="interest-wrapper container seven-cols" style="margin: auto;">
+															<ul class="col-sm-12 no-p">
+																<li class="dropdown-header">EXPLORE OUR PROGRAMS</li>
+															</ul>
+															<div class="container-fluid">
+																<div class="row">
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Talks &amp; Readings</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Talks</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Readings</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Performing Arts</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>All Concerts</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Classical Concerts</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Jazz &amp; Popular Concerts</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Family Concerts</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Dance Performances</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Special Events</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">School of the Arts</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Ceramics</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Dance</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Fine Art &amp; Design</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Jewelry</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Music</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Continuing Ed</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Professional Development</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Food &amp; Wine</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Games &amp; Crafts</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Tours &amp; Excursions</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Languages</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Health &amp; Fitness</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Membership</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Aquatics</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Sports &amp; Gymnastics</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Personalized Services</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Jewish Life</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Holidays, Shabbat, &amp; Celebrations</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Education</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Arts &amp; Ideas</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Programs in Hebrew</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
+																	<ul class="interest-col col-sm-2" >
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Kids &amp; Family</span>
+																				<img ng-src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg" border="0" alt="92Y WonderDance™ (2-3 1/2 Yrs)" width="300" src="http://www.92y.org/92streety/media/classes_events/dance/lg/dan_wonderdance2_lg.jpg">
+																			</a>
+																			<ul class="col-sm-12 pt5 pl0 pr0 sub">
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>92Y Camps</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Shababa</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Wonderplay</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Parenting Center</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Gymnastics</span>
+																					</a>
+																				</li>
+																				<li class="dropdown">
+																					<a href="javascript:;">
+																						<span>Special Needs</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+																	</ul>
 																</div>
-															</li>
-														</ul>
-														<ul class="col-sm-4 no-p">
-															<li class="dropdown-header">Jul 31 - Aug 30</li>
-															<li></li>
-														</ul>
-													</li>
-												</ul>
-											</li> -->
-											<!-- <li class="dropdown mega-dropdown" dropdown>
-												<a href="" role="button" class=""><span>On Demand</span></a>
-											</li>
-											<li class="dropdown mega-dropdown" dropdown>
-												<a href="" role="button" class=""><span>About</span></a>
-											</li>
-											<li class="dropdown mega-dropdown" dropdown>
-												<a href="" role="button" class=""><span>Support</span></a>
-											</li> -->
-										</ul>
+															</div>
+															<div class="container-fluid">
+																<div class="row">
+																	<div role="separator" class="divider col-md-12"></div>
+																	<ul class="interest-col more-sub">
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Himan Brown Senior Program</span></a>
+																		</li>
+																	</ul>
+																	<ul class="interest-col more-sub">
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">Educational Outreach</span></a>
+																		</li>
+																	</ul>
+																	<ul class="interest-col more-sub">
+																		<li class="tile">
+																			<a href="javascript:;" class="no-p"><span class="interest-title">92YResidence: Student/Intern Housing</span></a>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</li>
+													</ul>
+												</li> -->
+												<!-- <li class="dropdown mega-dropdown" dropdown>
+													<a href="" role="button" class="dropdown-toggle" dropdown-toggle>
+														<span>Event Calendar</span>
+														<i class="fa fa-chevron-down"></i>
+													</a>
+													<ul class="dropdown-menu mega-dropdown-menu row">
+														<li class="container" style="margin: auto;">
+															<ul class="col-sm-4 pl0 pr15">
+																<li>
+																	<div id="ui-datepicker-div" class="pl10 ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+																		<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
+																			<a class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev">
+																				<span class="ui-icon ui-icon-circle-triangle-w">Prev</span>
+																			</a>
+																			<a class="ui-datepicker-next ui-corner-all pull-right" data-handler="next" data-event="click" title="Next">
+																				<span class="ui-icon ui-icon-circle-triangle-e">Next</span>
+																			</a>
+																			<div class="ui-datepicker-title center">
+																				<span class="ui-datepicker-month">July</span>&nbsp;<span class="ui-datepicker-year">2015</span>
+																			</div>
+																		</div>
+																		<table class="ui-datepicker-calendar" style="width: 100%; font-size: 1.5em;">
+																			<thead>
+																				<tr>
+																					<th class="ui-datepicker-week-end">
+																						<span title="Sunday">Su</span>
+																					</th>
+																					<th>
+																						<span title="Monday">Mo</span>
+																					</th>
+																					<th>
+																						<span title="Tuesday">Tu</span>
+																					</th>
+																					<th>
+																						<span title="Wednesday">We</span>
+																					</th>
+																					<th>
+																						<span title="Thursday">Th</span>
+																					</th>
+																					<th>
+																						<span title="Friday">Fr</span>
+																					</th>
+																					<th class="ui-datepicker-week-end">
+																						<span title="Saturday">Sa</span>
+																					</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+																					<td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+																					<td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">1</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">2</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">3</a>
+																					</td>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">4</a>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">5</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">6</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">7</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">8</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">9</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">10</a>
+																					</td>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">11</a>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">12</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">13</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">14</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">15</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">16</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">17</a>
+																					</td>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">18</a>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">19</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">20</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">21</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">22</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">23</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">24</a>
+																					</td>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">25</a>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">26</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">27</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">28</a>
+																					</td>
+																					<td class=" ui-datepicker-days-cell-over  ui-datepicker-today" data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default ui-state-highlight" href="#">29</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default" href="#">30</a>
+																					</td>
+																					<td class=" " data-handler="selectDay" data-event="click" data-month="6" data-year="2015">
+																						<a class="ui-state-default current" href="#">31</a>
+																					</td>
+																					<td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</li>
+															</ul>
+															<ul class="col-sm-4 no-p">
+																<li class="dropdown-header">Jul 31 - Aug 30</li>
+																<li></li>
+															</ul>
+														</li>
+													</ul>
+												</li> -->
+												<!-- <li class="dropdown mega-dropdown" dropdown>
+													<a href="" role="button" class=""><span>On Demand</span></a>
+												</li>
+												<li class="dropdown mega-dropdown" dropdown>
+													<a href="" role="button" class=""><span>About</span></a>
+												</li>
+												<li class="dropdown mega-dropdown" dropdown>
+													<a href="" role="button" class=""><span>Support</span></a>
+												</li> -->
+											</ul>
+										</div>
 									</div>
 								</div>
 								<div class="secondary navbar-collapse navbar-right collapse pl0">
@@ -887,7 +903,7 @@
 										<div class="col-sm-12 pb10 snav-filter-container">
 											<div class="row">
 												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 											</div>
@@ -999,11 +1015,11 @@
 													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 												<div class="getMore">
-														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</a>
+														</span>
 												</div>
 											</div>
 										</div>
@@ -1024,11 +1040,11 @@
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 												<div class="getMore">
-													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+													<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-													</a>
+													</span>
 												</div>
 												<div class="contentWrap">
 													<div class="shortDescription hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
@@ -1091,7 +1107,7 @@
 												<label class="checkbox dropdown-header pl0 fw-normal">Filter by search:</label>
 											</div>
 											<div class="col-xs-12">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="e.g., instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											

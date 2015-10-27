@@ -293,7 +293,9 @@ body {
   background-color: #E9E9E9;
 }
 body.sidebar-open {
-	overflow-y: hidden;
+	overflow-y: hidden !important;
+	height: 100%;
+	width: 100%;
 }
 .center {
 	text-align: center;
@@ -312,6 +314,16 @@ body.sidebar-open {
     width: 100%;
     padding-top: 16px;
     padding-bottom: 20px;
+}
+.nav-header {
+        cursor: default;
+    font-size: .8em;
+    font-weight: bold;
+    z-index: 1;
+    padding: 13px 0;
+    height: 50px;
+    position: absolute;
+    right: 0;
 }
 .header {
 	background-color: #000000;
@@ -1122,6 +1134,8 @@ a {
 .breadcrumb a {
 	font-size: 14px;
 	font-weight: bold;
+	z-index: 3;
+	position: relative;
 }
 .breadcrumb>li {
 	display: inline-block;
@@ -2149,6 +2163,7 @@ transform: rotate(-45deg);
     border-bottom: 0;
     border-left: 0;
     border-top: 0;
+    cursor: pointer;
 }
 .getMore .bookmark span {
     cursor: pointer;
@@ -2755,8 +2770,21 @@ input[type="date"]::-webkit-inner-spin-button{
 		right: 0;
 		top: 0;
 		z-index: 1;
+		bottom: 0;
+		height: 100%;
 	}
-
+	.scrollable {
+		position: relative;
+		overflow-x: hidden;
+		overflow-y: auto;
+		height: 100%;
+	}
+	.scrollable-wrapper {
+		padding-top: 50px;
+		display: block;
+		position: relative;
+		height: 100%;
+	}
 	/* since 3.1.0 */
 	.navbar-collapse.collapse.in { 
 		display: block!important;
@@ -2784,6 +2812,12 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.header .brand .navbar-brand {
 		margin-left: -8px;
+	}
+	.mega-dropdown {
+		   border-top: 1px solid;
+	}
+	#mainNavBtnTwo.is-active:before {
+		content: " ";
 	}
 	/** Float Buttons **/
 	#floatSavedBtn,
