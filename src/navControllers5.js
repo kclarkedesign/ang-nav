@@ -336,6 +336,7 @@
 	NavListController.prototype.getInterestItems = function (func, arg) {
 		var self = this;
 		var subLevelName;
+		var subLevelId;
 		if (_.isUndefined(arg.Name)) {
 			//if page load
 			self.allClasses = [];
@@ -344,16 +345,19 @@
 			if (locationPath.length && locationPath !== '/') {
 				var match = locationPath.match(/^\/(.+?)(\/|$)/);
 				subLevelName = match[1];
+				var foundLevel = _.find(self.allClasses, { 'Name': subLevelName })
+				subLevelId = foundLevel.NodeID;
 			} else {
 				self.eventClassDropdown.isopen = !self.eventClassDropdown.isopen;
 			}
 		} else {
 			//if interest link clicked
 			subLevelName = arg.Name;
+			subLevelId = arg.NodeID;
 		}
 		if (!_.isUndefined(subLevelName)) {
 			if (_.isUndefined(self.navsDict[subLevelName])) {
-				self.tileInfoSrv.getItems(subLevelName, self.allClasses).then(function (items) {
+				self.tileInfoSrv.getItems(subLevelId, self.allClasses).then(function (items) {
 					self.navsDict[subLevelName] = items.data;
 					func(self, arg);
 				});
@@ -1123,7 +1127,9 @@
 	NavListController.prototype.loadMore = function (env) {
 		var self = this;
 		if (env === self.environment) {
-			self.limit += (self.limit * self.numOfColumns);
+			//self.limit += (self.limit * self.numOfColumns);
+			self.limit += self.limit;
+			//self.limit++;
 		}
 	};
 
@@ -1590,6 +1596,10 @@
 			return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
 		});
 		var featured = _.includes(keyWords, 'Featured Item') ? true : false;
+		var pushToBottom = arr.PushToBottomOfList;
+		if (pushToBottom && featured) {
+			featured = false;
+		}
 		var itemType = itemTypes.length ? itemTypes[0] : "";
 		var mainImage = arr.MainImage;
 		var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
@@ -1791,20 +1801,62 @@
 		});
 	};
 
-	TileInfoService.prototype.getItems = function (subLevelName, levels) {
+	TileInfoService.prototype.getItems = function (subLevelId, levels) {
 		var self = this;
-		var foundLevel = _.find(levels, { 'Name': subLevelName })
+		var foundLevel = _.find(levels, { 'NodeID': subLevelId })
 		var jsonFile = foundLevel.JSONDataURL;
 
 		if (_.isUndefined(jsonFile) || jsonFile === '') {
 			return self.q.when([]);
 		} else {
 			return self.http.get(jsonFile).then(function (data) {
+				if (_.isUndefined(data.data) || data.data.length === 0) {
+					return self.getItemsById(subLevelId);
+				}
 				return data;
 			}, function (error) {
-				return {data: []};
+				return self.getItemsById(subLevelId);
 			});
 		}
+	};
+
+	TileInfoService.prototype.getItemsById = function (subLevelId) {
+		var self = this;
+		var jsonFile;
+		switch (subLevelId) {
+			case 28220:
+				jsonFile = 'items/CatProdPkg_SOA.json';
+				break;
+			case 28271:
+				jsonFile = 'items/CatProdPkg_Talks.json';
+				break;
+			case 28279:
+				jsonFile = 'items/CatProdPkg_SpecialEvents.json';
+				break;
+			case 28275:
+				jsonFile = 'items/CatProdPkg_ConcertsPerformances.json';
+				break;
+			case 28273:
+				jsonFile = 'items/CatProdPkg_ContinuingEd.json';
+				break;
+			case 28272:
+				jsonFile = 'items/CatProdPkg_FitnessClasses.json';
+				break;
+			case 28274:
+				jsonFile = 'items/CatProdPkg_JewishLife.json';
+				break;
+			case 28276:
+				jsonFile = 'items/CatProdPkg_Literary.json';
+				break;
+			case 28277:
+				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
+				break;
+		}
+		return self.http.get(jsonFile).then(function (data) {
+			return data;
+		}, function (error) {
+			return {data: []};
+		});
 	};
 
 	navApp.service('tileInfoSrv', TileInfoService);
@@ -1912,7 +1964,7 @@ var resizeTileDisplay = function (scope) {
 	}
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
-	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
+	var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
 	if (numRows === 0) {
 		numRows++;
 	}
