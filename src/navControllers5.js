@@ -139,13 +139,18 @@
 		};
 
 		var w = angular.element($window);
+		self.currentScreenWidth = w.outerWidth();
 		w.bind('resize', function () {
-			if (!_.isUndefined(self.currentObj)) {
-				resizeTileDisplay($scope);
-				self.onscreenResults = [];
-				self.displayTiles();
-				self.loadMore(self.environment);
-				$scope.$apply();
+			//This condition is for mobile devices that change the height of the window when you swipe up or down to scroll.
+			if (this.outerWidth !== self.currentScreenWidth) {
+				if (!_.isUndefined(self.currentObj)) {
+					resizeTileDisplay($scope);
+					self.onscreenResults = [];
+					self.displayTiles();
+					self.loadMore(self.environment);
+					$scope.$apply();
+				}
+				self.currentScreenWidth = this.outerWidth;
 			}
 		});
 		$scope.$watch(function () {
@@ -1614,7 +1619,7 @@
 		var sortDate2 = "";
 		var warning = arr.ProdStatus;
 		var inProgress;
-		if (begDate < new Date() || warning.length) {
+		if (pushToBottom) {
 			sortDate2 = begDate;
 			//10 is an arbirtary number to set the secondary sorting
 			sortDate1 = begDate.setFullYear(yearNumber + 10);
@@ -1809,7 +1814,7 @@
 		if (_.isUndefined(jsonFile) || jsonFile === '') {
 			return self.q.when([]);
 		} else {
-			return self.http.get(jsonFile).then(function (data) {
+			return self.http.get(jsonFile, {timeout: 4000}).then(function (data) {
 				if (_.isUndefined(data.data) || data.data.length === 0) {
 					return self.getItemsById(subLevelId);
 				}
