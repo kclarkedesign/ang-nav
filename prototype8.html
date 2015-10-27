@@ -98,8 +98,6 @@
 				//Close these sidebars when they are clicked
 				var browseLinks = $('#browseSidebar').children('span.browse-item');
 				$('#browseSidebar').click(function() {
-					console.log(browseLinks);
-					
 					$("#sidebar, #browseSidebar, #mainNavSidebar, #filterSidebar").removeClass('in');
 					$("body").removeClass('sidebar-open');
 					setTimeout(function () {
@@ -402,6 +400,7 @@
 																		</li>
 																	</ul>
 																</div>
+
 															</div>
 															<div class="container-fluid">
 																<div class="row">
