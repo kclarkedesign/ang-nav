@@ -73,7 +73,7 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
+	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
@@ -104,7 +104,7 @@
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
-		self.bottomContainerStyle = { 'overflow': 'overflow', 'overflow-x': 'hidden', 'height': '100%' };
+		self.bottomContainerStyle = {'overflow-x': 'hidden', 'height': '100%' };
 		self.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
 		self.chunkLevels = [];
 		self.affixed = false;
@@ -1959,13 +1959,15 @@ var resizeTileDisplay = function (scope) {
 
 	var headerHeight;
 	if (scope.navListCtrl.environment === "mobile") {
-		scope.navListCtrl.bodyStyle = {'overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
+		scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
 		scope.navListCtrl.bottomContainerStyle = {};
 		headerHeight = $("header").height();
+		
 	} else {
-		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
-		scope.navListCtrl.bottomContainerStyle = { 'overflow-y': 'auto', 'overflow-x': 'hidden', 'height': (window.innerHeight-50) +'px' };
 		headerHeight = $("#Container").offset().top;
+		mainArea = $("#main-area").height();
+		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+		scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
 	}
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
@@ -1973,7 +1975,6 @@ var resizeTileDisplay = function (scope) {
 	if (numRows === 0) {
 		numRows++;
 	}
-
 	var limitToSet = numColumns * numRows;
 	scope.navListCtrl.limit = limitToSet;
 	scope.navListCtrl.numOfColumns = numColumns;
