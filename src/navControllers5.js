@@ -1812,7 +1812,8 @@
 		var jsonFile = foundLevel.JSONDataURL;
 
 		if (_.isUndefined(jsonFile) || jsonFile === '') {
-			return self.q.when([]);
+			return self.getItemsById(subLevelId);
+			//return self.q.when([]);
 		} else {
 			return self.http.get(jsonFile, {timeout: 4000}).then(function (data) {
 				if (_.isUndefined(data.data) || data.data.length === 0) {
@@ -1830,31 +1831,31 @@
 		var jsonFile;
 		switch (subLevelId) {
 			case 28220:
-				jsonFile = 'items/CatProdPkg_SOA.json';
+				jsonFile = 'items/CatProdPkg_School_Of_Arts.json';
 				break;
 			case 28271:
 				jsonFile = 'items/CatProdPkg_Talks.json';
 				break;
 			case 28279:
-				jsonFile = 'items/CatProdPkg_SpecialEvents.json';
+				jsonFile = 'items/CatProdPkg_Special_Events.json';
 				break;
 			case 28275:
-				jsonFile = 'items/CatProdPkg_ConcertsPerformances.json';
+				jsonFile = 'items/CatProdPkg_Concerts_Performances.json';
 				break;
 			case 28273:
-				jsonFile = 'items/CatProdPkg_ContinuingEd.json';
+				jsonFile = 'items/CatProdPkg_Continuing_Education.json';
 				break;
 			case 28272:
-				jsonFile = 'items/CatProdPkg_FitnessClasses.json';
+				jsonFile = 'items/CatProdPkg_Health_Fitness.json';
 				break;
 			case 28274:
-				jsonFile = 'items/CatProdPkg_JewishLife.json';
+				jsonFile = 'items/CatProdPkg_Jewish_Life.json';
 				break;
 			case 28276:
 				jsonFile = 'items/CatProdPkg_Literary.json';
 				break;
 			case 28277:
-				jsonFile = 'items/CatProdPkg_KidsAndFamily.json';
+				jsonFile = 'items/CatProdPkg_Kids_Family.json';
 				break;
 		}
 		return self.http.get(jsonFile).then(function (data) {
