@@ -122,7 +122,7 @@
 			});
 		</script>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="!navListCtrl.navCollapsed ? 'sidebar-open' : ''">
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
@@ -130,20 +130,23 @@
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navCollapsed = !navListCtrl.navCollapsed" ng-class="!navListCtrl.navCollapsed ? 'is-active' : ''"><span>toggle menu</span></a>
+									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a>
 									<a href="#" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
 									</a>
 								</div>
 
-								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="!navListCtrl.navCollapsed && 'in'">
+								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="navListCtrl.navOpened && 'in'">
 									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
 									</div>
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
+												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>WHAT ARE YOU INTERESTED IN?</strong>
+													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
-													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navCollapsed = true;">
+													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
@@ -626,14 +629,14 @@
 												</a>
 									</a>
 									</li> -->
-									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg">
-										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
+									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg shake">
+										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
 									</li>
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
 									</li> -->
-									<li id="filterBtn-container" class="nav navbar-nav navbar-right filter hidden-lg">
-										<a id="filterSidebarBtn" href="javascript:;" data-toggle="dropdown"><i class="fa fa-sliders fa-lg"></i></a>
+									<li id="filterSidebarBtn" class="nav navbar-nav navbar-right filter hidden-lg">
+										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
 								</ul>
 							</div>
@@ -902,7 +905,7 @@
 										<div class="col-sm-12 pb10 snav-filter-container">
 											<div class="row">
 												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 											</div>
@@ -1014,11 +1017,11 @@
 													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 												<div class="getMore">
-														<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</span>
+														</a>
 												</div>
 											</div>
 										</div>
@@ -1039,11 +1042,11 @@
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 												<div class="getMore">
-													<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-													</span>
+													</a>
 												</div>
 												<div class="contentWrap">
 													<div class="shortDescription hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
@@ -1106,7 +1109,7 @@
 												<label class="checkbox dropdown-header pl0 fw-normal">Filter by search:</label>
 											</div>
 											<div class="col-xs-12">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor, program title, or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											
@@ -1345,7 +1348,7 @@
 								</a>
 							</div>
 							<div class="sidebarHeading pt10 pb10 pl15 blue-bg">Wish List</div>
-							<a id="savedSidebarClose" class="col-xs-2 center active"><span >Close</span> <i class="fa fa-times fa-lg"></i></a>
+							<a id="savedSidebarClose" class="col-xs-2 center active"><span>Close</span> <i class="fa fa-times fa-lg"></i></a>
 							<div class="scroll">
 								<div class="scroll-container">
 									<div class="scroll-nav">					

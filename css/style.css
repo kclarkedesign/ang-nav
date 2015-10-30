@@ -465,6 +465,10 @@ header .bottom-nav {
 #savedPrograms #tileImg {
 		width: 40%;
 }
+#savedPrograms {
+	display: block;
+	float: none;
+}
 #sidebar,
 #mainNavSidebar {
 position: fixed;
@@ -1507,7 +1511,7 @@ label.btn.active,
   left: 8px;
   right: 12px;
   height: 3px;
-  background: #4F93CD;;
+  background: #4F93CD;
 }
 
 .c-hamburger span::before,
@@ -2598,9 +2602,9 @@ transform: rotate(-45deg);
     background-color: rgb(199, 71, 184);
     color: #ffffff;
     position: absolute;
-    top: 12px;
+    top: 7px;
     float: right;
-    right: 7px;
+    right: 16px;
 }
 
 /* angular UI */
@@ -2642,13 +2646,26 @@ input[type="date"]::-webkit-inner-spin-button{
 	#site-container>.container-fluid {
 		margin-top: 50px
 	}
+	#navSavedBtn>a,
+	#filterSidebarBtn>a {
+		padding: 7px;
+		line-height: 18px;
+		font-size: 14px;
+		min-width: 70px;
+    	height: 50px;
+	}
+	.btnTitle {
+		color: #fff;
+	    font-size: 0.8em;
+	    display: block;
+	    font-weight: bold;
+	}
 }
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
   .seven-cols .col-sm-2,
   .seven-cols .col-lg-2 {
     width: 14.285714285714285714285714285714%;
-    *width: 14.285714285714285714285714285714%;
   }
   #current-interest,
   #current-interestMobile {
