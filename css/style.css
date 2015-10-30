@@ -566,6 +566,13 @@ width: 280px;
 #mobileSearchText.form-control.active+a {
 	display: block;
 }
+.mobile-navHeading {
+	border-top: 1px solid #333;
+    cursor: default;
+    background: #777777;
+    color: #fff;
+
+ }
 .form-control-feedback.form-control-clear {
     height: 26px;
     line-height: 26px;
