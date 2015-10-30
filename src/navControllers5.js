@@ -111,6 +111,8 @@
 		self.scrollingUp = false;
 		self.environment = "desktop";
 		self.navOpened = false;
+		self.savedPrograms = [];
+		self.savedSearches = [];
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 		self.eventClassDropdown = {
