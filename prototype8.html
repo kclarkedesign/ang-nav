@@ -122,7 +122,7 @@
 			});
 		</script>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="!navListCtrl.navOpened ? 'sidebar-open' : ''">
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
@@ -142,8 +142,7 @@
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
-												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;">
-													<strong>WHAT ARE YOU INTERESTED IN?</strong>
+												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>WHAT ARE YOU INTERESTED IN?</strong>
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
@@ -630,8 +629,8 @@
 												</a>
 									</a>
 									</li> -->
-									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg">
-										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
+									<li id="navSavedBtn" ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown hidden-lg shake">
+										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i></a>
 									</li>
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
@@ -1018,11 +1017,11 @@
 													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 												<div class="getMore">
-														<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</span>
+														</a>
 												</div>
 											</div>
 										</div>
@@ -1043,11 +1042,11 @@
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 												<div class="getMore">
-													<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-													</span>
+													</a>
 												</div>
 												<div class="contentWrap">
 													<div class="shortDescription hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>

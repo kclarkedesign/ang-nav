@@ -147,7 +147,7 @@
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
-												<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="status.isopen">
+												<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
 													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 														<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
 														<i class="fa fa-chevron-down"></i>
@@ -1095,8 +1095,8 @@
 						<!-- Filter Sidebar  -->
 						<div class="sidebar-offcanvas no-p" id="filterSidebar">
 							<div class="list-group">
-								<span class="list-group-item col-xs-10 active">Refine Results</span>
-								<a id="filterClose"class="list-group-item col-xs-2 center active"><i class="fa fa-times fa-lg"></i></a>
+								<div class="sidebarHeading pt10 pb10 pl15 blue-bg">Refine Results</div>
+								<a id="filterClose"class="col-xs-2 center active"><span>Close</span> <i class="fa fa-times fa-lg"></i></a>
 							</div>
 							<div class="container-fluid scroll">
 								<div class="scroll-container">
@@ -1349,8 +1349,8 @@
 							<div class="scroll">
 								<div class="scroll-container">
 									<div class="scroll-nav">					
-										<div id="savedPrograms" class="col-xs-12 pr0 pb10">
-											<div class="pt20 pr15">
+										<div id="savedPrograms" class="col-xs-12 pb10">
+											<div class="pt20">
 												<div class="savedProdItem container-fluid" ng-repeat="savedProgram in navListCtrl.savedPrograms">
 													<div class="row">
 														<div class="col-xs-12 pl0">
