@@ -122,7 +122,7 @@
 			});
 		</script>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="!navListCtrl.navOpened ? 'sidebar-open' : ''">
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
@@ -1042,11 +1042,11 @@
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 												<div class="getMore">
-													<span class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-													</span>
+													</a>
 												</div>
 												<div class="contentWrap">
 													<div class="shortDescription hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
