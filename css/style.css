@@ -1006,6 +1006,7 @@ width: 280px;
 	  width: 62px;
 	  text-align: center;
 	  line-height: 48px;
+	  cursor: pointer;
 	  -ms-transition: all .5s ease;
 	  -o-transition: all .5s ease;
 	  -moz-transition: all .5s ease;
@@ -1453,7 +1454,7 @@ label.btn.active,
 .secondary {
     /*background-color: #1c1c1c;*/
      /*padding: 5px 50px 8px 50px; */
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     -o-transition: height .5s ease-out;
     -ms-transition: height .5s ease-out;
     -moz-transition: height .5s ease-out;
@@ -1463,7 +1464,7 @@ label.btn.active,
 .secondary a {
     color: #fff;
      /*padding: 5px 50px 8px 50px; */
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 .secondary .navbar-nav>li>a {
     padding: 15px 8px 15px 8px;
@@ -2647,7 +2648,8 @@ input[type="date"]::-webkit-inner-spin-button{
 		margin-top: 50px
 	}
 	#navSavedBtn>a,
-	#filterSidebarBtn>a {
+	#filterSidebarBtn>a,
+	#logoutBtn>a {
 		padding: 7px;
 		line-height: 18px;
 		font-size: 14px;
@@ -2659,6 +2661,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	    font-size: 0.8em;
 	    display: block;
 	    font-weight: bold;
+	}
+	.btnTitle-inline {
+		display: inline;
 	}
 }
 @media (min-width: 1200px) {
@@ -2989,6 +2994,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}*/
 	.navbar-nav.navbar-right>li {
 		float: left;
+		border-left: 1px solid;
 	}
 	#action-container {
 		position: absolute;

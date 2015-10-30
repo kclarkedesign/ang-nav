@@ -88,7 +88,6 @@
 		self.minBegDate = new Date();
 		self.minEndDate = new Date();
 		self.maxDate = new Date();
-		self.savedPrograms = [];
 		self.maxDate = self.maxDate.setFullYear(self.maxDate.getFullYear() + 1);
 		self.times = _.clone(DAYPARTS);
 		self.days = _.clone(WEEKDAYS);
