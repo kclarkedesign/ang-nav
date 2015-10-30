@@ -111,10 +111,14 @@
 		self.scrollingUp = false;
 		self.environment = "desktop";
 		self.navOpened = false;
-		self.savedPrograms = [];
-		self.savedSearches = [];
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
+		if (_.isUndefined(self.savedSearches)) {
+			self.savedSearches = [];
+		}
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
+		if (_.isUndefined(self.savedSearches)) {
+			self.savedPrograms = [];
+		}
 		self.eventClassDropdown = {
 			isopen: false
 		};
