@@ -142,9 +142,10 @@
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
-												<li class="dropdown-header center full-width visible-xs visible-sm collapse">WHAT ARE YOU INTERESTED IN?
+												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;">
+													<strong>WHAT ARE YOU INTERESTED IN?</strong>
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
-																</li>
+												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
 													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 														<span ng-bind-html="sl.Name | unsafe"></span>
