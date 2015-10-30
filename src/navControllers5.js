@@ -1132,9 +1132,7 @@
 	NavListController.prototype.loadMore = function (env) {
 		var self = this;
 		if (env === self.environment) {
-			//self.limit += (self.limit * self.numOfColumns);
-			self.limit += self.limit;
-			//self.limit++;
+			self.limit += self.origLimit;
 		}
 	};
 
