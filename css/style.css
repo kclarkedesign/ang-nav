@@ -612,10 +612,11 @@ width: 280px;
   /*height: 41px;*/
   line-height: 24px;
 }
-#savedSidebarClose {
+#savedSidebarClose,
+#filterClose {
     position: absolute;
     top: 12px;
-    right: -5px;
+    right: 0;
     text-align: right;
     color: #fff;
     white-space: nowrap;
@@ -3334,7 +3335,7 @@ input[type="date"]::-webkit-inner-spin-button{
   top: 0;
   visibility: hidden;
   width: 100%;
-  z-index: 3;
+  z-index: 4;
   position: fixed;
   -webkit-transition: visibility 0 linear 0.4s,opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   -moz-transition: visibility 0 linear 0.4s,opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
