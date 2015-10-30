@@ -110,7 +110,7 @@
 		self.affixed = false;
 		self.scrollingUp = false;
 		self.environment = "desktop";
-		self.navCollapsed = true
+		//self.navOpened = false;
 		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
 		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
 		self.eventClassDropdown = {
@@ -353,7 +353,8 @@
 				var foundLevel = _.find(self.allClasses, { 'Name': subLevelName })
 				subLevelId = foundLevel.NodeID;
 			} else {
-				self.eventClassDropdown.isopen = !self.eventClassDropdown.isopen;
+				self.eventClassDropdown.isopen = true;
+				//self.navOpened = true;
 			}
 		} else {
 			//if interest link clicked
