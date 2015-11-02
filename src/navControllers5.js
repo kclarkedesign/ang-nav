@@ -1884,6 +1884,18 @@
 	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore'];
 	navApp.controller('NavListController', NavListController);
 
+	navApp.directive('enableContainer', function () {
+		function link(scope, element) {
+			var divNoJs = element.children('#nojs');
+			divNoJs.css('display', 'none');
+			var divTiles = element.children('#tiles');
+			divTiles.css('display', '');
+		}
+		return {
+			link: link
+		};
+	});
+
 	navApp.directive('getBodyDimensions', function () {
 		function link(scope) {
 			resizeTileDisplay(scope);

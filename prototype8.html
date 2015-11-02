@@ -959,8 +959,9 @@
 					</div>
 	
 
-					<div id="Container" class="tileContainer container pt15">
-						<div id="tiles" class="row">
+					<div id="Container" class="tileContainer container pt15" enable-container>
+						<div id="nojs">You must have JavaScript enabled to use this site.</div>
+						<div id="tiles" class="row" style="display: none">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 									<span class="noResults">No items were found</span>
