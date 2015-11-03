@@ -17,7 +17,6 @@
 		<script src="src/ui-bootstrap-tpls-0.13.0.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
-		<script src="src/angularLocalStorage.js"></script>
 		<script src="src/ng-infinite-scroll.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
 		<script src="src/navControllers5.js"></script>
 		<!-- TO BE ADDED TO ANGULAR -->
@@ -986,8 +985,9 @@
 					</div>
 	
 
-					<div id="Container" class="tileContainer container pt15">
-						<div id="tiles" class="row">
+					<div id="Container" class="tileContainer container pt15" enable-container>
+						<div id="nojs">You must have JavaScript enabled to use this site.</div>
+						<div id="tiles" class="row" style="display: none">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 									<span class="noResults">No items were found</span>
@@ -1387,7 +1387,7 @@
 																<div class="container-fluid">
 																	<div class="row">
 																		<div class="removeContainer">
-																			<a id="removeItem"class="center active" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedPrograms)">
+																			<a id="removeItem"class="center active" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedPrograms, 'savedPrograms')">
 																				<i class="fa fa-times fa-lg"></i>
 																			</a>
 																		</div>

@@ -73,13 +73,14 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch']);
-	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
+	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies']);
+	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
 		self.arrCategory = [];
 		self.location = $location;
 		self.timeout = $timeout;
+		self.cookieStore = $cookieStore
 		self.JumpNav = {};
 		self.navsDict = {};
 		self.onscreenResults = [];
@@ -111,14 +112,17 @@
 		self.scrollingUp = false;
 		self.environment = "desktop";
 		self.navOpened = false;
-		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
+
+		self.savedPrograms = self.cookieStore.get('savedPrograms');
+		if (_.isUndefined(self.savedPrograms)) {
+			self.savedPrograms = [];
+		}
+
+		self.savedSearches = self.cookieStore.get('savedSearches');
 		if (_.isUndefined(self.savedSearches)) {
 			self.savedSearches = [];
 		}
-		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
-		if (_.isUndefined(self.savedSearches)) {
-			self.savedPrograms = [];
-		}
+
 		self.eventClassDropdown = {
 			isopen: false
 		};
@@ -1108,9 +1112,10 @@
 			return ss.url === savedSearch.url && ss.folder === savedSearch.folder && ss.filter === savedSearch.filter;
 		});
 		if (foundSearch >= 0) {
-			self.deleteSaved(foundSearch, self.savedSearches);
+			self.deleteSaved(foundSearch, self.savedSearches, 'savedSearches');
 		} else {
 			self.savedSearches.push(savedSearch);
+			self.cookieStore.put('savedSearches',self.savedSearches);
 		}
 	};
 
@@ -1126,14 +1131,17 @@
 			return sp.Url === savedProgram.Url && sp.Title === savedProgram.Title && sp.Img === savedProgram.Img;
 		});
 		if (foundProgram >= 0) {
-			self.deleteSaved(foundProgram, self.savedPrograms);
+			self.deleteSaved(foundProgram, self.savedPrograms, 'savedPrograms');
 		} else {
 			self.savedPrograms.push(savedProgram);
+			self.cookieStore.put('savedPrograms',self.savedPrograms);
 		}
 	};
 
-	NavListController.prototype.deleteSaved = function (index, savedItems) {
+	NavListController.prototype.deleteSaved = function (index, savedItems, type) {
+		var self = this;
 		savedItems.splice(index, 1);
+		self.cookieStore.put(type,savedItems);
 	};
 
 	NavListController.prototype.loadMore = function (env) {
@@ -1624,11 +1632,12 @@
 		var sortDate2 = "";
 		var warning = arr.ProdStatus;
 		var inProgress;
-		if (pushToBottom) {
+		if (pushToBottom || begDate < new Date()) {
 			sortDate2 = begDate;
 			//10 is an arbirtary number to set the secondary sorting
 			sortDate1 = begDate.setFullYear(yearNumber + 10);
 			inProgress = true;
+			pushToBottom = true;
 		} else {
 			sortDate1 = begDate;
 			sortDate2 = "";
@@ -1872,8 +1881,20 @@
 
 	navApp.service('tileInfoSrv', TileInfoService);
 
-	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage', '$window'];
+	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore'];
 	navApp.controller('NavListController', NavListController);
+
+	navApp.directive('enableContainer', function () {
+		function link(scope, element) {
+			var divNoJs = element.children('#nojs');
+			divNoJs.css('display', 'none');
+			var divTiles = element.children('#tiles');
+			divTiles.css('display', '');
+		}
+		return {
+			link: link
+		};
+	});
 
 	navApp.directive('getBodyDimensions', function () {
 		function link(scope) {
