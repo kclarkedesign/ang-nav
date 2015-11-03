@@ -150,6 +150,12 @@
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
+												<li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-left">
+													<a href="/account/accountupdate.aspx?tab=2"><span class="btnTitle"><i class="fa fa-user"></i> Hi, User</span></a>
+												</li>
+												<li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-right">
+													<a><span class="btnTitle"><i class="fa fa-sign-out"></i>  Log Out</span></a>
+												</li>
 												<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
 													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 														<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
@@ -166,6 +172,7 @@
 														</li>
 													</ul>
 												</li>
+												
 												<!-- <li class="dropdown mega-dropdown" dropdown >
 													<a href="" role="button" class="dropdown-toggle" dropdown-toggle>
 														<span>Programs</span>
@@ -608,11 +615,12 @@
 										</div>
 									</div>
 								</div>
-								<div class="secondary navbar-collapse navbar-right collapse pl0">
-									<div class="container-fluid no-p collapse">
+								<!-- <div class="secondary navbar-collapse navbar-right pl0">
+									<div class="container-fluid no-p">
 										<ul class="nav navbar-nav">
 											<li><a><i class="fa fa-search"></i></a></li>
-											<li><a>Log In</a></li>
+											<li><a><span class="greeting"><strong>Hi, Kirk</strong></span></a></li>
+											<li><a><i class="fa fa-sign-out"></i> <span class="btnTitle-inline">Log Out</span></a></li>
 											<li class="social-icon"><a><i class="fa fa-facebook"></i></a></li>
 											<li class="social-icon"><a><i class="fa fa-twitter"></i></a></li>
 											<li class="social-icon"><a><i class="fa fa-instagram"></i></a></li>
@@ -620,7 +628,7 @@
 											<li class="social-icon"><a><i class="fa fa-youtube-play"></i></a></li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 								<ul id="action-container" class="nav navbar-nav navbar-right">
 									<!-- <li class="dropdown">
 										<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
@@ -635,9 +643,27 @@
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
 									</li> -->
-									<li id="filterSidebarBtn" class="nav navbar-nav navbar-right filter hidden-lg">
+									<li id="filterSidebarBtn" class="nav navbar-nav filter hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
+									<li id="accountBtn" class="dropdown hidden visible-md visible-lg" dropdown>
+										<a class="" dropdown-toggle><i class="fa fa-user"></i><span class="btnTitle">Hi, User</span>
+										</a>
+										<ul class="pt0 dropdown-menu mega-dropdown-menu dropdown-menu-right auto-width" ng-click="$event.stopPropagation()">
+											<li class="">
+												<a href="/account/accountupdate.aspx?tab=2">
+													My Account
+												</a>
+											</li>                  
+											<li class="">
+												<a><i class="fa fa-sign-out"></i> <span class="">Log Out</span></a>
+											</li>
+
+										</ul>
+									</li>
+									<!-- <li id="logoutBtn" class="mega-dropdown hidden visible-lg">
+										<a><i class="fa fa-sign-out"></i> <span class="btnTitle">Log Out</span></a>
+									</li> -->
 								</ul>
 							</div>
 						</div>
@@ -960,8 +986,9 @@
 					</div>
 	
 
-					<div id="Container" class="tileContainer container pt15">
-						<div id="tiles" class="row">
+					<div id="Container" class="tileContainer container pt15" enable-container>
+						<div id="nojs">You must have JavaScript enabled to use this site.</div>
+						<div id="tiles" class="row" style="display: none">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 									<span class="noResults">No items were found</span>
@@ -1361,7 +1388,7 @@
 																<div class="container-fluid">
 																	<div class="row">
 																		<div class="removeContainer">
-																			<a id="removeItem"class="center active" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedPrograms)">
+																			<a id="removeItem"class="center active" ng-click="navListCtrl.deleteSaved($index, navListCtrl.savedPrograms, 'savedPrograms')">
 																				<i class="fa fa-times fa-lg"></i>
 																			</a>
 																		</div>

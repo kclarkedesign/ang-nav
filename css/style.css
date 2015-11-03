@@ -2139,6 +2139,14 @@ transform: rotate(-45deg);
     display: block;
     background-color: #fff;
 }
+#brandContent .h4, 
+#brandContent .h5, 
+#brandContent .h6, 
+#brandContent h4, 
+#brandContent h5,
+#brandContent h6 {
+	margin-top: 0;
+}
 #brandContent .container > span {
 	 padding: 20px 0;
 	 display: block;
@@ -2455,7 +2463,8 @@ transform: rotate(-45deg);
 }
 .dropdown-flexible .dropdown-ch,
 #browseBtns .dropdown-ch {
-	background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+	background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat;
+	background-image: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat, -webkit-linear-gradient(#FBFBFB, #E9E9E9);
 }
 .dropdown-flexible {
 	display: inline-block;
@@ -2463,7 +2472,8 @@ transform: rotate(-45deg);
 }
 .dropdown-ch,
 .open>.dropdown-toggle.dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat;
+    background-image: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat, -webkit-linear-gradient(#FBFBFB, #E9E9E9);
     max-height: 26px;
     line-height: 1;
     text-align: left;
@@ -2473,7 +2483,7 @@ transform: rotate(-45deg);
     font-size: 12px;
 }
 .toggleBar-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -172px no-repeat;
     max-height: 26px;
     line-height: 1.1;
     text-align: left;
@@ -2483,14 +2493,14 @@ transform: rotate(-45deg);
     font-size: 12px;
 }
 .active .dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 right -196px no-repeat;
     color: #fff;
 }
 .active.open>.dropdown-ch {
 	color: #333;
 }
 .active.toggleBar-ch {
-	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
+	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -196px no-repeat;
 }
 .active.toggleBar-ch:hover {
 	color: #fff;
@@ -2779,6 +2789,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	#eventClassFinder>.dropdown-menu {
 		height: 0;
 		overflow: hidden;
+		padding: 0;
 	}
 	#eventClassFinder.open>.dropdown-menu {
 		height: 180px;
