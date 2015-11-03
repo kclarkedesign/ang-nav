@@ -376,6 +376,12 @@ header .bottom-nav {
 .full-width {
 	width: 100% !important;
 }
+.auto-width {
+	width: auto !important;
+}
+.auto-height {
+	height: auto !important;
+}
 #utilnav {
 	/*display: inline-block;*/
 	padding: 0 10px;
@@ -464,6 +470,10 @@ header .bottom-nav {
 }
 #savedPrograms #tileImg {
 		width: 40%;
+}
+#savedPrograms {
+	display: block;
+	float: none;
 }
 #sidebar,
 #mainNavSidebar {
@@ -651,6 +661,8 @@ width: 280px;
 }
 .traveling {
 	position: absolute;
+	top: -webkit-calc(600% - 40px);
+	top: -moz-calc(600% - 40px);
 	top: calc(600% - 40px);
 	right: 0px;
 	background-color: #333;
@@ -660,11 +672,18 @@ width: 280px;
     /*margin-top:20px;*/
     border-radius:0;
     border: none;
+    height: 0px;
     /*background-color: #333;*/
 }
 .navbar-default .navbar-nav>li>a {
     width:200px;
     font-weight:bold;
+}
+.navbar-nav .text {
+	display: block;
+    color: #fff;
+    cursor: default;
+    padding: 15px;
 }
 .mega-dropdown {
     position: static !important;
@@ -822,7 +841,7 @@ width: 280px;
 .navbar-nav .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: 0;
+    /*left: 0;*/
     z-index: 1000;
     display: inherit; 
     float: left;
@@ -1002,6 +1021,7 @@ width: 280px;
 	  width: 62px;
 	  text-align: center;
 	  line-height: 48px;
+	  cursor: pointer;
 	  -ms-transition: all .5s ease;
 	  -o-transition: all .5s ease;
 	  -moz-transition: all .5s ease;
@@ -1449,7 +1469,7 @@ label.btn.active,
 .secondary {
     /*background-color: #1c1c1c;*/
      /*padding: 5px 50px 8px 50px; */
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     -o-transition: height .5s ease-out;
     -ms-transition: height .5s ease-out;
     -moz-transition: height .5s ease-out;
@@ -1459,7 +1479,7 @@ label.btn.active,
 .secondary a {
     color: #fff;
      /*padding: 5px 50px 8px 50px; */
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 .secondary .navbar-nav>li>a {
     padding: 15px 8px 15px 8px;
@@ -1507,7 +1527,7 @@ label.btn.active,
   left: 8px;
   right: 12px;
   height: 3px;
-  background: #4F93CD;;
+  background: #4F93CD;
 }
 
 .c-hamburger span::before,
@@ -2119,6 +2139,14 @@ transform: rotate(-45deg);
     display: block;
     background-color: #fff;
 }
+#brandContent .h4, 
+#brandContent .h5, 
+#brandContent .h6, 
+#brandContent h4, 
+#brandContent h5,
+#brandContent h6 {
+	margin-top: 0;
+}
 #brandContent .container > span {
 	 padding: 20px 0;
 	 display: block;
@@ -2435,7 +2463,8 @@ transform: rotate(-45deg);
 }
 .dropdown-flexible .dropdown-ch,
 #browseBtns .dropdown-ch {
-	background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+	background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat;
+	background-image: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat, -webkit-linear-gradient(#FBFBFB, #E9E9E9);
 }
 .dropdown-flexible {
 	display: inline-block;
@@ -2443,7 +2472,8 @@ transform: rotate(-45deg);
 }
 .dropdown-ch,
 .open>.dropdown-toggle.dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat;
+    background-image: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") right -172px no-repeat, -webkit-linear-gradient(#FBFBFB, #E9E9E9);
     max-height: 26px;
     line-height: 1;
     text-align: left;
@@ -2453,7 +2483,7 @@ transform: rotate(-45deg);
     font-size: 12px;
 }
 .toggleBar-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -172px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -172px no-repeat;
     max-height: 26px;
     line-height: 1.1;
     text-align: left;
@@ -2463,14 +2493,14 @@ transform: rotate(-45deg);
     font-size: 12px;
 }
 .active .dropdown-ch {
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 right -196px no-repeat;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 right -196px no-repeat;
     color: #fff;
 }
 .active.open>.dropdown-ch {
 	color: #333;
 }
 .active.toggleBar-ch {
-	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/filter_page_image_sprite.png") #e2e2e2 -1px -196px no-repeat;
+	    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -196px no-repeat;
 }
 .active.toggleBar-ch:hover {
 	color: #fff;
@@ -2598,9 +2628,9 @@ transform: rotate(-45deg);
     background-color: rgb(199, 71, 184);
     color: #ffffff;
     position: absolute;
-    top: 12px;
+    top: 7px;
     float: right;
-    right: 7px;
+    right: 16px;
 }
 
 /* angular UI */
@@ -2623,6 +2653,18 @@ input[type="date"]::-webkit-inner-spin-button{
 .masonry-brick.loaded {
 	display: block !important;
 }*/
+
+
+#navSavedBtn>a,
+#filterSidebarBtn>a,
+#logoutBtn>a,
+#action-container>li>a {
+	padding: 7px;
+	line-height: 18px;
+	font-size: 14px;
+	min-width: 70px;
+	height: 50px;
+}
 @media (max-width: 1200px) {
 	.browse-item a {
 		width: 100%;
@@ -2642,13 +2684,21 @@ input[type="date"]::-webkit-inner-spin-button{
 	#site-container>.container-fluid {
 		margin-top: 50px
 	}
+	.btnTitle {
+		color: #fff;
+	    font-size: 0.8em;
+	    display: block;
+	    font-weight: bold;
+	}
+	.btnTitle-inline {
+		display: inline;
+	}
 }
 @media (min-width: 1200px) {
   .seven-cols .col-md-2,
   .seven-cols .col-sm-2,
   .seven-cols .col-lg-2 {
     width: 14.285714285714285714285714285714%;
-    *width: 14.285714285714285714285714285714%;
   }
   #current-interest,
   #current-interestMobile {
@@ -2669,6 +2719,15 @@ input[type="date"]::-webkit-inner-spin-button{
 	/*max-width: 50%;*/
 	/*min-width: 33.333%;*/
 	}
+	.btnTitle {
+		color: #fff;
+	    font-size: 0.8em;
+	    display: block;
+	    font-weight: bold;
+	}
+	/*.dropdown-menu-right {
+		right: 0px !important;
+	}*/
 }
 /* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 768px) {
@@ -2727,9 +2786,28 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 }
 @media (min-width: 992px) {
+	#eventClassFinder>.dropdown-menu {
+		height: 0;
+		overflow: hidden;
+		padding: 0;
+	}
 	#eventClassFinder.open>.dropdown-menu {
 		height: 180px;
+    	padding-top: 16px;
 	}
+	#accountBtn>.dropdown-menu {
+	    padding: 0;
+		overflow: hidden;
+	}
+	#accountBtn> .dropdown-menu>li>a {
+		padding: 4px 20px;
+	}
+	#accountBtn.open>.dropdown-menu {
+		height: 70px;
+    	padding-top: 5px;
+	}
+	
+
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	.tileContainer .itemContents {
@@ -2950,6 +3028,15 @@ input[type="date"]::-webkit-inner-spin-button{
 	.mega-dropdown {
 		   border-top: 1px solid;
 	}
+	.button-left {
+		border: 1px solid;
+		border-left: 0;
+		border-right: 0;
+	}
+	.button-right {
+		border: 1px solid;
+		border-right: 0;
+	}
 	#mainNavBtnTwo.is-active:before {
 		content: " ";
 	}
@@ -2972,6 +3059,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}*/
 	.navbar-nav.navbar-right>li {
 		float: left;
+		border-left: 1px solid;
 	}
 	#action-container {
 		position: absolute;
