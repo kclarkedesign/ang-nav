@@ -119,6 +119,7 @@
 				});
 			});
 		</script>
+		<title>92Y Event &amp; Class Finder</title>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
@@ -1107,6 +1108,8 @@
 													<div class="item-details col-xs-7 pull-right pb10">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
+															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
+														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
 															</a>
 													</div>
 												</div>
@@ -1130,9 +1133,6 @@
 								<div class="scroll-container">
 									<div class="scroll-nav">
 										<div class="row">
-											<div class="col-xs-12 pt10">
-												<label class="checkbox dropdown-header pl0 fw-normal">Filter by search:</label>
-											</div>
 											<div class="col-xs-12">
 												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
