@@ -1381,16 +1381,18 @@
 				enabled = !self.checkDateInit() && self.initialized;
 				break;
 			case 'type':
-				enabled = self.typeSlice !== 'all';
+				enabled = !_.isUndefined(self.typeSlice) && self.typeSlice !== 'all';
 				break;
 			case 'age':
 				enabled = !self.checkAgeInit() && self.initialized;
 				break;
 			case 'search':
-				enabled = self.textboxSearch !== '';
+				enabled = !_.isUndefined(self.textboxSearch) && self.textboxSearch !== '';
 				break;
 			default:
-				enabled = (!self.checkDateInit() && self.initialized) || (self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || (self.textboxSearch !== '');
+				enabled = (!self.checkDateInit() && self.initialized) || 
+				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || 
+				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
 		}
 		return enabled;
 	};
