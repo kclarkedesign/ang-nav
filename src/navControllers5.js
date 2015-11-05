@@ -1698,7 +1698,7 @@
 		var teachers = instructors.toString();
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
-			if (teachers.length) {
+			if (teachers.length && futurePerfCount > 1) {
 				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/g, ", ") + "</div>";	
 			}
 			var performances = arr.FuturePerformances;
@@ -1715,6 +1715,9 @@
 					perfDate = new Date(parseInt(perfDate.substr(6)));
 					var futureDate = formatDateOutput(perfDate);
 					var fromPrice = p.lowest_price;
+					if (fromPrice !== 'Free') {
+						fromPrice = 'from '+ fromPrice;
+					}
 					var numSessions = p.number_of_sessions;
 					var dowArr, teachArr;
 					if (itemType.toLowerCase() === 'class') {
@@ -1746,7 +1749,7 @@
 							if (itemType.toLowerCase() === 'class') {
 								shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
 									"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
-									"<th>Instructor"+ (teachArr.length > 1 ? "s" : "") +"</th>";
+									"<th>" + (teachers.length ? "Instructor"+ (teachArr.length > 1 ? "s" : "") : "") + "</th>";
 							} else {
 								shortDesc += "<th width='185'>Date</th><th>Price</th>";
 							}
@@ -1754,10 +1757,10 @@
 						}
 						shortDesc += "<tr><td>" + futureDate + "</td>"
 						if (itemType.toLowerCase() === 'class') {
-							shortDesc += "<td>" + daysOfWeek +"</td><td>" + numSessions + "</td>" +
-							"<td>from " + fromPrice +"</td><td>" + classInstructors + "</td>";
+							shortDesc += "<td>" + daysOfWeek + "</td><td>" + numSessions + "</td>" +
+							"<td>" + fromPrice +"</td><td>" + classInstructors + "</td>";
 						} else {
-							shortDesc += "<td>from " + fromPrice +"</td>";
+							shortDesc += "<td>" + fromPrice +"</td>";
 						}
 						shortDesc += "</tr>";
 
