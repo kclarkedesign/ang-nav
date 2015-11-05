@@ -1414,7 +1414,8 @@ a {
 		color: #909192;
 }
 .fa-heart.active,
-.wishList.active {
+.wishList.active,
+.bookmark .active {
 	/*color: #428BCA;*/
 	    color: #C747B8;
 }
@@ -2033,9 +2034,8 @@ transform: rotate(-45deg);
 		left: 0;
 		cursor: pointer;
 	}
-	.itemContents .bookmark {
-
-
+	.itemContents .bookmark:active {
+		color: #909192;
 	}
 	/*.itemContents .bookmark {
 		position: absolute;

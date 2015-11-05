@@ -1109,7 +1109,7 @@
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
-														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
+														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
 															</a>
 													</div>
 												</div>
