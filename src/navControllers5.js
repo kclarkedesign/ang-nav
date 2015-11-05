@@ -112,6 +112,7 @@
 		self.scrollingUp = false;
 		self.environment = "desktop";
 		self.navOpened = false;
+		self.printedReport = [];
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -273,15 +274,27 @@
 							kwStringArr.push(kw.Level +':  '+ kw.Keywords);
 						});
 						var levelAndKeywords = kwStringArr.toString();
-						var foundArr = _.find(kwArr, { 'id' : n.ProductionSeasonNumber });
+						var prodNo = n.ProductionSeasonNumber === 0 ? n.PackageNo : n.ProductionSeasonNumber;
+						var foundArr = _.find(kwArr, { 'id' : prodNo });
 						if (_.isUndefined(foundArr)) {
-							kwArr.push({ id : n.ProductionSeasonNumber, name: n.Title, keywords: keywords[0].Keywords, kws_0: levelAndKeywords });
+							var kws = '';
+							_.forEach(keywords, function (kw, ind) {
+								kws += kw.Keywords;
+								if (ind +1 < keywords.length){
+									kws += ',';
+								}
+							});
+							kwArr.push({ id : prodNo, name: n.Title, keywords: kws, kws_0: levelAndKeywords });
 						} else {
-						 	var keywordArr = foundArr.keywords.split(',')
-						 	var kwSplit = keywords[0].Keywords.split(',');
-						 	_.forEach(kwSplit, function (kw) {
-						 		keywordArr.push(kw);
-						 	});
+						 	var foundKeywords = foundArr.keywords;
+							var kws = '';
+							_.forEach(keywords, function (kw, ind) {
+								kws += kw.Keywords;
+								if (ind +1 < keywords.length){
+									kws += ',';
+								}
+							});
+							var keywordArr = (kws +','+ foundKeywords).split(',');
 						 	var kwUniq = _.uniq(keywordArr).toString();
 						 	foundArr.keywords = kwUniq;
 							for (var x = 1; x <=10; x++) {
@@ -299,7 +312,7 @@
 			keywords.push({ Level: node.name, Keywords: node.keywords });
 			self.printReport(node, keywords, kwArr);
 		});
-		return _.sortByOrder(kwArr, ['kws_6'], ['asc']);
+		self.printedReport = _.sortByOrder(kwArr, ['kws_7', 'kws_6'], ['asc']);
 	};
 
 	NavListController.prototype.getSublevels = function (level, nodeid) {
@@ -1193,6 +1206,11 @@
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice];
 				self.dateApplyClicked = true;
 				break;
+			case 'datetimeagetypesearch':
+				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL, AGESLICEURL, TYPESLICEURL, SEARCHSLICEURL];
+				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice, self.typeSlice, self.textboxSearch];
+				self.dateApplyClicked = true;
+				break;
 		}
 		if (!_.isUndefined(sliceUrl)) {
 			if (_.isArray(sliceUrl)) {
@@ -1263,8 +1281,14 @@
 		if (clearWhich.indexOf('age') >= 0) {
 			self.ageSlice = self.initAgeSlice;
 		}
-		var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
-		self.sliceBy(sliceBy);
+		if (clearWhich.indexOf('type') >=0) {
+			self.typeSlice = 'all';
+		}
+		if (clearWhich.indexOf('search') >=0) {
+			self.textboxSearch = '';
+		}
+		//var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
+		self.sliceBy(clearWhich);
 	};
 
 	NavListController.prototype.checkAgeState = function (open) {
@@ -1296,7 +1320,7 @@
 	NavListController.prototype.displayFilterOptions = function () {
 		var self = this;
 		self.enabledFilters = {};
-		var isDateFilterEnabled = !self.checkDateInit() && self.initialized;
+		var isDateFilterEnabled = self.isFilterEnabled('date');
 		var index = 0;
 		if (isDateFilterEnabled) {
 			self.enabledFilters['Date or Time'] = {
@@ -1305,7 +1329,7 @@
 				ind: ++index
 			};
 		}
-		var isTypeFilterEnabled = self.typeSlice !== 'all';
+		var isTypeFilterEnabled = self.isFilterEnabled('type');
 		if (isTypeFilterEnabled) {
 			self.enabledFilters['Class/Event'] = {
 				pre: '',
@@ -1313,15 +1337,15 @@
 				ind: ++index
 			};
 		}
-		var isTimeFilterEnabled = !self.checkAgeInit() && self.initialized;
-		if (isTimeFilterEnabled) {
+		var isAgeFilterEnabled = self.isFilterEnabled('age');
+		if (isAgeFilterEnabled) {
 			self.enabledFilters['Age Range'] = {
 				pre: '',
 				suf: '',
 				ind: ++index
 			};
 		}
-		var isSearchFilterEnabled = self.textboxSearch !== '';
+		var isSearchFilterEnabled = self.isFilterEnabled('search');
 		if (isSearchFilterEnabled) {
 			self.enabledFilters.Search = {
 				pre: '',
@@ -1349,6 +1373,28 @@
 		return _.size(self.enabledFilters) > 0;
 	};
 
+	NavListController.prototype.isFilterEnabled = function (which) {
+		var self = this;
+		var enabled = false;
+		switch (which) {
+			case 'date':
+				enabled = !self.checkDateInit() && self.initialized;
+				break;
+			case 'type':
+				enabled = self.typeSlice !== 'all';
+				break;
+			case 'age':
+				enabled = !self.checkAgeInit() && self.initialized;
+				break;
+			case 'search':
+				enabled = self.textboxSearch !== '';
+				break;
+			default:
+				enabled = (!self.checkDateInit() && self.initialized) || (self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || (self.textboxSearch !== '');
+		}
+		return enabled;
+	};
+
 	NavListController.prototype.scrollReset = function () {
 		var self = this;
 		self.scrollingUp = true;
@@ -1363,7 +1409,7 @@
 		} else {
 			return ((self.getBreadcrumbs(true)).FeaturedItemsHeader).length > 0 && self.onscreenResults.length > 0;
 		}
-	};	
+	};
 
 	var pluckAllKeys = function (obj, res) {
 		var res = res || [];
@@ -1419,7 +1465,7 @@
 			}
 			locationPath = fixUrl(locationPath.replace(sliceStringToReplace, sliceUrl + sliceVal.toString()));
 		} else {
-			if (!_.isNaN(sliceVal) && sliceVal !== 'all') {
+			if (!_.isNaN(sliceVal) && sliceVal !== 'all' && sliceVal !== '') {
 				locationPath = fixUrl(locationPath + sliceUrl + sliceVal.toString());	
 			}
 		}
