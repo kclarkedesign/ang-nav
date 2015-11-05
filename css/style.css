@@ -307,6 +307,9 @@ body.sidebar-open {
 	/*border-bottom: 1px solid #000000;*/
 	background-color: #000000;
 }
+.dropdown-header {
+	cursor: default;
+}
 #main-navigation .dropdown-header.first-header {
     cursor: default;
     font-size: .8em;
@@ -702,6 +705,9 @@ width: 280px;
 	    border-left: 17px solid transparent;
 	    border-right: 17px solid transparent;
 	    content: "";
+	    left: 43.5%;
+	    left: -webkit-calc(45% - 10px);
+	    left: -moz-calc(45% - 10px);
 	    left: calc(45% - 10px);
 	    position: absolute;
 	    top: 50px;
@@ -1011,23 +1017,26 @@ width: 280px;
 	}*/
 	#floatSavedBtn,
 	#floatCartBtn {
-	  position: absolute;
-	  left: 0;
-	  top: calc(40% - 10px);
-	  background-color: #333;
-	  font-size: 20px;
-	  z-index: 1003;
-	  height: 60px;
-	  width: 62px;
-	  text-align: center;
-	  line-height: 48px;
-	  cursor: pointer;
-	  -ms-transition: all .5s ease;
-	  -o-transition: all .5s ease;
-	  -moz-transition: all .5s ease;
-	  -webkit-transition: all .5s ease;
-	  -moz-transition: all .5s ease;
-	  transition: all .5s ease;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		top: -webkit-calc(40% - 40px);
+		top: -moz-calc(40% - 40px);
+		top: calc(40% - 10px);
+		background-color: #333;
+		font-size: 20px;
+		z-index: 1003;
+		height: 60px;
+		width: 62px;
+		text-align: center;
+		line-height: 48px;
+		cursor: pointer;
+		-ms-transition: all .5s ease;
+		-o-transition: all .5s ease;
+		-moz-transition: all .5s ease;
+		-webkit-transition: all .5s ease;
+		-moz-transition: all .5s ease;
+		transition: all .5s ease;
 	}
 	#floatSavedBtn a {
     	color: #C747B8;
@@ -1192,24 +1201,24 @@ a {
     padding-left: 10px;
 }
 .browse-item a {
-  /*padding: 2px 8px;*/
-  padding: 3px 3px 5px 0px;
-  display: block;
-  font-size: 14px;
-  font-weight: bold;
-  -webkit-transition: all .2s ease;
-  -moz-transition: all .2s ease;
-  transition: all .2s ease;
-  /*background-color: #eff0f2;*/
-  box-shadow: none;
-  margin: 0;
-  box-sizing: border-box;
-  /*border-bottom: 1px solid #fff;*/
-  width: 99%;
-   /* margin-bottom: 6px;*/
-        white-space: nowrap;
-    /*text-overflow: ellipsis;*/
-    text-align: left;
+	/*padding: 2px 8px;*/
+	padding: 3px 3px 5px 0px;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	-webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	transition: all .2s ease;
+	/*background-color: #eff0f2;*/
+	box-shadow: none;
+	margin: 0;
+	box-sizing: border-box;
+	/*border-bottom: 1px solid #fff;*/
+	width: 99%;
+	/* margin-bottom: 6px;*/
+	white-space: nowrap;
+	/*text-overflow: ellipsis;*/
+	text-align: left;
 	color: #C747B8;
 }
 .filter-content td.column {
@@ -1408,7 +1417,8 @@ a {
 		color: #909192;
 }
 .fa-heart.active,
-.wishList.active {
+.wishList.active,
+.bookmark .active {
 	/*color: #428BCA;*/
 	    color: #C747B8;
 }
@@ -1458,6 +1468,26 @@ a {
 	border-radius: 0px;
 	margin: 0;
 }
+.nav-label-beta {
+    text-transform: uppercase;
+    font-size: 96%;
+    padding: 0 0 0 10px;
+    color: #8D8D8D;
+    /* border: 1px solid; */
+    cursor: default;
+    margin: 0;
+    height: 44px;
+    line-height: 46px;
+}
+/** Better beta label **/
+/*.nav-label-beta {
+    text-transform: uppercase;
+    font-size: 85%;
+    color: #BBBBBB;
+    cursor: default;
+    background: #5E5E5E;
+}*/
+
 /*.active #btn-dayTime,*/
 label.btn.active,
 /*.active #btn-ageRange,*/
@@ -1540,7 +1570,7 @@ label.btn.active,
   width: 100%;
   height: 3px;
   background-color: #4F93CD;
-  content: "";
+  content: " ";
 }
 .c-hamburger.is-active span,
 .c-hamburger.is-active span::before,
@@ -2027,9 +2057,8 @@ transform: rotate(-45deg);
 		left: 0;
 		cursor: pointer;
 	}
-	.itemContents .bookmark {
-
-
+	.itemContents .bookmark:active {
+		color: #909192;
 	}
 	/*.itemContents .bookmark {
 		position: absolute;
@@ -2459,6 +2488,10 @@ transform: rotate(-45deg);
 }
 .dropdown-ch-mobile {
 	background: url() right -172px no-repeat, linear-gradient(#FBFBFB, #E9E9E9);
+	background: -webkit-linear-gradient(#FBFBFB, #E9E9E9);
+	background: -o-linear-gradient(#FBFBFB, #E9E9E9);
+	background: -moz-linear-gradient(#FBFBFB, #E9E9E9);
+	background: linear-gradient(#FBFBFB, #E9E9E9);
 	text-align: center;
 }
 .dropdown-flexible .dropdown-ch,
@@ -2621,7 +2654,7 @@ transform: rotate(-45deg);
   animation: shake .8s 1;
 }
 
-#navSavedBtn.active .bubble {
+#action-container .active .bubble {
 	border-radius: 100%;
     height: 8px;
     width: 8px;
@@ -3044,6 +3077,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	#floatSavedBtn,
 	#floatCartBtn {
 		display: none;
+	}
+	.browse-item a {
+		white-space: normal;
 	}
 }
 

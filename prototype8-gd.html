@@ -120,6 +120,7 @@
 				});
 			});
 		</script>
+		<title>92Y Event &amp; Class Finder</title>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<div id="site-container" style="height: 100%">
@@ -642,8 +643,8 @@
 									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
 										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
 									</li> -->
-									<li id="filterSidebarBtn" class="nav navbar-nav filter hidden-lg">
-										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
+									<li id="filterSidebarBtn" ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake">
+										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
 									<li id="accountBtn" class="dropdown hidden visible-md visible-lg" dropdown>
 										<a class="" dropdown-toggle><i class="fa fa-user"></i><span class="btnTitle">Hi, User</span>
@@ -1108,6 +1109,8 @@
 													<div class="item-details col-xs-7 pull-right pb10">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
+															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
+														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
 															</a>
 													</div>
 												</div>
@@ -1131,9 +1134,6 @@
 								<div class="scroll-container">
 									<div class="scroll-nav">
 										<div class="row">
-											<div class="col-xs-12 pt10">
-												<label class="checkbox dropdown-header pl0 fw-normal">Filter by search:</label>
-											</div>
 											<div class="col-xs-12">
 												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
@@ -1276,9 +1276,9 @@
 											<div class="col-xs-12">
 												<div role="separator" class="divider"></div>
 											</div>
-											<div class="text-center">
+											<div class="text-center pb25 mb25">
 												<button id="btnSubmit" class="btn btn-primary" ng-click="navListCtrl.sliceBy('datetimeage')">Apply</button>
-												<a class="clearBtn pl10" ng-click="navListCtrl.clearDropDown('datetimeage')"> Clear </a>
+												<a class="clearBtn pl10" ng-click="navListCtrl.clearDropDown('datetimeagetypesearch')"> Clear </a>
 											</div>
 										</div>
 									</div>
