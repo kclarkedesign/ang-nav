@@ -137,7 +137,7 @@
 								</div>
 
 								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="navListCtrl.navOpened && 'in'">
-									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder</span>
+									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder (BETA)</span>
 									</div>
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
@@ -150,12 +150,13 @@
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
-												<li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-left">
+												<!-- For use when account becomes available -->
+												<!-- <li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-left">
 													<a href="/account/accountupdate.aspx?tab=2"><span class="btnTitle"><i class="fa fa-user"></i> Hi, User</span></a>
-												</li>
-												<li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-right">
+												</li> -->
+												<!-- <li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-right">
 													<a><span class="btnTitle"><i class="fa fa-sign-out"></i>  Log Out</span></a>
-												</li>
+												</li> -->
 												<li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
 													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 														<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
@@ -171,6 +172,10 @@
 															</ul>
 														</li>
 													</ul>
+												</li>
+
+												<li class="pl0 pr0 dropdown-header hidden-xs hidden-sm">
+													<span class="label nav-label-beta navbar-text">Beta</span>
 												</li>
 												
 												<!-- <li class="dropdown mega-dropdown" dropdown >
@@ -646,7 +651,8 @@
 									<li id="filterSidebarBtn" ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
-									<li id="accountBtn" class="dropdown hidden visible-md visible-lg" dropdown>
+									<!-- For account use when available -->
+									<!-- <li id="accountBtn" class="dropdown hidden visible-md visible-lg" dropdown>
 										<a class="" dropdown-toggle><i class="fa fa-user"></i><span class="btnTitle">Hi, User</span>
 										</a>
 										<ul class="pt0 dropdown-menu mega-dropdown-menu dropdown-menu-right auto-width" ng-click="$event.stopPropagation()">
@@ -660,9 +666,6 @@
 											</li>
 
 										</ul>
-									</li>
-									<!-- <li id="logoutBtn" class="mega-dropdown hidden visible-lg">
-										<a><i class="fa fa-sign-out"></i> <span class="btnTitle">Log Out</span></a>
 									</li> -->
 								</ul>
 							</div>
@@ -931,7 +934,7 @@
 										<div class="col-sm-12 pb10 snav-filter-container">
 											<div class="row">
 												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
-													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by Instructor, Title or Keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 											</div>
@@ -1135,7 +1138,7 @@
 									<div class="scroll-nav">
 										<div class="row">
 											<div class="col-xs-12">
-												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by instructor or keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
+												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by Instructor, Title or Keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
 												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											
