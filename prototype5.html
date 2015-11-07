@@ -173,7 +173,7 @@
 												<li class="container" style="margin: auto;">
 													<ul class="col-sm-12 no-p">
 														<li class="dropdown-header">FILTER BY INTEREST</li>
-														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
+														<li class="col-xs-6 col-sm-4 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
 													</ul>
 												</li>
 											</ul>
@@ -696,7 +696,7 @@
 								<div class="col-md-10">
 									<div class="">
 										<div class="selections">
-											<a ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
+											<a ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 										</div>
 									</div>
 								</div>
@@ -778,7 +778,7 @@
 											<ul class="dropdown-menu dropdown-menu-form" role="menu">
 												<li>
 												
-													<a ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
+													<a ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 															
 												</li>
 											</ul>
@@ -1287,7 +1287,7 @@
 			<div class="sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
 					<span class="heading list-group-item active">I'm looking for &hellip; <a id="sideBarClose" class="center active"><i class="fa fa-times fa-lg"></i></a></span>
-					<a class="list-group-item" ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.interestClicked(sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
+					<a class="list-group-item" ng-repeat="sl in navListCtrl.allClasses" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a>
 				</div>
 			</div>
 			<!-- Browse  -->

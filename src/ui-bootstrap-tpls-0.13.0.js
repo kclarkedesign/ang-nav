@@ -5,6 +5,13 @@
  * Version: 0.13.0 - 2015-05-02
  * License: MIT
  */
+
+/*
+-djf = code that was not in the original codebase
+1.  Format the calendar so it looks more like a normal calendar instead of a grid with numbers.
+2.  Clear out the datePickers correctly.  The activeDate was left untouched which would keep the last picked day even after clearing.
+*/
+
 angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.transition","ui.bootstrap.typeahead"]);
 angular.module("ui.bootstrap.tpls", ["template/accordion/accordion-group.html","template/accordion/accordion.html","template/alert/alert.html","template/carousel/carousel.html","template/carousel/slide.html","template/datepicker/datepicker.html","template/datepicker/day.html","template/datepicker/month.html","template/datepicker/popup.html","template/datepicker/year.html","template/modal/backdrop.html","template/modal/window.html","template/pagination/pager.html","template/pagination/pagination.html","template/tooltip/tooltip-html-popup.html","template/tooltip/tooltip-html-unsafe-popup.html","template/tooltip/tooltip-popup.html","template/tooltip/tooltip-template-popup.html","template/popover/popover-template.html","template/popover/popover.html","template/progressbar/bar.html","template/progressbar/progress.html","template/progressbar/progressbar.html","template/rating/rating.html","template/tabs/tab.html","template/tabs/tabset.html","template/timepicker/timepicker.html","template/typeahead/typeahead-match.html","template/typeahead/typeahead-popup.html"]);
 angular.module('ui.bootstrap.collapse', [])
@@ -1045,10 +1052,15 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   }
 
   $scope.isActive = function(dateObject) {
-    if (self.compare(dateObject.date, self.activeDate) === 0) {
-      $scope.activeDateId = dateObject.uid;
-      return true;
+    //-djf 2
+    //this is to make sure all the date boxes in the calendar are cleared
+    if (self.activeDate !== null) {
+      if (self.compare(dateObject.date, self.activeDate) === 0) {
+        $scope.activeDateId = dateObject.uid;
+        return true;
+      }
     }
+    dateObject.selected = false;
     return false;
   };
 
@@ -1060,6 +1072,8 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     };
   };
 
+  //-djf 2
+  self.datepickerFirstRenderDone = false;
   this.render = function() {
     if ( ngModelCtrl.$viewValue ) {
       var date = new Date( ngModelCtrl.$viewValue ),
@@ -1071,8 +1085,15 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         $log.error('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
       }
       ngModelCtrl.$setValidity('date', isValid);
+      this.refreshView();
+    } else {
+      //-djf 2
+      if (self.datepickerFirstRenderDone) {
+        //if blank preferred then put null instead
+        this.activeDate = new Date();
+      }
     }
-    this.refreshView();
+    self.datepickerFirstRenderDone = true;
   };
 
   this.refreshView = function() {
@@ -1635,7 +1656,10 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
 
       // Detect changes in the view from the text box
       ngModel.$viewChangeListeners.push(function () {
-        scope.date = dateParser.parse(ngModel.$viewValue, dateFormat, scope.date) || new Date(ngModel.$viewValue);
+        //scope.date = dateParser.parse(ngModel.$viewValue, dateFormat, scope.date) || new Date(ngModel.$viewValue);
+        //-djf 2
+        //allow bad date so we can tell we want to clear
+        scope.date = dateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
       });
 
       var documentClickBind = function(event) {
@@ -4460,7 +4484,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
     };
   })
 
-  //custom code not part of original codebase
+  //-djf 1
   .filter('removeLeadingZero', function() {
     return function(obj){
         return obj.replace(/0(\d)/, '$1');
@@ -4551,6 +4575,7 @@ angular.module("template/datepicker/day.html", []).run(["$templateCache", functi
     "      <td ng-repeat=\"dt in row track by dt.date\" class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\" ng-class=\"dt.customClass\">\n" +
     "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default btn-sm\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt), 'text-muted': dt.secondary}\" ng-click=\"select(dt.date)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-muted': dt.secondary, 'text-info': dt.current}\">{{dt.label | removeLeadingZero}}</span></button>\n" +    
     //original line = "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default btn-sm\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" ng-click=\"select(dt.date)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-muted': dt.secondary, 'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
+    //-djf 1
     "      </td>\n" +
     "    </tr>\n" +
     "  </tbody>\n" +

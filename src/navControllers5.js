@@ -73,13 +73,14 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['angularLocalStorage', 'wu.masonry', 'infinite-scroll', 'ui.bootstrap', 'ngScrollSpy']);
-	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, storage, $window) {
+	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies']);
+	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
 		self.arrCategory = [];
 		self.location = $location;
 		self.timeout = $timeout;
+		self.cookieStore = $cookieStore
 		self.JumpNav = {};
 		self.navsDict = {};
 		self.onscreenResults = [];
@@ -104,37 +105,63 @@
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
+		self.bottomContainerStyle = {'overflow-x': 'hidden', 'height': '100%' };
+		self.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+		self.chunkLevels = [];
+		self.affixed = false;
+		self.scrollingUp = false;
+		self.environment = "desktop";
+		self.navOpened = false;
+		self.printedReport = [];
 
-		storage.bind($scope, 'navListCtrl.savedSearches', { defaultValue: [] });
-		storage.bind($scope, 'navListCtrl.savedPrograms', { defaultValue: [] });
+		self.savedPrograms = self.cookieStore.get('savedPrograms');
+		if (_.isUndefined(self.savedPrograms)) {
+			self.savedPrograms = [];
+		}
+
+		self.savedSearches = self.cookieStore.get('savedSearches');
+		if (_.isUndefined(self.savedSearches)) {
+			self.savedSearches = [];
+		}
+
+		self.eventClassDropdown = {
+			isopen: false
+		};
 
 		self.tileInfoSrv = tileInfoSrv;
-		self.tileInfoSrv.getSOAItems().then(function (items) {
-			self.navsDict["School Of The Arts"] = items.data;
-			self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
-				self.getAllInitialClasses(data);
-			}, function (respData) {
-				self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
-					self.getAllInitialClasses(data);
-				}).finally(function() {
-					if (self.allClasses.length === 0) {
-						self.allClasses = [{Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
-					}
-				});
+		self.tileInfoSrv.getAllClasses('items/Filters.json').then(function (data) {
+			self.getInterestItems(self.getAllInitialClasses, data);
+		}, function (respData) {
+			self.tileInfoSrv.getAllClasses('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/28219/').then(function (data) {
+				self.getInterestItems(self.getAllInitialClasses, data);
+			}).finally(function() {
+				if (self.allClasses.length === 0) {
+					self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
+				}
 			});
 		});
+
 		self.log = function (variable) {
 			console.log(variable);
 		};
 
+		self.table = function (variable) {
+			console.table(variable);
+		};
+
 		var w = angular.element($window);
+		self.currentScreenWidth = w.outerWidth();
 		w.bind('resize', function () {
-			if (!_.isUndefined(self.currentObj)) {
-				resizeTileDisplay($scope);
-				self.onscreenResults = [];
-				self.displayTiles();
-				self.loadMore();
-				$scope.$apply();
+			//This condition is for mobile devices that change the height of the window when you swipe up or down to scroll.
+			if (this.outerWidth !== self.currentScreenWidth) {
+				if (!_.isUndefined(self.currentObj)) {
+					resizeTileDisplay($scope);
+					self.onscreenResults = [];
+					self.displayTiles();
+					self.loadMore(self.environment);
+					$scope.$apply();
+				}
+				self.currentScreenWidth = this.outerWidth;
 			}
 		});
 		$scope.$watch(function () {
@@ -144,6 +171,7 @@
 				$timeout(function() { INITIALIZING = false; });
 			} else {
 				var locationPath = self.location.path();
+				//console.log(self.location.absUrl());
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
@@ -156,7 +184,8 @@
 							Level: self.currentObj.Level,
 							Name: self.currentObj.Name,
 							NodeID: self.currentObj.NodeID,
-							Current: self.currentObj.Current
+							Current: self.currentObj.Current,
+							FeaturedItemsHeader: self.currentObj.FeaturedItemsHeader
 						};
 						var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
 						if (!_.isUndefined) {
@@ -208,6 +237,20 @@
 							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
 							var classesByInterest = [self.allClasses[classIndex]];
 							self.getValues(classesByInterest, 0, self.navsDict[subfolders[0]]);
+						} else {
+							var subfolders = locationPath.substring(1).split('/');
+							var rootFolder = subfolders[0];
+							//if logo clicked to reset let's just skip this
+							if (rootFolder.length > 0) {
+								//if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
+								var currentRootFolder = self.arrCategory[0][0].Name;
+								if (currentRootFolder !== rootFolder) {
+									adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+									var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
+									var classesByInterest = [self.allClasses[classIndex]];
+									self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+								}
+							}
 						}
 						self.buildCurrentObj();
 						break;
@@ -216,38 +259,147 @@
 				self.lastLocationPath = locationPath + locationObj.removed;
 				self.JumpNav = {};
 				self.limit = self.origLimit;
+				self.affixed = false;
 			}
 		});
 	};
 
-	NavListController.prototype.getSublevels = function () {
+	NavListController.prototype.printReport = function (nodes, keywords, kwArr) {
+		var self = this;
+		_.forEach(nodes, function (node) {
+			if (_.isUndefined(node.parent)) {
+				if (_.isArray(node)) {
+					_.forEach(node, function (n) {
+						var kwStringArr = [];
+						_.forEach(keywords, function (kw) {
+							kwStringArr.push(kw.Level +':  '+ kw.Keywords);
+						});
+						var levelAndKeywords = kwStringArr.toString();
+						var uniqid = n.ProductionNumber === 0 ? n.PackageNo : n.ProductionNumber;
+						var prodNo = n.ProductionNumber;
+						var packageNo = n.PackageNo
+						var foundArr = _.find(kwArr, { 'uniqid' : uniqid });
+						if (_.isUndefined(foundArr)) {
+							var kws = '';
+							_.forEach(keywords, function (kw, ind) {
+								kws += kw.Keywords;
+								if (ind +1 < keywords.length){
+									kws += ',';
+								}
+							});
+							kwArr.push({ uniqid: uniqid, prodid: prodNo, packid: packageNo, name: n.Title, keywords: kws, kws_0: levelAndKeywords });
+						} else {
+						 	var foundKeywords = foundArr.keywords;
+							var kws = '';
+							_.forEach(keywords, function (kw, ind) {
+								kws += kw.Keywords;
+								if (ind +1 < keywords.length){
+									kws += ',';
+								}
+							});
+							var keywordArr = (kws +','+ foundKeywords).split(',');
+						 	var kwUniq = _.uniq(keywordArr).toString();
+						 	foundArr.keywords = kwUniq;
+							for (var x = 1; x <=10; x++) {
+								if (_.isUndefined(foundArr['kws_' +x])) {
+									foundArr['kws_' +x] = levelAndKeywords;
+									break;
+								}
+							}
+						}
+					});
+					keywords.pop();
+				}
+				return;
+			}
+			keywords.push({ Level: node.name, Keywords: node.keywords });
+			self.printReport(node, keywords, kwArr);
+		});
+		self.printedReport = _.sortByOrder(kwArr, ['kws_7', 'kws_6'], ['asc']);
+	};
+
+	NavListController.prototype.getSublevels = function (level, nodeid) {
 		var self = this;
 		if (self.currentObj) {
-			return _.filter(self.arrCategory[self.currentObj.Level+1], { 'Parent': self.currentObj.NodeID });	
+			if (_.isUndefined(level)) {
+				level = self.currentObj.Level;
+				nodeid = self.currentObj.NodeID;
+			}
+			return _.filter(self.arrCategory[level+1], { 'Parent': nodeid });
+
 		} else {
 			return;
 		}
+		
 	};
 
-	NavListController.prototype.getAllInitialClasses = function (data) {
-		//todo:  note for the future - to handle more interest areas the following must be expanded and handled differently
+	NavListController.prototype.chunkSublevels = function () {
 		var self = this;
-		self.allClasses = [];
-		self.allClasses.push.apply(self.allClasses, data.data);
+		var subLevels = self.getSublevels();
+		var tempChunkLevels = [];
+		if (!_.isUndefined(subLevels)) {
+			var chunkSize = (Math.ceil(subLevels.length/4));
+			tempChunkLevels = _.chunk(subLevels, chunkSize);
+			if (tempChunkLevels.length < 3) {
+				tempChunkLevels.push([]);
+			}
+		}
+		if (!_.isEqual(tempChunkLevels, self.chunkLevels)) {
+			
+			self.chunkLevels = tempChunkLevels;
+		}
+		return self.chunkLevels;
+	}
+
+	NavListController.prototype.getAllInitialClasses = function (self) {
 		var locationPath = self.location.path();
 		if (locationPath.length && locationPath !== '/') {
 			var match = locationPath.match(/^\/(.+?)(\/|$)/);
 			var interestFolder = match[1];
 			var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
 			self.displayMicroSites(locationPath);
-			self.getValues(classesByInterest, 0, self.navsDict["School Of The Arts"]);
+			self.getValues(classesByInterest, 0, self.navsDict[interestFolder]);
 			self.buildCurrentObj();
 			self.displayTiles();
 		}
 	};
 
-	NavListController.prototype.interestClicked = function (subLevel) {
+	NavListController.prototype.getInterestItems = function (func, arg) {
 		var self = this;
+		var subLevelName;
+		var subLevelId;
+		if (_.isUndefined(arg.Name)) {
+			//if page load
+			self.allClasses = [];
+			self.allClasses.push.apply(self.allClasses, arg.data);
+			var locationPath = self.location.path();
+			if (locationPath.length && locationPath !== '/') {
+				var match = locationPath.match(/^\/(.+?)(\/|$)/);
+				subLevelName = match[1];
+				var foundLevel = _.find(self.allClasses, { 'Name': subLevelName })
+				subLevelId = foundLevel.NodeID;
+			} else {
+				self.eventClassDropdown.isopen = true;
+				self.navOpened = true;
+			}
+		} else {
+			//if interest link clicked
+			subLevelName = arg.Name;
+			subLevelId = arg.NodeID;
+		}
+		if (!_.isUndefined(subLevelName)) {
+			if (_.isUndefined(self.navsDict[subLevelName])) {
+				self.tileInfoSrv.getItems(subLevelId, self.allClasses).then(function (items) {
+					self.navsDict[subLevelName] = items.data;
+					func(self, arg);
+				});
+			} else {
+				func(self, arg);
+			}
+		}
+	};
+
+	NavListController.prototype.interestClicked = function (self, subLevel) {
 		var currentName = subLevel.Name;
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && subLevel.NodeID === LOADINGNODEID)) {
 			return;
@@ -277,6 +429,7 @@
 		self.currentObj.Name = currentName;
 		self.currentObj.NodeID = subLevel.NodeID;
 		self.currentObj.Current = true;
+		self.currentObj.FeaturedItemsHeader = '';
 		self.JumpNav = { To: currentName, Type: 'linkTo' };
 		self.setUrl(currentName, 'replace');
 	};
@@ -797,9 +950,17 @@
 		self.populateSlicers(locationSlicers);
 	};
 
+	NavListController.prototype.setNewPath = function (subLevel) {
+		var self = this;
+		if (subLevel.Name === self.currentObj.Name && subLevel.Level === self.currentObj.Level && subLevel.NodeID === self.currentObj.NodeID) {
+			return;
+		}
+		self.setUrl(subLevel.Name, 'jump', subLevel.Level);
+	};
+
 	NavListController.prototype.setCurrent = function (currentId) {
 		var self = this;
-		var currentName, currentLevel, currentNode, jumpType, currentIndex;
+		var currentName, currentLevel, currentNode, jumpType, currentIndex, currentFeaturedContent;
 		var urlMethod = 'default';
 		if (isActualNumber(currentId)) {
 			jumpType = 'linkBack';
@@ -808,21 +969,24 @@
 			currentName = breadCrumb.Name;
 			currentLevel = breadCrumb.Level;
 			currentNode = breadCrumb.NodeID;
+			currentFeaturedContent = breadCrumb.FeaturedItemsHeader;
 		} else {
 			var subLevel = currentId;
 			currentName = subLevel.Name;
 			currentLevel = self.currentObj.Level + 1;
 			currentNode = subLevel.NodeID;
 			jumpType = 'linkTo';
+			currentFeaturedContent = subLevel.FeaturedItemsHeader;
 		}
 		self.currentObj.Level = currentLevel;
 		self.currentObj.Name = currentName;
 		self.currentObj.NodeID = currentNode;
+		self.currentObj.FeaturedItemsHeader = currentFeaturedContent;
 		self.JumpNav = { To: currentName, Type: jumpType };
 		self.setUrl(currentIndex || currentName, urlMethod);
 	};
 
-	NavListController.prototype.setUrl = function (currentId, urlMethod) {
+	NavListController.prototype.setUrl = function (currentId, urlMethod, jumpTo) {
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
@@ -851,6 +1015,14 @@
 			case 'replace':
 				newLocationPath = fixUrl('/'+ currentId + locationPathRemoved);
 				break;
+			case 'jump':
+				var folderSplit = locationPath.split("/");
+				var newLocation = '';
+				for (var x = 0; x <= jumpTo; x++) {
+					newLocation += ('/' + folderSplit[x]);
+				}
+				newLocationPath = fixUrl(newLocation +'/'+ currentId + locationPathRemoved);
+				break;
 			default:
 				if (locationPath === '/') {
 					locationPath = '';
@@ -871,7 +1043,8 @@
 					NodeID: node.NodeID, 
 					Level: level, 
 					Parent: node.ParentNodeID, 
-					KeyWords: node.Keywords 
+					KeyWords: node.Keywords,
+					FeaturedItemsHeader: node.FeatureItemsContent
 				});
 				if (node.Keywords.length) {
 					var keywordsToLookForArr = node.Keywords.toLowerCase().split(',');
@@ -880,12 +1053,16 @@
 					if (_.isObject(foundNode)) {
 						foundNode[node.NodeID] = { 
 							results: filteredResults, 
-							parent: node.ParentNodeID 
+							parent: node.ParentNodeID,
+							keywords: node.Keywords,
+							name: node.Name 
 						};
 					} else {
 						self.classesByNodeId[node.NodeID] = { 
 							results: filteredResults, 
-							parent: node.ParentNodeID 
+							parent: node.ParentNodeID,
+							keywords: node.Keywords,
+							name: node.Name
 						};
 					}
 				}
@@ -951,17 +1128,17 @@
 			return ss.url === savedSearch.url && ss.folder === savedSearch.folder && ss.filter === savedSearch.filter;
 		});
 		if (foundSearch >= 0) {
-			self.deleteSaved(foundSearch, self.savedSearches);
+			self.deleteSaved(foundSearch, self.savedSearches, 'savedSearches');
 		} else {
 			self.savedSearches.push(savedSearch);
+			self.cookieStore.put('savedSearches',self.savedSearches);
 		}
 	};
 
-	NavListController.prototype.saveProgram = function (title, img) {
+	NavListController.prototype.saveProgram = function (title, img, url) {
 		var self = this;
-		var urlToAdd = self.location.absUrl();
 		var savedProgram = { 
-			Url: urlToAdd,
+			Url: url,
 			Title: title,
 			Img: img
 		};
@@ -970,25 +1147,31 @@
 			return sp.Url === savedProgram.Url && sp.Title === savedProgram.Title && sp.Img === savedProgram.Img;
 		});
 		if (foundProgram >= 0) {
-			self.deleteSaved(foundProgram, self.savedPrograms);
+			self.deleteSaved(foundProgram, self.savedPrograms, 'savedPrograms');
 		} else {
 			self.savedPrograms.push(savedProgram);
+			self.cookieStore.put('savedPrograms',self.savedPrograms);
 		}
 	};
 
-	NavListController.prototype.deleteSaved = function (index, savedItems) {
+	NavListController.prototype.deleteSaved = function (index, savedItems, type) {
+		var self = this;
 		savedItems.splice(index, 1);
+		self.cookieStore.put(type,savedItems);
 	};
 
-	NavListController.prototype.loadMore = function () {
+	NavListController.prototype.loadMore = function (env) {
 		var self = this;
-		self.limit += self.numOfColumns;
+		if (env === self.environment) {
+			self.limit += self.origLimit;
+		}
 	};
 
 	NavListController.prototype.sliceBy = function (slicer) {
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
+		var origLocationPath = locationPath;
 		var sliceUrl, sliceArr;
 		switch (slicer) {
 			case 'day':
@@ -1026,6 +1209,11 @@
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice];
 				self.dateApplyClicked = true;
 				break;
+			case 'datetimeagetypesearch':
+				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL, AGESLICEURL, TYPESLICEURL, SEARCHSLICEURL];
+				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice, self.typeSlice, self.textboxSearch];
+				self.dateApplyClicked = true;
+				break;
 		}
 		if (!_.isUndefined(sliceUrl)) {
 			if (_.isArray(sliceUrl)) {
@@ -1037,7 +1225,12 @@
 			} else {
 				locationPath = rewriteUrlLocation(sliceUrl, sliceArr, locationPath);
 			}
-			location.path(locationPath);
+			if (locationPath === origLocationPath) {
+				self.opened.dayOrTime = false;
+				self.opened.ageRange = false;
+			} else {
+				location.path(locationPath);	
+			}
 			self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 		}
 	};
@@ -1050,6 +1243,7 @@
 			self.origTimeSlice = _.clone(self.timeSlice);
 			self.origSdateSlice = self.sdateSlice;
 			self.origEdateSlice = self.edateSlice;
+			self.opened.dayOrTime = true;
 		} else {
 			if (!self.dateApplyClicked) {
 				self.daySlice = _.clone(self.origDaySlice);
@@ -1057,6 +1251,7 @@
 				self.sdateSlice = self.origSdateSlice;
 				self.edateSlice = self.origEdateSlice;
 			}
+			self.opened.dayOrTime = false;
 		}
 	};
 
@@ -1064,10 +1259,10 @@
 		var self = this;
 		//https://github.com/angular-ui/bootstrap/issues/3701 - clear date issue
 		//since fields don't get cleared directly due to bug, we must explicitly set date fields to undefined
-		if (_.isNull(self.sdateSlice)) {
+		if (_.isNull(self.sdateSlice) || (self.sdateSlice && (self.sdateSlice).getTime() === 0)) {
 			delete self.sdateSlice;
 		}
-		if (_.isNull(self.edateSlice)) {
+		if (_.isNull(self.edateSlice) || (self.edateSlice && (self.edateSlice).getTime() === 0)) {
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
@@ -1089,8 +1284,14 @@
 		if (clearWhich.indexOf('age') >= 0) {
 			self.ageSlice = self.initAgeSlice;
 		}
-		var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
-		self.sliceBy(sliceBy);
+		if (clearWhich.indexOf('type') >=0) {
+			self.typeSlice = 'all';
+		}
+		if (clearWhich.indexOf('search') >=0) {
+			self.textboxSearch = '';
+		}
+		//var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
+		self.sliceBy(clearWhich);
 	};
 
 	NavListController.prototype.checkAgeState = function (open) {
@@ -1098,10 +1299,12 @@
 		if (open) {
 			self.ageApplyClicked = false;
 			self.origAgeSlice = _.clone(self.ageSlice);
+			self.opened.ageRange = true;
 		} else {
 			if (!self.ageApplyClicked) {
 				self.ageSlice = _.clone(self.origAgeSlice);
 			}
+			self.opened.ageRange = false;
 		}
 	};
 
@@ -1120,7 +1323,7 @@
 	NavListController.prototype.displayFilterOptions = function () {
 		var self = this;
 		self.enabledFilters = {};
-		var isDateFilterEnabled = !self.checkDateInit() && self.initialized;
+		var isDateFilterEnabled = self.isFilterEnabled('date');
 		var index = 0;
 		if (isDateFilterEnabled) {
 			self.enabledFilters['Date or Time'] = {
@@ -1129,7 +1332,7 @@
 				ind: ++index
 			};
 		}
-		var isTypeFilterEnabled = self.typeSlice !== 'all';
+		var isTypeFilterEnabled = self.isFilterEnabled('type');
 		if (isTypeFilterEnabled) {
 			self.enabledFilters['Class/Event'] = {
 				pre: '',
@@ -1137,15 +1340,15 @@
 				ind: ++index
 			};
 		}
-		var isTimeFilterEnabled = !self.checkAgeInit() && self.initialized;
-		if (isTimeFilterEnabled) {
+		var isAgeFilterEnabled = self.isFilterEnabled('age');
+		if (isAgeFilterEnabled) {
 			self.enabledFilters['Age Range'] = {
 				pre: '',
 				suf: '',
 				ind: ++index
 			};
 		}
-		var isSearchFilterEnabled = self.textboxSearch !== '';
+		var isSearchFilterEnabled = self.isFilterEnabled('search');
 		if (isSearchFilterEnabled) {
 			self.enabledFilters.Search = {
 				pre: '',
@@ -1171,6 +1374,46 @@
 			});
 		}
 		return _.size(self.enabledFilters) > 0;
+	};
+
+	NavListController.prototype.isFilterEnabled = function (which) {
+		var self = this;
+		var enabled = false;
+		switch (which) {
+			case 'date':
+				enabled = !self.checkDateInit() && self.initialized;
+				break;
+			case 'type':
+				enabled = !_.isUndefined(self.typeSlice) && self.typeSlice !== 'all';
+				break;
+			case 'age':
+				enabled = !self.checkAgeInit() && self.initialized;
+				break;
+			case 'search':
+				enabled = !_.isUndefined(self.textboxSearch) && self.textboxSearch !== '';
+				break;
+			default:
+				enabled = (!self.checkDateInit() && self.initialized) || 
+				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || 
+				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
+		}
+		return enabled;
+	};
+
+	NavListController.prototype.scrollReset = function () {
+		var self = this;
+		self.scrollingUp = true;
+		self.affixed = false;
+	};
+
+	NavListController.prototype.showFeaturedHeader = function () {
+		var self = this;
+		var breadcrumbs = self.getBreadcrumbs(true);
+		if (_.isUndefined(breadcrumbs)) {
+			return false;
+		} else {
+			return ((self.getBreadcrumbs(true)).FeaturedItemsHeader).length > 0 && self.onscreenResults.length > 0;
+		}
 	};
 
 	var pluckAllKeys = function (obj, res) {
@@ -1227,7 +1470,7 @@
 			}
 			locationPath = fixUrl(locationPath.replace(sliceStringToReplace, sliceUrl + sliceVal.toString()));
 		} else {
-			if (!_.isNaN(sliceVal) && sliceVal !== 'all') {
+			if (!_.isNaN(sliceVal) && sliceVal !== 'all' && sliceVal !== '') {
 				locationPath = fixUrl(locationPath + sliceUrl + sliceVal.toString());	
 			}
 		}
@@ -1373,11 +1616,11 @@
 				if (navs.CategoryProductionKeywords) {
 					// when page first loads
 					var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
-						return catprod.keyword.toLowerCase();
+						return catprod.keyword.toLowerCase().trim();
 					});
 				} else {
 					var navKeywords = _.map(navs.KeyWord, function (catprod) {
-						return catprod.toLowerCase();
+						return catprod.toLowerCase().trim();
 					});
 					isSlicing = true;
 				}
@@ -1414,13 +1657,18 @@
 	};
 
 	var formatDataFromJson = function (arr, nodeId) {
-		var prodNo = arr.ProductionSeasonNumber === 0 ? arr.PackageNo : arr.ProductionSeasonNumber;
+		var packageNo = arr.PackageNo;
+		var prodNo = arr.ProductionSeasonNumber === 0 ? packageNo : arr.ProductionSeasonNumber;
 		var keyWords = _.pluck(arr.CategoryProductionKeywords, 'keyword');
 		var futurePerformanceDates = _.pluck(arr.FuturePerformances, 'perf_dt');
 		var itemTypes = _.remove(keyWords, function (n) { 
 			return (n.toLowerCase() === 'class' || n.toLowerCase() === 'event');
 		});
 		var featured = _.includes(keyWords, 'Featured Item') ? true : false;
+		var pushToBottom = arr.PushToBottomOfList;
+		if (pushToBottom && featured) {
+			featured = false;
+		}
 		var itemType = itemTypes.length ? itemTypes[0] : "";
 		var mainImage = arr.MainImage;
 		var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
@@ -1428,55 +1676,144 @@
 		begDate = new Date(parseInt(begDate.substr(6)));
 		var yearNumber = begDate.getFullYear();
 
-		var multDates = arr.IsMultipleDatesTimes;
-		var startDate = multDates ? "Multiple dates/times" : formatDateOutput(begDate);
+		var futurePerfCount = Number(arr.FuturePerformanceCount);
+		var startDate = futurePerfCount > 1 ? "Multiple dates/times" : formatDateOutput(begDate);
 
 		var sortDate1 = "";
 		var sortDate2 = "";
 		var warning = arr.ProdStatus;
 		var inProgress;
-		if (begDate < new Date() || warning.length) {
+		if (pushToBottom || begDate < new Date()) {
 			sortDate2 = begDate;
 			//10 is an arbirtary number to set the secondary sorting
 			sortDate1 = begDate.setFullYear(yearNumber + 10);
 			inProgress = true;
+			pushToBottom = true;
 		} else {
 			sortDate1 = begDate;
 			sortDate2 = "";
 			inProgress = false;
 		}
 
-		var shortDescription = "<div class='shortDescTxt'>" + arr.ShortDesc + "</div>";
+		var shortDescription = "<div class='shortDescTxt pb10'>" + arr.ShortDesc + "</div>";
 		var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
 		var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
 			return arr.Instructor_name.replace(/\s{2,}/g, ' ');
 		});
 		var teachers = instructors.toString();
-		var futurePerfCount = Number(arr.FuturePerformanceCount);
 
 		if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
-			shortDesc += "<div class='startPrice'>" + "<b>Price:</b>  from "+ arr.LowestPrice + "</div>";
-			if (teachers.length) {
-				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/, ", ") + "</div>";	
+			if (teachers.length && futurePerfCount > 1) {
+				shortDesc += "<div class='teach'><b>Instructor"+ (instructors.length > 1 ? "s" : "") +":</b>&nbsp;&nbsp;"+ teachers.replace(/,/g, ", ") + "</div>";	
 			}
 			var performances = arr.FuturePerformances;
-			if (performances.length > 1) {
+			if (performances.length > 0) {
+				if (performances.length > 1) {
+					if (packageNo === 0) {
+						shortDesc += "<a class='expand-collapse'>" + "Multiple Dates/Times ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					} else {
+						shortDesc += "<a class='expand-collapse'>" + "This Subscription Includes ("+ performances.length +")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+					}
+				}
 				_.forEach(performances, function(p, ind) {
 					var perfDate = p.perf_dt;
 					perfDate = new Date(parseInt(perfDate.substr(6)));
 					var futureDate = formatDateOutput(perfDate);
-					if (ind === 0) {
-						shortDesc += "<div class='dates'><b>Upcoming Dates:</b><br/>"+ futureDate + "</div>";
+					var fromPrice = p.lowest_price;
+					if (fromPrice !== 'Free') {
+						fromPrice = 'from '+ fromPrice;
+					}
+					var numSessions = p.number_of_sessions;
+					var dowArr, teachArr;
+					if (itemType.toLowerCase() === 'class') {
+						var rawTeachers = p.instructors;
+						teachArr = rawTeachers.split(',');
+						var classInstructors = '';
+						_.forEach(teachArr, function (tch, index) {
+							classInstructors += tch;
+							if ((index + 1) < teachArr.length) {
+								classInstructors += ', ';
+							}
+						});
+						var rawDaysOfWeek = p.days_of_week;
+							if (!_.isNull(rawDaysOfWeek)) {
+							dowArr = rawDaysOfWeek.split(',');
+							var daysOfWeek = '';
+							_.forEach(dowArr, function (dow, index) {
+								daysOfWeek += dow;
+								if ((index + 1) < dowArr.length) {
+									daysOfWeek += ', ';
+								}
+							});
+						}
+					}
+					if (packageNo === 0) {
+						if (ind === 0) {
+							shortDesc += "<div class='expand-collapse-container "+ ((ind + 1) === performances.length ? "" : "collapse") +"'>"
+							shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+							if (itemType.toLowerCase() === 'class') {
+								shortDesc += "<th width='185'>Start Date</th><th>Day"+ (dowArr.length > 1 ? "s" : "") +"</th>" +
+									"<th>Session"+ (numSessions > 1 ? "s" : "") +"</th><th>Price</th>" +
+									"<th>" + (teachers.length ? "Instructor"+ (teachArr.length > 1 ? "s" : "") : "") + "</th>";
+							} else {
+								shortDesc += "<th width='185'>Date</th><th>Price</th>";
+							}
+							shortDesc += "</tr>";
+						}
+						shortDesc += "<tr><td>" + futureDate + "</td>"
+						if (itemType.toLowerCase() === 'class') {
+							shortDesc += "<td>" + daysOfWeek + "</td><td>" + numSessions + "</td>" +
+							"<td>" + fromPrice +"</td><td>" + classInstructors + "</td>";
+						} else {
+							shortDesc += "<td>" + fromPrice +"</td>";
+						}
+						shortDesc += "</tr>";
+
+						//Closes the table and expand/collapse div
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</tbody></table></div>";
+						}
 					} else {
-						// if (ind >= 3) {
-						// 	shortDesc += "<div class='dates'>And "+ (futurePerfCount - 3) +" more" + "</div>";
-						// 	return false;
-						// }
-						shortDesc += "<div class='dates'>"+ futureDate + "</div>";
+						if (ind === 0) {
+							shortDesc += "<div class='expand-collapse-container collapse'><table cellpadding='0' cellspacing='0' class='schedule schedule-subs mt5'><tbody><tr>";
+						}
+						shortDesc += "<td width='100'><img src=\"http://www.92y.org" + p.thumbnail +"\" border=\"0\" alt=\"" + p.title +"\" / style=\"width: 105px;\">"
+						shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no +"' target='_blank'>" + p.title +"</a><span class='futureDate'>" + futureDate +"</span></td>";
+
+						//Closes the table and expand/collapse div
+						if ((ind + 1) === performances.length) {
+							shortDesc += "</tr></tbody></table></div>";
+						}
 					}
 				});
 			}
 		}
+
+		if (arr.ThisIsPartOfSeries && arr.ThisIsPartOfSeries.length) {
+			shortDesc += "<div class='partof'>This is part of:  ";
+			var moreLinks = [];
+			_.forEach(arr.ThisIsPartOfSeries, function (series, index) {
+				if ((index + 1) <= arr.ThisIsPartOfSeries.length) {
+					if (index <= 1) {
+						shortDesc += (index >= 1 ? ', '+ series : series);
+					} else {
+						moreLinks.push(series);
+					}
+				} else {
+					moreLinks.push(series);
+				}
+			});
+			if (moreLinks.length > 1) {
+				shortDesc += ', and <a class="expand-collapse mt5"> more ('+ moreLinks.length +') <i class="fa fa-lg fa-caret-down"></i></a>';
+				shortDesc += '<div class="expand-collapse-container collapse">'
+					_.forEach(moreLinks, function (ml) {
+						shortDesc += "<div class='morelink'>" + ml + "</div>";
+					});
+				shortDesc += "</div>";
+			}
+			shortDesc += "</div>";
+		}
+
 		var classInfoObj = {
 			Title: arr.Title,
 			KeyWord: keyWords,
@@ -1523,11 +1860,12 @@
 		return prettyDate;
 	}
 
-	var TileInfoService = function (http) {
+	var TileInfoService = function (http, q) {
 		var self = this;
 		self.http = http;
+		self.q = q;
 	};
-	TileInfoService.$inject = ['$http'];
+	TileInfoService.$inject = ['$http', '$q'];
 
 	TileInfoService.prototype.getAllClasses = function (url) {
 		var self = this;
@@ -1536,23 +1874,81 @@
 		});
 	};
 
-	// TileInfoService.prototype.getAllEvents = function () {
-	// 	var self = this;
-	// 	return self.http.get('arc-response_Events.json').success(function (data) {
-	// 		return data;
-	// 	});
-	// };
-	TileInfoService.prototype.getSOAItems = function () {
-		var _this = this;
-		return _this.http.get('items/CatProdPkg_SOA.json').success(function (data) {
+	TileInfoService.prototype.getItems = function (subLevelId, levels) {
+		var self = this;
+		var foundLevel = _.find(levels, { 'NodeID': subLevelId })
+		var jsonFile = foundLevel.JSONDataURL;
+
+		if (_.isUndefined(jsonFile) || jsonFile === '') {
+			return self.getItemsById(subLevelId);
+			//return self.q.when([]);
+		} else {
+			return self.http.get(jsonFile, {timeout: 4000}).then(function (data) {
+				if (_.isUndefined(data.data) || data.data.length === 0) {
+					return self.getItemsById(subLevelId);
+				}
+				return data;
+			}, function (error) {
+				return self.getItemsById(subLevelId);
+			});
+		}
+	};
+
+	TileInfoService.prototype.getItemsById = function (subLevelId) {
+		var self = this;
+		var jsonFile;
+		switch (subLevelId) {
+			case 28220:
+				jsonFile = 'items/CatProdPkg_School_Of_Arts.json';
+				break;
+			case 28271:
+				jsonFile = 'items/CatProdPkg_Talks.json';
+				break;
+			case 28279:
+				jsonFile = 'items/CatProdPkg_Special_Events.json';
+				break;
+			case 28275:
+				jsonFile = 'items/CatProdPkg_Concerts_Performances.json';
+				break;
+			case 28273:
+				jsonFile = 'items/CatProdPkg_Continuing_Education.json';
+				break;
+			case 28272:
+				jsonFile = 'items/CatProdPkg_Health_Fitness.json';
+				break;
+			case 28274:
+				jsonFile = 'items/CatProdPkg_Jewish_Life.json';
+				break;
+			case 28276:
+				jsonFile = 'items/CatProdPkg_Literary.json';
+				break;
+			case 28277:
+				jsonFile = 'items/CatProdPkg_Kids_Family.json';
+				break;
+		}
+		return self.http.get(jsonFile).then(function (data) {
 			return data;
+		}, function (error) {
+			return {data: []};
 		});
 	};
 
 	navApp.service('tileInfoSrv', TileInfoService);
 
-	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', 'storage', '$window'];
+	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore'];
 	navApp.controller('NavListController', NavListController);
+
+	navApp.directive('enableContainer', function () {
+		function link(scope, element) {
+			var divNoJs = element.children('#nojs');
+			divNoJs.css('display', 'none');
+			var divTiles = element.children('#tiles');
+			divTiles.css('display', '');
+		}
+		return {
+			link: link
+		};
+	});
 
 	navApp.directive('getBodyDimensions', function () {
 		function link(scope) {
@@ -1560,6 +1956,53 @@
 		}
 		return {
 			link: link
+		};
+	});
+
+	navApp.directive('getElementPosition', function () {
+		return {
+			link: function (scope, element, attrs) {
+				var raw = element[0];
+				scope.$watch(function() {
+					return raw.offsetTop;
+				}, function(newValue, oldValue) {
+					var winHeight = $(window).height();
+					var headerHeight;
+					if (attrs.skipHeader == "true") {
+						headerHeight = 0;
+					} else {
+						headerHeight = $('header').height();
+					}
+					var containerHeight = winHeight - (newValue + headerHeight);
+					scope.navListCtrl.bottomContainerStyle.height = containerHeight +'px';
+
+					element.bind('scroll', function () {
+						if (raw.scrollTop > 0 && scope.navListCtrl.scrollingUp === false) {
+							scope.navListCtrl.affixed = true;
+						} else {
+							scope.navListCtrl.affixed = false;
+							if (raw.scrollTop === 0) {
+								scope.navListCtrl.scrollingUp = false;	
+							}
+						}
+						scope.$apply();
+					});
+				});
+			}
+		};
+	});
+
+	navApp.directive('backToTopButton', function () {
+		return {
+			link: function (scope, element, attrs) {
+				scope.$watch(function() {
+					return scope.navListCtrl.affixed;
+				}, function(newValue, oldValue) {
+					if (newValue === false) {
+						$("#bottomContainer").scrollTop(0);
+					}
+				});
+			}
 		};
 	});
 
@@ -1573,34 +2016,51 @@
 
 var isDate = function (checkDate) {
 	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
-}
+};
 
 var resizeTileDisplay = function (scope) {
 
 	var tileHeight, numColumns;
-	if (window.matchMedia( "(min-width: 1200px)" ).matches) {
-		numColumns = 4;
-		tileHeight = 340;
-	} else if (window.matchMedia( "(min-width: 992px)" ).matches) {
-		numColumns = 3;
-		tileHeight = 340;
-	} else if (window.matchMedia( "(min-width: 768px)" ).matches) {
-		numColumns = 4;
-		tileHeight = 141;
+	scope.navListCtrl.environment = "desktop";
+	if (window.matchMedia( "(min-width: 1199px)" ).matches) {
+		numColumns = 1;
+		tileHeight = 211;
+	} else if (window.matchMedia( "(min-width: 991px)" ).matches) {
+		numColumns = 1;
+		tileHeight = 181;
+	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
+		numColumns = 2;
+		tileHeight = 450;
+		scope.navListCtrl.environment = "mobile";
 	} else {
-		numColumns = 4;
-		tileHeight = 196;
+		numColumns = 1;
+		tileHeight = 139;
+		scope.navListCtrl.environment = "mobile";
 	}
-	var headerHeight = $("#isoContainer, #isoContainerMobile").offset().top;
+
+	var headerHeight;
+	if (scope.navListCtrl.environment === "mobile") {
+		scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
+		scope.navListCtrl.bottomContainerStyle = {};
+		headerHeight = $("header").height();
+		
+	} else {
+		headerHeight = $("#Container").offset().top;
+		mainArea = $("#main-area").height();
+		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+		scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
+	}
 	var pageHeight = $(window).height();
 	var pageHeightWithoutHeader = pageHeight - headerHeight;
-	var numRows = Math.floor(pageHeightWithoutHeader / tileHeight);
-
+	var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
+	if (numRows === 0) {
+		numRows++;
+	}
 	var limitToSet = numColumns * numRows;
 	scope.navListCtrl.limit = limitToSet;
 	scope.navListCtrl.numOfColumns = numColumns;
 	scope.navListCtrl.origLimit = limitToSet + numColumns;
-}
+};
 
 var adjustLevelArray = function (arr, start, end, clear) {
 	//creates a blank new level in self.arrCategory
@@ -1610,11 +2070,30 @@ var adjustLevelArray = function (arr, start, end, clear) {
 		}
 	}
 	return end;
-}
+};
 
 var isActualNumber = function (num) {
 	return !isNaN(parseFloat(num)) && isFinite(num);
 };
+
+
+$(document).on('click','.expand-collapse', function(){
+	
+	//Basic Expand Collapse
+
+	//(Clicked Element)Expand/collapse button
+	expandBtn = $(this);
+
+	//Targets next div after clicked element
+	//Get isoContainer in Angular, slideToggle, then reload angular-masonry
+	var scope = angular.element("#isoContainer, #isoContainerMobile").scope();
+	scope.$apply(function(){
+		expandBtn.next(".expand-collapse-container").slideToggle('800', function() {
+			scope.$broadcast('masonry.reload');
+		});
+	});
+});
+
 
 $(document).on('click','.showMore',function(){
 	var $showMore = $(this).parent(".getMore");
@@ -1647,46 +2126,3 @@ $(document).on('click','.showMore',function(){
 	}
 	return false;
 });
-// $(document).on('mouseout','span.showMore',function(){
-// 	console.log("leave");
-// 		var $showMore = $(this).parent(".getMore");
-// 		var $wrapper = $showMore.next(".contentWrap");
-// 		var $classTitle = $showMore.prevAll(".classTitle");
-// 		var $classDate = $showMore.prevAll(".classDate");
-// 		var $warning = $showMore.prevAll(".warning");
-// 		var $content = $wrapper.find("div");
-// 		var titleHeight = $classTitle.height();
-// 		var warnHeight = $warning.height();
-		
-// 			$classTitle.animate({bottom: "0"});
-// 			$classDate.animate({bottom: "0"});
-// 			$warning.animate({bottom: "0"});
-// 			$content.slideUp(function () {
-// 				$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
-// 			});
-		
-// 		return false;
-// 	});
-
-// $(document).on('mouseover','span.showMore',function(){
-// 	console.log("enter");
-// 		var $showMore = $(this).parent(".getMore");
-// 		var $wrapper = $showMore.next(".contentWrap");
-// 		var $classTitle = $showMore.prevAll(".classTitle");
-// 		var $classDate = $showMore.prevAll(".classDate");
-// 		var $warning = $showMore.prevAll(".warning");
-// 		var $content = $wrapper.find("div");
-// 		var titleHeight = $classTitle.height();
-// 		var warnHeight = $warning.height();
-		
-// 			$wrapper.css( "bottom", "5px" );
-// 			$wrapper.animate({bottom: "164px"});
-// 			$classTitle.animate({bottom: "164px"});
-// 			$classDate.animate({bottom: "164px"});
-// 			$warning.animate({bottom: "164px"});
-// 			$content.slideDown(function () {
-// 				$showMore.html($showMore.html().replace('More Info <i class="fa fa-chevron-up"></i></span>', 'Less Info <i class="fa fa-chevron-down"></i></span>'));
-// 			});
-		
-// 		return false;
-// 	});
