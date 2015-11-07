@@ -171,6 +171,7 @@
 				$timeout(function() { INITIALIZING = false; });
 			} else {
 				var locationPath = self.location.path();
+				//console.log(self.location.absUrl());
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
@@ -274,8 +275,10 @@
 							kwStringArr.push(kw.Level +':  '+ kw.Keywords);
 						});
 						var levelAndKeywords = kwStringArr.toString();
-						var prodNo = n.ProductionSeasonNumber === 0 ? n.PackageNo : n.ProductionSeasonNumber;
-						var foundArr = _.find(kwArr, { 'id' : prodNo });
+						var uniqid = n.ProductionNumber === 0 ? n.PackageNo : n.ProductionNumber;
+						var prodNo = n.ProductionNumber;
+						var packageNo = n.PackageNo
+						var foundArr = _.find(kwArr, { 'uniqid' : uniqid });
 						if (_.isUndefined(foundArr)) {
 							var kws = '';
 							_.forEach(keywords, function (kw, ind) {
@@ -284,7 +287,7 @@
 									kws += ',';
 								}
 							});
-							kwArr.push({ id : prodNo, name: n.Title, keywords: kws, kws_0: levelAndKeywords });
+							kwArr.push({ uniqid: uniqid, prodid: prodNo, packid: packageNo, name: n.Title, keywords: kws, kws_0: levelAndKeywords });
 						} else {
 						 	var foundKeywords = foundArr.keywords;
 							var kws = '';
@@ -1381,16 +1384,18 @@
 				enabled = !self.checkDateInit() && self.initialized;
 				break;
 			case 'type':
-				enabled = self.typeSlice !== 'all';
+				enabled = !_.isUndefined(self.typeSlice) && self.typeSlice !== 'all';
 				break;
 			case 'age':
 				enabled = !self.checkAgeInit() && self.initialized;
 				break;
 			case 'search':
-				enabled = self.textboxSearch !== '';
+				enabled = !_.isUndefined(self.textboxSearch) && self.textboxSearch !== '';
 				break;
 			default:
-				enabled = (!self.checkDateInit() && self.initialized) || (self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || (self.textboxSearch !== '');
+				enabled = (!self.checkDateInit() && self.initialized) || 
+				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) || 
+				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
 		}
 		return enabled;
 	};
@@ -1611,11 +1616,11 @@
 				if (navs.CategoryProductionKeywords) {
 					// when page first loads
 					var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
-						return catprod.keyword.toLowerCase();
+						return catprod.keyword.toLowerCase().trim();
 					});
 				} else {
 					var navKeywords = _.map(navs.KeyWord, function (catprod) {
-						return catprod.toLowerCase();
+						return catprod.toLowerCase().trim();
 					});
 					isSlicing = true;
 				}
