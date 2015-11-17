@@ -73,7 +73,7 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache']);
+	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
@@ -113,7 +113,8 @@
 		self.environment = "desktop";
 		self.navOpened = false;
 		self.printedReport = [];
-		self.gaUrl = '';
+		self.virtualPageUrl = '';
+		self.virtualPageTitle = '';
 		self.printNum = 1;
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
@@ -146,14 +147,14 @@
                 });
             }
         })(self.tileInfoSrv.cacheFactory);
-
+//todo:  see why this filters won't load sometimes and finish ga
 		self.tileInfoSrv.getAllClasses('items/Filters.json', self.navCache).then(function (data) {
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
 			self.tileInfoSrv.getAllClasses('/webservices/categoryproduction.svc/FilterNodes/28219/', self.navCache).then(function (data) {
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
-				if (self.allClasses.length === 0) {
+				if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
 					self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
 				}
 			});
@@ -188,7 +189,6 @@
 			if (INITIALIZING) {
 				$timeout(function() { INITIALIZING = false; });
 			} else {
-				self.gaUrl = self.location.absUrl();
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
@@ -819,6 +819,14 @@
 	NavListController.prototype.getClassesByNodeId = function (onscreenResultsQueue) {
 		var self = this;
 		var locationPath = self.location.path();
+	    self.virtualPageUrl = locationPath;
+	    var breadcrumbs = self.getBreadcrumbs(false);
+        if (breadcrumbs.length) {
+            self.virtualPageTitle = (self.getBreadcrumbs(false))[0].Name;
+        } else {
+            self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
+        }
+
 		var lastLocationPath = self.lastLocationPath;
 		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
 		var lastLocArr = lastLocationPath.split("/");
@@ -1813,7 +1821,7 @@
                             }
                             shortDesc += "</tr>";
                         }
-                        shortDesc += "<tr><td>" + futureDate + "</td>"
+                        shortDesc += "<tr><td>" + futureDate + "</td>";
                         if (itemType.toLowerCase() === 'class') {
                             shortDesc += "<td>" + daysOfWeek + "</td><td>" + numSessions + "</td>" +
                                 "<td>" + fromPrice + "</td><td>" + classInstructors + "</td>";
@@ -1858,7 +1866,7 @@
             });
             if (moreLinks.length > 1) {
                 shortDesc += ', and <a class="expand-collapse mt5"> more (' + moreLinks.length + ') <i class="fa fa-lg fa-caret-down"></i></a>';
-                shortDesc += '<div class="expand-collapse-container collapse">'
+                shortDesc += '<div class="expand-collapse-container collapse">';
                 _.forEach(moreLinks, function(ml) {
                     shortDesc += "<div class='morelink'>" + ml + "</div>";
                 });
@@ -2071,6 +2079,45 @@
 			return $sce.trustAsHtml(val);
 		};
 	});
+    
+    navApp.config(['$analyticsProvider', function($analyticsProvider){
+        $analyticsProvider.registerPageTrack(function(path) {
+            var cleanPath = path.replace(/%20/g, ' ');
+            var pathArray = cleanPath.split('/');
+            var virtualPageUrl;
+            var virtualPageTitle;
+            _.forEach(pathArray, function (p, ind) {
+                //if programfinder.html found in the path, initialize virtualPageTitle and go to next iteration
+                if (p.toLowerCase().indexOf('programfinder.html') >= 0) {
+                    virtualPageTitle = '';
+                    return;
+                }
+                //if virtualPageTitle has been initialized but not filled in
+                if (!_.isUndefined(virtualPageTitle) && virtualPageTitle === '') {
+                    //if we are at the end of the loop and we still haven't filled in virtualPageUrl, then fill it in with the main interest area
+                    //otherwise just initialize the variable for the next iteration
+                    //also, fill in the virtualPageTitle variable and then go to next iteration
+                    if ((ind + 1) === pathArray.length) {
+                        virtualPageUrl = '/'+ p;
+                    } else {
+                        virtualPageUrl = '';
+                    }
+                    virtualPageTitle = p;
+                    return;
+                }
+                //if virtualPageUrl has been initialized, add in the rest of the path to it
+                if (!_.isUndefined(virtualPageUrl)) {
+                    virtualPageUrl += '/'+ p;
+                }
+            });
+            var dataLayer = window.dataLayer = window.dataLayer || [];
+            dataLayer.push({
+                'event': 'VirtualPageview',
+                'virtual-page-URL': virtualPageUrl,
+                'virtual-page-title': virtualPageTitle
+            });
+        });
+    }]);
 
 })();
 
