@@ -73,8 +73,8 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
-	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics']);
-	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore) {
+	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config']);
+	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig) {
 		var self = this;
 		self.allClasses = [{Name: '', NodeID: LOADINGNODEID}];
 		self.arrCategory = [];
@@ -147,11 +147,11 @@
                 });
             }
         })(self.tileInfoSrv.cacheFactory);
-//todo:  see why this filters won't load sometimes and finish ga
+
 		self.tileInfoSrv.getAllClasses('items/Filters.json', self.navCache).then(function (data) {
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
-			self.tileInfoSrv.getAllClasses('/webservices/categoryproduction.svc/FilterNodes/28219/', self.navCache).then(function (data) {
+			self.tileInfoSrv.getAllClasses('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache).then(function (data) {
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
@@ -2003,7 +2003,7 @@
     
 	navApp.service('tileInfoSrv', TileInfoService);
 
-	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore'];
+	NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig'];
 	navApp.controller('NavListController', NavListController);
 
 	navApp.directive('enableContainer', function () {
