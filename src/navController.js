@@ -2118,8 +2118,36 @@
             });
         });
     }]);
+    
+    navApp.config(function($provide) {
+        $provide.decorator("$exceptionHandler", function($delegate) {
+            return function(exception, cause) {
+                $delegate(exception, cause);
+                logErrorToServer(exception, cause);
+            };
+        });
+    });
 
 })();
+
+var logErrorToServer = function(ex, cwz) {
+    try {
+        $.ajax({
+            type: "POST",
+            url: "/handlers/LogJSErrors.ashx",
+            contentType: "application/json",
+            data: angular.toJson({
+                errorUrl: window.location.href,
+                errorMessage: ex.message,
+                stackTrace: ex.stack,
+                cause: ( cwz || "" )
+            })
+        });
+    }
+    catch(err) {
+        console.log(err.message);
+    }
+};
 
 var isDate = function (checkDate) {
 	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
@@ -2134,7 +2162,7 @@ var resizeTileDisplay = function (scope) {
 		tileHeight = 211;
 	} else if (window.matchMedia( "(min-width: 991px)" ).matches) {
 		numColumns = 1;
-		tileHeight = 181;
+		tileHeight = 201;
 	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
 		numColumns = 2;
 		tileHeight = 450;
