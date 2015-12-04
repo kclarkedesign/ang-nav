@@ -103,6 +103,7 @@
 		self.soonestSortSelected = false;
 		self.showSpinner = false;
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
+		self.debounceGlobalSearch = _.debounce(function () { self.fetchSearchResults(); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
 		self.bottomContainerStyle = {'overflow-x': 'hidden', 'height': '100%' };
@@ -116,7 +117,7 @@
 		self.virtualPageUrl = '';
 		self.virtualPageTitle = '';
 		self.printNum = 1;
-
+	    
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
 			self.savedPrograms = [];
@@ -148,10 +149,10 @@
             }
         })(self.tileInfoSrv.cacheFactory);
 
-		self.tileInfoSrv.getAllClasses('items/Filters.json', self.navCache).then(function (data) {
+		self.tileInfoSrv.getAll('items/Filters.json', self.navCache, 'navigation').then(function (data) {
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
-			self.tileInfoSrv.getAllClasses('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache).then(function (data) {
+			self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
@@ -248,8 +249,8 @@
 						// since we don't change position, just filters, we can skip all the link stuff
 						break;
 					default:
-						// if browser back and forward buttons used for unpredictable jumps
-						if (self.arrCategory[0].length === 0) {
+						// if browser back and forward buttons or global search used for unpredictable jumps
+						if (self.arrCategory.length === 0 || self.arrCategory[0].length === 0) {
 							var subfolders = locationPath.substring(1).split('/');
 							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
 							var classesByInterest = [self.allClasses[classIndex]];
@@ -281,7 +282,7 @@
 		});
 	};
 
-	NavListController.prototype.printAllReport = function (nodes, keywords, kwArr) {
+	NavListController.prototype.printAllReport = function () {
 		var self = this;
 		self.printStatus = 'Printing...';
 		self.printedReport = [];
@@ -304,7 +305,7 @@
 						var levelAndKeywords = kwStringArr.toString();
 						var uniqid = n.ProductionNumber === 0 ? n.PackageNo : n.ProductionNumber;
 						var prodNo = n.ProductionNumber;
-						var packageNo = n.PackageNo
+					    var packageNo = n.PackageNo;
 						var foundArr = _.find(kwArr, { 'uniqid' : uniqid });
 						if (_.isUndefined(foundArr)) {
 							var kws = '';
@@ -776,6 +777,55 @@
 			self.modifyUrlSearch(false);
 		}
 	};
+    
+    NavListController.prototype.searchGlobal = function () {
+		var self = this;
+		if (self.textboxGlobalSearch.length) {
+			self.showSpinner = true;
+			self.debounceGlobalSearch();
+		} else {
+			self.fetchSearchResults();
+		}
+	};
+
+    NavListController.prototype.fetchSearchResults = function() {        
+		var self = this;
+        self.displaySearchResults = [];
+        var searchTerm = self.textboxGlobalSearch;
+        if (searchTerm.length) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
+                var results = data.data;
+                if (results.length) {
+                    var interestArr = _.uniq(_.flatten(_.pluck(results, 'InterestAreas')));
+                    _.forEach(interestArr, function(interest) {
+                        var sublevel = _.find(self.allClasses, function(ac) {
+                            return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
+                        });
+                        var subLevelName = sublevel.Name;
+                        if (!_.isUndefined(sublevel)) {
+                            var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+		                    var subLevelId = foundLevel.NodeID;
+		                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
+		                        self.navsDict[subLevelName] = items.data;
+                                var href = self.location.absUrl() +'#/'+ subLevelName +'/search__'+ searchTerm;
+                                self.displaySearchResults.push({
+                                    searchTerm: searchTerm,
+                                    interestArea: subLevelName,
+                                    href: encodeURI(href)
+                                });
+		                        self.showSpinner = false;
+		                    });
+                        }
+                    });
+                } else {
+                    //search finds no results
+                    self.showSpinner = false;
+                }
+            });
+        } else {
+            self.showSpinner = false;
+        }
+    };
 
 	NavListController.prototype.displayTiles = function () {
 		var self = this;
@@ -912,7 +962,6 @@
 	NavListController.prototype.populateSlicers = function (urlSlicers) {
 		var self = this;
 		var slicerUrls = [DAYSLICEURL, TIMESLICEURL, TYPESLICEURL, AGESLICEURL, SDATESLICEURL, EDATESLICEURL, SEARCHSLICEURL];
-		var slicerTexts = [];
 		self.daySlice = _.clone(self.initDaySlice);
 		self.timeSlice = _.clone(self.initTimeSlice);
 		self.typeSlice = 'all';
@@ -1439,7 +1488,7 @@
 
 	NavListController.prototype.isFilterEnabled = function (which) {
 		var self = this;
-		var enabled = false;
+		var enabled;
 		switch (which) {
 			case 'date':
 				enabled = !self.checkDateInit() && self.initialized;
@@ -1929,10 +1978,10 @@
 	};
 	TileInfoService.$inject = ['$http', '$q', 'CacheFactory'];
 
-	TileInfoService.prototype.getAllClasses = function (url, cache) {
+	TileInfoService.prototype.getAll = function (url, cache, cacheType) {
 		var self = this;
 		return self.http.get(url, {cache: self.cacheFactory.get(cache.info().id)}).success(function (data) {
-			cache.put('navigation', {
+			cache.put(cacheType, {
 			    itemData: data
 			});
 			return data;

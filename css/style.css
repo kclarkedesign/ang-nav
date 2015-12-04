@@ -570,6 +570,7 @@ width: 280px;
 	background: #fff;
 }
 #searchText.form-control.spinnerInTextbox,
+#searchGlobal.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
 	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
