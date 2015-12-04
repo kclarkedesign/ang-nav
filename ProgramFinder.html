@@ -180,12 +180,17 @@
 													</a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto; overflow: auto; max-height: 300px;">
-															<ul class="col-sm-12 no-p">
-																<li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
-																	<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
-																</li>
-																<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
-															</ul>
+														    <ul class="col-sm-12 no-p">
+														        <li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+														            <img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+														        </li>
+														        <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
+														    </ul>
+														    <span class="col-md-6">
+														        <input id="searchGlobal" type="text" class="form-control" placeholder="" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}" />
+														    </span>
+														    <span class="col-md-6"></span>
+                                                            <div ng-repeat="sr in navListCtrl.displaySearchResults">{{sr.searchTerm}} in <a ng-href="{{sr.href}}" ng-bind-html="sr.interestArea | unsafe"></a></div>
 														</li>
 													</ul>
 												</li>
