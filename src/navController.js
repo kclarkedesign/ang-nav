@@ -73,6 +73,8 @@
 	var LOADINGNODEID = 0;
 	var ERRORLOADINGNODEID = -1;
 
+    var SCRIPTNAME = 'ProgramFinder.html';
+
 	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig) {
 		var self = this;
@@ -102,8 +104,9 @@
 		self.initSortOrder = 'all';
 		self.soonestSortSelected = false;
 		self.showSpinner = false;
+		self.showGlobalSpinner = false;
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
-		self.debounceGlobalSearch = _.debounce(function () { self.fetchSearchResults(); }, 2000);
+		self.debounceGlobalSearch = _.debounce(function (searchTerm) { self.fetchSearchResults(searchTerm); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
 		self.bottomContainerStyle = {'overflow-x': 'hidden', 'height': '100%' };
@@ -781,21 +784,18 @@
     NavListController.prototype.searchGlobal = function () {
 		var self = this;
 		if (self.textboxGlobalSearch.length) {
-			self.showSpinner = true;
-			self.debounceGlobalSearch();
+			self.showGlobalSpinner = true;
+			self.debounceGlobalSearch(self.textboxGlobalSearch);
 		} else {
-			self.fetchSearchResults();
+			self.fetchSearchResults(self.textboxGlobalSearch);  
 		}
 	};
-
-    NavListController.prototype.fetchSearchResults = function() {        
+    //todo:   display displaySearchResults in error message
+    NavListController.prototype.fetchSearchResults = function(searchTerm) {
 		var self = this;
         self.displaySearchResults = [];
-        var searchTerm = self.textboxGlobalSearch;
         if (searchTerm.length) {
-            //self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
-            //note:  this is just a workaround for now 
-            self.tileInfoSrv.getAll('/search/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
                 var results = data.data;
                 if (results.length) {
                     var interestArr = _.uniq(_.flatten(_.pluck(results, 'InterestAreas')));
@@ -809,26 +809,28 @@
 		                    var subLevelId = foundLevel.NodeID;
 		                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
 		                        self.navsDict[subLevelName] = items.data;
-                                var href = self.location.absUrl() +'#/'+ subLevelName +'/search__'+ searchTerm;
+		                        var absUrl = self.location.absUrl().toLowerCase();
+		                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                                var href = baseUrl +'#/'+ subLevelName +'/search__'+ searchTerm;
                                 self.displaySearchResults.push({
                                     searchTerm: searchTerm,
                                     interestArea: subLevelName,
                                     href: encodeURI(href)
                                 });
-		                        self.showSpinner = false;
+		                        self.showGlobalSpinner = false;
 		                    });
                         }
                     });
                 } else {
                     //search finds no results
-                    self.showSpinner = false;
+                    self.showGlobalSpinner = false;
                 }
             }, function(reason) {
-                //search finds no results
-                self.showSpinner = false;
+                //search throws error
+                self.showGlobalSpinner = false;
             });
         } else {
-            self.showSpinner = false;
+            self.showGlobalSpinner = false;
         }
     };
 
@@ -920,6 +922,9 @@
 			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
 		}
 		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
+	    if (self.onscreenResults.length === 0) {
+            self.fetchSearchResults(self.textboxSearch);
+	    }
 
 		// var sortBy;
 		// var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
@@ -2142,7 +2147,7 @@
             var virtualPageTitle;
             _.forEach(pathArray, function (p, ind) {
                 //if programfinder.html found in the path, initialize virtualPageTitle and go to next iteration
-                if (p.toLowerCase().indexOf('programfinder.html') >= 0) {
+                if (p.toLowerCase().indexOf(SCRIPTNAME.toLowerCase()) >= 0) {
                     virtualPageTitle = '';
                     return;
                 }
