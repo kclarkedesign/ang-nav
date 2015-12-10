@@ -155,7 +155,7 @@
 		self.tileInfoSrv.getAll('items/Filters.json', self.navCache, 'navigation').then(function (data) {
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
-			self.tileInfoSrv.getAll('http://stage2.92y.org/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
+			self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
 				self.getInterestItems(self.getAllInitialClasses, data);
 			}).finally(function() {
 				if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
