@@ -120,7 +120,7 @@
 		self.virtualPageUrl = '';
 		self.virtualPageTitle = '';
 		self.printNum = 1;
-	    
+
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
 			self.savedPrograms = [];
@@ -196,7 +196,6 @@
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
-
 				//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
 				switch (self.JumpNav.Type) {
 					case 'linkTo':
@@ -253,7 +252,7 @@
 						break;
 					default:
 						// if browser back and forward buttons or global search used for unpredictable jumps
-						if (self.arrCategory.length === 0 || self.arrCategory[0].length === 0) {
+						if ((self.arrCategory.length === 0 || self.arrCategory[0].length === 0) && numOfSlashesLocation > 0) {
 							var subfolders = locationPath.substring(1).split('/');
 							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
 							var classesByInterest = [self.allClasses[classIndex]];
@@ -406,8 +405,15 @@
 	        if (locationPath.length && locationPath !== '/') {
 	            var match = locationPath.match(/^\/(.+?)(\/|$)/);
 	            subLevelName = match[1];
-	            var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-	            subLevelId = foundLevel.NodeID;
+	            //if user comes to site with filters in url but no interest area picked
+	            if (subLevelName.indexOf("__") > 0) {
+	                subLevelName = undefined;
+	                self.eventClassDropdown.isopen = true;
+	                self.navOpened = true;
+	            } else {
+    	            var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+	                subLevelId = foundLevel.NodeID;
+	            }
 	        } else {
 	            self.eventClassDropdown.isopen = true;
 	            self.navOpened = true;
@@ -790,7 +796,7 @@
 			self.fetchSearchResults(self.textboxGlobalSearch);  
 		}
 	};
-    //todo:   display displaySearchResults in error message
+
     NavListController.prototype.fetchSearchResults = function(searchTerm) {
 		var self = this;
         self.displaySearchResults = [];
@@ -1349,7 +1355,7 @@
 				self.opened.dayOrTime = false;
 				self.opened.ageRange = false;
 			} else {
-				location.path(locationPath);	
+				location.path(locationPath);
 			}
 			self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 		}
@@ -1379,10 +1385,10 @@
 		var self = this;
 		//https://github.com/angular-ui/bootstrap/issues/3701 - clear date issue
 		//since fields don't get cleared directly due to bug, we must explicitly set date fields to undefined
-		if (_.isNull(self.sdateSlice) || (self.sdateSlice && (self.sdateSlice).getTime() === 0)) {
+		if (_.isNull(self.sdateSlice) || (self.sdateSlice && (typeof self.sdateSlice === 'object' && (self.sdateSlice).getTime() === 0))) {
 			delete self.sdateSlice;
 		}
-		if (_.isNull(self.edateSlice) || (self.edateSlice && (self.edateSlice).getTime() === 0)) {
+		if (_.isNull(self.edateSlice) || (self.edateSlice && (typeof self.edateSlice === 'object' && (self.edateSlice).getTime() === 0))) {
 			delete self.edateSlice;
 		}
 		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
@@ -2196,7 +2202,7 @@ var logErrorToServer = function(ex, cwz) {
             url: "/handlers/LogJSErrors.ashx",
             contentType: "application/json",
             data: angular.toJson({
-                errorUrl: window.location.href,
+                errorUrl: window.location.href +" = "+ navigator.userAgent,
                 errorMessage: ex.message,
                 stackTrace: ex.stack,
                 cause: ( cwz || "" )
