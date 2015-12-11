@@ -213,6 +213,11 @@
 														        </li>
 														        <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
 														    </ul>
+														    <span class="col-md-6">
+														        <input id="searchGlobal" type="text" class="form-control" placeholder="" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+														    </span>
+														    <span class="col-md-6"></span>
+                                                            <div ng-repeat="sr in navListCtrl.displaySearchResults">{{sr.searchTerm}} in <a ng-href="{{sr.href}}" ng-bind-html="sr.interestArea | unsafe"></a></div>
 														</li>
 													</ul>
 												</li>
@@ -598,30 +603,33 @@
 						<div id="tiles" class="row" style="display: none">
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-									<span class="noResults">No items were found</span>
-									<div ng-show="navListCtrl.displayFilterOptions()">
-										<span class="noResults">Clear</span>
-										<span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
-											<span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span>
-											<span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
-										</span>
-										<span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
-											<span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
-											<span class="removable">Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span>
-											<span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
-										</span>
-										<span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
-											<span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
-											<span class="removable">Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span>
-											<span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
-										</span>
-										<span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
-											<span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-											<span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
-												<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
-											</span>
-										</span>
-									</div>
+								    <span class="noResults">No items were found</span>
+								    <div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
+								        <span class="noResults" style="display: block" ng-repeat="sr in navListCtrl.displaySearchResults">&quot;{{sr.searchTerm | uppercase}}&quot; was found in <a ng-href="{{sr.href}}" ng-bind-html="sr.interestArea | unsafe"></a></span>
+								    </div>
+								    <div ng-show="navListCtrl.displayFilterOptions()">
+								        <span class="noResults">Clear</span>
+								        <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
+								            <span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span>
+								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
+								        </span>
+								        <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
+								            <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
+								            <span class="removable">Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span>
+								            <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+								        </span>
+								        <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
+								            <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
+								            <span class="removable">Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span>
+								            <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+								        </span>
+								        <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
+								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
+								            <span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
+								                <a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
+								            </span>
+								        </span>
+								    </div>
 								</div>
 
 								<!-- For Medium, Large and Xlarge screen sizes -->
