@@ -772,6 +772,45 @@ width: 280px;
     border: 1px solid #999;
     /*border-radius: 4px;*/
 }
+#searchGlobal-flyout,
+#mobile-searchGlobal-flyout {
+    background: #fff;
+	-o-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	-ms-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	-moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
+#searchGlobal-flyout span,
+#mobile-searchGlobal-flyout span {
+	color: #000;
+}
+#searchGlobal-flyout .s-interestArea,
+#mobile-searchGlobal-flyout .s-interestArea {
+	color: #4F93CD;
+	font-weight: normal;
+}
+.mega-dropdown .s-items,
+#mobile-searchGlobal-flyout .s-items {
+    font-size: 14px;
+    display: block;
+    padding: 7px 10px;
+    font-weight: bold;
+}
+.mega-dropdown .s-plainText,
+#mobile-searchGlobal-flyout .s-plainText {
+	font-weight: normal;
+}
+#mobile-searchGlobal-flyout {
+	text-align: left;
+	top: -3px;
+}
+.mobile-flyout-container {
+	position: relative;
+}
 .mega-dropdown span {
 	color: #FFF;
 	font-weight: bold;
@@ -2824,9 +2863,10 @@ input[type="date"]::-webkit-inner-spin-button{
 		height: 0;
 		overflow: hidden;
 		padding: 0;
+		cursor: default;
 	}
 	#eventClassFinder.open>.dropdown-menu {
-		height: 180px;
+		height: 220px;
     	padding-top: 16px;
 	}
 	#accountBtn>.dropdown-menu {

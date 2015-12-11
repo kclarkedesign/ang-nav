@@ -158,7 +158,21 @@
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
-												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>WHAT ARE YOU INTERESTED IN?</strong>
+												<li class="col-xs-12 visible-xs visible-sm collapse">
+													<input id="mobile-searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}" />
+													<div class="mobile-flyout-container">
+												        <div id="mobile-searchGlobal-flyout" class="">
+												        	<a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-href="{{sr.href}}">
+	                                                            <span class="s-term">{{sr.searchTerm}}
+	                                                            </span>
+	                                                            <span class="s-plainText">in
+	                                                            </span>
+	                                                            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+	                                                        </a>
+	                                                	</div>
+	                                                </div>
+												</li>
+												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>Explore Programs by Interest</strong>
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
@@ -180,17 +194,25 @@
 													</a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto; overflow: auto; max-height: 300px;">
+															<div class="col-xs-12 no-p">
+														        <input id="searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}" />
+														        <div id="searchGlobal-flyout" class="">
+														        	<a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-href="{{sr.href}}">
+			                                                            <span class="s-term">{{sr.searchTerm}}
+			                                                            </span>
+			                                                            <span class="s-plainText">in
+			                                                            </span>
+			                                                            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+		                                                            </a>
+	                                                        	</div>
+		                                                        <div role="separator" class="divider col-md-12"></div>
+														    </div>
 														    <ul class="col-sm-12 no-p">
-														        <li class="dropdown-header">WHAT ARE YOU INTERESTED IN?
+														        <li class="dropdown-header">Explore Programs by Interest
 														            <img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 														        </li>
 														        <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
 														    </ul>
-														    <span class="col-md-6">
-														        <input id="searchGlobal" type="text" class="form-control" placeholder="" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}" />
-														    </span>
-														    <span class="col-md-6"></span>
-                                                            <div ng-repeat="sr in navListCtrl.displaySearchResults">{{sr.searchTerm}} in <a ng-href="{{sr.href}}" ng-bind-html="sr.interestArea | unsafe"></a></div>
 														</li>
 													</ul>
 												</li>

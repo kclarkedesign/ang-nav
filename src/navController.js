@@ -795,7 +795,7 @@
         if (searchTerm.length) {
             //self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
             //note:  this is just a workaround for now 
-            self.tileInfoSrv.getAll('/search/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
+            self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
                 var results = data.data;
                 if (results.length) {
                     var interestArr = _.uniq(_.flatten(_.pluck(results, 'InterestAreas')));
