@@ -797,6 +797,13 @@
 		}
 	};
 
+    NavListController.prototype.prepareSearchRedirect = function() {
+		var self = this;
+        self.displaySearchResults = [];
+        self.navOpened = false;
+        self.textboxGlobalSearch = '';
+    };
+
     NavListController.prototype.fetchSearchResults = function(searchTerm) {
 		var self = this;
         self.displaySearchResults = [];
