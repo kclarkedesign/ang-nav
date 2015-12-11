@@ -801,6 +801,10 @@ width: 280px;
     padding: 7px 10px;
     font-weight: bold;
 }
+.mega-dropdown .s-items:hover,
+#mobile-searchGlobal-flyout .s-items:hover {
+	background: #eee;
+}
 .mega-dropdown .s-plainText,
 #mobile-searchGlobal-flyout .s-plainText {
 	font-weight: normal;
