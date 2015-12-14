@@ -559,13 +559,14 @@ width: 280px;
 	/*http://cdn-img.easyicon.net/png/36/3653.png*/
 }
 #searchText.form-control+a,
+#searchGlobal.form-control+a,
+#mobile-searchGlobal.form-control+a,
 #mobileSearchText.form-control+a {
 	display: none;
 }
 #searchText.form-control.active {
 	background: none;
 }
-,
 #mobileSearchText.form-control.active {
 	background: #fff;
 }
@@ -578,6 +579,8 @@ width: 280px;
 	padding-right: 24px;
 }
 #searchText.form-control.active+a,
+#searchGlobal.form-control.active+a,
+#mobile-searchGlobal.form-control.active+a,
 #mobileSearchText.form-control.active+a {
 	display: block;
 }
@@ -2011,7 +2014,7 @@ transform: rotate(-45deg);
 .dropdown:hover .dropdown-toggle:after {
     display: block;
 }*/
-.dropdown-menu .active,
+.dropdown-menu a.active,
 .header .nav>li>a.active {
 	background-color: #4F93CD;
   color: #fff;
