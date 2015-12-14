@@ -923,7 +923,7 @@ width: 280px;
     -webkit-transition: all .3s ease .15s;
     transition: all .3s ease .15s;
     height: 0px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 
@@ -937,7 +937,7 @@ width: 280px;
     -webkit-transition: all .3s ease .15s;
     transition: all .3s ease .15s;
 	padding-top: 16px;
-    overflow: hidden; 
+    /*overflow: hidden; */
    /* min-height: 1px;*/
 }
 
@@ -2866,13 +2866,17 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (min-width: 992px) {
 	#eventClassFinder>.dropdown-menu {
 		height: 0;
-		overflow: hidden;
+		/*overflow: hidden;*/
 		padding: 0;
 		cursor: default;
+		opacity: 0;
+		visibility: hidden;
 	}
 	#eventClassFinder.open>.dropdown-menu {
 		height: 220px;
     	padding-top: 16px;
+		opacity: 1;
+		visibility: visible;
 	}
 	#accountBtn>.dropdown-menu {
 	    padding: 0;
