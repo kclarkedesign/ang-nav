@@ -159,17 +159,19 @@
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
 												<li class="col-xs-12 visible-xs visible-sm collapse">
-													<input id="mobile-searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+												    <input id="mobile-searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: -5px;"></a>
 													<div class="mobile-flyout-container">
-												        <div id="mobile-searchGlobal-flyout" class="">
-												        	<a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-	                                                            <span class="s-term">{{sr.searchTerm}}
-	                                                            </span>
-	                                                            <span class="s-plainText">in
-	                                                            </span>
-	                                                            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
-	                                                        </a>
-	                                                	</div>
+													    <div id="mobile-searchGlobal-flyout" class="">
+													        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
+													        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+													            <span class="s-term">{{sr.searchTerm}}
+													            </span>
+													            <span class="s-plainText">in
+													            </span>
+													            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+													        </a>
+													    </div>
 	                                                </div>
 												</li>
 												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>Explore Programs by Interest</strong>
@@ -196,15 +198,17 @@
 														<li class="container" style="margin: auto; overflow: auto; max-height: 300px;">
 															<div class="col-xs-12 no-p">
 															    <input id="searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-														        <div id="searchGlobal-flyout" class="">
-														        	<a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-			                                                            <span class="s-term">{{sr.searchTerm}}
-			                                                            </span>
-			                                                            <span class="s-plainText">in
-			                                                            </span>
-			                                                            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
-		                                                            </a>
-	                                                        	</div>
+                                                                <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; top: 10px;"></a>
+															    <div id="searchGlobal-flyout" class="">
+															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
+															        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+															            <span class="s-term">{{sr.searchTerm}}
+															            </span>
+															            <span class="s-plainText">in
+															            </span>
+															            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+															        </a>
+															    </div>
 		                                                        <div role="separator" class="divider col-md-12"></div>
 														    </div>
 														    <ul class="col-sm-12 no-p">

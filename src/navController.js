@@ -106,7 +106,7 @@
 		self.showSpinner = false;
 		self.showGlobalSpinner = false;
 		self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
-		self.debounceGlobalSearch = _.debounce(function (searchTerm) { self.fetchSearchResults(searchTerm); }, 2000);
+		self.debounceGlobalSearch = _.debounce(function (searchTerm) { self.fetchSearchResults(searchTerm, true); }, 2000);
 		self.applyScope = function () { $scope.$apply(); };
 		self.enabledFilters = {};
 		self.bottomContainerStyle = {'overflow-x': 'hidden', 'height': '100%' };
@@ -120,6 +120,7 @@
 		self.virtualPageUrl = '';
 		self.virtualPageTitle = '';
 		self.printNum = 1;
+	    self.showNoGlobalResults = false;
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -765,7 +766,6 @@
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
-
 		locationPath = rewriteUrlLocation(SEARCHSLICEURL, self.textboxSearch, locationPath);
 		location.path(locationPath);
 
@@ -793,7 +793,7 @@
 			self.showGlobalSpinner = true;
 			self.debounceGlobalSearch(self.textboxGlobalSearch);
 		} else {
-			self.fetchSearchResults(self.textboxGlobalSearch);  
+			self.fetchSearchResults(self.textboxGlobalSearchm, true);  
 		}
 	};
 
@@ -803,8 +803,15 @@
         self.navOpened = false;
         self.textboxGlobalSearch = '';
     };
+    
+    NavListController.prototype.clearGlobalSearch = function() {
+		var self = this;
+        self.displaySearchResults = [];
+        self.showNoGlobalResults = false;
+        self.textboxGlobalSearch = '';
+    };
 
-    NavListController.prototype.fetchSearchResults = function(searchTerm) {
+    NavListController.prototype.fetchSearchResults = function(searchTerm, isGlobal) {
 		var self = this;
         self.displaySearchResults = [];
         if (searchTerm.length) {
@@ -839,13 +846,16 @@
                 } else {
                     //search finds no results
                     self.showGlobalSpinner = false;
+                    self.showNoGlobalResults = isGlobal;
                 }
             }, function(reason) {
                 //search throws error
                 self.showGlobalSpinner = false;
+                self.showNoGlobalResults = isGlobal;
             });
         } else {
             self.showGlobalSpinner = false;
+            self.showNoGlobalResults = isGlobal;
         }
     };
 
@@ -938,7 +948,7 @@
 		}
 		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
 	    if (self.onscreenResults.length === 0) {
-            self.fetchSearchResults(self.textboxSearch);
+            self.fetchSearchResults(self.textboxSearch, false);
 	    }
 
 		// var sortBy;
