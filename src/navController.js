@@ -75,6 +75,15 @@
 
     var SCRIPTNAME = 'ProgramFinder.html';
 
+    var STOPWORDS = ['a','able','about','across','after','all','almost','also','am','among','an','and','any','are','as','at',
+                    'be','because','been','but','by','can','cannot','could','dear','did','do','does','either','else','ever',
+                    'every','for','from','get','got','had','has','have','he','her','hers','him','his','how','however','i',
+                    'if','in','into','is','it','its','just','least','let','like','likely','may','me','might','most','must',
+                    'my','neither','no','nor','not','of','off','often','on','only','or','other','our','own','rather','said',
+                    'say','says','she','should','since','so','some','than','that','the','their','them','then','there','these',
+                    'they','this','tis','to','too','twas','us','wants','was','we','were','what','when','where','which','while',
+                    'who','whom','why','will','with','would','yet','you','your'];
+
 	var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config']);
 	var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig) {
 		var self = this;
@@ -1681,17 +1690,59 @@
 	};
 
 	var checkListContainsWords = function (results, searchVal) {
-		var filteredNavs;
-		var pattern = new RegExp(searchVal, "i");
-		if (!_.isUndefined(searchVal) && searchVal.length) {
-			filteredNavs = _.filter(results, function (result) {
-				return pattern.test(result.Teachers) || pattern.test(result.Title) || pattern.test(result.KeyWord.toString()) || pattern.test(result.DescText);
-			});
-		} else {
-			filteredNavs = results;
-		}
-		return filteredNavs;
+	    if (!_.isUndefined(searchVal) && searchVal.length) {
+	        var filteredNavs = [];
+	        _.forEach(results, function(result) {
+	            if (getRank(result.Title, searchVal) > 0 || getRank(result.DescText, searchVal) > 0 || getRank(result.Teachers, searchVal) > 0 || getRank(result.KeyWord.toString(), searchVal) > 0) {
+	                filteredNavs.push(result);
+	            }
+	        });
+	    } else {
+	        filteredNavs = results;
+	    }
+	    return filteredNavs;
 	};
+
+    var getRank = function (itemToSearchIn, searchItem) {
+        var entirePhrase = searchItem.trim().toLowerCase();
+        var spacesInPhrase = entirePhrase.match(/\s/g);
+        var countSpaces = 0;
+        if (spacesInPhrase != null) {
+          countSpaces = spacesInPhrase.length;
+        }
+        var splitPhrase = entirePhrase.split(' ');
+        var strippedPhraseArr = _.filter(splitPhrase, function(word) {
+            if (!_.includes(STOPWORDS, word.toLowerCase())) {
+                return word;
+            }
+        });
+        var item = itemToSearchIn.toLowerCase();
+        //if exact phrase is found and phrase is more than one word
+        if (item.indexOf(entirePhrase) >= 0 && countSpaces > 0) {
+            return 1;
+        }
+        if (strippedPhraseArr.length) {
+            //strip item of weird characters
+            var cleanedItem = item.replace(/[^\w\s]/gi, ' ');
+            //divide string into an array using whitespace removing any empty elements
+            var itemList = _.compact(cleanedItem.split(' '));
+            var itemCount = 0;
+            _.forEach(strippedPhraseArr, function(word) {
+                if (_.includes(itemList, word.toLowerCase())) {
+                    ++itemCount;
+                }
+            });
+            //if all parts of the phrase are found
+            if (itemCount === strippedPhraseArr.length) {
+                return 2;
+            }
+            //if any parts of the phrase are found
+            //if (itemCount > 0) {
+            //    return 3;
+            //}
+        }
+        return 0;
+    };
 
 	var isBlankSlice = function (slice) {
 		return (_.isUndefined(slice) || slice === 'all');
