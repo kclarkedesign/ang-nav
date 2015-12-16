@@ -159,7 +159,7 @@
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav">
 												<li class="col-xs-12 visible-xs visible-sm collapse">
-												    <input id="mobile-searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
                                                     <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: -5px;"></a>
 													<div class="mobile-flyout-container">
 													    <div id="mobile-searchGlobal-flyout" class="">
@@ -197,7 +197,7 @@
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto;">
 															<div class="col-xs-12 no-p">
-															    <input id="searchGlobal" type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+															    <input id="searchGlobal" type="text" enable-search-enter class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
                                                                 <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; top: 10px;"></a>
 															    <div id="searchGlobal-flyout" class="">
 															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
