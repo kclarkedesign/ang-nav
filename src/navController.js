@@ -782,7 +782,9 @@
 
 		if (!fromLink) {
 			self.debounceSearch.cancel();
-			self.applyScope();
+		    if (self.textboxSearch.length) {
+		        self.applyScope();    
+		    }
 		}
 	};
 
@@ -823,7 +825,7 @@
     NavListController.prototype.fetchSearchResults = function(searchTerm, isGlobal) {
 		var self = this;
         self.displaySearchResults = [];
-        if (searchTerm.length) {
+        if (!_.isUndefined(searchTerm) && searchTerm.length) {
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
             //note:  this is just a workaround for now 
             //self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
@@ -864,7 +866,9 @@
             });
         } else {
             self.showGlobalSpinner = false;
-            self.showNoGlobalResults = isGlobal;
+            if (isGlobal) {
+                self.debounceGlobalSearch.cancel();
+            }
         }
     };
 
