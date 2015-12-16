@@ -290,6 +290,7 @@
 				self.JumpNav = {};
 				self.limit = self.origLimit;
 				self.affixed = false;
+			    self.showNoGlobalResults = false;
 			}
 		});
 	};
@@ -804,7 +805,7 @@
 			self.showGlobalSpinner = true;
 			self.debounceGlobalSearch(self.textboxGlobalSearch);
 		} else {
-			self.fetchSearchResults(self.textboxGlobalSearchm, true);  
+			self.fetchSearchResults(self.textboxGlobalSearch, true);  
 		}
 	};
 
@@ -812,7 +813,7 @@
 		var self = this;
         self.displaySearchResults = [];
         self.navOpened = false;
-        self.textboxGlobalSearch = '';
+        //self.textboxGlobalSearch = '';
     };
     
     NavListController.prototype.clearGlobalSearch = function() {
@@ -866,6 +867,7 @@
             });
         } else {
             self.showGlobalSpinner = false;
+            self.showNoGlobalResults = false;
             if (isGlobal) {
                 self.debounceGlobalSearch.cancel();
             }
@@ -2211,6 +2213,20 @@
 				});
 			}
 		};
+	});
+    
+    navApp.directive('enableSearchEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if(event.which === 13) {
+                    scope.$apply(function (){
+                        scope.navListCtrl.searchGlobal();
+                    });
+                    event.preventDefault();
+                    
+                }
+            });
+        };
 	});
 
 	navApp.filter('unsafe', function($sce) {
