@@ -479,6 +479,7 @@
 			return;
 		}
 		if (_.isUndefined(self.currentObj) && subLevel.NodeID === ERRORLOADINGNODEID) {
+		    self.navCache.removeAll();
 			location.reload();
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
@@ -2175,12 +2176,12 @@
 				scope.$watch(function() {
 					return raw.offsetTop;
 				}, function(newValue, oldValue) {
-					var winHeight = $(window).height();
+					var winHeight = angular.element(window).height();
 					var headerHeight;
 					if (attrs.skipHeader == "true") {
 						headerHeight = 0;
 					} else {
-						headerHeight = $('header').height();
+						headerHeight = angular.element('header').height();
 					}
 					var containerHeight = winHeight - (newValue + headerHeight);
 					scope.navListCtrl.bottomContainerStyle.height = containerHeight +'px';
@@ -2208,7 +2209,7 @@
 					return scope.navListCtrl.affixed;
 				}, function(newValue, oldValue) {
 					if (newValue === false) {
-						$("#bottomContainer").scrollTop(0);
+						angular.element("#bottomContainer").scrollTop(0);
 					}
 				});
 			}
@@ -2223,11 +2224,120 @@
                         scope.navListCtrl.searchGlobal();
                     });
                     event.preventDefault();
-                    
                 }
             });
         };
 	});
+    
+    navApp.directive('toggleSlide', function ($timeout) {
+        return function (scope, element) {
+            $timeout(function() {
+                var expandBtn = angular.element(element).find("a.expand-collapse");
+                expandBtn.bind('click', function () {
+                    angular.element(this).next(".expand-collapse-container").slideToggle('800');
+                });
+            });
+        };
+	});
+
+    navApp.directive('browseButton', function() {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("#browseSidebar").toggleClass('in');
+                angular.element("body").toggleClass('sidebar-open');
+                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+                angular.element("#filterSidebar, #savedSidebar").removeClass('in inMobile');
+            });
+        };
+    });
+    
+    navApp.directive('filterSidebar', function() {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("body").toggleClass('sidebar-open');
+                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+                angular.element("#filterSidebar").toggleClass('in');
+                angular.element("#browseSidebar, #savedSidebar").removeClass('in inMobile');
+            });
+        };
+    });
+    
+    navApp.directive('filterSidebarClose', function() {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("#filterSidebar").removeClass('in');
+                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                angular.element("body").removeClass('sidebar-open');
+            });
+        };
+    });
+    
+    navApp.directive('wishList', function() {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("#navSavedBtn, #floatSavedBtn").toggleClass('out');
+                angular.element("#savedSidebar").toggleClass('in');
+                angular.element("#site-container").toggleClass('out-left');
+                angular.element("body").toggleClass('sidebar-open');
+                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
+                angular.element("#browseSidebar, #filterSidebar").removeClass('in inMobile');
+            });
+        };
+    });
+    
+    navApp.directive('wishListClose', function() {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("#savedSidebar").removeClass('in');
+                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                angular.element("body").removeClass('sidebar-open');
+            });
+        };
+    });
+    
+    //Clicking modal window closes sidebar and removes self
+    navApp.directive('maskModal', function($timeout) {
+        return function (scope, element) {
+            element.bind("click", function () {
+                angular.element("body").toggleClass('sidebar-open');
+                angular.element("#browseSidebar, #filterSidebar, #savedSidebar").removeClass('in inMobile');
+                $timeout(function () {
+                    angular.element(".qp-ui-mask-modal").toggleClass('qp-ui-mask-visible');
+                }, 50);
+            });
+        };
+    });
+    
+    //Close these sidebars when they are clicked
+    navApp.directive('browseSidebar', function($timeout) {
+        return function (scope, element) {
+            element.bind("click", function () {
+                angular.element("#browseSidebar, #filterSidebar").removeClass('in');
+                angular.element("body").removeClass('sidebar-open');
+                $timeout(function () {
+                    angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                }, 50);
+            });
+        };
+    });
+    
+    navApp.directive('closeSubmit', function($timeout) {
+        return function (scope, element) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                angular.element("#browseSidebar, #filterSidebar").removeClass('in');
+                angular.element("body").removeClass('sidebar-open');
+                $timeout(function () {
+                    angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                }, 50);
+            });
+        };
+    });
 
 	navApp.filter('unsafe', function($sce) {
 		return function(val) {
@@ -2365,54 +2475,3 @@ var adjustLevelArray = function (arr, start, end, clear) {
 var isActualNumber = function (num) {
 	return !isNaN(parseFloat(num)) && isFinite(num);
 };
-
-
-$(document).on('click','.expand-collapse', function(){
-	
-	//Basic Expand Collapse
-
-	//(Clicked Element)Expand/collapse button
-	expandBtn = $(this);
-
-	//Targets next div after clicked element
-	//Get isoContainer in Angular, slideToggle, then reload angular-masonry
-	var scope = angular.element("#isoContainer, #isoContainerMobile").scope();
-	scope.$apply(function(){
-		expandBtn.next(".expand-collapse-container").slideToggle('800', function() {
-			scope.$broadcast('masonry.reload');
-		});
-	});
-});
-
-
-$(document).on('click','.showMore',function(){
-	var $showMore = $(this).parent(".getMore");
-	var $wrapper = $showMore.next(".contentWrap");
-	var $classTitle = $showMore.prevAll(".classTitle");
-	var $classDate = $showMore.prevAll(".classDate");
-	var $warning = $showMore.prevAll(".warning");
-	var $content = $wrapper.find("div");
-	var titleHeight = $classTitle.height();
-	var warnHeight = $warning.height();
-	$wrapper.children(".shortDescription").css("height", 225 - titleHeight - warnHeight+"px");
-	if($wrapper.css("bottom") == "164px") {
-		$wrapper.animate({bottom: "5px"});
-		$classTitle.animate({bottom: "0"});
-		$classDate.animate({bottom: "0"});
-		$warning.animate({bottom: "0"});
-		$content.slideUp(function () {
-			$showMore.html($showMore.html().replace('Less Info <i class="fa fa-chevron-down"></i></span>', 'More Info <i class="fa fa-chevron-up"></i></span>'));
-		});
-	} 
-	else {
-		$wrapper.css( "bottom", "5px" );
-		$wrapper.animate({bottom: "164px"});
-		$classTitle.animate({bottom: "164px"});
-		$classDate.animate({bottom: "164px"});
-		$warning.animate({bottom: "164px"});
-		$content.slideDown(function () {
-			$showMore.html($showMore.html().replace('More Info <i class="fa fa-chevron-up"></i></span>', 'Less Info <i class="fa fa-chevron-down"></i></span>'));
-		});
-	}
-	return false;
-});
