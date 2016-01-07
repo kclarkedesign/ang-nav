@@ -963,6 +963,8 @@
 			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
 		}
 		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
+	    self.textboxGlobalSearch = self.textboxSearch;
+	    self.displaySearchResults = [];
 	    if (self.onscreenResults.length === 0) {
             self.fetchSearchResults(self.textboxSearch, false);
 	    }
