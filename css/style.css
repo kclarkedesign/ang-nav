@@ -239,12 +239,19 @@ width: 280px;
 	background: #fff;
 }
 #searchText.form-control.spinnerInTextbox,
-#searchGlobal.form-control.spinnerInTextbox,
 #mobile-searchGlobal.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
 	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
 	background-size: 20px;
 	padding-right: 24px;
+}
+#searchGlobal.form-control.spinnerInTextbox {
+	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 5px 50%;
+	background-size: 20px;
+	padding-right: 24px;
+}
+#searchGlobal.form-control {
+	padding: 6px 30px;
 }
 #searchText.form-control.active+a,
 #searchGlobal.form-control.active+a,
@@ -376,6 +383,9 @@ width: 280px;
 	    top: 50px;
 	    z-index: 1500;
 	}
+	header .iconBtn-vertical.open .dropdown-toggle:after {
+		left: calc(45% - 12px);
+	}
 }
 .interest-col {
     padding: 2px;
@@ -498,6 +508,14 @@ width: 280px;
 .mega-dropdown-menu .current {
 	color: #444;
 	font-size: 21px;
+}
+.gs-hint {
+	color: #000000;
+    font-size: 18px;
+    font-weight:bold;
+}
+.gs-hint .input-text {
+	color: #8C8E8E;
 }
 .tile a {
     overflow: hidden;
@@ -1060,7 +1078,7 @@ a {
 .nav-label-beta {
     text-transform: uppercase;
     font-size: 96%;
-    padding: 0 0 0 10px;
+    padding: 0 0 0 20px;
     color: #8D8D8D;
     cursor: default;
     margin: 0;
@@ -2096,7 +2114,8 @@ transform: rotate(-45deg);
   animation: shake .8s 1;
 }
 
-#action-container .active .bubble {
+#action-container .active .bubble,
+.iconBtn-vertical.active .bubble {
 	border-radius: 100%;
     height: 8px;
     width: 8px;
@@ -2123,7 +2142,8 @@ input[type="date"]::-webkit-inner-spin-button{
 #navSavedBtn>a,
 #filterSidebarBtn>a,
 #logoutBtn>a,
-#action-container>li>a {
+#action-container>li>a,
+.navbar-nav>li.iconBtn-vertical>a {
 	padding: 7px;
 	line-height: 18px;
 	font-size: 14px;
@@ -2230,7 +2250,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 }
 @media (min-width: 992px) {
-	#eventClassFinder>.dropdown-menu {
+	#eventClassFinder>.dropdown-menu,
+	.iconBtn-vertical>.dropdown-menu {
 		height: 0;
 		overflow: hidden;
 		padding: 0;
@@ -2239,6 +2260,13 @@ input[type="date"]::-webkit-inner-spin-button{
 		visibility: hidden;
 	}
 	#eventClassFinder.open>.dropdown-menu {
+		height: 180px;
+		/*height: 220px;*/
+    	padding-top: 16px;
+		opacity: 1;
+		visibility: visible;
+	}
+	.iconBtn-vertical.open>.dropdown-menu {
 		height: 220px;
     	padding-top: 16px;
 		opacity: 1;
