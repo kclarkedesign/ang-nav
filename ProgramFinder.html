@@ -20,7 +20,7 @@
 		<script src="src/angular-cache.min.js"></script>
 		<script src="src/angulartics.js"></script>
 		<script src="src/navConfig.js"></script>
-		<title>92Y Event &amp; Class Finder</title>
+		<title>92Y Program Finder</title>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
 		<!-- Google Tag Manager -->
@@ -45,13 +45,14 @@
 							<div class="">
 								<div id="site-brand-menu">
 									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a>
-									<a href="/" id="logo-anchor" class="navbar-brand pr0">
+									<a href="/" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
+										<span class="label nav-label-beta navbar-text hidden-xs hidden-sm">Beta</span>
 									</a>
 								</div>
 
 								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="navListCtrl.navOpened && 'in'">
-									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Event &amp; Class Finder (BETA)</span>
+									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Program Finder (BETA)</span>
 									</div>
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
@@ -75,7 +76,7 @@
 												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>Explore Programs by Interest</strong>
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 												</li>
-												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses">
+												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses" ng-hide="navListCtrl.displaySearchResults.length > 0 ">
 													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
@@ -90,7 +91,7 @@
 												<!-- Classic Nav item -->
 												<!-- <li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
 													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-														<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
+														<span id="advancedFilters" class="mainNavHighlight">Program Finder</span>
 														<i class="fa fa-chevron-down"></i>
 													</a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
@@ -119,9 +120,7 @@
 														</li>
 													</ul>
 												</li> -->
-												<li class="pl0 dropdown-header hidden-xs hidden-sm">
-													<span class="label nav-label-beta navbar-text">Beta</span>
-												</li>
+												
 												<!-- Vertical Nav item -->
 												<li id="eventClassFinder" class="iconBtn-vertical dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
 													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-th-list"></i></i><span class="btnTitle">Interests</span></a>
@@ -154,9 +153,16 @@
 															            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
 															        </a>
 															    </div> -->
-															    <div class="gs-hint">View results for <span class="input-text">'{{navListCtrl.textboxGlobalSearch}}'</span> in
+															    <div role="separator" class="divider"></div>
+															    <div class="gs-hint pb5" ng-show="navListCtrl.textboxGlobalSearch.length > 0">View results for <span class="input-text">'{{navListCtrl.textboxGlobalSearch}}'</span> in
 															    </div>
-		                                                        <div role="separator" class="divider col-md-12"></div>
+		                                                        
+		                                                        <div id="searchGlobal-list" class="col-md-12 no-p tile">
+															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">Sorry, no results found</span>
+															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+															            <span class="interest-title" ng-bind-html="sr.interestArea | unsafe"></span>
+															        </a>
+															    </div>
 														    </div>
 														</li>
 													</ul>
@@ -184,7 +190,7 @@
 								<ul id="action-container" class="nav navbar-nav navbar-right">
 									<!-- <li class="dropdown">
 										<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-													<span id="advancedFilters" class="mainNavHighlight">Event &amp; Class Finder</span>
+													<span id="advancedFilters" class="mainNavHighlight">Program Finder</span>
 													<i class="fa fa-chevron-down"></i>
 												</a>
 									</a>
@@ -507,38 +513,59 @@
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
+						<div id="result-status" class="pb10" ng-show="navListCtrl.onscreenResults.length > 0">Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span></div>
 						<div id="tiles" class="row" style="display: none">
-							<div class="col-md-12 col-lg-12 pl0 pr0">
-								<div class="fail-message pl15 pr15" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-								    <span class="noResults">No items were found</span>
-								    <div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
-								        <span class="noResults" style="display: block" ng-repeat="sr in navListCtrl.displaySearchResults">&quot;{{sr.searchTerm | uppercase}}&quot; was found in <a ng-href="{{sr.href}}" ng-bind-html="sr.interestArea | unsafe"></a></span>
-								    </div>
-								    <div ng-show="navListCtrl.displayFilterOptions()">
-								        <span class="noResults">Clear</span>
+							<!-- <div class="" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized" ng-class="{'col-md-12 text-center': navListCtrl.displaySearchResults.length < 1, 'col-md-12 text-center': navListCtrl.displaySearchResults.length > 0}"> -->
+							<div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
+								<div class="itemContents auto-height">
+								    <div class="noResults heading" ng-hide="navListCtrl.textboxSearch !== ''">No results found.</div>
+								    <div class="noResults heading" ng-show="navListCtrl.textboxSearch !== ''">No results for <em>{{navListCtrl.textboxGlobalSearch}}</em>.</div>
+								    <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
+								        <span class="noResults pt10">Try removing some filters: </span>
+								        <br />
 								        <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
-								            <span class="removable">Date or Time<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('datetime')"></a></span>
-								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
+								            <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="glyphicon glyphicon-remove-sign"></span></span>
+								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span></a>
 								        </span>
 								        <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
 								            <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
-								            <span class="removable">Class/Event<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"></a></span>
+								            <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
+								            <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></a></span>
 								            <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
 								        </span>
 								        <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
 								            <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
-								            <span class="removable">Age Range<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.clearDropDown('age')"></a></span>
+								            <a ng-click="navListCtrl.clearDropDown('age')">
+								            <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></a></span>
 								            <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
 								        </span>
-								        <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
+								        <!-- <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
 								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-								            <span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;
-								                <a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
+								            <span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
+								            </span>
+								        </span> -->
+								        <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
+								        	
+								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
+								            <a class="" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)">
+								            <span class="removable">&quot;{{navListCtrl.textboxSearch}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span></a>
 								            </span>
 								        </span>
 								    </div>
 								</div>
-
+							</div>
+							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length == 0">
+								<div class="itemContents auto-height">
+									<!-- <div class="noResults heading">We found programs for:</div> -->
+									<div class="noResults heading pb5">Luckily, we found programs for:</div>
+									<div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
+									    <a class="s-items pb5" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+									        <span class="s-term">{{sr.searchTerm}}</span> <span class="s-plainText">in</span> <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+									    </a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<!-- For Medium, Large and Xlarge screen sizes -->
 								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore('desktop')" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-12 col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">

@@ -83,8 +83,8 @@ body.sidebar-open {
 	padding-top: 0;
 	padding-bottom: 0;
 	line-height: 50px;
-	margin-right: -15px;
-	margin-left: -8px;
+	margin-right: 15px;
+	margin-left: -15px;
 	z-index: 999;
     position: relative;
 }
@@ -232,7 +232,8 @@ width: 280px;
 #mobileSearchText.form-control+a {
 	display: none;
 }
-#searchText.form-control.active {
+#searchText.form-control.active,
+#searchGlobal.form-control.active {
 	background: none;
 }
 #mobileSearchText.form-control.active {
@@ -252,6 +253,7 @@ width: 280px;
 }
 #searchGlobal.form-control {
 	padding: 6px 30px;
+	background: #fff 4px/19px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 }
 #searchText.form-control.active+a,
 #searchGlobal.form-control.active+a,
@@ -271,9 +273,9 @@ width: 280px;
     line-height: 26px;
 }
 #filterSidebar .form-control-feedback.form-control-clear {
-		top: 4px;
-	    right: 14px;
-	}
+	top: 4px;
+    right: 14px;
+}
 .form-control-feedback {
 	width: 22px;
 }
@@ -441,6 +443,12 @@ width: 280px;
 	color: #4F93CD;
 	font-weight: normal;
 }
+#searchGlobal-list .interest-title {
+	display: inline-block;
+    padding: 3px 8px;
+    width: auto;
+    margin: 0 6px 6px 0;
+}
 .mega-dropdown .s-items,
 #mobile-searchGlobal-flyout .s-items {
     font-size: 14px;
@@ -455,6 +463,14 @@ width: 280px;
 .mega-dropdown .s-plainText,
 #mobile-searchGlobal-flyout .s-plainText {
 	font-weight: normal;
+}
+#searchGlobal-list .s-plainText {
+	font-size: 52px;
+    color: #8c8e8e;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 #mobile-searchGlobal-flyout {
 	text-align: left;
@@ -1077,13 +1093,16 @@ a {
 }
 .nav-label-beta {
     text-transform: uppercase;
-    font-size: 96%;
-    padding: 0 0 0 20px;
-    color: #8D8D8D;
+    font-size: 70%;
+    padding: 0 0 0 25px;
+    color: #909192;
     cursor: default;
     margin: 0;
-    height: 44px;
-    line-height: 46px;
+    height: 50px;
+    line-height: 52px;
+    position: absolute;
+    top: 0;
+    pointer-events: none;
 }
 label.btn.active,
 .active #btn-sort, 
@@ -1672,6 +1691,10 @@ transform: rotate(-45deg);
 	-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
+.tileContainer .itemContents.auto-height {
+	height: auto;
+	padding: 15px;
+}
 .tileContainer .gap {
 	width: 300px;
 	margin: 1% 0 1% 0;
@@ -1998,6 +2021,11 @@ transform: rotate(-45deg);
 .active.toggleBar-ch:hover {
 	color: #fff;
 	   
+}
+#result-status {
+    font-weight: bold;
+    color: #626262;
+    font-size: 1.3rem;
 }
 
 /** Shake **/
@@ -2540,8 +2568,11 @@ input[type="date"]::-webkit-inner-spin-button{
   		margin-left: -15px;
 	}
 	.tileContainer .itemContents {
+		-ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+		-o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+		-moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 		-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 	}
 	.navbar-right {
 		float: right!important;
@@ -2730,12 +2761,24 @@ input[type="date"]::-webkit-inner-spin-button{
 /**
  * Fail message styles
  */
+ .noResults,
+ .s-items {
+ 	font-size: 1.15em;
+ }
+ .noResults>a,
+ .s-interestArea {
+ 	font-weight: bold;
+}
+.noResults.heading {
+	font-weight: bold;
+	font-size: 21px;
+	color: #000;
+}
  .container .fail-message {
  	top: 0;
  	left: 0;
  	bottom: 0;
  	right: 0;
- 	text-align: center;
 }
 .container .fail-message:before {
 	content: '';
@@ -2745,9 +2788,7 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 .container .fail-message span {
 	display: inline-block;
-	font-size: 20px;
-	font-weight: 700;
-	color: black;
+	/*color: black;*/
 }
 .container.fail .fail-message {
 	opacity: 1;
@@ -2759,13 +2800,49 @@ input[type="date"]::-webkit-inner-spin-button{
   display: block;
 }
 .removable {
-    padding: 4px;
+    padding: 2px 6px;
     border-bottom: 1px solid;
-    margin-left: 3px;
-    display: block;
+    font-weight: bold;
 }
 .removable a {
     padding-left: 3px;
+}
+
+.found-in {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#tiles .interest-title {
+	display: inline-block;
+    padding: 3px 8px;
+    width: auto;
+    margin: 0 6px 6px 0;
+}
+#tiles .s-items {
+    display: block;
+    font-weight: bold;
+}
+#tiles .s-plainText,
+#tiles .s-term {
+	color: #000;
+	font-weight: normal;
+}
+/*#suggested-results {
+	font-size: 12px;
+}*/
+
+@media (max-width: 768px) {
+	.noResults.heading {
+	    font-size: 1.8rem;
+	    line-height: 1.1;
+		padding-bottom: 4px;
+	}
+	.found-in {
+	    white-space: normal;
+	    text-overflow: ellipsis;
+	    overflow: hidden;
+	}
 }
 
 /** Material Design
