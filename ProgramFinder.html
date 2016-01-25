@@ -33,8 +33,7 @@
 				j.async = true;
 				j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
 				f.parentNode.insertBefore(j, f);
-
-			})(window, document, 'script', 'dataLayer', 'GTM-P3XDP2');
+            })(window, document, 'script', 'dataLayer', 'GTM-P3XDP2');
 		</script>
         <!-- End Google Tag Manager -->
 		<div id="site-container" style="height: 100%">
@@ -59,11 +58,11 @@
 											<ul id="main-navigation" class="nav navbar-nav">
 												<li class="col-xs-12 visible-xs visible-sm collapse">
 												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: -5px;"></a>
-													<div class="mobile-flyout-container">
+                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: -5px;"></a>
+													<div class="mobile-flyout-container" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 													    <div id="mobile-searchGlobal-flyout" class="">
 													        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
-													        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+													        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)" ng-href="">
 													            <span class="s-term">{{sr.searchTerm}}
 													            </span>
 													            <span class="s-plainText">in
@@ -88,42 +87,10 @@
 												<!-- <li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-right">
 													<a><span class="btnTitle"><i class="fa fa-sign-out"></i>  Log Out</span></a>
 												</li> -->
-												<!-- Classic Nav item -->
-												<!-- <li id="eventClassFinder" class="dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
-													<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-														<span id="advancedFilters" class="mainNavHighlight">Program Finder</span>
-														<i class="fa fa-chevron-down"></i>
-													</a>
-													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
-														<li class="container" style="margin: auto;">
-															<div class="col-xs-12 no-p">
-															    <input id="searchGlobal" type="text" enable-search-enter class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-                                                                <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; top: 10px;"></a>
-															    <div id="searchGlobal-flyout" class="">
-															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
-															        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-															            <span class="s-term">{{sr.searchTerm}}
-															            </span>
-															            <span class="s-plainText">in
-															            </span>
-															            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
-															        </a>
-															    </div>
-		                                                        <div role="separator" class="divider col-md-12"></div>
-														    </div>
-														    <ul class="col-sm-12 no-p">
-														        <li class="dropdown-header">Explore Programs by Interest
-														            <img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
-														        </li>
-														        <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pl0 pr0" ng-repeat="sl in navListCtrl.allClasses"><a ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl);" ng-bind-html="sl.Name | unsafe" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}"></a></li>
-														    </ul>
-														</li>
-													</ul>
-												</li> -->
 												
 												<!-- Vertical Nav item -->
 												<li id="eventClassFinder" class="iconBtn-vertical dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
-													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-th-list"></i></i><span class="btnTitle">Interests</span></a>
+													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-th-list"></i><span class="btnTitle">Interests</span></a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto;">
 														    <ul class="col-sm-12 no-p">
@@ -137,29 +104,22 @@
 												</li>
 
 												<li class="iconBtn-vertical dropdown mega-dropdown hidden-xs hidden-sm" dropdown>
-													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-search"></i></i><span class="btnTitle">Search</span></a>
+													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-search"></i><span class="btnTitle">Search</span></a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto;">
 															<div class="col-xs-12 no-p">
-															    <input id="searchGlobal" type="text" enable-search-enter class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-                                                                <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearGlobalSearch();" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; top: 9px; left: 8px"></a>
-															    <!-- <div id="searchGlobal-flyout" class="">
-															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
-															        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-															            <span class="s-term">{{sr.searchTerm}}
-															            </span>
-															            <span class="s-plainText">in
-															            </span>
-															            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
-															        </a>
-															    </div> -->
+															    <input id="searchGlobal" type="text" enable-search-enter class="mt5 mb5 form-control" 
+															           placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" 
+															           ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" 
+                                                                       ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+                                                                <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; top: 9px; left: 8px"></a>
 															    <div role="separator" class="divider"></div>
-															    <div class="gs-hint pb5" ng-show="navListCtrl.textboxGlobalSearch.length > 0">View results for <span class="input-text">'{{navListCtrl.textboxGlobalSearch}}'</span> in
+															    <div class="gs-hint pb5" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.textboxGlobalSearch.length > 0">View results for '{{navListCtrl.textboxGlobalSearch}}' in
 															    </div>
 		                                                        
-		                                                        <div id="searchGlobal-list" class="col-md-12 no-p tile">
+		                                                        <div id="searchGlobal-list" class="col-md-12 no-p tile" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">Sorry, no results found</span>
-															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
+															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)" ng-href="">
 															            <span class="interest-title" ng-bind-html="sr.interestArea | unsafe"></span>
 															        </a>
 															    </div>
@@ -173,34 +133,11 @@
 										</div>
 									</div>
 								</div>
-								<!-- <div class="secondary navbar-collapse navbar-right pl0">
-									<div class="container-fluid no-p">
-										<ul class="nav navbar-nav">
-											<li><a><i class="fa fa-search"></i></a></li>
-											<li><a><span class="greeting"><strong>Hi, Kirk</strong></span></a></li>
-											<li><a><i class="fa fa-sign-out"></i> <span class="btnTitle-inline">Log Out</span></a></li>
-											<li class="social-icon"><a><i class="fa fa-facebook"></i></a></li>
-											<li class="social-icon"><a><i class="fa fa-twitter"></i></a></li>
-											<li class="social-icon"><a><i class="fa fa-instagram"></i></a></li>
-											<li class="social-icon"><a><i class="fa fa-tumblr"></i></a></li>
-											<li class="social-icon"><a><i class="fa fa-youtube-play"></i></a></li>
-										</ul>
-									</div>
-								</div> -->
+
 								<ul id="action-container" class="nav navbar-nav navbar-right">
-									<!-- <li class="dropdown">
-										<a id="interest-list" href="" role="button" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-													<span id="advancedFilters" class="mainNavHighlight">Program Finder</span>
-													<i class="fa fa-chevron-down"></i>
-												</a>
-									</a>
-									</li> -->
 									<li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
 									</li>
-									<!-- <li id="cartBtn" class="notifications dropdown hidden-sm hidden-md hidden-lg">
-										<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i></a>
-									</li> -->
 									<li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
@@ -457,7 +394,7 @@
 											<div class="row">
 												<div class="col-md-12 snav-filter full-width pl0 pr0 pull-right">
 													<input id="searchText" type="text" class="form-control col-md-12" placeholder="Filter by Instructor, Title or Keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
-													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
+													<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 												</div>
 											</div>
 										</div>
@@ -513,13 +450,15 @@
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
-						<div id="result-status" class="pb10" ng-show="navListCtrl.onscreenResults.length > 0">Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span></div>
+					    <div id="result-status" class="pb10" ng-show="navListCtrl.onscreenResults.length > 0">
+					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
+                            <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+					    </div>
 						<div id="tiles" class="row" style="display: none">
-							<!-- <div class="" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized" ng-class="{'col-md-12 text-center': navListCtrl.displaySearchResults.length < 1, 'col-md-12 text-center': navListCtrl.displaySearchResults.length > 0}"> -->
 							<div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 								<div class="itemContents auto-height">
-								    <div class="noResults heading" ng-hide="navListCtrl.textboxSearch !== ''">No results found.</div>
-								    <div class="noResults heading" ng-show="navListCtrl.textboxSearch !== ''">No results for <em>{{navListCtrl.textboxSearch}}</em>.</div>
+								    <div class="noResults heading" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
+								    <div class="noResults heading" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
 								    <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
 								        <span class="noResults pt10">Try removing some filters: </span>
 								        <br />
@@ -530,33 +469,26 @@
 								        <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
 								            <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
 								            <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
-								            <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></a></span>
+								            <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></span></a>
 								            <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
 								        </span>
 								        <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
 								            <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
 								            <a ng-click="navListCtrl.clearDropDown('age')">
-								            <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></a></span>
+								            <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></span></span></a>
 								            <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
 								        </span>
-								        <!-- <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
-								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-								            <span class="removable">&quot;{{navListCtrl.textboxSearch | uppercase}}&quot;<a class="glyphicon glyphicon-remove-sign" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)"></a>
-								            </span>
-								        </span> -->
-								        <span class="noResults" ng-show="navListCtrl.textboxSearch !== ''">
+								        <span class="noResults" ng-show="navListCtrl.searchTerm !== ''">
 								        	
 								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-								            <a class="" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)">
-								            <span class="removable">&quot;{{navListCtrl.textboxSearch}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-								            </span>
+								            <a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
+								            <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span></a>
 								        </span>
 								    </div>
 								</div>
 							</div>
-							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length == 0">
+							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 								<div class="itemContents auto-height">
-									<!-- <div class="noResults heading">We found programs for:</div> -->
 									<div class="noResults heading pb5">Luckily, we found programs for:</div>
 									<div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
 									    <a class="s-items pb5" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
@@ -636,9 +568,6 @@
 											<div class="container-fluid">
 												<div class="row">
 													<div id="tileImg" class="col-xs-5 no-p">
-														<!-- <a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
-															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
-														</a> -->
 														<a ng-href="http://www.92y.org{{classInfo.Url}}" class="">
 															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
 														</a>
@@ -685,7 +614,7 @@
 										<div class="row">
 											<div class="col-xs-12">
 												<input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by Instructor, Title or Keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">
-												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.textboxSearch='';navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
+												<a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>
 											</div>
 											
 											<div class="col-xs-12 pt10">
@@ -894,11 +823,6 @@
 																			</span>
 																		</div>
 																	</div>
-																	<!-- <div class="row">
-																		<span class="getTickets">
-																			<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
-																		</span>
-																	</div> -->
 																</div>
 															</div>
 														</div>

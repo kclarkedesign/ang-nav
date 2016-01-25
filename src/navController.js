@@ -130,6 +130,7 @@
 		self.virtualPageTitle = '';
 		self.printNum = 1;
 	    self.showNoGlobalResults = false;
+	    self.searchTerm = '';
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -219,7 +220,7 @@
 						};
 						var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
 						if (!_.isUndefined) {
-							lastCurrent.Current = false;	
+							lastCurrent.Current = false;
 						}
 						self.activeBreadcrumb.push(cloneCurrentObj);
 						break;
@@ -259,6 +260,10 @@
 					case 'sliceBy':
 						// if slicer is selected
 						// since we don't change position, just filters, we can skip all the link stuff
+					    if (self.activeBreadcrumb.length === 0) {
+					        //if this is undefined then we are probably doing a global search from the start so need to build up the breadcrumb
+					        self.activeBreadcrumb.push(_.clone(self.arrCategory[0][0]));
+					    }
 						break;
 					default:
 						// if browser back and forward buttons or global search used for unpredictable jumps
@@ -475,6 +480,7 @@
 
 	NavListController.prototype.interestClicked = function (self, subLevel) {
 		var currentName = subLevel.Name;
+		var currentSearch = subLevel.SearchTerm;
 		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && subLevel.NodeID === LOADINGNODEID)) {
 			return;
 		}
@@ -505,8 +511,12 @@
 		self.currentObj.NodeID = subLevel.NodeID;
 		self.currentObj.Current = true;
 		self.currentObj.FeaturedItemsHeader = '';
-		self.JumpNav = { To: currentName, Type: 'linkTo' };
-		self.setUrl(currentName, 'replace');
+        if (_.isUndefined(currentSearch)) {
+            self.JumpNav = { To: currentName, Type: 'linkTo' };
+        } else {
+            self.JumpNav = { To: currentName, Type: 'sliceBy' };
+        }
+        self.setUrl(currentName, 'replace', 0, currentSearch);
 	};
 
 	NavListController.prototype.displayMicroSites = function (currentUrl) {
@@ -779,9 +789,9 @@
 		var locationPath = location.path();
 		locationPath = rewriteUrlLocation(SEARCHSLICEURL, self.textboxSearch, locationPath);
 		location.path(locationPath);
-
+	    
 		self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
-
+	    self.searchTerm = self.textboxSearch;
 		if (!fromLink) {
 			self.debounceSearch.cancel();
 		    if (self.textboxSearch.length) {
@@ -792,6 +802,7 @@
 
 	NavListController.prototype.searchByWord = function () {
 		var self = this;
+	    self.clearSearch(false);
 		if (self.textboxSearch.length) {
 			self.showSpinner = true;
 			self.debounceSearch();
@@ -810,27 +821,34 @@
 		}
 	};
 
-    NavListController.prototype.prepareSearchRedirect = function() {
+    NavListController.prototype.prepareSearchRedirect = function(slName) {
 		var self = this;
-        self.displaySearchResults = [];
+        //self.displaySearchResults = [];
         self.navOpened = false;
         //self.textboxGlobalSearch = '';
+
+        var subLevel = _.find(self.allClasses, { 'Name': slName });
+        subLevel.SearchTerm = self.textboxGlobalSearch;
+        self.getInterestItems(self.interestClicked, subLevel);
     };
     
-    NavListController.prototype.clearGlobalSearch = function() {
+    NavListController.prototype.clearSearch = function(all) {
 		var self = this;
         self.displaySearchResults = [];
         self.showNoGlobalResults = false;
         self.textboxGlobalSearch = '';
+        if (all) {
+            self.textboxSearch = '';
+        }
     };
 
     NavListController.prototype.fetchSearchResults = function(searchTerm, isGlobal) {
 		var self = this;
         self.displaySearchResults = [];
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
-            //self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
             //note:  this is just a workaround for now 
-            self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
+            //self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
                 var results = data.data;
                 if (results.length) {
                     var interestArr = _.uniq(_.flatten(_.pluck(results, 'InterestAreas')));
@@ -925,14 +943,14 @@
             self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
         }
 
-		var lastLocationPath = self.lastLocationPath;
-		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-		var lastLocArr = lastLocationPath.split("/");
+//		var lastLocationPath = self.lastLocationPath;
+//		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+//		var lastLocArr = lastLocationPath.split("/");
 
-		var locationParts = seperateSlicersFromUrl(locationPath);
-		locationPath = locationParts.path;
-		var locationPathRemoved = locationParts.removed;
-		var locArr = locationPath.split("/");
+//		var locationParts = seperateSlicersFromUrl(locationPath);
+//		locationPath = locationParts.path;
+//		var locationPathRemoved = locationParts.removed;
+//		var locArr = locationPath.split("/");
 
 		//note:  until we get a proper top-down pattern with the keywords, we can't use this code
 		// if (_.difference(locArr, lastLocArr).length === 1) {
@@ -962,9 +980,12 @@
 		if (!_.isUndefined(self.ageSlice) && self.ageSlice !== 'all') {
 			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
 		}
-		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.textboxSearch);
-	    self.textboxGlobalSearch = self.textboxSearch;
-	    self.displaySearchResults = [];
+	    self.searchTerm = self.textboxSearch;
+	    if (self.searchTerm.length === 0) {
+	        self.searchTerm = self.textboxGlobalSearch;
+	        self.textboxSearch = self.searchTerm;
+	    }
+		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
 	    if (self.onscreenResults.length === 0) {
             self.fetchSearchResults(self.textboxSearch, false);
 	    }
@@ -1101,7 +1122,7 @@
 					}
 				}
 				if (!_.isUndefined(foundChild)) {
-					self.activeBreadcrumb.push(_.clone(foundChild));	
+					self.activeBreadcrumb.push(_.clone(foundChild));
 				}
 			});
 			self.activeBreadcrumb.reverse();
@@ -1149,13 +1170,16 @@
 		self.setUrl(currentIndex || currentName, urlMethod);
 	};
 
-	NavListController.prototype.setUrl = function (currentId, urlMethod, jumpTo) {
+	NavListController.prototype.setUrl = function (currentId, urlMethod, jumpTo, globalSearch) {
 		var self = this;
 		var location = self.location;
 		var locationPath = location.path();
 		var locationObj = seperateSlicersFromUrl(locationPath);
 		locationPath = locationObj.path;
 		var locationPathRemoved = locationObj.removed;
+	    if (!_.isUndefined(globalSearch)) {
+	        locationPathRemoved = '/search__'+ globalSearch;
+	    }
 		if (!isActualNumber(currentId)) {
 			//protect against any links with a forward-slash, like Beginner/Advanced
 			//this is so the slash doesn't get interpreted as another level
@@ -1726,9 +1750,17 @@
             }
         });
         var item = itemToSearchIn.toLowerCase();
-        //if exact phrase is found and phrase is more than one word
-        if (item.indexOf(entirePhrase) >= 0 && countSpaces > 0) {
-            return 1;
+        if (item.indexOf(entirePhrase) >= 0) {
+            //if exact phrase is found and phrase is more than one word
+            if (countSpaces > 0) {
+                return 1;
+            } else {
+                //if exact phrase is found and phrase is just one word
+                //then strip it to insure it's not matching a common word
+                if (!_.includes(STOPWORDS, item.toLowerCase())) {
+                    return 1;
+                }
+            }
         }
         if (strippedPhraseArr.length) {
             //strip item of weird characters
