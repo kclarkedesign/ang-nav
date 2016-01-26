@@ -55,13 +55,13 @@
 									</div>
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
-											<ul id="main-navigation" class="nav navbar-nav">
+											<ul id="main-navigation" class="nav navbar-nav full-width">
 												<li class="col-xs-12 visible-xs visible-sm collapse">
 												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: -5px;"></a>
+                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: 9px; padding: 0 0 0 5px; background: transparent;"></a>
 													<div class="mobile-flyout-container" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 													    <div id="mobile-searchGlobal-flyout" class="">
-													        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">No items were found</span>
+													        <span class="s-items s-plainText" ng-show="navListCtrl.showNoGlobalResults" ng-click="navListCtrl.clearSearch(false);">No results were found</span>
 													        <a class="s-items" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)" ng-href="">
 													            <span class="s-term">{{sr.searchTerm}}
 													            </span>
@@ -90,7 +90,7 @@
 												
 												<!-- Vertical Nav item -->
 												<li id="eventClassFinder" class="iconBtn-vertical dropdown mega-dropdown hidden-xs hidden-sm" dropdown is-open="navListCtrl.eventClassDropdown.isopen">
-													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-th-list"></i><span class="btnTitle">Interests</span></a>
+													<a id="interest-list" href="" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-th-list"></i><span class="btnTitle">Interests</span></a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto;">
 														    <ul class="col-sm-12 no-p">

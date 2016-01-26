@@ -239,10 +239,17 @@ width: 280px;
 #mobileSearchText.form-control.active {
 	background: #fff;
 }
+#mobile-searchGlobal {
+    padding: 6px 26px 6px 12px;
+}
 #searchText.form-control.spinnerInTextbox,
-#mobile-searchGlobal.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
 	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 98% 50%;
+	background-size: 20px;
+	padding-right: 24px;
+}
+#mobile-searchGlobal.form-control.spinnerInTextbox {
+	background: #fff url('http://www.92y.org/_ui/tribeca/img/loading.gif') no-repeat 99% 50%;
 	background-size: 20px;
 	padding-right: 24px;
 }
@@ -1103,6 +1110,7 @@ a {
     position: absolute;
     top: 0;
     pointer-events: none;
+    right: 5px;
 }
 label.btn.active,
 .active #btn-sort, 
