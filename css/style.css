@@ -472,12 +472,12 @@ width: 280px;
 	font-weight: normal;
 }
 #searchGlobal-list .s-plainText {
-	font-size: 52px;
+	font-size: 18px;
     color: #8c8e8e;
     font-weight: bold;
     display: block;
     width: 100%;
-    text-align: center;
+    /*text-align: center;*/
 }
 #mobile-searchGlobal-flyout {
 	text-align: left;
@@ -2808,9 +2808,14 @@ input[type="date"]::-webkit-inner-spin-button{
   display: block;
 }
 .removable {
-    padding: 2px 6px;
-    border-bottom: 1px solid;
-    font-weight: bold;
+    padding: 3px 10px;
+    font-weight: normal;
+    margin: 6px 2px 2px;
+    border-radius: 4px;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -196px no-repeat;
+    color: #FFF;
+    font-size: 13px;
+    border: 1px solid #ADADAD;
 }
 .removable a {
     padding-left: 3px;

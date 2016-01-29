@@ -119,7 +119,7 @@
 		                                                        
 		                                                        <div id="searchGlobal-list" class="col-md-12 no-p tile" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">Sorry, no results found</span>
-															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)" ng-href="">
+															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)">
 															            <span class="interest-title" ng-bind-html="sr.interestArea | unsafe"></span>
 															        </a>
 															    </div>
@@ -464,7 +464,8 @@
 								        <br />
 								        <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
 								            <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="glyphicon glyphicon-remove-sign"></span></span>
-								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span></a>
+								            </a>
+								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
 								        </span>
 								        <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
 								            <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
@@ -489,10 +490,10 @@
 							</div>
 							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
 								<div class="itemContents auto-height">
-									<div class="noResults heading pb5">Luckily, we found programs for:</div>
+									<div class="noResults heading pb5">We found programs for:</div>
 									<div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
 									    <a class="s-items pb5" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-									        <span class="s-term">{{sr.searchTerm}}</span> <span class="s-plainText">in</span> <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+									        <span class="s-term" ng-bind-html="navListCtrl.searchTerm | unsafe"></span> <span class="s-plainText">in</span> <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
 									    </a>
 									</div>
 								</div>
