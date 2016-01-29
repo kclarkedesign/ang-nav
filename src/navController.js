@@ -855,12 +855,18 @@
         //self.displaySearchResults = [];
         self.navOpened = false;
         //self.textboxGlobalSearch = '';
-
-        var subLevel = _.find(self.allClasses, { 'Name': slName });
-        subLevel.SearchTerm = self.textboxGlobalSearch;
         if (!_.isUndefined(self.textboxGlobalSearch)) {
             self.searchTerm = self.textboxGlobalSearch;
         }
+        //if the search result that the user clicks on is in the same interest area that the user is in
+        //then just redirect and do a word search as normal
+        if (slName === self.currentObj.Name) {
+            self.textboxSearch = self.searchTerm;
+            self.modifyUrlSearch(true);
+            return;
+        }
+        var subLevel = _.find(self.allClasses, { 'Name': slName });
+        subLevel.SearchTerm = self.textboxGlobalSearch;
         self.getInterestItems(self.interestClicked, subLevel);
     };
     
