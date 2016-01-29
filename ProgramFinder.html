@@ -138,7 +138,7 @@
 									<li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
 									</li>
-									<li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake">
+									<li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake" ng-show="navListCtrl.onscreenResults.length > 0">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li>
 									<!-- For account use when available -->
@@ -446,7 +446,6 @@
 							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe" ng-show="navListCtrl.showFeaturedHeader()"></span>
 						</div>
 					</div>
-	
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
@@ -455,40 +454,46 @@
                             <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
 					    </div>
 						<div id="tiles" class="row" style="display: none">
-							<div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
-								<div class="itemContents auto-height">
-								    <div class="noResults heading" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
-								    <div class="noResults heading" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
-								    <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
-								        <span class="noResults pt10">Try removing some filters: </span>
-								        <br />
-								        <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
-								            <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="glyphicon glyphicon-remove-sign"></span></span>
-								            </a>
-								            <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span>
-								        </span>
-								        <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
-								            <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
-								            <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
-								            <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-								            <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
-								        </span>
-								        <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
-								            <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
-								            <a ng-click="navListCtrl.clearDropDown('age')">
-								            <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-								            <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
-								        </span>
-								        <span class="noResults" ng-show="navListCtrl.searchTerm !== ''">
-								        	
-								            <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
-								            <a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
-								            <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-								        </span>
-								    </div>
-								</div>
-							</div>
-							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized">
+						    <div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.isFetching === false">
+						        <div class="itemContents auto-height">
+						            <div class="noResults heading" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
+						            <div class="noResults heading" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
+						            <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
+						                <span class="noResults pt10">Try removing some filters: </span>
+						                <br />
+						                <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
+						                    <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="glyphicon glyphicon-remove-sign"></span></span>
+						                        <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span></a>
+						                </span>
+						                <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
+						                    <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
+						                    <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
+						                        <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></span></a>
+						                    <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+						                </span>
+						                <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
+						                    <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
+						                    <a ng-click="navListCtrl.clearDropDown('age')">
+						                        <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></span></span></a>
+						                    <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+						                </span>
+						                <span class="noResults" ng-show="navListCtrl.searchTerm !== ''">
+						                    <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
+						                    <a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
+						                        <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span>
+                                            </a>
+						                </span>
+						            </div>
+						        </div>
+						    </div>
+						    <div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.isFetching === true">
+						        <div class="itemContents auto-height">
+						            <div class="noResults heading">
+						                <img style="margin-right: 5px;" src="../_ui/tribeca/img/loading.gif" />Fetching results.  Please wait.
+						            </div>
+						        </div>
+						    </div>
+							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.isFetching === false">
 								<div class="itemContents auto-height">
 									<div class="noResults heading pb5">We found programs for:</div>
 									<div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">

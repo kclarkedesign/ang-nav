@@ -131,6 +131,7 @@
 		self.printNum = 1;
 	    self.showNoGlobalResults = false;
 	    self.searchTerm = '';
+	    self.isFetching  = false;
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -206,6 +207,7 @@
 			} else {
 				var locationObj = seperateSlicersFromUrl(locationPath);
 				locationPath = locationObj.path;
+			    var locationRemoved = locationObj.removed;
 				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
 				//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
 				switch (self.JumpNav.Type) {
@@ -266,12 +268,19 @@
 					    }
 						break;
 					default:
+					    if (locationRemoved.indexOf('search__') >= 0) {
+					        var locRemSplit = locationRemoved.split('/');
+					        var locRemFilter = _.find(locRemSplit, function(ar) {
+					            return ar.indexOf('search__') >= 0;
+					        });
+					        self.searchTerm = locRemFilter.substring(locRemFilter.indexOf('search__') + 8);
+					    } else {
+					        self.searchTerm = '';
+					    }
 						// if browser back and forward buttons or global search used for unpredictable jumps
 						if ((self.arrCategory.length === 0 || self.arrCategory[0].length === 0) && numOfSlashesLocation > 0) {
 							var subfolders = locationPath.substring(1).split('/');
-							var classIndex = _.findIndex(self.allClasses, {'Name': subfolders[0]});
-							var classesByInterest = [self.allClasses[classIndex]];
-							self.getValues(classesByInterest, 0, self.navsDict[subfolders[0]]);
+						    self.fetchResults(subfolders[0], false, navConfig);
 						} else {
 							var subfolders = locationPath.substring(1).split('/');
 							var rootFolder = subfolders[0];
@@ -280,10 +289,7 @@
 								//if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
 								var currentRootFolder = self.arrCategory[0][0].Name;
 								if (currentRootFolder !== rootFolder) {
-									adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
-									var classIndex = _.findIndex(self.allClasses, {'Name': rootFolder});
-									var classesByInterest = [self.allClasses[classIndex]];
-									self.getValues(classesByInterest, 0, self.navsDict[rootFolder]);
+								    self.fetchResults(rootFolder, true, navConfig);
 								}
 							}
 						}
@@ -291,7 +297,7 @@
 						break;
 				}
 				self.displayTiles();
-				self.lastLocationPath = locationPath + locationObj.removed;
+				self.lastLocationPath = locationPath + locationRemoved;
 				self.JumpNav = {};
 				self.limit = self.origLimit;
 				self.affixed = false;
@@ -299,6 +305,29 @@
 			}
 		});
 	};
+
+    NavListController.prototype.fetchResults = function(interest, adjustArr, navConfig) {
+        var self = this;
+        if (_.isUndefined(self.navsDict[interest])) {
+            self.isFetching = true;
+            self.tileInfoSrv.getAll('items/Filters.json', self.navCache, 'navigation').then(function (data) {
+                self.getInterestItems(self.getAllInitialClasses, data);
+            }, function (respData) {
+                self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
+                    self.getInterestItems(self.getAllInitialClasses, data);
+                }).finally(function() {
+                    self.isFetching = false;
+                    self.initialized = false;
+                });
+            });
+        }
+        if (adjustArr) {
+            adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+        }
+        var classIndex = _.findIndex(self.allClasses, {'Name': interest});
+        var classesByInterest = [self.allClasses[classIndex]];
+        self.getValues(classesByInterest, 0, self.navsDict[interest]);
+    };
 
 	NavListController.prototype.printAllReport = function () {
 		var self = this;
@@ -402,7 +431,7 @@
 			var match = locationPath.match(/^\/(.+?)(\/|$)/);
 			var interestFolder = match[1];
 			var classesByInterest = [_.find(self.allClasses, {'Name' : interestFolder })];
-			self.displayMicroSites(locationPath);
+			//self.displayMicroSites(locationPath);
 			self.getValues(classesByInterest, 0, self.navsDict[interestFolder]);
 			self.buildCurrentObj();
 			self.displayTiles();
@@ -826,7 +855,16 @@
         //self.displaySearchResults = [];
         self.navOpened = false;
         //self.textboxGlobalSearch = '';
-
+        if (!_.isUndefined(self.textboxGlobalSearch)) {
+            self.searchTerm = self.textboxGlobalSearch;
+        }
+        //if the search result that the user clicks on is in the same interest area that the user is in
+        //then just redirect and do a word search as normal
+        if (slName === self.currentObj.Name) {
+            self.textboxSearch = self.searchTerm;
+            self.modifyUrlSearch(true);
+            return;
+        }
         var subLevel = _.find(self.allClasses, { 'Name': slName });
         subLevel.SearchTerm = self.textboxGlobalSearch;
         self.getInterestItems(self.interestClicked, subLevel);
@@ -934,90 +972,101 @@
 
 	NavListController.prototype.getClassesByNodeId = function (onscreenResultsQueue) {
 		var self = this;
-		var locationPath = self.location.path();
-	    self.virtualPageUrl = locationPath;
-	    var breadcrumbs = self.getBreadcrumbs(false);
-        if (breadcrumbs.length) {
-            self.virtualPageTitle = (self.getBreadcrumbs(false))[0].Name;
-        } else {
-            self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
-        }
+	    try {
+		    var locationPath = self.location.path();
+	        self.virtualPageUrl = locationPath;
+	        var breadcrumbs = self.getBreadcrumbs(false);
+            if (breadcrumbs.length) {
+                self.virtualPageTitle = (self.getBreadcrumbs(false))[0].Name;
+            } else {
+                self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
+            }
 
-//		var lastLocationPath = self.lastLocationPath;
-//		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-//		var lastLocArr = lastLocationPath.split("/");
+    //		var lastLocationPath = self.lastLocationPath;
+    //		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+    //		var lastLocArr = lastLocationPath.split("/");
 
-//		var locationParts = seperateSlicersFromUrl(locationPath);
-//		locationPath = locationParts.path;
-//		var locationPathRemoved = locationParts.removed;
-//		var locArr = locationPath.split("/");
+    //		var locationParts = seperateSlicersFromUrl(locationPath);
+    //		locationPath = locationParts.path;
+    //		var locationPathRemoved = locationParts.removed;
+    //		var locArr = locationPath.split("/");
 
-		//note:  until we get a proper top-down pattern with the keywords, we can't use this code
-		// if (_.difference(locArr, lastLocArr).length === 1) {
-		// 	if (self.onscreenResults.length) {
-		// 		_.forEach(_.clone(self.onscreenResults), function (arr) {
-		// 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-		// 			if (_.isUndefined(checkPropExists)) {
-		// 				_.pull(self.onscreenResults, arr);
-		// 			}
-		// 		});
-		// 	} else {
-		// 		self.onscreenResults = _.clone(onscreenResultsQueue);
-		// 	}
-		// } else {
-			self.onscreenResults = _.clone(onscreenResultsQueue);
-		// }
+		    //note:  until we get a proper top-down pattern with the keywords, we can't use this code
+		    // if (_.difference(locArr, lastLocArr).length === 1) {
+		    // 	if (self.onscreenResults.length) {
+		    // 		_.forEach(_.clone(self.onscreenResults), function (arr) {
+		    // 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+		    // 			if (_.isUndefined(checkPropExists)) {
+		    // 				_.pull(self.onscreenResults, arr);
+		    // 			}
+		    // 		});
+		    // 	} else {
+		    // 		self.onscreenResults = _.clone(onscreenResultsQueue);
+		    // 	}
+		    // } else {
+			    self.onscreenResults = _.clone(onscreenResultsQueue);
+		    // }
 		
-		self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
+		    self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
 
-		self.onscreenResults = filterListWithFutureDates(self.onscreenResults, self.daySlice, self.timeSlice);
+		    self.onscreenResults = filterListWithFutureDates(self.onscreenResults, self.daySlice, self.timeSlice);
 
-		if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
-			self.onscreenResults = _.filter(self.onscreenResults, function(res) {
-				return res.ItemType.toLowerCase() === self.typeSlice;
-			});
-		}
-		if (!_.isUndefined(self.ageSlice) && self.ageSlice !== 'all') {
-			self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
-		}
-	    self.searchTerm = self.textboxSearch;
-	    if (self.searchTerm.length === 0) {
-	        self.searchTerm = self.textboxGlobalSearch;
-	        self.textboxSearch = self.searchTerm;
+		    if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
+			    self.onscreenResults = _.filter(self.onscreenResults, function(res) {
+				    return res.ItemType.toLowerCase() === self.typeSlice;
+			    });
+		    }
+		    if (!_.isUndefined(self.ageSlice) && self.ageSlice !== 'all') {
+			    self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
+		    }
+	        //self.searchTerm = self.textboxSearch;
+	        if (self.searchTerm.length === 0) {
+	            if (_.isUndefined(self.textboxGlobalSearch) || self.textboxGlobalSearch.length === 0) {
+	                self.searchTerm = self.textboxSearch;
+	            } else {
+	                self.searchTerm = self.textboxGlobalSearch;
+	                self.textboxSearch = self.searchTerm;
+	            }
+	        } else {
+	            self.textboxSearch = self.searchTerm;
+	        }
+		    self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
+	        if (self.onscreenResults.length === 0 && !self.isFetching) {
+                self.fetchSearchResults(self.textboxSearch, false);
+	        }
+
+		    // var sortBy;
+		    // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
+		    // if (sortUrlLocation < 0) {
+		    // 	sortBy = 'all';
+		    // } else {
+		    // 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
+		    // 	if (endSlashLocation < 0) {
+		    // 		endSlashLocation = locationPathRemoved.length;
+		    // 	}
+		    // 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
+		    // }
+		    // switch (sortBy) {
+		    // 	case 'progress':
+		    // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+		    // 		break;
+		    // 	case 'featured':
+		    // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+		    // 		break;
+		    // 	default:
+		    // 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+		    // 		break;
+		    // }
+		    // self.sortOrder = sortBy;
+
+		    self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+
+		    self.showSpinner = false;
+		    self.initialized = true;
 	    }
-		self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
-	    if (self.onscreenResults.length === 0) {
-            self.fetchSearchResults(self.textboxSearch, false);
+	    catch(err) {
+	        logErrorToServer(err);
 	    }
-
-		// var sortBy;
-		// var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
-		// if (sortUrlLocation < 0) {
-		// 	sortBy = 'all';
-		// } else {
-		// 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
-		// 	if (endSlashLocation < 0) {
-		// 		endSlashLocation = locationPathRemoved.length;
-		// 	}
-		// 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
-		// }
-		// switch (sortBy) {
-		// 	case 'progress':
-		// 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
-		// 		break;
-		// 	case 'featured':
-		// 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-		// 		break;
-		// 	default:
-		// 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
-		// 		break;
-		// }
-		// self.sortOrder = sortBy;
-
-		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-
-		self.showSpinner = false;
-		self.initialized = true;
 	};
 
 	NavListController.prototype.sortResults = function (sortBy) {
@@ -1082,56 +1131,61 @@
 		var locationObj = seperateSlicersFromUrl(locationPath);
 		locationPath = locationObj.path;
 		var locationSlicers = locationObj.removed;
-		if (locationPath.length && locationPath !== '/') {
-			self.lastLocationPath = self.location.path();
-			var subfolders = locationPath.substring(1).split('/');
-			var findChild, foundChildParent, findObj, foundChild;
-			self.activeBreadcrumb = [];
-			_.forEachRight(subfolders, function (folder, index) {
-				if (folder.length) {
-					if (_.isUndefined(foundChildParent)) {
-						if (index === 0) {
-							//if this is only one level above then we can safely assume there are no duplicate children
-							findObj = { 'Name': folder };
-						} else {
-							//this is to safeguard against multiple children of the same name
-							var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
-							var findAllPossibleParents = _.where(self.arrCategory[index-1], { 'Name': subfolders[index-1] });
-							_.forEach(findAllPossibleChildren, function (kids, index) {
-								var parentId = kids.Parent;
-								var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
-								if (foundParent.length) {
-									foundChildParent = foundParent[0].NodeID;
-									return false;
-								}
-							});
-							findObj = { 'Name': folder, Parent: foundChildParent };
-						}
-					} else {
-						findObj = { 'Name': folder, NodeID: foundChildParent };
-					}
-					findChild = _.where(self.arrCategory[index], findObj);
-					foundChild = findChild[0];
-					foundChildParent = foundChild.Parent;
-					foundChild = _.clone(foundChild);
-					delete foundChild.Parent;
+	    try {
+		    if (locationPath.length && locationPath !== '/') {
+			    self.lastLocationPath = self.location.path();
+			    var subfolders = locationPath.substring(1).split('/');
+			    var findChild, foundChildParent, findObj, foundChild;
+			    self.activeBreadcrumb = [];
+			    _.forEachRight(subfolders, function (folder, index) {
+				    if (folder.length) {
+					    if (_.isUndefined(foundChildParent)) {
+						    if (index === 0) {
+							    //if this is only one level above then we can safely assume there are no duplicate children
+							    findObj = { 'Name': folder };
+						    } else {
+							    //this is to safeguard against multiple children of the same name
+							    var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
+							    var findAllPossibleParents = _.where(self.arrCategory[index-1], { 'Name': subfolders[index-1] });
+							    _.forEach(findAllPossibleChildren, function (kids, index) {
+								    var parentId = kids.Parent;
+								    var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
+								    if (foundParent.length) {
+									    foundChildParent = foundParent[0].NodeID;
+									    return false;
+								    }
+							    });
+							    findObj = { 'Name': folder, Parent: foundChildParent };
+						    }
+					    } else {
+						    findObj = { 'Name': folder, NodeID: foundChildParent };
+					    }
+					    findChild = _.where(self.arrCategory[index], findObj);
+					    foundChild = findChild[0];
+					    foundChildParent = foundChild.Parent;
+					    foundChild = _.clone(foundChild);
+					    delete foundChild.Parent;
 
-					if (index === (subfolders.length - 1)) {
-						foundChild.Current = true;
-						self.currentObj = _.clone(foundChild);
-					}
-				}
-				if (!_.isUndefined(foundChild)) {
-					self.activeBreadcrumb.push(_.clone(foundChild));
-				}
-			});
-			self.activeBreadcrumb.reverse();
-		} else {
-			self.currentObj = {};
-			self.activeBreadcrumb = [];
-			self.lastLocationPath = '';
-		}
-		self.populateSlicers(locationSlicers);
+					    if (index === (subfolders.length - 1)) {
+						    foundChild.Current = true;
+						    self.currentObj = _.clone(foundChild);
+					    }
+				    }
+				    if (!_.isUndefined(foundChild)) {
+					    self.activeBreadcrumb.push(_.clone(foundChild));
+				    }
+			    });
+	            self.activeBreadcrumb.reverse();   
+		    } else {
+			    self.currentObj = {};
+			    self.activeBreadcrumb = [];
+			    self.lastLocationPath = '';
+		    }
+            self.populateSlicers(locationSlicers);
+	    }
+	    catch(err) {
+	        logErrorToServer(err);
+	    }
 	};
 
 	NavListController.prototype.setNewPath = function (subLevel) {
@@ -1272,7 +1326,10 @@
 			STARTINGLEVEL = adjustLevelArray(self.arrCategory, STARTINGLEVEL, MAXLEVEL, false);
 		}
 		if (self.arrCategory.length) {
-			self.arrCategory[level] = self.arrCategory[level].concat(tempArr);
+		    //prevents repopulating the nav from global search jump
+		    if (!_.some(self.arrCategory[level], tempArr[0])) {
+		        self.arrCategory[level] = self.arrCategory[level].concat(tempArr);    
+		    }
 		}
 		return true;
 	};
