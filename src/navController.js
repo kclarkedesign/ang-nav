@@ -860,7 +860,7 @@
         }
         //if the search result that the user clicks on is in the same interest area that the user is in
         //then just redirect and do a word search as normal
-        if (slName === self.currentObj.Name) {
+        if (!_.isUndefined(self.currentObj) && slName === self.currentObj.Name) {
             self.textboxSearch = self.searchTerm;
             self.modifyUrlSearch(true);
             return;
