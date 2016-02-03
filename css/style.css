@@ -2030,11 +2030,7 @@ transform: rotate(-45deg);
 	color: #fff;
 	   
 }
-#result-status {
-    font-weight: bold;
-    color: #626262;
-    font-size: 1.3rem;
-}
+
 
 /** Shake **/
 
@@ -2787,6 +2783,7 @@ input[type="date"]::-webkit-inner-spin-button{
  	left: 0;
  	bottom: 0;
  	right: 0;
+ 	padding: 10px 0 40px;
 }
 .container .fail-message:before {
 	content: '';
@@ -2812,15 +2809,28 @@ input[type="date"]::-webkit-inner-spin-button{
     font-weight: normal;
     margin: 6px 2px 2px;
     border-radius: 4px;
-    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -196px no-repeat;
-    color: #FFF;
+    background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -124px repeat;
+    color: #434343;
     font-size: 13px;
     border: 1px solid #ADADAD;
+    white-space: nowrap;
 }
 .removable a {
     padding-left: 3px;
 }
+a .removable:hover {
+	/*background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -124px repeat;*/
+	/*color: #434343;*/
+	background: url("http://www.92y.org/92StreetY/media/MICROSITES/92y_nav_sprite.png") #e2e2e2 -1px -148px repeat;
+	color: #FFF;
+	/*color: #909192;*/
 
+}
+.removable .fa.fa-times {
+    padding-left: 6px;
+    border-left: 1px solid;
+    margin-left: 2px;
+}
 .found-in {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -2841,11 +2851,52 @@ input[type="date"]::-webkit-inner-spin-button{
 	color: #000;
 	font-weight: normal;
 }
+#result-status {
+    font-weight: bold;
+    color: #626262;
+    font-size: 1.3rem;
+    overflow: hidden;
+    min-height: 29px;
+    padding-top: 4px;
+}
+.fd-title {
+    font-weight: normal;
+    padding-left: 10px;
+}
 /*#suggested-results {
 	font-size: 12px;
 }*/
-
+@media (max-width: 468px) {
+	
+	#filter-details span {
+	    display: inline-block;
+	}
+	#filter-details .removable,
+	#filter-details a {
+	    display: block;
+	    margin-left: 0;
+	}
+	#filter-details>span {
+	    display: inline-block;
+	    font-size: 12px;
+	    white-space: nowrap;
+	    margin: 0;
+	    float: left;
+	}
+	.fd-title {
+		width: 100%;
+	}
+}
 @media (max-width: 768px) {
+	#Container.tileContainer {
+		padding-top: 5px;
+	}
+	#filter-details {
+		display: block;
+		padding-top: 8px;
+		border-top: 1px solid #ccc;
+		margin-top: 8px;
+	}
 	.noResults.heading {
 	    font-size: 1.8rem;
 	    line-height: 1.1;
