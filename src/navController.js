@@ -132,6 +132,7 @@
 	    self.showNoGlobalResults = false;
 	    self.searchTerm = '';
 	    self.isFetching  = false;
+	    self.appliedSlice = false;
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -1477,6 +1478,7 @@
 			}
 			self.JumpNav = { To: self.currentObj.Name, Type: 'sliceBy' };
 		}
+	    self.appliedSlice = true;
 	};
 
 	NavListController.prototype.checkDateState = function (open) {
@@ -1617,7 +1619,11 @@
 				}
 			});
 		}
-		return _.size(self.enabledFilters) > 0;
+	    if (_.size(self.enabledFilters) === 0) {
+	        self.appliedSlice = false;
+	        return false;
+	    }
+	    return true;
 	};
 
 	NavListController.prototype.isFilterEnabled = function (which) {

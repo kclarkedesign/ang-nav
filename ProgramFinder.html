@@ -453,7 +453,7 @@
 					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
                             <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>. 
                             <!-- Filter removable pills -->
-                            <span id="filter-details" ng-show="navListCtrl.displayFilterOptions() "><span class="fd-title">Filtered by:</span> 
+                            <span id="filter-details" ng-show="navListCtrl.displayFilterOptions() && navListCtrl.appliedSlice"><span class="fd-title">Filtered by:</span> 
                             	<!--Day of Time -->
                             	<span class="" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
                             		<a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="fa fa-times"></span></span></a>
