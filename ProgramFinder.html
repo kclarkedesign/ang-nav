@@ -119,7 +119,7 @@
 		                                                        
 		                                                        <div id="searchGlobal-list" class="col-md-12 no-p tile" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 															        <span class="s-plainText" ng-show="navListCtrl.showNoGlobalResults">Sorry, no results found</span>
-															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)" ng-href="">
+															        <a class="" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)">
 															            <span class="interest-title" ng-bind-html="sr.interestArea | unsafe"></span>
 															        </a>
 															    </div>
@@ -449,38 +449,68 @@
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
-					    <div id="result-status" class="pb10" ng-show="navListCtrl.onscreenResults.length > 0">
+					    <div id="result-status" class="mb10" ng-show="navListCtrl.onscreenResults.length > 0">
 					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
-                            <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>
+                            <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>. 
+                            <!-- Filter removable pills -->
+                            <span id="filter-details" ng-show="navListCtrl.displayFilterOptions() "><span class="fd-title">Filtered by:</span> 
+                            	<!--Day of Time -->
+                            	<span class="" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
+                            		<a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="fa fa-times"></span></span></a>
+                            	</span>
+                            	<!-- /Day of Time -->
+                            	<!-- Class/Event -->
+                            	<span class="" ng-show="navListCtrl.typeSlice !== 'all'">
+                            		<span ng-show="navListCtrl.enabledFilters['Class/Event'].length"></span>
+                            		<a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"><span class="removable">Class/Event <span class="fa fa-times"></span></span></a>
+                            	</span>
+                            	<!-- /Class/Event -->
+                            	<!-- Age Range -->
+                            	<span class="" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
+                            	    <span ng-show="navListCtrl.enabledFilters['Age Range'].length"></span>
+                            	    <a ng-click="navListCtrl.clearDropDown('age')">
+                            	        <span class="removable">Age Range <span class="fa fa-times"></span></span></a>
+                            	</span>
+                            	<!-- /Age Range -->
+                            	<!-- Filter text -->
+                            	<span class="" ng-show="navListCtrl.searchTerm !== ''">
+                            		<a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
+				                        <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="fa fa-times"></span></span>
+                                    </a>
+				                </span>
+				                <!-- /Filter text -->
+                            </span>
+                            <!-- /Filter removable pills -->
 					    </div>
 						<div id="tiles" class="row" style="display: none">
 						    <div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.isFetching === false">
 						        <div class="itemContents auto-height">
-						            <div class="noResults heading" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
-						            <div class="noResults heading" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
+						            <div class="noResults heading pt25 mt15" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
+						            <div class="noResults heading pt25 mt15" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
 						            <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
 						                <span class="noResults pt10">Try removing some filters: </span>
 						                <br />
 						                <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
-						                    <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="glyphicon glyphicon-remove-sign"></span></span>
-						                        <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span></a>
+						                    <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="fa fa-times"></span></span>
+						                    </a>
+						                    <!-- <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span> -->
 						                </span>
 						                <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
 						                    <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
 						                    <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
-						                        <span class="removable">Class/Event <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-						                    <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span>
+						                        <span class="removable">Class/Event <span class="fa fa-times"></span></span></a>
+						                   <!--  <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span> -->
 						                </span>
 						                <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
-						                    <span ng-show="navListCtrl.enabledFilters['Age Range'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Age Range'].pre | unsafe"></span>
+						                    <span ng-show="navListCtrl.enabledFilters['Age Range'].length"></span>
 						                    <a ng-click="navListCtrl.clearDropDown('age')">
-						                        <span class="removable">Age Range <span class="glyphicon glyphicon-remove-sign"></span></span></a>
-						                    <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span>
+						                        <span class="removable">Age Range <span class="fa fa-times"></span></span></a>
+						                   <!--  <span ng-bind-html="navListCtrl.enabledFilters['Age Range'].suf | unsafe"></span> -->
 						                </span>
 						                <span class="noResults" ng-show="navListCtrl.searchTerm !== ''">
-						                    <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span>
+						                    <!-- <span ng-bind-html="navListCtrl.enabledFilters['Search'].pre | unsafe"></span> -->
 						                    <a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
-						                        <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="glyphicon glyphicon-remove-sign"></span></span>
+						                        <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="fa fa-times"></span></span>
                                             </a>
 						                </span>
 						            </div>
@@ -495,10 +525,10 @@
 						    </div>
 							<div id="suggested-results"class="col-md-12 text-center" ng-show="navListCtrl.displaySearchResults.length > 0 && navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.isFetching === false">
 								<div class="itemContents auto-height">
-									<div class="noResults heading pb5">Luckily, we found programs for:</div>
+									<div class="noResults heading pb5">We found programs for:</div>
 									<div ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.textboxSearch !== ''">
-									    <a class="s-items pb5" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect()" ng-href="{{sr.href}}">
-									        <span class="s-term">{{sr.searchTerm}}</span> <span class="s-plainText">in</span> <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
+									    <a class="s-items pb5" ng-repeat="sr in navListCtrl.displaySearchResults" ng-click="navListCtrl.prepareSearchRedirect(sr.interestArea)">
+									        <span class="s-term" ng-bind-html="navListCtrl.searchTerm | unsafe"></span> <span class="s-plainText">in</span> <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
 									    </a>
 									</div>
 								</div>
@@ -506,7 +536,7 @@
 							<div class="col-md-12 col-lg-12 pl0 pr0">
 								<!-- For Medium, Large and Xlarge screen sizes -->
 								<div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore('desktop')" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-12 col-md-12 pl10 pr10" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-12 col-md-12" ng-class="{'col-lg-12 featured list-lg': classInfo.Featured, 'col-lg-12 list-lg': !classInfo.Featured}">
 										<div class="itemContents hidden-xs p20">
 											<div class="col-xs-3 no-p">
 												<div class="corner-ribbon top-left red shadow">Featured</div>
@@ -544,7 +574,7 @@
 								</div>
 								<!-- For below Medium screen sizes -->
 								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1">
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3 pl10 pr10" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
 											<a ng-href="http://www.92y.org{{classInfo.Url}}">
 												<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
