@@ -449,7 +449,7 @@
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
-					    <div id="result-status" class="mb5" ng-show="navListCtrl.onscreenResults.length > 0">
+					    <div id="result-status" class="mb10" ng-show="navListCtrl.onscreenResults.length > 0">
 					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
                             <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>. 
                             <!-- Filter removable pills -->
@@ -465,6 +465,20 @@
                             		<a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"><span class="removable">Class/Event <span class="fa fa-times"></span></span></a>
                             	</span>
                             	<!-- /Class/Event -->
+                            	<!-- Age Range -->
+                            	<span class="" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
+                            	    <span ng-show="navListCtrl.enabledFilters['Age Range'].length"></span>
+                            	    <a ng-click="navListCtrl.clearDropDown('age')">
+                            	        <span class="removable">Age Range <span class="fa fa-times"></span></span></a>
+                            	</span>
+                            	<!-- /Age Range -->
+                            	<!-- Filter text -->
+                            	<span class="" ng-show="navListCtrl.searchTerm !== ''">
+                            		<a class="" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)">
+				                        <span class="removable">&quot;{{navListCtrl.searchTerm}}&quot; <span class="fa fa-times"></span></span>
+                                    </a>
+				                </span>
+				                <!-- /Filter text -->
                             </span>
                             <!-- /Filter removable pills -->
 					    </div>

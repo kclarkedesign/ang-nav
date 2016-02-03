@@ -2866,7 +2866,7 @@ a .removable:hover {
 /*#suggested-results {
 	font-size: 12px;
 }*/
-@media (max-width: 468px) {
+@media (max-width: 991px) {
 	
 	#filter-details span {
 	    display: inline-block;
@@ -2874,7 +2874,7 @@ a .removable:hover {
 	#filter-details .removable,
 	#filter-details a {
 	    display: block;
-	    margin-left: 0;
+	    margin: 2px 3px 4px 0;
 	}
 	#filter-details>span {
 	    display: inline-block;
@@ -2884,10 +2884,11 @@ a .removable:hover {
 	    float: left;
 	}
 	.fd-title {
-		width: 100%;
+	    height: 28px;
+	    line-height: 29px;
+	    display: block !important;
+	    padding: 0 10px 0 0;
 	}
-}
-@media (max-width: 768px) {
 	#Container.tileContainer {
 		padding-top: 5px;
 	}
@@ -2907,6 +2908,9 @@ a .removable:hover {
 	    text-overflow: ellipsis;
 	    overflow: hidden;
 	}
+}
+@media (max-width: 768px) {
+	
 }
 
 /** Material Design
