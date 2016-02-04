@@ -453,21 +453,19 @@
 					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
                             <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>. 
                             <!-- Filter removable pills -->
-                            <span id="filter-details" ng-show="navListCtrl.displayFilterOptions() "><span class="fd-title">Filtered by:</span> 
+                            <span id="filter-details" ng-show="navListCtrl.displayFilterOptions()"><span class="fd-title">Filtered by:</span> 
                             	<!--Day of Time -->
-                            	<span class="" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
+                            	<span class="" ng-show="navListCtrl.dateApplyClicked && navListCtrl.initialized">
                             		<a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="fa fa-times"></span></span></a>
                             	</span>
                             	<!-- /Day of Time -->
                             	<!-- Class/Event -->
                             	<span class="" ng-show="navListCtrl.typeSlice !== 'all'">
-                            		<span ng-show="navListCtrl.enabledFilters['Class/Event'].length"></span>
                             		<a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')"><span class="removable">Class/Event <span class="fa fa-times"></span></span></a>
                             	</span>
                             	<!-- /Class/Event -->
                             	<!-- Age Range -->
-                            	<span class="" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
-                            	    <span ng-show="navListCtrl.enabledFilters['Age Range'].length"></span>
+                            	<span class="" ng-show="navListCtrl.ageApplyClicked && navListCtrl.initialized">
                             	    <a ng-click="navListCtrl.clearDropDown('age')">
                             	        <span class="removable">Age Range <span class="fa fa-times"></span></span></a>
                             	</span>

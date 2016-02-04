@@ -132,6 +132,8 @@
 	    self.showNoGlobalResults = false;
 	    self.searchTerm = '';
 	    self.isFetching  = false;
+	    self.dateClearClicked = false;
+	    self.ageClearClicked = false;
 
 		self.savedPrograms = self.cookieStore.get('savedPrograms');
 		if (_.isUndefined(self.savedPrograms)) {
@@ -510,18 +512,19 @@
 	NavListController.prototype.interestClicked = function (self, subLevel) {
 		var currentName = subLevel.Name;
 		var currentSearch = subLevel.SearchTerm;
-		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name || (_.isUndefined(self.currentObj) && subLevel.NodeID === LOADINGNODEID)) {
+	    var currentId = subLevel.NodeID;
+		if (!_.isUndefined(self.currentObj) && currentName === self.currentObj.Name && currentId === self.currentObj.NodeID || (_.isUndefined(self.currentObj) && currentId === LOADINGNODEID)) {
 			return;
 		}
-		if (_.isUndefined(self.currentObj) && subLevel.NodeID === ERRORLOADINGNODEID) {
+		if (_.isUndefined(self.currentObj) && currentId === ERRORLOADINGNODEID) {
 		    self.navCache.removeAll();
 			location.reload();
 		}
 		adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
 
-		var classIndex = _.findIndex(self.allClasses, {'Name': subLevel.Name});
+		var classIndex = _.findIndex(self.allClasses, {'Name': currentName});
 		var classesByInterest = [self.allClasses[classIndex]];
-		self.getValues(classesByInterest, 0, self.navsDict[subLevel.Name]);
+		self.getValues(classesByInterest, 0, self.navsDict[currentName]);
 
 		var locationPath = self.location.path();
 		var locationObj = seperateSlicersFromUrl(locationPath);
@@ -537,7 +540,7 @@
 		}
 		self.currentObj.Level = 0;
 		self.currentObj.Name = currentName;
-		self.currentObj.NodeID = subLevel.NodeID;
+		self.currentObj.NodeID = currentId;
 		self.currentObj.Current = true;
 		self.currentObj.FeaturedItemsHeader = '';
         if (_.isUndefined(currentSearch)) {
@@ -1007,17 +1010,28 @@
 			    self.onscreenResults = _.clone(onscreenResultsQueue);
 		    // }
 		
-		    self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
+            if ((!_.isUndefined(self.sdateSlice) && self.sdateSlice !== self.initSdateSlice) || (!_.isUndefined(self.edateSlice) && self.edateSlice !== self.initEdateSlice)) {
+                self.onscreenResults = filterListByDateRange(self.onscreenResults, self.sdateSlice, self.edateSlice);
+	            self.dateApplyClicked = true;
+	        } else {
+	            self.dateApplyClicked = false;
+	        }
 
-		    self.onscreenResults = filterListWithFutureDates(self.onscreenResults, self.daySlice, self.timeSlice);
+	        if ((!_.isUndefined(self.daySlice) && self.daySlice !== self.initDaySlice) || (!_.isUndefined(self.timeSlice) && self.timeSlice !== self.initTimeSlice)) {
+	            self.onscreenResults = filterListWithFutureDates(self.onscreenResults, self.daySlice, self.timeSlice);
+	            self.dateApplyClicked = true;
+	        }
 
-		    if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
+	        if (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') {
 			    self.onscreenResults = _.filter(self.onscreenResults, function(res) {
 				    return res.ItemType.toLowerCase() === self.typeSlice;
 			    });
 		    }
-		    if (!_.isUndefined(self.ageSlice) && self.ageSlice !== 'all') {
-			    self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
+		    if (!_.isUndefined(self.ageSlice) && self.ageSlice !== self.initAgeSlice) {
+		        self.onscreenResults = filterListByKeywords(self.onscreenResults, self.ageSlice);
+		        self.ageApplyClicked = true;
+		    } else {
+		        self.ageApplyClicked = false;
 		    }
 	        //self.searchTerm = self.textboxSearch;
 	        if (self.searchTerm.length === 0) {
@@ -1433,7 +1447,6 @@
 			case 'age':
 				sliceUrl = AGESLICEURL;
 				sliceArr = self.ageSlice;
-				self.ageApplyClicked = true;
 				break;
 			case 'sdate':
 				sliceUrl = SDATESLICEURL;
@@ -1446,17 +1459,14 @@
 			case 'datetime':
 				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL];
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice)];
-				self.dateApplyClicked = true;
 				break;
 			case 'datetimeage':
 				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL, AGESLICEURL];
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice];
-				self.dateApplyClicked = true;
 				break;
 			case 'datetimeagetypesearch':
 				sliceUrl = [DAYSLICEURL, TIMESLICEURL, SDATESLICEURL, EDATESLICEURL, AGESLICEURL, TYPESLICEURL, SEARCHSLICEURL];
 				sliceArr = [self.daySlice, self.timeSlice, Date.parse(self.sdateSlice), Date.parse(self.edateSlice), self.ageSlice, self.typeSlice, self.textboxSearch];
-				self.dateApplyClicked = true;
 				break;
 		}
 		if (!_.isUndefined(sliceUrl)) {
@@ -1482,14 +1492,15 @@
 	NavListController.prototype.checkDateState = function (open) {
 		var self = this;
 		if (open) {
-			self.dateApplyClicked = false;
 			self.origDaySlice = _.clone(self.daySlice);
 			self.origTimeSlice = _.clone(self.timeSlice);
 			self.origSdateSlice = self.sdateSlice;
 			self.origEdateSlice = self.edateSlice;
 			self.opened.dayOrTime = true;
+		    self.dateClearClicked = false;
 		} else {
-			if (!self.dateApplyClicked) {
+		    //if popup closes and apply not clicked then it resets
+			if (!self.dateApplyClicked && !self.dateClearClicked) {
 				self.daySlice = _.clone(self.origDaySlice);
 				self.timeSlice = _.clone(self.origTimeSlice);
 				self.sdateSlice = self.origSdateSlice;
@@ -1509,12 +1520,13 @@
 		if (_.isNull(self.edateSlice) || (self.edateSlice && (typeof self.edateSlice === 'object' && (self.edateSlice).getTime() === 0))) {
 			delete self.edateSlice;
 		}
-		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) && _.isEqual(self.timeSlice, self.initTimeSlice));
+		return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice) 
+		    && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
 	};
 
 	NavListController.prototype.checkAgeInit = function () {
 		var self = this;
-		return _.isEqual(self.ageSlice, self.initAgeSlice);
+		return (_.isEqual(self.ageSlice, self.initAgeSlice) && (_.isUndefined(self.ageApplyClicked) || !self.ageApplyClicked));
 	};
 
 	NavListController.prototype.clearDropDown = function (clearWhich) {
@@ -1524,9 +1536,11 @@
 			self.timeSlice = self.initTimeSlice;
 			self.sdateSlice = self.initSdateSlice;
 			self.edateSlice = self.initEdateSlice;
+		    self.dateClearClicked = true;
 		}
 		if (clearWhich.indexOf('age') >= 0) {
 			self.ageSlice = self.initAgeSlice;
+		    self.ageClearClicked = true;
 		}
 		if (clearWhich.indexOf('type') >=0) {
 			self.typeSlice = 'all';
@@ -1541,11 +1555,11 @@
 	NavListController.prototype.checkAgeState = function (open) {
 		var self = this;
 		if (open) {
-			self.ageApplyClicked = false;
 			self.origAgeSlice = _.clone(self.ageSlice);
 			self.opened.ageRange = true;
+		    self.ageClearClicked = false;
 		} else {
-			if (!self.ageApplyClicked) {
+			if (!self.ageApplyClicked && !self.ageClearClicked) {
 				self.ageSlice = _.clone(self.origAgeSlice);
 			}
 			self.opened.ageRange = false;
@@ -1617,7 +1631,14 @@
 				}
 			});
 		}
-		return _.size(self.enabledFilters) > 0;
+	    if (_.size(self.enabledFilters) === 0) {
+	        return false;
+	    }
+	    var okToShow = false;
+	    if ((self.dateApplyClicked && self.initialized) || self.typeSlice !== 'all' || (self.ageApplyClicked && self.initialized) || self.searchTerm !== '') {
+	        okToShow = true;
+	    }
+	    return okToShow;
 	};
 
 	NavListController.prototype.isFilterEnabled = function (which) {
