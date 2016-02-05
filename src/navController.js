@@ -892,28 +892,37 @@
             //self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
                 var results = data.data;
                 if (results.length) {
-                    var interestArr = _.uniq(_.flatten(_.pluck(results, 'InterestAreas')));
-                    _.forEach(interestArr, function(interest) {
-                        var sublevel = _.find(self.allClasses, function(ac) {
-                            return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
+                    _.forEach(results, function(result) {
+                        var interestAreas = _.uniq(result.InterestAreas);
+                        var keywords = _.uniq(result.Keywords);
+                        _.forEach(interestAreas, function(interest) {
+                            var sublevel = _.find(self.allClasses, function(ac) {
+                                return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
+                            });
+                            var subLevelName = sublevel.Name;
+                            var subLevelKeywords = sublevel.Keywords;
+                            var slkwarr = subLevelKeywords.split(',');
+                            if (_.intersection(slkwarr, keywords).length) {
+                                if (!_.isUndefined(sublevel)) {
+                                    var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                                    var subLevelId = foundLevel.NodeID;
+                                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
+                                        self.navsDict[subLevelName] = items.data;
+                                        var absUrl = self.location.absUrl().toLowerCase();
+                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                                        self.displaySearchResults.push({
+                                            searchTerm: searchTerm,
+                                            interestArea: subLevelName,
+                                            href: encodeURI(href)
+                                        });
+                                        self.showGlobalSpinner = false;
+                                    });
+                                }
+                            } else {
+                                logErrorToServer('Global search "'+ searchTerm +'" found results in "'+ subLevelName +'" but does not have keywords "'+ subLevelKeywords +'" to show up there.');
+                            }
                         });
-                        var subLevelName = sublevel.Name;
-                        if (!_.isUndefined(sublevel)) {
-                            var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-		                    var subLevelId = foundLevel.NodeID;
-		                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
-		                        self.navsDict[subLevelName] = items.data;
-		                        var absUrl = self.location.absUrl().toLowerCase();
-		                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-                                var href = baseUrl +'#/'+ subLevelName +'/search__'+ searchTerm;
-                                self.displaySearchResults.push({
-                                    searchTerm: searchTerm,
-                                    interestArea: subLevelName,
-                                    href: encodeURI(href)
-                                });
-		                        self.showGlobalSpinner = false;
-		                    });
-                        }
                     });
                 } else {
                     //search finds no results
