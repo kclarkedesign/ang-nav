@@ -911,12 +911,14 @@
                                         var absUrl = self.location.absUrl().toLowerCase();
                                         var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
                                         var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
-                                        self.displaySearchResults.push({
-                                            searchTerm: searchTerm,
-                                            interestArea: subLevelName,
-                                            href: encodeURI(href)
-                                        });
-                                        self.showGlobalSpinner = false;
+                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                            self.displaySearchResults.push({
+                                                searchTerm: searchTerm,
+                                                interestArea: subLevelName,
+                                                href: encodeURI(href)
+                                            });
+                                            self.showGlobalSpinner = false;
+                                        }
                                     });
                                 }
                             } else {
