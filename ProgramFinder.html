@@ -449,7 +449,7 @@
 
 					<div id="Container" class="tileContainer container pt15" enable-container>
 						<div id="nojs">You must have JavaScript enabled to use this site.</div>
-					    <div id="result-status" class="mb10" ng-show="navListCtrl.onscreenResults.length > 0">
+					    <div id="result-status" class="mb10" ng-show="navListCtrl.onscreenResults.length > 0" ng-cloak>
 					        Viewing results for <span ng-show="!navListCtrl.showSpinner && navListCtrl.textboxSearch !== ''">&quot;{{navListCtrl.textboxSearch}}&quot; <span>in</span></span> 
                             <span ng-bind-html="(navListCtrl.getBreadcrumbs(true)).Name | unsafe"></span>. 
                             <!-- Filter removable pills -->
@@ -488,18 +488,18 @@
 						            <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
 						                <span class="noResults pt10">Try removing some filters: </span>
 						                <br />
-						                <span class="noResults" ng-show="!navListCtrl.checkDateInit() && navListCtrl.initialized">
+						                <span class="noResults" ng-show="navListCtrl.dateApplyClicked && navListCtrl.initialized">
 						                    <a ng-click="navListCtrl.clearDropDown('datetime')"><span class="removable">Date or Time <span class="fa fa-times"></span></span>
 						                    </a>
 						                    <!-- <span ng-bind-html="navListCtrl.enabledFilters['Date or Time'].suf | unsafe"></span> -->
 						                </span>
 						                <span class="noResults" ng-show="navListCtrl.typeSlice !== 'all'">
-						                    <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span>
+						                    <!-- <span ng-show="navListCtrl.enabledFilters['Class/Event'].pre.length" ng-bind-html="navListCtrl.enabledFilters['Class/Event'].pre | unsafe"></span> -->
 						                    <a ng-click="navListCtrl.typeSlice='all';navListCtrl.sliceBy('type')">
 						                        <span class="removable">Class/Event <span class="fa fa-times"></span></span></a>
 						                   <!--  <span ng-bind-html="navListCtrl.enabledFilters['Class/Event'].suf | unsafe"></span> -->
 						                </span>
-						                <span class="noResults" ng-show="!navListCtrl.checkAgeInit() && navListCtrl.initialized">
+						                <span class="noResults" ng-show="navListCtrl.ageApplyClicked && navListCtrl.initialized">
 						                    <span ng-show="navListCtrl.enabledFilters['Age Range'].length"></span>
 						                    <a ng-click="navListCtrl.clearDropDown('age')">
 						                        <span class="removable">Age Range <span class="fa fa-times"></span></span></a>
@@ -873,5 +873,14 @@
 				<div class="qp-ui-mask-modal" mask-modal></div>
 			</div>
 		</div>
+		<script type="text/javascript">
+		  var _mfq = _mfq || [];
+		  (function() {
+		    var mf = document.createElement("script");
+		    mf.type = "text/javascript"; mf.async = true;
+		    mf.src = "//cdn.mouseflow.com/projects/c505cd82-afe7-4187-8118-172ac4507e26.js";
+		    document.getElementsByTagName("head")[0].appendChild(mf);
+		  })();
+		</script>
 	</body>
 </html>
