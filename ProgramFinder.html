@@ -488,7 +488,7 @@
 						<div id="tiles" class="row" style="display: none">
 						    <div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.initialized && navListCtrl.isFetching === false">
 						        <div class="itemContents auto-height">
-						            <div class="noResults heading pt25 mt15" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
+						            <div class="noResults heading pt25 mt15" ng-class="{'pb20 mb25': !navListCtrl.displayFilterOptions()}" ng-hide="navListCtrl.searchTerm !== ''">No results found.</div>
 						            <div class="noResults heading pt25 mt15" ng-show="navListCtrl.searchTerm !== ''">No results for <em>{{navListCtrl.searchTerm}}</em>.</div>
 						            <div class="fail-message" ng-show="navListCtrl.displayFilterOptions()">
 						                <span class="noResults pt10">Try removing some filters: </span>
