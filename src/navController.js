@@ -895,6 +895,9 @@
                     _.forEach(results, function(result) {
                         var interestAreas = _.uniq(result.InterestAreas);
                         var keywords = _.uniq(result.Keywords);
+                        var lcKeywords = _.map(keywords, function(kw) {
+                            return kw.toLowerCase();
+                        });
                         _.forEach(interestAreas, function(interest) {
                             var sublevel = _.find(self.allClasses, function(ac) {
                                 return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
@@ -902,7 +905,7 @@
                             var subLevelName = sublevel.Name;
                             var subLevelKeywords = sublevel.Keywords;
                             var slkwarr = subLevelKeywords.split(',');
-                            if (_.intersection(slkwarr, keywords).length) {
+                            if (_.intersection(slkwarr, lcKeywords).length) {
                                 if (!_.isUndefined(sublevel)) {
                                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                                     var subLevelId = foundLevel.NodeID;
