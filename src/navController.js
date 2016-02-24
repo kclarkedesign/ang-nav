@@ -166,16 +166,12 @@
             }
         })(self.tileInfoSrv.cacheFactory);
 
-		self.tileInfoSrv.getAll('items/Filters.json', self.navCache, 'navigation').then(function (data) {
+		self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
 			self.getInterestItems(self.getAllInitialClasses, data);
 		}, function (respData) {
-			self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
-				self.getInterestItems(self.getAllInitialClasses, data);
-			}).finally(function() {
-				if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
-					self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
-				}
-			});
+		    if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
+		        self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
+		    }
 		});
 
 		self.log = function (variable) {
@@ -885,6 +881,7 @@
 
     NavListController.prototype.fetchSearchResults = function(searchTerm, isGlobal) {
 		var self = this;
+        self.showNoGlobalResults = false;
         self.displaySearchResults = [];
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
@@ -903,7 +900,7 @@
                                 return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
                             });
                             var subLevelName = sublevel.Name;
-                            var subLevelKeywords = sublevel.Keywords;
+                            var subLevelKeywords = sublevel.Keywords.toLowerCase();
                             var slkwarr = subLevelKeywords.split(',');
                             if (_.intersection(slkwarr, lcKeywords).length) {
                                 if (!_.isUndefined(sublevel)) {
@@ -921,6 +918,7 @@
                                                 href: encodeURI(href)
                                             });
                                             self.showGlobalSpinner = false;
+                                            self.showNoGlobalResults = false;
                                         }
                                     });
                                 }
@@ -929,6 +927,11 @@
                             }
                         });
                     });
+                    if (self.showGlobalSpinner) {
+                        //search finds no results
+                        self.showGlobalSpinner = false;
+                        self.showNoGlobalResults = isGlobal;
+                    }
                 } else {
                     //search finds no results
                     self.showGlobalSpinner = false;
