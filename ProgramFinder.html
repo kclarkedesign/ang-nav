@@ -21,7 +21,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
 		<script src="src/ng-infinite-scroll.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
-		<script src="src/navController.js?v=2_8"></script>
+		<script src="src/navController.js?v=2_9"></script>
 		<script src="src/angular-cache.min.js"></script>
 		<script src="src/angulartics.js"></script>
 		<script src="src/navConfig.js"></script>
@@ -543,14 +543,14 @@
 										<div class="itemContents hidden-xs p20">
 											<div class="col-xs-3 no-p">
 												<div class="corner-ribbon top-left red shadow">Featured</div>
-												<a ng-href="http://www.92y.org{{classInfo.Url}}">
+												<a ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">
 													<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 												</a>
 											</div>
 											<div class="col-xs-7 pl0 pr0">
 												<div class="item-details">
 													<div class="classTitle">
-														<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}">{{classInfo.Title}}</a>
+														<a class="titleLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">{{classInfo.Title}}</a>
 													</div>
 													<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 													<div class="contentWrap">
@@ -561,10 +561,10 @@
 											</div>
 											<div class="col-xs-2 pr0">
 												<div class="getTickets">
-													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
+													<a class="getLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 												<div class="getMore">
-														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
@@ -579,17 +579,17 @@
 								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1">
 									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
 										<div class="itemContents hidden-xs">
-											<a ng-href="http://www.92y.org{{classInfo.Url}}">
+											<a ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">
 												<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 											</a>
 											<div class="item-details">
 												<div class="classTitle">
-													<a class="titleLink" ng-href="http://www.92y.org{{classInfo.Url}}">{{classInfo.Title}}</a>
+													<a class="titleLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">{{classInfo.Title}}</a>
 												</div>
 												<div class="classDate">{{classInfo.FriendlyDate}}</div>
 												<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
 												<div class="getMore">
-													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
 														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
 														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
@@ -599,7 +599,7 @@
 													<div class="shortDescription hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
 												</div>
 												<div class="getTickets">
-													<a class="getLink" ng-href="http://www.92y.org{{classInfo.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
+													<a class="getLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 											</div>
 										</div>										
@@ -607,13 +607,13 @@
 											<div class="container-fluid">
 												<div class="row">
 													<div id="tileImg" class="col-xs-5 no-p">
-														<a ng-href="http://www.92y.org{{classInfo.Url}}" class="">
+														<a ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">
 															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
 														</a>
 													</div>
 													<div class="item-details col-xs-7 pull-right pt10">
 														<div class="classTitleMobile">
-															<a class="classTitleLink" ng-href="http://www.92y.org{{classInfo.Url}}">{{classInfo.Title}}</a>
+															<a class="classTitleLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">{{classInfo.Title}}</a>
 														</div>
 														<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
@@ -624,7 +624,7 @@
 
 													</div>
 													<div class="item-details col-xs-7 pull-right pb10">
-														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url); toggle = !toggle">
+														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
@@ -847,18 +847,18 @@
 																			</a>
 																		</div>
 																		<div id="tileImg" class="col-xs-12 no-p">
-																			<a ng-href="http://www.92y.org{{savedProgram.Url}}" class="">
+																			<a ng-href="{{savedProgram.Url}}" target="{{savedProgram.UrlTarget}}">
 																				<img ng-src="http://www.92y.org{{savedProgram.Img}}" border="0" alt="{{savedProgram.Title}}" width="300">
 																			</a>
 
 																		</div>
 																		<div class="item-details col-xs-12 pull-right pb10">
 																			<div class="classTitleMobile">
-																				<a ng-href="http://www.92y.org{{savedProgram.Url}}" class="ng-binding">{{savedProgram.Title}}</a>
+																				<a ng-href="{{savedProgram.Url}}" target="{{savedProgram.UrlTarget}}" class="ng-binding">{{savedProgram.Title}}</a>
 																				
 																			</div>
 																			<span class="getTickets">
-																				<a class="getLink" ng-href="http://www.92y.org{{savedProgram.Url}}">Learn More <i class="fa fa-arrow-right"></i></a>
+																				<a class="getLink" ng-href="{{savedProgram.Url}}" target="{{savedProgram.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 																			</span>
 																		</div>
 																	</div>
