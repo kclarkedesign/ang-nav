@@ -2397,7 +2397,7 @@
 		        }, 500);
 			});
 		}
-	})
+	});
 
     navApp.directive('browseButton', function() {
         return function (scope, element) {
