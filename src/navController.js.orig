@@ -84,8 +84,8 @@
                     'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was', 'we', 'were', 'what', 'when', 'where', 'which', 'while',
                     'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your'];
 
-    var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress']);
-    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig, ngProgressFactory) {
+    var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config']);
+    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig) {
         var self = this;
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
         self.arrCategory = [];
@@ -134,7 +134,6 @@
         self.isFetching = false;
         self.dateClearClicked = false;
         self.ageClearClicked = false;
-        self.progressBarColor = '#C747B8';
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -167,6 +166,7 @@
             }
         })(self.tileInfoSrv.cacheFactory);
 
+<<<<<<< HEAD
         self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
             self.getInterestItems(self.getAllInitialClasses, data);
         }, function (respData) {
@@ -198,21 +198,12 @@
                 self.currentScreenWidth = this.outerWidth;
             }
         });
-        //Required for Progress bar
-		self.progressbar = ngProgressFactory.createInstance();
-		self.progressbar.setColor(self.progressBarColor);
-		self.progressbar.start();
-		$timeout(function(){
-            self.progressbar.complete();
-        }, 2000);
-
-		$scope.$watch(function () {
-			return self.location.path();
-		}, function (locationPath){
-			if (INITIALIZING) {
-				$timeout(function() { INITIALIZING = false; });
-				self.progressbar.set(self.progressbar.status() + 4);
-			} else {
+        $scope.$watch(function () {
+            return self.location.path();
+        }, function (locationPath) {
+            if (INITIALIZING) {
+                $timeout(function () { INITIALIZING = false; });
+            } else {
                 var locationObj = seperateSlicersFromUrl(locationPath);
                 locationPath = locationObj.path;
                 var locationRemoved = locationObj.removed;
@@ -311,15 +302,152 @@
                 self.limit = self.origLimit;
                 self.affixed = false;
                 self.showNoGlobalResults = false;
-                self.progressbar.start();
-			    $timeout(function(){
-		            self.progressbar.complete();
-		        }, 100);
             }
         });
     };
 
     NavListController.prototype.fetchResults = function (interest, adjustArr, navConfig) {
+=======
+		self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/'+ navConfig.FilterNodeNum +'/', self.navCache, 'navigation').then(function (data) {
+			self.getInterestItems(self.getAllInitialClasses, data);
+		}, function (respData) {
+		    if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
+		        self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID }];
+		    }
+		});
+
+		self.log = function (variable) {
+			console.log(variable);
+		};
+
+		self.table = function (variable) {
+			console.table(variable);
+		};
+
+		var w = angular.element($window);
+		self.currentScreenWidth = w.outerWidth();
+		w.bind('resize', function () {
+			//This condition is for mobile devices that change the height of the window when you swipe up or down to scroll.
+			if (this.outerWidth !== self.currentScreenWidth) {
+				if (!_.isUndefined(self.currentObj)) {
+					resizeTileDisplay($scope);
+					self.onscreenResults = [];
+					self.displayTiles();
+					self.loadMore(self.environment);
+					$scope.$apply();
+				}
+				self.currentScreenWidth = this.outerWidth;
+			}
+		});
+		$scope.$watch(function () {
+			return self.location.path();
+		}, function (locationPath){
+			if (INITIALIZING) {
+				$timeout(function() { INITIALIZING = false; });
+			} else {
+				var locationObj = seperateSlicersFromUrl(locationPath);
+				locationPath = locationObj.path;
+			    var locationRemoved = locationObj.removed;
+				var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
+				//if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
+				switch (self.JumpNav.Type) {
+					case 'linkTo':
+						// if child link on right side clicked
+						var cloneCurrentObj = {
+							Level: self.currentObj.Level,
+							Name: self.currentObj.Name,
+							NodeID: self.currentObj.NodeID,
+							Current: self.currentObj.Current,
+							FeaturedItemsHeader: self.currentObj.FeaturedItemsHeader
+						};
+						var lastCurrent = _.find(self.activeBreadcrumb, 'Current');
+						if (!_.isUndefined) {
+							lastCurrent.Current = false;
+						}
+						self.activeBreadcrumb.push(cloneCurrentObj);
+						break;
+					case 'linkBack':
+						// if link in active breadcrumb is clicked
+						var lastLocationPath = self.lastLocationPath;
+						var lastLocationObj = seperateSlicersFromUrl(lastLocationPath);
+						lastLocationPath = lastLocationObj.path;
+						var numOfSlashesLastLocation = (lastLocationPath.match(/\//g) || []).length;
+
+						if (locationPath === '/') {
+							self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
+						} else {
+							for (var x = 0; x < numOfSlashesLastLocation - numOfSlashesLocation; x++){
+								self.activeBreadcrumb.pop();
+							}
+						}
+						var nextCurrent = _.last(self.activeBreadcrumb);
+						nextCurrent.Current = true;
+						break;
+					case 'jumpTo':
+						// if link in saved breadCrumb is clicked
+						if (locationPath === '/') {
+							self.activeBreadcrumb = self.activeBreadcrumb.slice(0, 1);
+						} else {
+							for (var x = self.activeBreadcrumb.length - 1; x >= 0; x--){
+								var breadCrumb = self.activeBreadcrumb[x];
+								if (breadCrumb.NodeID === self.currentObj.NodeID) {
+									break;
+								}
+								self.activeBreadcrumb.pop();
+							}
+						}
+						var nextCurrent = _.last(self.activeBreadcrumb);
+						nextCurrent.Current = true;
+						break;
+					case 'sliceBy':
+						// if slicer is selected
+						// since we don't change position, just filters, we can skip all the link stuff
+					    if (self.activeBreadcrumb.length === 0) {
+					        //if this is undefined then we are probably doing a global search from the start so need to build up the breadcrumb
+					        self.activeBreadcrumb.push(_.clone(self.arrCategory[0][0]));
+					    }
+						break;
+					default:
+					    if (locationRemoved.indexOf('search__') >= 0) {
+					        var locRemSplit = locationRemoved.split('/');
+					        var locRemFilter = _.find(locRemSplit, function(ar) {
+					            return ar.indexOf('search__') >= 0;
+					        });
+					        self.searchTerm = locRemFilter.substring(locRemFilter.indexOf('search__') + 8);
+					    } else {
+					        self.searchTerm = '';
+					    }
+						// if browser back and forward buttons or global search used for unpredictable jumps
+						if ((self.arrCategory.length === 0 || self.arrCategory[0].length === 0) && numOfSlashesLocation > 0) {
+							var subfolders = locationPath.substring(1).split('/');
+						    self.fetchResults(subfolders[0], false, navConfig);
+						} else {
+							var subfolders = locationPath.substring(1).split('/');
+							var rootFolder = subfolders[0];
+							//if logo clicked to reset let's just skip this
+							if (rootFolder.length > 0) {
+								//if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
+								var currentRootFolder = self.arrCategory[0][0].Name;
+								if (currentRootFolder !== rootFolder) {
+								    self.fetchResults(rootFolder, true, navConfig);
+								}
+							}
+						}
+						self.buildCurrentObj();
+						break;
+				}
+				self.displayTiles();
+				self.lastLocationPath = locationPath + locationRemoved;
+				self.JumpNav = {};
+				self.limit = self.origLimit;
+				self.affixed = false;
+			    self.showNoGlobalResults = false;
+			}
+		});
+	};
+
+    NavListController.prototype.fetchResults = function(interest, adjustArr, navConfig) {
+>>>>>>> 45c50bb3ef58278ac3656505195734327d1ec548
         var self = this;
         if (_.isUndefined(self.navsDict[interest])) {
             self.isFetching = true;
@@ -1690,6 +1818,7 @@
         return enabled;
     };
 
+<<<<<<< HEAD
     NavListController.prototype.scrollReset = function () {
         var self = this;
         self.scrollingUp = true;
@@ -1729,6 +1858,65 @@
             } else {
                 if (value.hasOwnProperty('CategoryProductionKeywords')) {
                     return false;
+=======
+    NavListController.prototype.fetchSearchResults = function(searchTerm, isGlobal) {
+		var self = this;
+        self.showNoGlobalResults = false;
+        self.displaySearchResults = [];
+        if (!_.isUndefined(searchTerm) && searchTerm.length) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function(data) {
+            //note:  this is just a workaround for now 
+            //self.tileInfoSrv.getAll('/src/junk.json', self.navCache, 'globalSearch').then(function(data) {
+                var results = data.data;
+                if (results.length) {
+                    _.forEach(results, function(result) {
+                        var interestAreas = _.uniq(result.InterestAreas);
+                        var keywords = _.uniq(result.Keywords);
+                        var lcKeywords = _.map(keywords, function(kw) {
+                            return kw.toLowerCase();
+                        });
+                        _.forEach(interestAreas, function(interest) {
+                            var sublevel = _.find(self.allClasses, function(ac) {
+                                return ac.JSONDataURL.toLowerCase().indexOf('/'+ interest) > 0;
+                            });
+                            var subLevelName = sublevel.Name;
+                            var subLevelKeywords = sublevel.Keywords.toLowerCase();
+                            var slkwarr = subLevelKeywords.split(',');
+                            if (_.intersection(slkwarr, lcKeywords).length) {
+                                if (!_.isUndefined(sublevel)) {
+                                    var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                                    var subLevelId = foundLevel.NodeID;
+                                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
+                                        self.navsDict[subLevelName] = items.data;
+                                        var absUrl = self.location.absUrl().toLowerCase();
+                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                            self.displaySearchResults.push({
+                                                searchTerm: searchTerm,
+                                                interestArea: subLevelName,
+                                                href: encodeURI(href)
+                                            });
+                                            self.showGlobalSpinner = false;
+                                            self.showNoGlobalResults = false;
+                                        }
+                                    });
+                                }
+                            } else {
+                                logErrorToServer('Global search "'+ searchTerm +'" found results in "'+ subLevelName +'" but does not have keywords "'+ subLevelKeywords +'" to show up there.');
+                            }
+                        });
+                    });
+                    if (self.showGlobalSpinner) {
+                        //search finds no results
+                        self.showGlobalSpinner = false;
+                        self.showNoGlobalResults = isGlobal;
+                    }
+                } else {
+                    //search finds no results
+                    self.showGlobalSpinner = false;
+                    self.showNoGlobalResults = isGlobal;
+>>>>>>> 45c50bb3ef58278ac3656505195734327d1ec548
                 }
                 _.forEach(value, function (val) {
                     if (val.hasOwnProperty(prop)) {
@@ -2290,7 +2478,7 @@
 
     navApp.service('tileInfoSrv', TileInfoService);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'ngProgressFactory'];
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('enableContainer', function () {
@@ -2385,21 +2573,7 @@
         };
     });
 
-	navApp.directive('progressBarIncrement', function ($timeout, ngProgressFactory) {
-		return function (scope, element, attrs) {
-			element.bind("click", function (e) {
-				e.preventDefault();
-				self.progressbar = ngProgressFactory.createInstance();
-				self.progressbar.setColor('#C747B8');
-				self.progressbar.set(self.progressbar.status() + 4);
-				$timeout(function(){
-		            self.progressbar.complete();
-		        }, 500);
-			});
-		}
-	})
-
-    navApp.directive('browseButton', function() {
+    navApp.directive('browseButton', function () {
         return function (scope, element) {
             element.bind("click", function (e) {
                 e.preventDefault();
