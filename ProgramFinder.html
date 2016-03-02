@@ -1,6 +1,16 @@
 ﻿<!DOCTYPE html>
 <html ng-app="artNavApp">
 	<head>
+		<!-- Begin Inspectlet Embed Code -->
+		<script type="text/javascript" id="inspectletjs">
+		window.__insp = window.__insp || [];
+		__insp.push(['wid', 70850345]);
+		(function() {
+		function ldinsp(){if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+		setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
+		})();
+		</script>
+		<!-- End Inspectlet Embed Code -->
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
 		<meta http-equiv="cache-control" content="max-age=0" />
 		<meta http-equiv="cache-control" content="no-cache" />
@@ -21,13 +31,14 @@
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
 		<script src="src/ng-infinite-scroll.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
+		<script src="src/ngprogress.min.js"></script>
 		<script src="src/navController.js?v=2_9"></script>
 		<script src="src/angular-cache.min.js"></script>
 		<script src="src/angulartics.js"></script>
 		<script src="src/navConfig.js"></script>
 		<title>92Y Program Finder</title>
 	</head>
-	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'sidebar-open' : ''">
+	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'mainnav-open' : ''">
 		<!-- Google Tag Manager -->
 		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-P3XDP2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script type="text/javascript">
@@ -61,7 +72,7 @@
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
 											<ul id="main-navigation" class="nav navbar-nav full-width">
-												<li class="col-xs-12 visible-xs visible-sm collapse">
+												<li class="col-xs-12 visible-xs visible-sm collapse pb10">
 												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
                                                     <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: 9px; padding: 0 0 0 5px; background: transparent;"></a>
 													<div class="mobile-flyout-container" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
@@ -81,7 +92,7 @@
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses" ng-hide="navListCtrl.displaySearchResults.length > 0 ">
-													<a href="" role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
+													<a progress-bar-increment role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
@@ -170,7 +181,7 @@
 			</header>
 			<div class="container-fluid" style="height: 100%">
 				<div class="row" style="background: #ffffff;">
-					<div id="main-area">
+					<div ng-cloak id="main-area">
 						<section class="main-content">
 							<div id="backToTop" class="btn" ng-class="{'affix': navListCtrl.affixed}" back-to-top-button>
 								<a ng-click="navListCtrl.scrollReset()"><i class="fa fa-chevron-circle-up"></i> Back to Top</a>
@@ -413,7 +424,7 @@
 				<div id="bottomContainer" class="row" ng-style="navListCtrl.bottomContainerStyle" skip-header="true" get-element-position>
 
 					<!--- Scrollable Browse Nav (for small Mobile) -->
-					<div class="filter-browse-container pt10 pl10 pr10 pb5 collapse visible-xs visible-sm visible-md">
+					<div ng-cloak class="filter-browse-container pt10 pl10 pr10 pb5 collapse visible-xs visible-sm visible-md">
 						<div class="filter-content container pl10 pr10">
 							<ol class="breadcrumb mb5 pl5 hidden-xs hidden-sm hidden-md">
 								<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
@@ -446,7 +457,7 @@
 					</div>
 					<!--- /Scrollable Browse Nav -->
 					
-					<div id="brandContent" >
+					<div ng-cloak id="brandContent" >
 						<div class="container">
 							<span class="" ng-bind-html="(navListCtrl.getBreadcrumbs(true)).FeaturedItemsHeader | unsafe" ng-show="navListCtrl.showFeaturedHeader()"></span>
 						</div>
@@ -878,14 +889,5 @@
 				<div class="qp-ui-mask-modal" mask-modal></div>
 			</div>
 		</div>
-		<script type="text/javascript">
-		  var _mfq = _mfq || [];
-		  (function() {
-		    var mf = document.createElement("script");
-		    mf.type = "text/javascript"; mf.async = true;
-		    mf.src = "//cdn.mouseflow.com/projects/c505cd82-afe7-4187-8118-172ac4507e26.js";
-		    document.getElementsByTagName("head")[0].appendChild(mf);
-		  })();
-		</script>
 	</body>
 </html>

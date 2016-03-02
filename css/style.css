@@ -39,11 +39,13 @@ body {
   position: relative;
   background-color: #E9E9E9;
 }
-body.sidebar-open {
+body.sidebar-open,
+body.mainnav-open {
 	overflow-y: hidden !important;
 	height: 100%;
 	width: 100%;
 }
+
 .center {
 	text-align: center;
 }
@@ -2185,6 +2187,34 @@ input[type="date"]::-webkit-inner-spin-button{
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+/* Styling for the ngProgress itself */
+#ngProgress {
+    margin: 0;
+    padding: 0;
+    z-index: 99998;
+    /*background-color: rgb(199, 71, 184);
+    color: rgb(199, 71, 184);*/
+    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    height: 2px;
+    opacity: 0;
+
+    /* Add CSS3 styles for transition smoothing */
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Styling for the ngProgress-container */
+#ngProgress-container {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}
 @media (max-width: 1200px) {
 	.browse-item a {
 		width: 100%;
@@ -2904,7 +2934,6 @@ a .removable:hover {
 	.noResults.heading {
 	    font-size: 1.8rem;
 	    line-height: 1.1;
-		padding-bottom: 4px;
 	}
 	.found-in {
 	    white-space: normal;

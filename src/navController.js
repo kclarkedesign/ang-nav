@@ -84,8 +84,8 @@
                     'they', 'this', 'tis', 'to', 'too', 'twas', 'us', 'wants', 'was', 'we', 'were', 'what', 'when', 'where', 'which', 'while',
                     'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your'];
 
-    var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config']);
-    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig) {
+    var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress']);
+    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig, ngProgressFactory) {
         var self = this;
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
         self.arrCategory = [];
@@ -134,6 +134,7 @@
         self.isFetching = false;
         self.dateClearClicked = false;
         self.ageClearClicked = false;
+        self.progressBarColor = '#C747B8';
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -197,12 +198,21 @@
                 self.currentScreenWidth = this.outerWidth;
             }
         });
-        $scope.$watch(function () {
-            return self.location.path();
-        }, function (locationPath) {
-            if (INITIALIZING) {
-                $timeout(function () { INITIALIZING = false; });
-            } else {
+        //Required for Progress bar
+		self.progressbar = ngProgressFactory.createInstance();
+		self.progressbar.setColor(self.progressBarColor);
+		self.progressbar.start();
+		$timeout(function(){
+            self.progressbar.complete();
+        }, 2000);
+
+		$scope.$watch(function () {
+			return self.location.path();
+		}, function (locationPath){
+			if (INITIALIZING) {
+				$timeout(function() { INITIALIZING = false; });
+				self.progressbar.set(self.progressbar.status() + 4);
+			} else {
                 var locationObj = seperateSlicersFromUrl(locationPath);
                 locationPath = locationObj.path;
                 var locationRemoved = locationObj.removed;
@@ -301,6 +311,10 @@
                 self.limit = self.origLimit;
                 self.affixed = false;
                 self.showNoGlobalResults = false;
+                self.progressbar.start();
+			    $timeout(function(){
+		            self.progressbar.complete();
+		        }, 100);
             }
         });
     };
@@ -2276,7 +2290,7 @@
 
     navApp.service('tileInfoSrv', TileInfoService);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig'];
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'ngProgressFactory'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('enableContainer', function () {
@@ -2371,7 +2385,21 @@
         };
     });
 
-    navApp.directive('browseButton', function () {
+	navApp.directive('progressBarIncrement', function ($timeout, ngProgressFactory) {
+		return function (scope, element, attrs) {
+			element.bind("click", function (e) {
+				e.preventDefault();
+				self.progressbar = ngProgressFactory.createInstance();
+				self.progressbar.setColor('#C747B8');
+				self.progressbar.set(self.progressbar.status() + 4);
+				$timeout(function(){
+		            self.progressbar.complete();
+		        }, 500);
+			});
+		}
+	});
+
+    navApp.directive('browseButton', function() {
         return function (scope, element) {
             element.bind("click", function (e) {
                 e.preventDefault();
