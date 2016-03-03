@@ -206,7 +206,7 @@
 
 		$scope.$watch(function () {
 			return self.location.path();
-		}, function (locationPath, progressBar){
+		}, function (locationPath){
 			if (INITIALIZING) {
 				$timeout(function() { INITIALIZING = false; });
 				self.progressbar.set(self.progressbar.status() + 4);
