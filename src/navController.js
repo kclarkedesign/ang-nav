@@ -134,7 +134,7 @@
         self.isFetching = false;
         self.dateClearClicked = false;
         self.ageClearClicked = false;
-        self.progressBarColor = '#C747B8';
+        self.progressbar = ngProgressFactory;
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -198,13 +198,11 @@
                 self.currentScreenWidth = this.outerWidth;
             }
         });
-        //Required for Progress bar
-		self.progressbar = ngProgressFactory.createInstance();
-		self.progressbar.setColor(self.progressBarColor);
+
 		self.progressbar.start();
 		$timeout(function(){
             self.progressbar.complete();
-        }, 2000);
+      	}, 2000);
 
 		$scope.$watch(function () {
 			return self.location.path();
@@ -311,7 +309,7 @@
                 self.limit = self.origLimit;
                 self.affixed = false;
                 self.showNoGlobalResults = false;
-                self.progressbar.start();
+                self.progressbar.set(self.progressbar.status() + 4);
 			    $timeout(function(){
 		            self.progressbar.complete();
 		        }, 100);
@@ -2290,7 +2288,15 @@
 
     navApp.service('tileInfoSrv', TileInfoService);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'ngProgressFactory'];
+    //Added so we can inject our customized progress bar into NavListController
+    navApp.factory("progressBar", ['ngProgressFactory', function(ngProgressFactory) {
+    	//Creates new instance, sets the color, then returns progress bar instance as a variable
+    	var progressBar = ngProgressFactory.createInstance();
+    	progressBar.setColor('#C747B8');
+    	return progressBar;
+    }]);
+
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('enableContainer', function () {
@@ -2312,6 +2318,19 @@
         return {
             link: link
         };
+    });
+
+    //Added to the top level interest navigation
+    navApp.directive('progressBarIncrement', function ($timeout, progressBar) {
+    	return function (scope, element, attrs) {
+    		element.bind("click", function (e) {
+    			e.preventDefault();
+    			progressBar.set(progressBar.status() + 4);
+    			$timeout(function(){
+    	            progressBar.complete();
+    	        }, 500);
+    		});
+    	};
     });
 
     navApp.directive('getElementPosition', function () {
@@ -2384,20 +2403,6 @@
             });
         };
     });
-
-	navApp.directive('progressBarIncrement', function ($timeout, ngProgressFactory) {
-		return function (scope, element, attrs) {
-			element.bind("click", function (e) {
-				e.preventDefault();
-				self.progressbar = ngProgressFactory.createInstance();
-				self.progressbar.setColor('#C747B8');
-				self.progressbar.set(self.progressbar.status() + 4);
-				$timeout(function(){
-		            self.progressbar.complete();
-		        }, 500);
-			});
-		}
-	});
 
     navApp.directive('browseButton', function() {
         return function (scope, element) {
