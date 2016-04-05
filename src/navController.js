@@ -199,18 +199,18 @@
             }
         });
 
-		self.progressbar.start();
-		$timeout(function(){
+        self.progressbar.start();
+        $timeout(function () {
             self.progressbar.complete();
-      	}, 2000);
+        }, 2000);
 
-		$scope.$watch(function () {
-			return self.location.path();
-		}, function (locationPath){
-			if (INITIALIZING) {
-				$timeout(function() { INITIALIZING = false; });
-				self.progressbar.set(self.progressbar.status() + 4);
-			} else {
+        $scope.$watch(function () {
+            return self.location.path();
+        }, function (locationPath) {
+            if (INITIALIZING) {
+                $timeout(function () { INITIALIZING = false; });
+                self.progressbar.set(self.progressbar.status() + 4);
+            } else {
                 var locationObj = seperateSlicersFromUrl(locationPath);
                 locationPath = locationObj.path;
                 var locationRemoved = locationObj.removed;
@@ -310,9 +310,9 @@
                 self.affixed = false;
                 self.showNoGlobalResults = false;
                 self.progressbar.set(self.progressbar.status() + 4);
-			    $timeout(function(){
-		            self.progressbar.complete();
-		        }, 100);
+                $timeout(function () {
+                    self.progressbar.complete();
+                }, 100);
             }
         });
     };
@@ -904,31 +904,35 @@
                             var sublevel = _.find(self.allClasses, function (ac) {
                                 return ac.JSONDataURL.toLowerCase().indexOf('/' + interest) > 0;
                             });
-                            var subLevelName = sublevel.Name;
-                            var subLevelKeywords = sublevel.Keywords.toLowerCase();
-                            var slkwarr = subLevelKeywords.split(',');
-                            if (_.intersection(slkwarr, lcKeywords).length) {
-                                if (!_.isUndefined(sublevel)) {
-                                    var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-                                    var subLevelId = foundLevel.NodeID;
-                                    self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                                        self.navsDict[subLevelName] = items.data;
-                                        var absUrl = self.location.absUrl().toLowerCase();
-                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
-                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
-                                            self.displaySearchResults.push({
-                                                searchTerm: searchTerm,
-                                                interestArea: subLevelName,
-                                                href: encodeURI(href)
-                                            });
-                                            self.showGlobalSpinner = false;
-                                            self.showNoGlobalResults = false;
-                                        }
-                                    });
-                                }
+                            if (_.isUndefined(sublevel)) {
+                                logErrorToServer('JSON for "' + interest + '" not found.');
                             } else {
-                                logErrorToServer('Global search "' + searchTerm + '" found results in "' + subLevelName + '" but does not have keywords "' + subLevelKeywords + '" to show up there.');
+                                var subLevelName = sublevel.Name;
+                                var subLevelKeywords = sublevel.Keywords.toLowerCase();
+                                var slkwarr = subLevelKeywords.split(',');
+                                if (_.intersection(slkwarr, lcKeywords).length) {
+                                    if (!_.isUndefined(sublevel)) {
+                                        var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                                        var subLevelId = foundLevel.NodeID;
+                                        self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function(items) {
+                                            self.navsDict[subLevelName] = items.data;
+                                            var absUrl = self.location.absUrl().toLowerCase();
+                                            var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                                            var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                                            if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                                self.displaySearchResults.push({
+                                                    searchTerm: searchTerm,
+                                                    interestArea: subLevelName,
+                                                    href: encodeURI(href)
+                                                });
+                                                self.showGlobalSpinner = false;
+                                                self.showNoGlobalResults = false;
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    logErrorToServer('Global search "' + searchTerm + '" found results in "' + subLevelName + '" but does not have keywords "' + subLevelKeywords + '" to show up there.');
+                                }
                             }
                         });
                     });
@@ -1570,6 +1574,7 @@
         }
         if (clearWhich.indexOf('search') >= 0) {
             self.textboxSearch = '';
+            self.searchTerm = '';
         }
         //var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
         self.sliceBy(clearWhich);
@@ -2289,12 +2294,12 @@
     navApp.service('tileInfoSrv', TileInfoService);
 
     //Added so we can inject our customized progress bar into NavListController
-    navApp.factory("progressBar", ['ngProgressFactory', function(ngProgressFactory) {
-    	//Creates new instance, sets the color, then returns progress bar instance as a variable
-    	var progressBar = ngProgressFactory.createInstance();
-    	progressBar.setColor('#C747B8');
-    	return progressBar;
-    }]);
+    navApp.factory("progressBar", ['ngProgressFactory', function (ngProgressFactory) {
+        //Creates new instance, sets the color, then returns progress bar instance as a variable
+        var progressBar = ngProgressFactory.createInstance();
+        progressBar.setColor('#C747B8');
+        return progressBar;
+    } ]);
 
     NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
@@ -2322,15 +2327,15 @@
 
     //Added to the top level interest navigation
     navApp.directive('progressBarIncrement', function ($timeout, progressBar) {
-    	return function (scope, element, attrs) {
-    		element.bind("click", function (e) {
-    			e.preventDefault();
-    			progressBar.set(progressBar.status() + 4);
-    			$timeout(function(){
-    	            progressBar.complete();
-    	        }, 500);
-    		});
-    	};
+        return function (scope, element, attrs) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                progressBar.set(progressBar.status() + 4);
+                $timeout(function () {
+                    progressBar.complete();
+                }, 500);
+            });
+        };
     });
 
     navApp.directive('getElementPosition', function () {
@@ -2404,7 +2409,7 @@
         };
     });
 
-    navApp.directive('browseButton', function() {
+    navApp.directive('browseButton', function () {
         return function (scope, element) {
             element.bind("click", function (e) {
                 e.preventDefault();
