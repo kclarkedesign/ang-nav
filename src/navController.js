@@ -2179,7 +2179,7 @@
         if (!_.startsWith(arrUrl, 'http')) {
             arrUrl = 'http://www.92y.org' + arrUrl;
             urlTarget = '_self';
-            if (_.includes(arrUrl, 'Event') && isMobile == true) {
+            if (itemType.toLowerCase() === 'event' && isMobile == true) {
                 arrUrl = 'http://m.92y.org' + '/Event/' + prodNo;
             }
         }
