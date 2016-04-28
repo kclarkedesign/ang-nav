@@ -2161,6 +2161,12 @@ transform: rotate(-45deg);
     right: 16px;
 }
 
+#filterSidebarBtn.active {
+	color: #E9E9E9;
+	background-color: #333333;
+	border-color: #333;
+}
+
 /* angular UI */
 .nav, 
 .pagination, 

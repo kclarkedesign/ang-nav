@@ -154,9 +154,9 @@
 									<li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
 									</li>
-									<li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake" ng-show="navListCtrl.onscreenResults.length > 0">
+									<!-- <li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake" ng-show="navListCtrl.onscreenResults.length > 0">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
-									</li>
+									</li> -->
 									<!-- For account use when available -->
 									<!-- <li id="accountBtn" class="dropdown hidden visible-md visible-lg" dropdown>
 										<a class="" dropdown-toggle><i class="fa fa-user"></i><span class="btnTitle">Hi, User</span>
@@ -443,10 +443,17 @@
 								<div id="browse-nav" class="col-xs-12 visible-xs visible-sm visible-md">
 									<div class="row">
 										<div id="browseBtns" class="col-xs-12 col-sm-12 pr0 pl0 mb10" ng-show="navListCtrl.getSublevels().length">
-											<div class="col-xs-12 pl0 pr0" ng-show="navListCtrl.getSublevels().length">
+											<div class="col-xs-8 pl0 pr0" ng-show="navListCtrl.getSublevels().length; navListCtrl.onscreenResults.length > 0">
 												<button id="browseBtnSm" browse-button class="btn btn-default full-width dropdown-ch-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 													Subcategories
 													<span class="caret"></span>
+												</button>
+											</div>
+											<div class="col-xs-4 pl10 pr0" ng-show="navListCtrl.getSublevels().length; navListCtrl.onscreenResults.length > 0">
+												<button id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" ng-show="navListCtrl.onscreenResults.length > 0" class="btn btn-default full-width dropdown-ch-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Refine
+													<span class="caret"></span>
+													<span class="bubble"></span>
 												</button>
 											</div>
 										</div>
