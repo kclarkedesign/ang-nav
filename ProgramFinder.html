@@ -3,12 +3,12 @@
 	<head>
 		<!-- Begin Inspectlet Embed Code -->
 		<script type="text/javascript" id="inspectletjs">
-		window.__insp = window.__insp || [];
-		__insp.push(['wid', 70850345]);
-		(function() {
-		function ldinsp(){if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
-		setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
-		})();
+		    window.__insp = window.__insp || [];
+		    __insp.push(['wid', 70850345]);
+		    (function() {
+		        function ldinsp(){if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+		        setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
+		    })();
 		</script>
 		<!-- End Inspectlet Embed Code -->
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
@@ -42,14 +42,14 @@
 		<!-- Google Tag Manager -->
 		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-P3XDP2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script type="text/javascript">
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || [];
-				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-				var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-				j.async = true;
-				j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-				f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-P3XDP2');
+		    (function (w, d, s, l, i) {
+		        w[l] = w[l] || [];
+		        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+		        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+		        j.async = true;
+		        j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+		        f.parentNode.insertBefore(j, f);
+		    })(window, document, 'script', 'dataLayer', 'GTM-P3XDP2');
 		</script>
         <!-- End Google Tag Manager -->
 		<div id="site-container" style="height: 100%">
@@ -92,7 +92,7 @@
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
 												</li>
 												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses" ng-hide="navListCtrl.displaySearchResults.length > 0 ">
-													<a progress-bar-increment role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
+													<a progress-bar-increment role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;" onclick="scroll(0,0);">
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
 												</li>
