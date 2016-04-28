@@ -2635,7 +2635,7 @@ var resizeTileDisplay = function (scope) {
 		
 	} else {
 		headerHeight = $("#Container").offset().top;
-		mainArea = $("#main-area").height();
+		var mainArea = $("#main-area").height();
 		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
 		scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
 	}
