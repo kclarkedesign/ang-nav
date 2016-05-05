@@ -132,7 +132,7 @@ body.mainnav-open {
 	height: 100%;
 	top: 0;
 	z-index: 1003;
-	background-color: #333;
+	background-color: #fff;
 	right: -890px;
 	-webkit-transition: all .5s ease;
 	-moz-transition: all .5s ease;
@@ -239,7 +239,10 @@ width: 280px;
 	background: none;
 }
 #mobileSearchText.form-control.active {
-	background: #fff;
+	/*background: #fff;*/
+	background: #CCDEED;
+    border: 2px solid;
+    border-radius: 4px;
 }
 #mobile-searchGlobal {
     padding: 6px 26px 6px 12px;
@@ -282,8 +285,8 @@ width: 280px;
     line-height: 26px;
 }
 #filterSidebar .form-control-feedback.form-control-clear {
-	top: 4px;
-    right: 14px;
+	top: 14px;
+    right: 16px;
 }
 .form-control-feedback {
 	width: 22px;
@@ -308,6 +311,7 @@ width: 280px;
 }
 .scroll {
 	height: 100%;
+	padding-bottom: 124px;
 }
 .topHeading {
 	height: 50px;
@@ -917,9 +921,121 @@ a {
 	overflow: hidden;
  	background-color: #e5e5e5;
 }
-#filterSidebar label.checkbox {
-	color: #fff;
+
+/** Filter Sidebar **/
+#filterSidebar label.checkbox:hover {
+	cursor: pointer;
 }
+#filterSidebar .actions {
+	position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 0;
+    border-top: 1px solid #ccc;
+    background: #E9E9E9;
+    z-index: 1000;
+}
+.sidebar-offcanvas input[type=checkbox]:checked+label {
+    /*background: #337AB7;*/
+	/*border-bottom: 2px solid rgb(199, 71, 184) !important*/
+}
+.sidebar-offcanvas input[type=checkbox] {
+    position: absolute !important;
+    left: -9999px;
+    text-indent: -9999px;
+}
+#filterSidebar label.checkbox {
+	/*color: #fff;*/
+	color: #777;
+	margin-bottom: 3px;
+    border-radius: 4px;
+	overflow: hidden;
+    /*text-align: center;*/
+}
+#filterSidebar label.checkbox {
+	display: block;
+}
+#filterSidebar .full-width .checkbox.fw-normal,
+#filterSidebar #daysOfWeek .checkbox.fw-normal {
+    padding: 6px 16px;
+   /* border: 1px solid rgba(255, 255, 255, 0.18);*/
+    border: 2px solid rgba(165, 165, 165, 0.18);
+   /* background: rgba(69, 69, 69, 0.57);*/
+   	background: transparent;
+    width: 97%;
+}
+/*#filterSidebar input[type=checkbox]+label:before {
+    font-family: FontAwesome;
+    content: "\f096";
+    letter-spacing: 10px;
+    margin-left: -2px;
+}
+#filterSidebar input[type=checkbox]:checked+label:before {
+    font-family: FontAwesome;
+    content: "\f14a";
+    letter-spacing: 9px;
+}*/
+#filterSidebar input[type=checkbox]:checked+label {
+    color: rgb(51, 122, 183);
+    background: rgba(51, 122, 183, 0.25) !important;
+    border: 2px solid #337AB7 !important;
+}
+#filterSidebar .divider {
+    height: 1px;
+    margin: 4px 0;
+    overflow: hidden;
+    background-color: transparent; 
+}
+#filterSidebar .checkbox.fw-normal.indent-input,
+.indent-input {
+	padding-left: 35px;
+}
+#filterSidebar input.form-control {
+    border: none;
+    box-shadow: none;
+    border-bottom: 2px solid rgba(165, 165, 165, 0.18);
+    border-radius: 0;
+    /*color: #777;*/
+}
+#filterSidebar .btn-group>.btn {
+	border-radius: 4px;
+    text-align: center;
+    border: 2px solid #EFEFEF;
+    padding: 8px;
+    max-height: 36px;
+    background: transparent;
+    color: #808080;
+    box-shadow: none;
+}
+#filterSidebar .btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+#filterSidebar .btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#filterSidebar .btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+    border-radius: 0;
+}
+#dateRow .cal-btn {
+	border: 2px solid rgba(165, 165, 165, 0.18);
+	max-height: 34px;
+	color: #777;
+}
+#daysOfWeek {
+	text-transform: capitalize;
+}
+#filterSidebar .toggleBar-ch {
+	width: 33%;
+}
+#filterSidebar .active.toggleBar-ch {
+    background: #CCDEED;
+    border: 2px solid #337AB7;
+    color: #337AB7;
+    z-index: 3;
+}
+
 #programType label.active {
 	color: #fff;
 }
@@ -1084,7 +1200,7 @@ a {
   width: 300px;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-right: 17px;
+  padding-right: 20px;
   padding-bottom: 60px;
 }
 #searchText.active, 
@@ -2163,7 +2279,7 @@ transform: rotate(-45deg);
 
 #filterSidebarBtn.active {
 	color: #E9E9E9;
-	background-color: #333333;
+	background-color: #4A4A4A;
 	border-color: #333;
 }
 
@@ -2496,7 +2612,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	
 	.navbar-text {
 		float: none;
-		margin: 15px 0;
+		/*margin: 15px 0;*/
 	}
 	#hor-menu {
 		position: fixed;
@@ -2543,6 +2659,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.dropdown-header {
 		text-transform: uppercase;
+		margin-top: 15px;
 	}
 	.header .brand .navbar-brand {
 		margin-left: -8px;
@@ -2939,7 +3056,7 @@ a .removable:hover {
 	}
 	.noResults.heading {
 	    font-size: 1.8rem;
-	    line-height: 1.1;
+	    line-height: 1.2;
 	}
 	.found-in {
 	    white-space: normal;
