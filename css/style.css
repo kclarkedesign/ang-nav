@@ -293,7 +293,9 @@ body {
   background-color: #E9E9E9;
 }
 body.sidebar-open {
-	overflow-y: hidden;
+	height: 100%;
+	overflow-y: hidden !important;
+	width: 100%;
 }
 .center {
 	text-align: center;
