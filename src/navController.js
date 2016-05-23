@@ -266,7 +266,7 @@
 
         $scope.mainMenuOptions = [
             {
-                slidingSubmenus: false
+                "slidingSubmenus": false
             }
         ];
 

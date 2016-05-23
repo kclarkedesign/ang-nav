@@ -109,10 +109,11 @@ angular.module('angular-mmenu', [])
             oldMenuElement.replaceWith(newMenuElement);
             var opts = getValue(scope, attrs.mmenuOptions);
             var params = getValue(scope, attrs.mmenuParams);
-            console.log('mmenu', id, opts, params);
+            //console.log('mmenu', id, opts, params);
             newMenu.attr(angularMmenuIdAttr, id);
             $(document).ready(function () {
                 newMenu.mmenu(opts, params);
+                console.log(newMenu.mmenu(opts, params));
             });
         }
         else if (existingMmenu._init != null && existingMmenu._init !== undefined) {
