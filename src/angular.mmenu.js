@@ -118,7 +118,7 @@ angular.module('angular-mmenu', [])
             angular.element(document).ready(function () {
                 newMenu.mmenu({
                     // options
-                    slidingSubmenus: true,
+                    slidingSubmenus: false,
                     navbar: {
                         title : "Program Finder"
                     }
