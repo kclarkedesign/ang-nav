@@ -39,6 +39,7 @@ body {
   position: relative;
   background-color: #E9E9E9;
 }
+
 body.sidebar-open,
 body.mainnav-open {
 	overflow-y: hidden !important;

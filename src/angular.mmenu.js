@@ -111,10 +111,32 @@ angular.module('angular-mmenu', [])
             var params = getValue(scope, attrs.mmenuParams);
             //console.log('mmenu', id, opts, params);
             newMenu.attr(angularMmenuIdAttr, id);
-            $(document).ready(function () {
-                newMenu.mmenu(opts, params);
-                console.log(newMenu.mmenu(opts, params));
+            // knc - custom edits
+            // $(document).ready(function () { 
+            //     newMenu.mmenu();
+            // });
+            angular.element(document).ready(function () {
+                newMenu.mmenu({
+                    // options
+                    slidingSubmenus: true,
+                    navbar: {
+                        title : "Program Finder"
+                    }
+                }, {
+                 // configuration
+                 offCanvas: {
+                    //pageNodetype: "section"
+                    pageSelector: "#site-container"
+                 }
+                });
+
+                // var API = angular.element("#mmenu").data( "mmenu" );
+
+                // angular.element("#my-button").click(function() {
+                //     API.open();
+                // });
             });
+            // Ends custom edits
         }
         else if (existingMmenu._init != null && existingMmenu._init !== undefined) {
             existingMmenu._init();
