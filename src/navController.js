@@ -209,39 +209,39 @@
 
         ///// ANGULAR MMENU DIRECTIVE EXAMPLE
         //https://github.com/matafonoff/angular.mmenu
-        var textHelper = {
-            _text : '',
-            _handlerId: 0,
-            _handlers: {},
+        // var textHelper = {
+        //     _text : '',
+        //     _handlerId: 0,
+        //     _handlers: {},
 
-            getText: function() { return this._text; },
+        //     getText: function() { return this._text; },
 
-            setText: function(newValue){
-                var old = this._text;
-                this._text = newValue;
+        //     setText: function(newValue){
+        //         var old = this._text;
+        //         this._text = newValue;
 
-                for (var prop in this._handlers) {
-                    this._handlers[prop](newValue, old);
-                }
-            },
+        //         for (var prop in this._handlers) {
+        //             this._handlers[prop](newValue, old);
+        //         }
+        //     },
 
-            onTextChanged: function(callback) {
-                var myId = ++this._handlerId;
-                this._handlers[myId] = callback;
+        //     onTextChanged: function(callback) {
+        //         var myId = ++this._handlerId;
+        //         this._handlers[myId] = callback;
 
-                return myId;
-            },
+        //         return myId;
+        //     },
 
-            detachHandler: function(handler) {
-                delete this._handlers[handler] ;
-            }
-        };
+        //     detachHandler: function(handler) {
+        //         delete this._handlers[handler] ;
+        //     }
+        // };
 
-        textHelper.getText('Dynamic text');
+        // textHelper.getText('Dynamic text');
 
         $scope.mainMenuItems = [
             { href: '/', text: 'Main' },
-            { href: '#', text: textHelper },
+            // { href: '#', text: textHelper },
             { href: function() { alert('hello!'); }, text: 'Call JS' },
             {
                 text: 'Available Parameters', items: [
@@ -266,23 +266,23 @@
 
         $scope.mainMenuOptions = [
             {
-                slidingSubmenus: false
+                slidingSubmenus: false,
+                offCanvas: false
             }
         ];
 
-        // $scope.mainMenuParams = [
+        // $scope.test = [
         //     {   
-        //         "navbar": {
-        //             "title": 'Ang Nav',
-        //             "add": false
+        //         "className": {
+        //             "openingInterval": '3000'
         //         }
         //     }
         // ];
 
-        $timeout(function() {
-            textHelper.setText('Text updated!');
-            console.log("updated text");
-        }, 5000);
+        // $timeout(function() {
+        //     textHelper.setText('Text updated!');
+        //     console.log("updated text");
+        // }, 5000);
 
         $scope.$watch(function () {
             return self.location.path();
@@ -2518,6 +2518,7 @@
             });
         };
     });
+
 
     ///// FOR JQUERY VERSION OF MMENU
     // angular.element(document).ready(function () {
