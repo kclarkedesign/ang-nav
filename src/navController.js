@@ -210,36 +210,7 @@
             return self.allClasses;
         }, function (allClasses) {
             if (allClasses.length > 1) {
-                $scope.mainMenuItems = buildMenuItems(allClasses);
-
-
-                /*
-                $scope.mainMenuItems = [
-                { href: '/', text: 'Main' },
-                { href: function () { alert('hello!'); }, text: 'Call JS' },
-                {
-                text: 'Available Parameters', items: [
-                {
-                text: 'mandatory',
-                items: [
-                { text: 'mmenu-id' },
-                { text: 'mmenu-items' }
-                ]
-                },
-                {
-                text: 'optional',
-                items: [
-                { text: 'mmenu-options' },
-                { text: 'mmenu-params' },
-                { text: 'mmenu-invalidate' }
-                ]
-                }
-                ]
-                }
-                ];
-                */
-
-
+                $scope.mainMenuItems = self.buildMenuItems(allClasses);
             }
         });
 
@@ -354,6 +325,90 @@
                 }, 100);
             }
         });
+    };
+
+    NavListController.prototype.buildMenuItems = function (nodes, storeLevels, level, tmp) {
+        var self = this;
+        var gottenLevels = storeLevels || [];
+        var curLevel = level || 0;
+        for (var property in nodes) {
+            if (typeof nodes[property] === "object") {
+                if (!Array.isArray(nodes[property])) {
+                    tmp = { level: curLevel };
+                    var lastObject = gottenLevels[gottenLevels.length - 1];
+                    if (typeof lastObject === 'undefined' || lastObject.level === curLevel) {
+                        gottenLevels.push(tmp);
+                    } else {
+                        var stop = false;
+                        while (!stop) {
+                            if ((lastObject.level + 1) < curLevel) {
+                                lastObject = lastObject.items[lastObject.items.length - 1];
+                            } else {
+                                stop = true;
+                            }
+                        }
+                        if (typeof lastObject.items === 'undefined') {
+                            lastObject.items = [];
+                        }
+                        lastObject.items.push(tmp);
+                    }
+                } else {
+                    curLevel++;
+                }
+                self.buildMenuItems(nodes[property], gottenLevels, curLevel, tmp);
+                if (Array.isArray(nodes[property])) {
+                    --curLevel;
+                }
+            } else {
+                if (property === 'Name') {
+                    tmp.text = nodes[property];
+                }
+                if (property === 'NodeID') {
+                    var nodeid = nodes[property];
+                    var builtUrl = self.buildUrlFromFetch(self.allClasses, nodeid);
+                    tmp.href = builtUrl;
+                }
+            }
+        }
+        return gottenLevels;
+    };
+
+    NavListController.prototype.buildUrlFromFetch = function (nodes, id) {
+        var self = this;
+        var absUrl = self.location.absUrl().toLowerCase();
+        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+        var resultArray = [];
+
+        function traverse(value) {
+            var result;
+            if (value.hasOwnProperty('NodeID') && value.NodeID === id) {
+                result = value;
+            } else {
+                _.forEach(value, function (val) {
+                    if (_.isObject(val)) {
+                        result = traverse(val);
+                    }
+                    if (result) {
+                        return false;
+                    }
+                });
+            }
+            return result;
+        }
+        var stop = false;
+        while (!stop) {
+            var returnedResult = traverse(nodes);
+            resultArray.push(returnedResult.Name);
+            if (returnedResult.NodeLevel <= 2) {
+                stop = true;
+            }
+            id = returnedResult.ParentNodeID;
+        }
+        var finalUrl = baseUrl + '#';
+        _.forEachRight(resultArray, function (val) {
+            finalUrl += '/' + val;
+        });
+        return encodeURI(finalUrl);
     };
 
     NavListController.prototype.fetchResults = function (interest, adjustArr, navConfig) {
@@ -2620,46 +2675,6 @@
     });
 
 })();
-
-var buildMenuItems = function (nodes, storeLevels, level, tmp) {
-    var gottenLevels = storeLevels || [];
-    var curLevel = level || 0;
-    for (var property in nodes) {
-        if (typeof nodes[property] === "object") {
-            if (!Array.isArray(nodes[property])) {
-                tmp = { level: curLevel };
-                var lastObject = gottenLevels[gottenLevels.length - 1];
-                if (typeof lastObject === 'undefined' || lastObject.level === curLevel) {
-                    gottenLevels.push(tmp);
-                } else {
-                    var stop = false;
-                    while (!stop) {
-                        if ((lastObject.level + 1) < curLevel) {
-                            lastObject = lastObject.items[lastObject.items.length - 1];
-                        } else {
-                            stop = true;
-                        }
-                    }
-                    if (typeof lastObject.items === 'undefined') {
-                        lastObject.items = [];    
-                    }
-                    lastObject.items.push(tmp);
-                }
-            } else {
-                curLevel++;
-            }
-            buildMenuItems(nodes[property], gottenLevels, curLevel, tmp);
-            if (Array.isArray(nodes[property])) {
-                --curLevel;
-            }
-        } else {
-            if (property === 'Name') {
-                tmp.text = nodes[property];
-            }
-        }
-    }
-    return gottenLevels;
-};
 
 var logErrorToServer = function(ex, cwz) {
     try {
