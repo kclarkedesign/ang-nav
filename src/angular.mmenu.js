@@ -115,11 +115,14 @@ angular.module('angular-mmenu', [])
             // $(document).ready(function () { 
             //     newMenu.mmenu();
             // });
-            angular.element(document).ready(function () {
+            $(document).ready(function () {
                 newMenu.mmenu({
                     // options
-                    slidingSubmenus: false,
-                    navbar: {
+                    searchfield: true,
+                    "slidingSubmenus": false,
+                    "setSelected": true,
+                    "navbar": {
+                        add: true,
                         title : "Program Finder"
                     }
                 }, {
