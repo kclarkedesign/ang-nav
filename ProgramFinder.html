@@ -43,6 +43,7 @@
 		<title>92Y Program Finder</title>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'mainnav-open' : ''">
+		<mmenu mmenu-id="main-menu" mmenu-items="mainMenuItems"></mmenu>
 		<!-- Google Tag Manager -->
 		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-P3XDP2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script type="text/javascript">
@@ -63,22 +64,31 @@
 						<div>
 							<div class="">
 								<div id="site-brand-menu">
-									<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a>
+									<!-- <a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a> -->
 									<a href="/" id="logo-anchor" class="navbar-brand">
 										<img src="img/sitelogo_92Y-1.png" alt=""/>
-										<span class="label nav-label-beta navbar-text hidden-xs hidden-sm">Beta</span>
+										<span class="label nav-label-beta navbar-text">Beta</span>
 									</a>
+									<ul class="nav navbar-nav navbar-left hidden-md hidden-lg">
+										<li>
+											<a id="interest-list-mobile" href="#main-menu" class=""><span class="bubble"></span><i class="fa fa-th-list"></i><span class="btnTitle">Interests</span></a>
+										</li>
+										<li>
+											<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened"><span class="bubble"></span><i class="fa fa-search"></i><span class="btnTitle">Search</span></a>
+										</li>
+									</ul>
 								</div>
 
 								<div class="navbar-collapse collapse pull-left pl0 pr0" id="hor-menu" ng-class="navListCtrl.navOpened && 'in'">
-									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Program Finder (BETA)</span>
+									<div class="nav-header pull-right"><span class="dropdown-header first-header visible-xs visible-sm collapse">Search <!-- by Instructor, Title or Keyword --></span>
 									</div>
 									<div class="scrollable-wrapper">
 										<div class="scrollable container-fluid no-p">
+											<a id="mainNavBtnTwo" class="mr5 c-hamburger c-hamburger--htx navbar-toggle visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a>
 											<ul id="main-navigation" class="nav navbar-nav full-width">
 												<li class="col-xs-12 visible-xs visible-sm collapse pb10">
-												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt5 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
-                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: 9px; padding: 0 0 0 5px; background: transparent;"></a>
+												    <input id="mobile-searchGlobal" enable-search-enter type="text" class="mt10 mb5 form-control" placeholder="Search by Instructor, Title or Keyword" ng-show="navListCtrl.allClasses[0].NodeID !== 0" ng-model="navListCtrl.textboxGlobalSearch" ng-change="navListCtrl.searchGlobal()" ng-class="{'active': navListCtrl.textboxGlobalSearch.length && !navListCtrl.showGlobalSpinner, 'spinnerInTextbox': navListCtrl.showGlobalSpinner}" />
+                                                    <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(false);" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left; position: absolute; right: 20px; top: 14px; padding: 0 0 0 5px; background: transparent;"></a>
 													<div class="mobile-flyout-container" ng-show="navListCtrl.textboxGlobalSearch.length > 0">
 													    <div id="mobile-searchGlobal-flyout" class="">
 													        <span class="s-items s-plainText" ng-show="navListCtrl.showNoGlobalResults" ng-click="navListCtrl.clearSearch(false);">No results were found</span>
@@ -92,14 +102,17 @@
 													    </div>
 	                                                </div>
 												</li>
-												<li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>Explore Programs by Interest</strong>
+												<!-- <li class="col-xs-2">
+													<a id="mainNavBtnTwo" class="c-hamburger c-hamburger--htx navbar-toggle off-left visible-xs visible-xs visible-sm collapsed" data-toggle="collapse" ng-click="navListCtrl.navOpened = !navListCtrl.navOpened" ng-class="navListCtrl.navOpened ? 'is-active' : ''"><span>toggle menu</span></a>
+												</li> -->
+												<!-- <li class="mobile-navHeading dropdown-header center full-width visible-xs visible-sm collapse" style="border-top: 1px solid #333;"><strong>Explore Programs by Interest</strong>
 													<img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
-												</li>
-												<li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses" ng-hide="navListCtrl.displaySearchResults.length > 0 ">
+												</li> -->
+												<!-- <li class="dropdown mega-dropdown col-xs-12 visible-xs visible-sm collapse pl0 pr0" ng-repeat="sl in navListCtrl.allClasses" ng-hide="navListCtrl.displaySearchResults.length > 0 ">
 													<a progress-bar-increment role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 														<span ng-bind-html="sl.Name | unsafe"></span>
 													</a>
-												</li>
+												</li> -->
 												<!-- For use when account becomes available -->
 												<!-- <li class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pl0 pr0 visible-xs visible-sm collapse button-left">
 													<a href="/account/accountupdate.aspx?tab=2"><span class="btnTitle"><i class="fa fa-user"></i> Hi, User</span></a>
@@ -124,7 +137,7 @@
 												</li>
 
 												<li class="iconBtn-vertical dropdown mega-dropdown hidden-xs hidden-sm" dropdown>
-													<a id="interest-list" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-search"></i><span class="btnTitle">Search</span></a>
+													<a id="search-dropdown" href="javascript:;" dropdown-toggle ng-disabled="disabled" class="dropdown-toggle"><span class="bubble"></span><i class="fa fa-search"></i><span class="btnTitle">Search</span></a>
 													<ul class="dropdown-menu mega-dropdown-menu row" ng-click="$event.stopPropagation()">
 														<li class="container" style="margin: auto;">
 															<div class="col-xs-12 no-p">
@@ -448,7 +461,6 @@
 									<div class="row">
 										<div id="browseBtns" class="col-xs-12 col-sm-12 pr0 pl0 mb10" ng-show="navListCtrl.getSublevels().length">
 											<div class="col-xs-8 pl0 pr0" ng-show="navListCtrl.getSublevels().length; navListCtrl.onscreenResults.length > 0">
-												<!-- <button id="my-button">Open the menu</button> -->
 												<a href="#main-menu" class="btn btn-default full-width dropdown-ch-mobile">Subcategories</a>
 												<!-- <button id="my-button" class="btn btn-default full-width dropdown-ch-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 													Subcategories
@@ -793,7 +805,6 @@
 						</div>
 						<!-- End Filter Sidebar -->
 						<!-- Browse  -->
-						<mmenu mmenu-id="main-menu" mmenu-items="mainMenuItems"></mmenu>
 					    <div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas" id="browseSidebar" browse-sidebar>
 					        <div class="list-group">
 					            <span class="list-group-item active">

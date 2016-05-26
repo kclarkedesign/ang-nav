@@ -117,16 +117,24 @@ angular.module('angular-mmenu', [])
             // });
             $(document).ready(function () {
                 newMenu.mmenu({
-                    // options
-                    searchfield: true,
-                    "slidingSubmenus": false,
+                    // ** options **
+                    // "counters": true,
+                    "slidingSubmenus": true,
+                    "iconPanels": true,
+                    "extensions": ["multiline", "pageshadow", "panelshadow"],
                     "setSelected": true,
                     "navbar": {
                         add: true,
-                        title : "Program Finder"
+                        title : "All Interests"
+                    },
+                    "navbars": [{
+                        content: ["breadcrumbs"]
+                    }],
+                    "scrollBugFix": {
+                        fix: true
                     }
                 }, {
-                 // configuration
+                 // ** configuration **
                  offCanvas: {
                     //pageNodetype: "section"
                     pageSelector: "#site-container"
