@@ -23,16 +23,15 @@
 		<link rel="stylesheet" href="css/jquery.mmenu.all.css" />
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css?v=2_9">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="src/jquery.mmenu.all.min.js"></script>
-		 <script src="src/jquery.mmenu.angular.min.js"></script>
 		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
-		<script src="src/angular.mmenu.js"></script><!-- this script has custom modifications - look for "-knc" to see changes -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.6/angular-touch.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+		<script src="src/angular.mmenu.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-touch.min.js"></script>
 		<script src="src/ngScrollSpy.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
 		<script src="src/ui-bootstrap-tpls-0.13.0.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-cookies.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.js"></script>
 		<script src="//cdn.jsdelivr.net/lodash/3.9.3/lodash.min.js"></script>
 		<script src="src/ng-infinite-scroll.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
 		<script src="src/ngprogress.min.js"></script>
@@ -43,7 +42,7 @@
 		<title>92Y Program Finder</title>
 	</head>
 	<body data-spy="scroll" data-target=".scrollspy" ng-controller="NavListController as navListCtrl" get-body-dimensions ng-style="navListCtrl.bodyStyle" ng-class="navListCtrl.navOpened ? 'mainnav-open' : ''">
-		<!-- Google Tag Manager -->
+	    <!-- Google Tag Manager -->
 		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-P3XDP2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<script type="text/javascript">
 			(function (w, d, s, l, i) {
@@ -56,7 +55,8 @@
             })(window, document, 'script', 'dataLayer', 'GTM-P3XDP2');
 		</script>
         <!-- End Google Tag Manager -->
-		<div id="site-container" style="height: 100%">
+	    <div id="site-container" style="height: 100%">
+            <mmenu mmenu-id="main-menu" mmenu-items="mainMenuItems" mmenu-options="mainMenuOptions" mmenu-params="mainMenuParams" mmenu-invalidate="updateMenu"></mmenu>
 			<header class="header navbar left-slide">
 				<div class="container container-fluid-max-lg">
 					<div class="brand top-nav center">
@@ -793,7 +793,6 @@
 						</div>
 						<!-- End Filter Sidebar -->
 						<!-- Browse  -->
-						<mmenu mmenu-id="main-menu" mmenu-items="mainMenuItems"></mmenu>
 
 					    <div class="col-xs-8 col-sm-5 col-lg-3 no-p sidebar-offcanvas" id="browseSidebar" browse-sidebar>
 					        <div class="list-group">
