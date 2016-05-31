@@ -172,7 +172,20 @@
         self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
             self.getInterestItems(self.getAllInitialClasses, data);
             //build mmenu
-            $scope.mainMenuOptions = { slidingSubmenus: true, navbar: { title: "Program Finder"} };
+            $scope.mainMenuOptions = {
+                navbar: {
+                    title: "All Interests"
+                },
+                "iconPanels": true,
+                "extensions": ["multiline", "pageshadow", "panelshadow"],
+                "setSelected": true, 
+                "navbars": [{
+                    content: ["breadcrumbs"]
+                }], 
+                "scrollBugFix": {
+                    fix: true
+                } 
+            };
             $scope.mainMenuParams = { offCanvas: { pageSelector: "#site-container"} };
             $scope.mainMenuItems = self.buildMenuItems(self.allClasses);
         }, function (respData) {
