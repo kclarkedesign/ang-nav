@@ -171,6 +171,10 @@
 
         self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
             self.getInterestItems(self.getAllInitialClasses, data);
+            //build mmenu
+            $scope.mainMenuOptions = { slidingSubmenus: true, navbar: { title: "Program Finder"} };
+            $scope.mainMenuParams = { offCanvas: { pageSelector: "#site-container"} };
+            $scope.mainMenuItems = self.buildMenuItems(self.allClasses);
         }, function (respData) {
             if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
                 self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
@@ -206,13 +210,14 @@
             self.progressbar.complete();
         }, 2000);
 
-        $scope.$watch(function () {
-            return self.allClasses;
-        }, function (allClasses) {
-            if (allClasses.length > 1) {
-                $scope.mainMenuItems = self.buildMenuItems(allClasses);
-            }
-        });
+        //        $scope.$watch(function () {
+        //            return self.allClasses;
+        //        }, function (allClasses) {
+        //            if (allClasses.length > 1) {
+        //                $scope.mainMenuItems = self.buildMenuItems(allClasses);
+        //                $scope.updateMenu();
+        //            }
+        //        });
 
         $scope.$watch(function () {
             return self.location.path();
@@ -327,10 +332,13 @@
         });
     };
 
-    NavListController.prototype.buildMenuItems = function (nodes, storeLevels, level, tmp) {
+    NavListController.prototype.buildMenuItems = function (nodes, storeLevels, level, names, tmp) {
         var self = this;
+        var absUrl = self.location.absUrl().toLowerCase();
+        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
         var gottenLevels = storeLevels || [];
         var curLevel = level || 0;
+        var urlToBuild = names || [];
         for (var property in nodes) {
             if (typeof nodes[property] === "object") {
                 if (!Array.isArray(nodes[property])) {
@@ -354,61 +362,26 @@
                     }
                 } else {
                     curLevel++;
+                    urlToBuild.push(nodes.Name);
                 }
-                self.buildMenuItems(nodes[property], gottenLevels, curLevel, tmp);
+                self.buildMenuItems(nodes[property], gottenLevels, curLevel, urlToBuild, tmp);
                 if (Array.isArray(nodes[property])) {
                     --curLevel;
+                    urlToBuild.pop();
                 }
             } else {
                 if (property === 'Name') {
                     tmp.text = nodes[property];
-                }
-                if (property === 'NodeID') {
-                    var nodeid = nodes[property];
-                    var builtUrl = self.buildUrlFromFetch(self.allClasses, nodeid);
-                    tmp.href = builtUrl;
+                    var finalUrl = baseUrl + '#';
+                    for (var i = 0; i < urlToBuild.length; i++) {
+                        finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
+                    }
+                    finalUrl += '/' + tmp.text.replace(/\//g, '%2F');
+                    tmp.href = encodeURI(finalUrl);
                 }
             }
         }
         return gottenLevels;
-    };
-
-    NavListController.prototype.buildUrlFromFetch = function (nodes, id) {
-        var self = this;
-        var absUrl = self.location.absUrl().toLowerCase();
-        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-        var resultArray = [];
-
-        function traverse(value) {
-            var result;
-            if (value.hasOwnProperty('NodeID') && value.NodeID === id) {
-                result = value;
-            } else {
-                _.forEach(value, function (val) {
-                    if (_.isObject(val)) {
-                        result = traverse(val);
-                    }
-                    if (result) {
-                        return false;
-                    }
-                });
-            }
-            return result;
-        }
-        var stop = false;
-        while (!stop) {
-            var returnedResult = traverse(nodes);
-            resultArray.push(returnedResult.Name);
-            if (returnedResult.NodeLevel <= 2) {
-                stop = true;
-            }
-            id = returnedResult.ParentNodeID;
-        }
-        var finalUrl = baseUrl + '#';
-        _.forEachRight(resultArray, function (val) {
-            finalUrl += '/' + val;
-        });
-        return encodeURI(finalUrl);
     };
 
     NavListController.prototype.fetchResults = function (interest, adjustArr, navConfig) {
@@ -1273,6 +1246,7 @@
                 self.activeBreadcrumb = [];
                 _.forEachRight(subfolders, function (folder, index) {
                     if (folder.length) {
+                        folder = folder.replace(/%2F/i, "/");
                         if (_.isUndefined(foundChildParent)) {
                             if (index === 0) {
                                 //if this is only one level above then we can safely assume there are no duplicate children
