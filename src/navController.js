@@ -210,15 +210,6 @@
             self.progressbar.complete();
         }, 2000);
 
-        //        $scope.$watch(function () {
-        //            return self.allClasses;
-        //        }, function (allClasses) {
-        //            if (allClasses.length > 1) {
-        //                $scope.mainMenuItems = self.buildMenuItems(allClasses);
-        //                $scope.updateMenu();
-        //            }
-        //        });
-
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
