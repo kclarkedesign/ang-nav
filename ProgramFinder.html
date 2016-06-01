@@ -25,7 +25,7 @@
 		<link rel="stylesheet" href="css/style.css?v=2_9">
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/5.6.4/js/jquery.mmenu.all.min.js"></script>
-
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/5.6.4/wrappers/angular/jquery.mmenu.angular.min.js" />
 		<script src="//cdn.jsdelivr.net/imagesloaded/3.1.8/imagesloaded.pkgd.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 		<script src="src/angular.mmenu.js"></script><!-- this script has custom modifications - look for "-djf" to see changes -->
@@ -108,7 +108,7 @@
 									                    </div>
 									                </div>
 									            </li>
-									            <img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" />
+									            <!-- <img src='http://www.92y.org/_ui/tribeca/img/loading.gif' ng-show="navListCtrl.allClasses[0].NodeID === 0" /> -->
 									            <a progress-bar-increment role="button" class="dropdown-toggle pt10 pb10" ng-class="{'active': navListCtrl.activeBreadcrumb[0].Name === sl.Name}" ng-click="navListCtrl.getInterestItems(navListCtrl.interestClicked, sl); navListCtrl.navOpened = false;">
 									                <span ng-bind-html="sl.Name | unsafe"></span>
                                                 </a>
@@ -556,7 +556,7 @@
 						    <div class="col-md-12 text-center" ng-show="navListCtrl.onscreenResults.length === 0 && navListCtrl.isFetching === true">
 						        <div class="itemContents auto-height">
 						            <div class="noResults heading">
-						                <img style="margin-right: 5px;" src="../_ui/tribeca/img/loading.gif" />Fetching results.  Please wait.
+						                <img style="margin: 0 0 10px 0;" src="../_ui/tribeca/img/loading.gif" /><br />Fetching results.  Please wait.
 						            </div>
 						        </div>
 						    </div>

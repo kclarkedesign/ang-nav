@@ -73,6 +73,7 @@ html.mm-blocking body {
 .mm-prev:before {
 	content: "\f067";
 	border: none;
+	height: 14px;
 	-webkit-transform: initial;
 	-ms-transform: initial;
 	transform: initial;
@@ -2345,7 +2346,7 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 #site-brand-menu>.navbar-nav>li>a {
     padding: 7px 0 7px 0;
-    smin-width: 62px;
+    min-width: 62px;
 }
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
