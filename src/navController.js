@@ -222,7 +222,6 @@
         $timeout(function () {
             self.progressbar.complete();
         }, 2000);
-
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
@@ -634,47 +633,47 @@
                 self.microsites = _.clone(MICROSITELIST);
                 if (currentUrl.indexOf('/Dance') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Fine Art & Design') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Ceramics') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Music') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'ceramics' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'ceramics' })
+                    );
                 }
                 if (currentUrl.indexOf('/Jewelry') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
             } else {
                 var subFolderPresent = false;
@@ -1082,27 +1081,27 @@
                 self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
             }
 
-            //		var lastLocationPath = self.lastLocationPath;
-            //		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-            //		var lastLocArr = lastLocationPath.split("/");
+            //      var lastLocationPath = self.lastLocationPath;
+            //      lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+            //      var lastLocArr = lastLocationPath.split("/");
 
-            //		var locationParts = seperateSlicersFromUrl(locationPath);
-            //		locationPath = locationParts.path;
-            //		var locationPathRemoved = locationParts.removed;
-            //		var locArr = locationPath.split("/");
+            //      var locationParts = seperateSlicersFromUrl(locationPath);
+            //      locationPath = locationParts.path;
+            //      var locationPathRemoved = locationParts.removed;
+            //      var locArr = locationPath.split("/");
 
             //note:  until we get a proper top-down pattern with the keywords, we can't use this code
             // if (_.difference(locArr, lastLocArr).length === 1) {
-            // 	if (self.onscreenResults.length) {
-            // 		_.forEach(_.clone(self.onscreenResults), function (arr) {
-            // 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-            // 			if (_.isUndefined(checkPropExists)) {
-            // 				_.pull(self.onscreenResults, arr);
-            // 			}
-            // 		});
-            // 	} else {
-            // 		self.onscreenResults = _.clone(onscreenResultsQueue);
-            // 	}
+            //  if (self.onscreenResults.length) {
+            //      _.forEach(_.clone(self.onscreenResults), function (arr) {
+            //          var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+            //          if (_.isUndefined(checkPropExists)) {
+            //              _.pull(self.onscreenResults, arr);
+            //          }
+            //      });
+            //  } else {
+            //      self.onscreenResults = _.clone(onscreenResultsQueue);
+            //  }
             // } else {
             self.onscreenResults = _.clone(onscreenResultsQueue);
             // }
@@ -1149,24 +1148,24 @@
             // var sortBy;
             // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
             // if (sortUrlLocation < 0) {
-            // 	sortBy = 'all';
+            //  sortBy = 'all';
             // } else {
-            // 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
-            // 	if (endSlashLocation < 0) {
-            // 		endSlashLocation = locationPathRemoved.length;
-            // 	}
-            // 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
+            //  var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
+            //  if (endSlashLocation < 0) {
+            //      endSlashLocation = locationPathRemoved.length;
+            //  }
+            //  sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
             // }
             // switch (sortBy) {
-            // 	case 'progress':
-            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
-            // 		break;
-            // 	case 'featured':
-            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-            // 		break;
-            // 	default:
-            // 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
-            // 		break;
+            //  case 'progress':
+            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+            //      break;
+            //  case 'featured':
+            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+            //      break;
+            //  default:
+            //      self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+            //      break;
             // }
             // self.sortOrder = sortBy;
 
@@ -1620,7 +1619,7 @@
             delete self.edateSlice;
         }
         return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice)
-		    && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
+            && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
     };
 
     NavListController.prototype.checkAgeInit = function () {
@@ -1759,8 +1758,8 @@
                 break;
             default:
                 enabled = (!self.checkDateInit() && self.initialized) ||
-				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
-				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
+                (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
+                (!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
         }
         return enabled;
     };
@@ -2674,63 +2673,63 @@ var logErrorToServer = function(ex, cwz) {
 };
 
 var isDate = function (checkDate) {
-	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
+    return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
 };
 
 var resizeTileDisplay = function (scope) {
 
-	var tileHeight, numColumns;
-	scope.navListCtrl.environment = "desktop";
-	if (window.matchMedia( "(min-width: 1199px)" ).matches) {
-		numColumns = 1;
-		tileHeight = 211;
-	} else if (window.matchMedia( "(min-width: 991px)" ).matches) {
-		numColumns = 1;
-		tileHeight = 201;
-	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
-		numColumns = 2;
-		tileHeight = 450;
-		scope.navListCtrl.environment = "mobile";
-	} else {
-		numColumns = 1;
-		tileHeight = 139;
-		scope.navListCtrl.environment = "mobile";
-	}
+    var tileHeight, numColumns;
+    scope.navListCtrl.environment = "desktop";
+    if (window.matchMedia( "(min-width: 1199px)" ).matches) {
+        numColumns = 1;
+        tileHeight = 211;
+    } else if (window.matchMedia( "(min-width: 991px)" ).matches) {
+        numColumns = 1;
+        tileHeight = 201;
+    } else if (window.matchMedia( "(min-width: 767px)" ).matches) {
+        numColumns = 2;
+        tileHeight = 450;
+        scope.navListCtrl.environment = "mobile";
+    } else {
+        numColumns = 1;
+        tileHeight = 139;
+        scope.navListCtrl.environment = "mobile";
+    }
 
-	var headerHeight;
-	if (scope.navListCtrl.environment === "mobile") {
-		scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
-		scope.navListCtrl.bottomContainerStyle = {};
-		headerHeight = $("header").height();
-		
-	} else {
-		headerHeight = $("#Container").offset().top;
-		mainArea = $("#main-area").height();
-		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
-		scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
-	}
-	var pageHeight = $(window).height();
-	var pageHeightWithoutHeader = pageHeight - headerHeight;
-	var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
-	if (numRows === 0) {
-		numRows++;
-	}
-	var limitToSet = numColumns * numRows;
-	scope.navListCtrl.limit = limitToSet;
-	scope.navListCtrl.numOfColumns = numColumns;
-	scope.navListCtrl.origLimit = limitToSet + numColumns;
+    var headerHeight;
+    if (scope.navListCtrl.environment === "mobile") {
+        scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
+        scope.navListCtrl.bottomContainerStyle = {};
+        headerHeight = $("header").height();
+        
+    } else {
+        headerHeight = $("#Container").offset().top;
+        mainArea = $("#main-area").height();
+        scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+        scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
+    }
+    var pageHeight = $(window).height();
+    var pageHeightWithoutHeader = pageHeight - headerHeight;
+    var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
+    if (numRows === 0) {
+        numRows++;
+    }
+    var limitToSet = numColumns * numRows;
+    scope.navListCtrl.limit = limitToSet;
+    scope.navListCtrl.numOfColumns = numColumns;
+    scope.navListCtrl.origLimit = limitToSet + numColumns;
 };
 
 var adjustLevelArray = function (arr, start, end, clear) {
-	//creates a blank new level in self.arrCategory
-	for (var x = start; x <= end; x++){
-		if (_.isUndefined(arr[x]) || clear) {
-			arr[x] = [];	
-		}
-	}
-	return end;
+    //creates a blank new level in self.arrCategory
+    for (var x = start; x <= end; x++){
+        if (_.isUndefined(arr[x]) || clear) {
+            arr[x] = [];    
+        }
+    }
+    return end;
 };
 
 var isActualNumber = function (num) {
-	return !isNaN(parseFloat(num)) && isFinite(num);
+    return !isNaN(parseFloat(num)) && isFinite(num);
 };

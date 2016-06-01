@@ -48,37 +48,37 @@ body.mainnav-open {
 }
 
 /** FOR MMENU **/
-html.mm-blocking, html.mm-blocking body 
-{
+html.mm-blocking,
+html.mm-blocking body {
     overflow: hidden !important;
 }
-#mm-blocker 
-{
-    nackground: rgba(0,0,0,0.5);
+#mm-blocker {
+	background: rgba(0,0,0,0.5);
 }
-.mm-selected 
-{
+.mm-selected {
     background: #8EBADF;
 }
-.mm-arrow, .mm-next, .mm-prev 
-{
-    display: inline-block;
+.mm-arrow,
+.mm-next, 
+.mm-prev {
+	display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.mm-arrow:after, .mm-next:after, .mm-prev:before 
-{
-    content: "\f067";
-    border: none;
-    -webkit-transform: initial;
-    -ms-transform: initial;
-    transform: initial;
+.mm-arrow:after,
+.mm-next:after, 
+.mm-prev:before {
+	content: "\f067";
+	border: none;
+	height: 14px;
+	-webkit-transform: initial;
+	-ms-transform: initial;
+	transform: initial;
 }
 /** /MMENU **/
- 
 .center {
 	text-align: center;
 }
@@ -2344,10 +2344,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	min-width: 70px;
 	height: 50px;
 }
-#site-brand-menu>.navbar-nav>li>a 
-{
+#site-brand-menu>.navbar-nav>li>a {
     padding: 7px 0 7px 0;
-    smin-width: 62px;
+    min-width: 62px;
 }
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -2662,7 +2661,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		position: fixed;
 		left: 0;
 		right: 0;
-		top: 0;
+		top: 0px;
 		z-index: 1;
 		bottom: 0;
 		height: 100%;
@@ -2705,8 +2704,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		text-transform: uppercase;
 		margin-top: 15px;
 	}
-	.first-header 
-	{
+	.first-header {
 	    margin-top: 5px;
 	}
 	.header .brand .navbar-brand {
