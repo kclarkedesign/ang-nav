@@ -67,7 +67,6 @@ html.mm-blocking body {
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
 }
 .mm-arrow:after,
 .mm-next:after, 
@@ -98,7 +97,6 @@ html.mm-blocking body {
     padding: 13px 0;
     height: 50px;
     position: absolute;
-    /*right: 0;*/
 }
 .header {
 	background-color: #000000;
@@ -686,7 +684,6 @@ width: 280px;
 	}
 	.layout, 
 	.header {
-		/*-webkit-backface-visibility: hidden;*/
 		width: 100%;
 		-webkit-transition: -webkit-transform 300ms ease 0s;
 		transition: transform 300ms ease 0s;
@@ -2347,8 +2344,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	height: 50px;
 }
 #site-brand-menu>.navbar-nav>li>a {
-	padding: 7px 0 7px 0;
-	smin-width: 62px;
+    padding: 7px 0 7px 0;
+    smin-width: 62px;
 }
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -2436,11 +2433,10 @@ input[type="date"]::-webkit-inner-spin-button{
 	.header {
 		height: 50px;
 	}
-
-	.top-nav .navbar-left {
-		float: left;
+	.top-nav .navbar-left 
+	{
+	    float: left;
 	}
-
 	.top-nav .navbar-right {
 		float: right;
 	}
@@ -2605,9 +2601,6 @@ input[type="date"]::-webkit-inner-spin-button{
 		width: auto;
 		overflow: hidden;
 	}
-	#browseBtns button {
-	  /*font-size: .8em;*/
-	}
 }
 @media (max-width: 300px) {
 	.classTitleMobile {
@@ -2623,7 +2616,6 @@ input[type="date"]::-webkit-inner-spin-button{
 
 .header .off-left {
 	margin-right: -5px;
-	/*margin-left: -12px;*/
 	margin-left: 10px;
 	float: left;
 	font-size: 20px;
@@ -2681,7 +2673,6 @@ input[type="date"]::-webkit-inner-spin-button{
 		height: 100%;
 	}
 	.scrollable-wrapper {
-		/*padding-top: 5px;*/
 		display: block;
 		position: relative;
 		height: 100%;
@@ -2713,10 +2704,9 @@ input[type="date"]::-webkit-inner-spin-button{
 		margin-top: 15px;
 	}
 	.first-header {
-		margin-top: 5px;
+	    margin-top: 5px;
 	}
 	.header .brand .navbar-brand {
-		/*margin-left: -8px;*/
 		margin-right: 4px;
 	}
 	.mega-dropdown {
@@ -2753,7 +2743,6 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 768px) {
 	.navbar-nav.navbar-right>li {
 		float: left;
-		/*border-left: 1px solid;*/
 	}
 	#action-container {
 		position: absolute;
