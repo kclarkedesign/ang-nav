@@ -116,7 +116,7 @@
         self.showSpinner = false;
         self.showGlobalSpinner = false;
         self.debounceSearch = _.debounce(function () { self.modifyUrlSearch(false); }, 2000);
-        self.debounceGlobalSearch = _.debounce(function (searchTerm) { self.fetchSearchResults(searchTerm, true); }, 2000);
+        self.debounceGlobalSearch = _.debounce(function () { self.fetchSearchResults(true); }, 2000);
         self.applyScope = function () { $scope.$apply(); };
         self.enabledFilters = {};
         self.bottomContainerStyle = { 'overflow-x': 'hidden', 'height': '100%' };
@@ -137,6 +137,8 @@
         self.ageClearClicked = false;
         self.progressbar = ngProgressFactory;
         self.mobileDetect();
+        $scope.mainMenuItems = [];
+        self.mainMenuItems = $scope.mainMenuItems;
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -178,19 +180,18 @@
                 },
                 "iconPanels": true,
                 "extensions": ["multiline", "pageshadow", "panelshadow"],
-                "setSelected": true, 
+                "setSelected": true,
                 "navbars": [{
                     content: ["breadcrumbs"]
-                }], 
+                }],
                 "scrollBugFix": {
                     fix: true
-                } 
+                }
             };
             $scope.mainMenuParams = { offCanvas: { pageSelector: "#site-container"} };
-            $scope.mainMenuItems = self.buildMenuItems(self.allClasses);
         }, function (respData) {
             if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
-                self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
+                self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
             }
         });
 
@@ -222,6 +223,7 @@
         $timeout(function () {
             self.progressbar.complete();
         }, 2000);
+
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
@@ -311,11 +313,7 @@
                             var rootFolder = subfolders[0];
                             //if logo clicked to reset let's just skip this
                             if (rootFolder.length > 0) {
-                                //if the url's root folder doesn't match the last recorded folder from the url, let's build it up from scratch
-                                var currentRootFolder = self.arrCategory[0][0].Name;
-                                if (currentRootFolder !== rootFolder) {
-                                    self.fetchResults(rootFolder, true, navConfig);
-                                }
+                                self.fetchResults(rootFolder, true, navConfig);
                             }
                         }
                         self.buildCurrentObj();
@@ -335,68 +333,18 @@
         });
     };
 
-    NavListController.prototype.buildMenuItems = function (nodes, storeLevels, level, names, tmp) {
-        var self = this;
-        var absUrl = self.location.absUrl().toLowerCase();
-        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-        var gottenLevels = storeLevels || [];
-        var curLevel = level || 0;
-        var urlToBuild = names || [];
-        for (var property in nodes) {
-            if (typeof nodes[property] === "object") {
-                if (!Array.isArray(nodes[property])) {
-                    tmp = { level: curLevel };
-                    var lastObject = gottenLevels[gottenLevels.length - 1];
-                    if (typeof lastObject === 'undefined' || lastObject.level === curLevel) {
-                        gottenLevels.push(tmp);
-                    } else {
-                        var stop = false;
-                        while (!stop) {
-                            if ((lastObject.level + 1) < curLevel) {
-                                lastObject = lastObject.items[lastObject.items.length - 1];
-                            } else {
-                                stop = true;
-                            }
-                        }
-                        if (typeof lastObject.items === 'undefined') {
-                            lastObject.items = [];
-                        }
-                        lastObject.items.push(tmp);
-                    }
-                } else {
-                    curLevel++;
-                    urlToBuild.push(nodes.Name);
-                }
-                self.buildMenuItems(nodes[property], gottenLevels, curLevel, urlToBuild, tmp);
-                if (Array.isArray(nodes[property])) {
-                    --curLevel;
-                    urlToBuild.pop();
-                }
-            } else {
-                if (property === 'Name') {
-                    tmp.text = nodes[property];
-                    var finalUrl = baseUrl + '#';
-                    for (var i = 0; i < urlToBuild.length; i++) {
-                        finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
-                    }
-                    finalUrl += '/' + tmp.text.replace(/\//g, '%2F');
-                    tmp.href = encodeURI(finalUrl);
-                }
-            }
-        }
-        return gottenLevels;
-    };
-
     NavListController.prototype.fetchResults = function (interest, adjustArr, navConfig) {
         var self = this;
         if (_.isUndefined(self.navsDict[interest])) {
             self.isFetching = true;
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
                 self.getInterestItems(self.getAllInitialClasses, data);
+                self.isFetching = false;
             }, function (respData) {
                 if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
-                    self.allClasses = [{ Name: 'Error loading data.  Click to refresh.', NodeID: ERRORLOADINGNODEID}];
+                    self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
                 }
+                self.isFetching = false;
             });
         }
         if (adjustArr) {
@@ -508,11 +456,61 @@
         if (locationPath.length && locationPath !== '/') {
             var match = locationPath.match(/^\/(.+?)(\/|$)/);
             var interestFolder = match[1];
-            var classesByInterest = [_.find(self.allClasses, { 'Name': interestFolder })];
-            self.getValues(classesByInterest, 0, self.navsDict[interestFolder]);
+            self.getValues(self.allClasses, 0, self.navsDict[interestFolder]);
+            if (self.mainMenuItems.length === 0) {
+                var builtMobileMenu = self.buildMobileMenu();
+                self.mainMenuItems.push.apply(self.mainMenuItems, builtMobileMenu);
+            }
             self.buildCurrentObj();
             self.displayTiles();
         }
+    };
+
+    NavListController.prototype.getAllForMobileMenuFromHomepage = function () {
+        var self = this;
+        self.getValues(self.allClasses, 0, []);
+        var builtMobileMenu = self.buildMobileMenu();
+        self.mainMenuItems.length = 0;
+        self.mainMenuItems.push.apply(self.mainMenuItems, builtMobileMenu);
+    };
+
+    NavListController.prototype.buildMobileMenu = function (menuArray, level, items, lastObject, names) {
+        var self = this;
+        var absUrl = self.location.absUrl().toLowerCase();
+        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+        var curLevel = level || 0;
+        var storedMenu = menuArray || [];
+        var arrCategory = items || self.arrCategory[curLevel];
+        var urlToBuild = names || [];
+        _.forEach(arrCategory, function (ac) {
+            var tmp = { text: ac.Name, level: curLevel };
+            urlToBuild.push(ac.Name);
+            var finalUrl = baseUrl + '#';
+            for (var i = 0; i < urlToBuild.length; i++) {
+                finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
+            }
+            tmp.href = function () {
+                var locationPath = self.location.path();
+                var locationObj = seperateSlicersFromUrl(locationPath);
+                var locationSlicers = locationObj.removed;
+                window.location.href = encodeURI(finalUrl.trim()) + locationSlicers;
+            };
+            if (typeof lastObject === 'undefined' || tmp.level === lastObject.level) {
+                storedMenu.push(tmp);
+            } else {
+                if (typeof lastObject.items === 'undefined') {
+                    lastObject.items = [];
+                }
+                lastObject.items.push(tmp);
+            }
+            var filteredItems = _.filter(self.arrCategory[++curLevel], { 'Parent': ac.NodeID });
+            if (filteredItems.length) {
+                self.buildMobileMenu(storedMenu, curLevel, filteredItems, tmp, urlToBuild);
+            }
+            --curLevel;
+            urlToBuild.pop();
+        });
+        return storedMenu;
     };
 
     NavListController.prototype.getInterestItems = function (func, arg) {
@@ -562,6 +560,8 @@
                     func(self, arg);
                 });
             }
+        } else {
+            self.getAllForMobileMenuFromHomepage();
         }
     };
 
@@ -633,47 +633,47 @@
                 self.microsites = _.clone(MICROSITELIST);
                 if (currentUrl.indexOf('/Dance') >= 0) {
                     _.pull(self.microsites,
-                        _.find(self.microsites, { 'id': 'fineart' }),
-                        _.find(self.microsites, { 'id': 'ceramics' }),
-                        _.find(self.microsites, { 'id': 'jewelry' }),
-                        _.find(self.microsites, { 'id': 'music' }),
-                        _.find(self.microsites, { 'id': 'instruct' })
-                    );
+						_.find(self.microsites, { 'id': 'fineart' }),
+						_.find(self.microsites, { 'id': 'ceramics' }),
+						_.find(self.microsites, { 'id': 'jewelry' }),
+						_.find(self.microsites, { 'id': 'music' }),
+						_.find(self.microsites, { 'id': 'instruct' })
+					);
                 }
                 if (currentUrl.indexOf('/Fine Art & Design') >= 0) {
                     _.pull(self.microsites,
-                        _.find(self.microsites, { 'id': 'dance' }),
-                        _.find(self.microsites, { 'id': 'ceramics' }),
-                        _.find(self.microsites, { 'id': 'jewelry' }),
-                        _.find(self.microsites, { 'id': 'music' }),
-                        _.find(self.microsites, { 'id': 'instruct' })
-                    );
+						_.find(self.microsites, { 'id': 'dance' }),
+						_.find(self.microsites, { 'id': 'ceramics' }),
+						_.find(self.microsites, { 'id': 'jewelry' }),
+						_.find(self.microsites, { 'id': 'music' }),
+						_.find(self.microsites, { 'id': 'instruct' })
+					);
                 }
                 if (currentUrl.indexOf('/Ceramics') >= 0) {
                     _.pull(self.microsites,
-                        _.find(self.microsites, { 'id': 'fineart' }),
-                        _.find(self.microsites, { 'id': 'dance' }),
-                        _.find(self.microsites, { 'id': 'jewelry' }),
-                        _.find(self.microsites, { 'id': 'music' }),
-                        _.find(self.microsites, { 'id': 'instruct' })
-                    );
+						_.find(self.microsites, { 'id': 'fineart' }),
+						_.find(self.microsites, { 'id': 'dance' }),
+						_.find(self.microsites, { 'id': 'jewelry' }),
+						_.find(self.microsites, { 'id': 'music' }),
+						_.find(self.microsites, { 'id': 'instruct' })
+					);
                 }
                 if (currentUrl.indexOf('/Music') >= 0) {
                     _.pull(self.microsites,
-                        _.find(self.microsites, { 'id': 'fineart' }),
-                        _.find(self.microsites, { 'id': 'dance' }),
-                        _.find(self.microsites, { 'id': 'jewelry' }),
-                        _.find(self.microsites, { 'id': 'ceramics' })
-                    );
+						_.find(self.microsites, { 'id': 'fineart' }),
+						_.find(self.microsites, { 'id': 'dance' }),
+						_.find(self.microsites, { 'id': 'jewelry' }),
+						_.find(self.microsites, { 'id': 'ceramics' })
+					);
                 }
                 if (currentUrl.indexOf('/Jewelry') >= 0) {
                     _.pull(self.microsites,
-                        _.find(self.microsites, { 'id': 'fineart' }),
-                        _.find(self.microsites, { 'id': 'dance' }),
-                        _.find(self.microsites, { 'id': 'ceramics' }),
-                        _.find(self.microsites, { 'id': 'music' }),
-                        _.find(self.microsites, { 'id': 'instruct' })
-                    );
+						_.find(self.microsites, { 'id': 'fineart' }),
+						_.find(self.microsites, { 'id': 'dance' }),
+						_.find(self.microsites, { 'id': 'ceramics' }),
+						_.find(self.microsites, { 'id': 'music' }),
+						_.find(self.microsites, { 'id': 'instruct' })
+					);
                 }
             } else {
                 var subFolderPresent = false;
@@ -924,7 +924,7 @@
             self.showGlobalSpinner = true;
             self.debounceGlobalSearch(self.textboxGlobalSearch);
         } else {
-            self.fetchSearchResults(self.textboxGlobalSearch, true);
+            self.fetchSearchResults(true);
         }
     };
 
@@ -955,11 +955,12 @@
             self.textboxSearch = '';
         }
     };
-
-    NavListController.prototype.fetchSearchResults = function (searchTerm, isGlobal) {
+    //todo: optimize global mobile search for "art" so it doesn't crash
+    NavListController.prototype.fetchSearchResults = function (isGlobal) {
         var self = this;
         self.showNoGlobalResults = false;
         self.displaySearchResults = [];
+        var searchTerm = isGlobal ? self.textboxGlobalSearch : self.textboxSearch;
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function (data) {
                 var results = data.data;
@@ -970,9 +971,13 @@
                         var lcKeywords = _.map(keywords, function (kw) {
                             return kw.toLowerCase();
                         });
-                        _.forEach(interestAreas, function (interest) {
+                        _.forEach(interestAreas, function (interest, indx) {
                             var sublevel = _.find(self.allClasses, function (ac) {
-                                return ac.JSONDataURL.toLowerCase().indexOf('/' + interest) > 0;
+                                if (_.isUndefined(ac.JSONDataURL)) {
+                                    logErrorToServer('JSON not showing.');
+                                } else {
+                                    return ac.JSONDataURL.toLowerCase().indexOf('/' + interest) > 0;
+                                }
                             });
                             if (_.isUndefined(sublevel)) {
                                 logErrorToServer('JSON for "' + interest + '" not found.');
@@ -982,35 +987,35 @@
                                 var slkwarr = subLevelKeywords.split(',');
                                 if (_.intersection(slkwarr, lcKeywords).length) {
                                     if (!_.isUndefined(sublevel)) {
-                                        var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-                                        var subLevelId = foundLevel.NodeID;
-                                        self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                                            self.navsDict[subLevelName] = items.data;
-                                            var absUrl = self.location.absUrl().toLowerCase();
-                                            var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-                                            var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
-                                            if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
-                                                self.displaySearchResults.push({
-                                                    searchTerm: searchTerm,
-                                                    interestArea: subLevelName,
-                                                    href: encodeURI(href)
-                                                });
-                                                self.showGlobalSpinner = false;
-                                                self.showNoGlobalResults = false;
-                                            }
-                                        });
+                                        //note: might have to revisit this 
+                                        //we shouldn't have to hit up the json again to get the classes - the search json above should take care of it
+                                        //this was made to prevent a positive hit from the search but no classes when we went to actual link
+                                        //var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                                        //var subLevelId = foundLevel.NodeID;
+                                        //self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
+                                        //self.navsDict[subLevelName] = items.data;
+                                        var absUrl = self.location.absUrl().toLowerCase();
+                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                            self.displaySearchResults.push({
+                                                searchTerm: searchTerm,
+                                                interestArea: subLevelName,
+                                                href: encodeURI(href)
+                                            });
+                                        }
+                                        //});
                                     }
                                 } else {
                                     logErrorToServer('Global search "' + searchTerm + '" found results in "' + subLevelName + '" but does not have keywords "' + subLevelKeywords + '" to show up there.');
                                 }
                             }
+                            if ((indx + 1) === interestAreas.length) {
+                                self.showGlobalSpinner = false;
+                                self.showNoGlobalResults = self.displaySearchResults.length ? false : true;
+                            }
                         });
                     });
-                    if (self.showGlobalSpinner) {
-                        //search finds no results
-                        self.showGlobalSpinner = false;
-                        self.showNoGlobalResults = isGlobal;
-                    }
                 } else {
                     //search finds no results
                     self.showGlobalSpinner = false;
@@ -1081,27 +1086,27 @@
                 self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
             }
 
-            //      var lastLocationPath = self.lastLocationPath;
-            //      lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-            //      var lastLocArr = lastLocationPath.split("/");
+            //		var lastLocationPath = self.lastLocationPath;
+            //		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+            //		var lastLocArr = lastLocationPath.split("/");
 
-            //      var locationParts = seperateSlicersFromUrl(locationPath);
-            //      locationPath = locationParts.path;
-            //      var locationPathRemoved = locationParts.removed;
-            //      var locArr = locationPath.split("/");
+            //		var locationParts = seperateSlicersFromUrl(locationPath);
+            //		locationPath = locationParts.path;
+            //		var locationPathRemoved = locationParts.removed;
+            //		var locArr = locationPath.split("/");
 
             //note:  until we get a proper top-down pattern with the keywords, we can't use this code
             // if (_.difference(locArr, lastLocArr).length === 1) {
-            //  if (self.onscreenResults.length) {
-            //      _.forEach(_.clone(self.onscreenResults), function (arr) {
-            //          var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-            //          if (_.isUndefined(checkPropExists)) {
-            //              _.pull(self.onscreenResults, arr);
-            //          }
-            //      });
-            //  } else {
-            //      self.onscreenResults = _.clone(onscreenResultsQueue);
-            //  }
+            // 	if (self.onscreenResults.length) {
+            // 		_.forEach(_.clone(self.onscreenResults), function (arr) {
+            // 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+            // 			if (_.isUndefined(checkPropExists)) {
+            // 				_.pull(self.onscreenResults, arr);
+            // 			}
+            // 		});
+            // 	} else {
+            // 		self.onscreenResults = _.clone(onscreenResultsQueue);
+            // 	}
             // } else {
             self.onscreenResults = _.clone(onscreenResultsQueue);
             // }
@@ -1142,30 +1147,30 @@
             }
             self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
             if (self.onscreenResults.length === 0 && !self.isFetching) {
-                self.fetchSearchResults(self.textboxSearch, false);
+                self.fetchSearchResults(false);
             }
 
             // var sortBy;
             // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
             // if (sortUrlLocation < 0) {
-            //  sortBy = 'all';
+            // 	sortBy = 'all';
             // } else {
-            //  var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
-            //  if (endSlashLocation < 0) {
-            //      endSlashLocation = locationPathRemoved.length;
-            //  }
-            //  sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
+            // 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
+            // 	if (endSlashLocation < 0) {
+            // 		endSlashLocation = locationPathRemoved.length;
+            // 	}
+            // 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
             // }
             // switch (sortBy) {
-            //  case 'progress':
-            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
-            //      break;
-            //  case 'featured':
-            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-            //      break;
-            //  default:
-            //      self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
-            //      break;
+            // 	case 'progress':
+            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+            // 		break;
+            // 	case 'featured':
+            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+            // 		break;
+            // 	default:
+            // 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+            // 		break;
             // }
             // self.sortOrder = sortBy;
 
@@ -1619,7 +1624,7 @@
             delete self.edateSlice;
         }
         return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice)
-            && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
+		    && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
     };
 
     NavListController.prototype.checkAgeInit = function () {
@@ -1758,8 +1763,8 @@
                 break;
             default:
                 enabled = (!self.checkDateInit() && self.initialized) ||
-                (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
-                (!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
+				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
+				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
         }
         return enabled;
     };
@@ -2673,63 +2678,63 @@ var logErrorToServer = function(ex, cwz) {
 };
 
 var isDate = function (checkDate) {
-    return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
+	return _.isDate(checkDate) || (Number(checkDate) > 0 && _.isFinite(Number(checkDate)) && _.isDate(new Date(checkDate))) ? true : false;
 };
 
 var resizeTileDisplay = function (scope) {
 
-    var tileHeight, numColumns;
-    scope.navListCtrl.environment = "desktop";
-    if (window.matchMedia( "(min-width: 1199px)" ).matches) {
-        numColumns = 1;
-        tileHeight = 211;
-    } else if (window.matchMedia( "(min-width: 991px)" ).matches) {
-        numColumns = 1;
-        tileHeight = 201;
-    } else if (window.matchMedia( "(min-width: 767px)" ).matches) {
-        numColumns = 2;
-        tileHeight = 450;
-        scope.navListCtrl.environment = "mobile";
-    } else {
-        numColumns = 1;
-        tileHeight = 139;
-        scope.navListCtrl.environment = "mobile";
-    }
+	var tileHeight, numColumns;
+	scope.navListCtrl.environment = "desktop";
+	if (window.matchMedia( "(min-width: 1199px)" ).matches) {
+		numColumns = 1;
+		tileHeight = 211;
+	} else if (window.matchMedia( "(min-width: 991px)" ).matches) {
+		numColumns = 1;
+		tileHeight = 201;
+	} else if (window.matchMedia( "(min-width: 767px)" ).matches) {
+		numColumns = 2;
+		tileHeight = 450;
+		scope.navListCtrl.environment = "mobile";
+	} else {
+		numColumns = 1;
+		tileHeight = 139;
+		scope.navListCtrl.environment = "mobile";
+	}
 
-    var headerHeight;
-    if (scope.navListCtrl.environment === "mobile") {
-        scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
-        scope.navListCtrl.bottomContainerStyle = {};
-        headerHeight = $("header").height();
-        
-    } else {
-        headerHeight = $("#Container").offset().top;
-        mainArea = $("#main-area").height();
-        scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
-        scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
-    }
-    var pageHeight = $(window).height();
-    var pageHeightWithoutHeader = pageHeight - headerHeight;
-    var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
-    if (numRows === 0) {
-        numRows++;
-    }
-    var limitToSet = numColumns * numRows;
-    scope.navListCtrl.limit = limitToSet;
-    scope.navListCtrl.numOfColumns = numColumns;
-    scope.navListCtrl.origLimit = limitToSet + numColumns;
+	var headerHeight;
+	if (scope.navListCtrl.environment === "mobile") {
+		scope.navListCtrl.bodyStyle = {'overflow-x': 'hidden','overflow-y': 'auto','-webkit-overflow-scrolling': 'touch'};
+		scope.navListCtrl.bottomContainerStyle = {};
+		headerHeight = $("header").height();
+		
+	} else {
+		headerHeight = $("#Container").offset().top;
+		mainArea = $("#main-area").height();
+		scope.navListCtrl.bodyStyle = { 'height': '100%', 'margin': '0', 'padding': '0', 'overflow': 'hidden' };
+		scope.navListCtrl.bottomContainerStyle = {'overflow-y': 'auto', '-webkit-overflow-scrolling': 'touch', 'overflow-x': 'hidden', 'height': (window.innerHeight-mainArea) - 50 +'px' };
+	}
+	var pageHeight = $(window).height();
+	var pageHeightWithoutHeader = pageHeight - headerHeight;
+	var numRows = Math.ceil(pageHeightWithoutHeader / tileHeight);
+	if (numRows === 0) {
+		numRows++;
+	}
+	var limitToSet = numColumns * numRows;
+	scope.navListCtrl.limit = limitToSet;
+	scope.navListCtrl.numOfColumns = numColumns;
+	scope.navListCtrl.origLimit = limitToSet + numColumns;
 };
 
 var adjustLevelArray = function (arr, start, end, clear) {
-    //creates a blank new level in self.arrCategory
-    for (var x = start; x <= end; x++){
-        if (_.isUndefined(arr[x]) || clear) {
-            arr[x] = [];    
-        }
-    }
-    return end;
+	//creates a blank new level in self.arrCategory
+	for (var x = start; x <= end; x++){
+		if (_.isUndefined(arr[x]) || clear) {
+			arr[x] = [];	
+		}
+	}
+	return end;
 };
 
 var isActualNumber = function (num) {
-    return !isNaN(parseFloat(num)) && isFinite(num);
+	return !isNaN(parseFloat(num)) && isFinite(num);
 };
