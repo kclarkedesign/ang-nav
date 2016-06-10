@@ -82,11 +82,12 @@ angular.module('angular-mmenu', [])
                 return;
             }
             var value = scope[attrs.mmenuItems];
-            if (value === null || value === undefined) {
+            if (value === null || value === undefined || value.length === 0) {
                 //value = new Array();
                 //-djf have creation of menu being cancelled if there are no menu items
                 return;
             }
+
             if (jElement[0].localName === 'nav') {
                 jElement.empty();
                 existingMmenu = jElement.data('mmenu');
@@ -116,6 +117,27 @@ angular.module('angular-mmenu', [])
                 existingMmenu.init(menu);
             } else {
                 console.error('angular mmenu could not be reinitialized due to missing init api method.');
+            }
+            //-djf open menu to a panel indicated by URL
+            if (window.location.hash.length) {
+                var mmenuApi = newMenu.data('mmenu');
+                var folderPath = window.location.hash.split("/");
+                var panelToOpen;
+                for (var fp = 1; fp < folderPath.length; fp++) {
+                    if (fp === 1) {
+                        panelToOpen = $("#mm-0");
+                    } else {
+                        var parentPanel = panelToOpen.prop('id');
+                        // find panel that has a child with a data-target that points to parent id 
+                        // and that has a link that has the text of the parent
+                        // and that has a link that has text from the URL
+                        panelToOpen = $('div.mm-panel')
+                            .has('a.mm-btn[data-target="#' + parentPanel + '"]')
+                            .has('a.mm-title:contains("' + decodeURI(folderPath[fp - 1]) + '")')
+                            .has('a:contains("' + decodeURI(folderPath[fp]) + '")');
+                    }
+                    mmenuApi.openPanel(panelToOpen);
+                }
             }
         };
         var linker = function (id, scope, attrs) {
