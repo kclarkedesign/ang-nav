@@ -139,7 +139,8 @@
         self.mobileDetect();
         $scope.mainMenuItems = [];
         self.mainMenuItems = $scope.mainMenuItems;
-
+        self.skipDisplayTiles = false;
+        
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
             self.savedPrograms = [];
@@ -153,6 +154,9 @@
         self.eventClassDropdown = {
             isopen: false
         };
+
+        self.DefaultFilterNodeNum = Number(navConfig.DefaultFilterNodeNum);
+        self.ActiveFilterNodeNum = Number(navConfig.ActiveFilterNodeNum);
 
         self.tileInfoSrv = tileInfoSrv;
 
@@ -171,7 +175,7 @@
             }
         })(self.tileInfoSrv.cacheFactory);
 
-        self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
+        self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
             self.getInterestItems(self.getAllInitialClasses, data);
             //build mmenu
             $scope.mainMenuOptions = {
@@ -307,19 +311,21 @@
                         var subfolders;
                         if ((self.arrCategory.length === 0 || self.arrCategory[0].length === 0) && numOfSlashesLocation > 0) {
                             subfolders = locationPath.substring(1).split('/');
-                            self.fetchResults(subfolders[0], false, navConfig);
+                            self.fetchResults(subfolders[0], false);
                         } else {
                             subfolders = locationPath.substring(1).split('/');
                             var rootFolder = subfolders[0];
                             //if logo clicked to reset let's just skip this
                             if (rootFolder.length > 0) {
-                                self.fetchResults(rootFolder, true, navConfig);
+                                self.fetchResults(rootFolder, true);
                             }
                         }
                         self.buildCurrentObj();
                         break;
                 }
-                self.displayTiles();
+                if (!self.skipDisplayTiles) {
+                    self.displayTiles();
+                }
                 self.lastLocationPath = locationPath + locationRemoved;
                 self.JumpNav = {};
                 self.limit = self.origLimit;
@@ -333,18 +339,20 @@
         });
     };
 
-    NavListController.prototype.fetchResults = function (interest, adjustArr, navConfig) {
+    NavListController.prototype.fetchResults = function (interest, adjustArr) {
         var self = this;
         if (_.isUndefined(self.navsDict[interest])) {
+            self.skipDisplayTiles = true;
             self.isFetching = true;
-            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + navConfig.FilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
                 self.getInterestItems(self.getAllInitialClasses, data);
-                self.isFetching = false;
+                self.skipDisplayTiles = false;
             }, function (respData) {
                 if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
                     self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
                 }
                 self.isFetching = false;
+                self.skipDisplayTiles = false;
             });
         }
         if (adjustArr) {
@@ -452,7 +460,7 @@
     };
 
     NavListController.prototype.getAllInitialClasses = function (self) {
-        var locationPath = self.location.path();
+        var locationPath = self.getLocationPath();
         if (locationPath.length && locationPath !== '/') {
             var match = locationPath.match(/^\/(.+?)(\/|$)/);
             var interestFolder = match[1];
@@ -464,6 +472,22 @@
             self.buildCurrentObj();
             self.displayTiles();
         }
+    };
+
+    NavListController.prototype.getLocationPath = function () {
+        var self = this;
+        var locationPath = '';
+        if (self.DefaultFilterNodeNum === self.ActiveFilterNodeNum) {
+            locationPath = self.location.path();
+        } else {
+            var browserPath = self.location.path();
+            var nodeHierarchy = getActiveNodeHierarchy(self.allClasses, 'NodeID', self.ActiveFilterNodeNum);
+            _.forEachRight(nodeHierarchy, function (nh) {
+                locationPath += '/' + nh.Name;
+            });
+            locationPath += browserPath;
+        }
+        return locationPath;
     };
 
     NavListController.prototype.getAllForMobileMenuFromHomepage = function () {
@@ -521,7 +545,7 @@
             //if page load
             self.allClasses = [];
             self.allClasses.push.apply(self.allClasses, arg.data);
-            var locationPath = self.location.path();
+            var locationPath = self.getLocationPath();
             if (locationPath.length && locationPath !== '/') {
                 var match = locationPath.match(/^\/(.+?)(\/|$)/);
                 subLevelName = match[1];
@@ -955,7 +979,7 @@
             self.textboxSearch = '';
         }
     };
-    //todo: optimize global mobile search for "art" so it doesn't crash
+
     NavListController.prototype.fetchSearchResults = function (isGlobal) {
         var self = this;
         self.showNoGlobalResults = false;
@@ -1175,7 +1199,7 @@
             // self.sortOrder = sortBy;
 
             self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-
+            self.isFetching = false;
             self.showSpinner = false;
             self.initialized = true;
         }
@@ -1242,7 +1266,7 @@
 
     NavListController.prototype.buildCurrentObj = function () {
         var self = this;
-        var locationPath = self.location.path();
+        var locationPath = self.getLocationPath();
         var locationObj = seperateSlicersFromUrl(locationPath);
         locationPath = locationObj.path;
         var locationSlicers = locationObj.removed;
@@ -1252,6 +1276,7 @@
                 var subfolders = locationPath.substring(1).split('/');
                 var findChild, foundChildParent, findObj, foundChild;
                 self.activeBreadcrumb = [];
+                var topmostNodeFound = false;
                 _.forEachRight(subfolders, function (folder, index) {
                     if (folder.length) {
                         folder = folder.replace(/%2F/i, "/");
@@ -1278,17 +1303,30 @@
                         }
                         findChild = _.where(self.arrCategory[index], findObj);
                         foundChild = findChild[0];
-                        foundChildParent = foundChild.Parent;
-                        foundChild = _.clone(foundChild);
-                        delete foundChild.Parent;
+                        if (_.isUndefined(foundChild)) {
+                            //this condition would happen with someone mangling the URL such as "/School of the Arts/Ceramics/School of the Arts"
+                            _.pullAt(subfolders, index);
+                            self.location.path(fixUrl(self.location.path().replace(folder, '')));
+                        } else {
+                            foundChildParent = foundChild.Parent;
+                            foundChild = _.clone(foundChild);
+                            delete foundChild.Parent;
 
-                        if (index === (subfolders.length - 1)) {
-                            foundChild.Current = true;
-                            self.currentObj = _.clone(foundChild);
+                            if (index === (subfolders.length - 1)) {
+                                foundChild.Current = true;
+                                self.currentObj = _.clone(foundChild);
+                            }
                         }
                     }
                     if (!_.isUndefined(foundChild)) {
-                        self.activeBreadcrumb.push(_.clone(foundChild));
+                        if (!topmostNodeFound) {
+                            self.activeBreadcrumb.push(_.clone(foundChild));
+                        }
+                        if (self.DefaultFilterNodeNum !== self.ActiveFilterNodeNum) {
+                            if (foundChild.NodeID === self.ActiveFilterNodeNum) {
+                                topmostNodeFound = true;
+                            }
+                        }
                     }
                 });
                 self.activeBreadcrumb.reverse();
@@ -1318,7 +1356,7 @@
         var urlMethod = 'default';
         if (isActualNumber(currentId)) {
             jumpType = 'linkBack';
-            urlMethod = 'parse';
+            urlMethod = currentNode === self.ActiveFilterNodeNum ? 'reset' : 'parse';
             var breadCrumb = self.activeBreadcrumb[currentId];
             currentName = breadCrumb.Name;
             currentLevel = breadCrumb.Level;
@@ -1371,6 +1409,9 @@
                 break;
             case 'replace':
                 newLocationPath = fixUrl('/' + currentId + locationPathRemoved);
+                break;
+            case 'reset':
+                newLocationPath = fixUrl(locationPathRemoved);
                 break;
             case 'jump':
                 var folderSplit = locationPath.split("/");
@@ -1810,6 +1851,26 @@
             }
             if (_.isObject(v)) {
                 pluckAllKeys(v, res);
+            }
+        });
+        return res;
+    };
+
+    var getActiveNodeHierarchy = function (arr, key, val, res) {
+        var res = res || [];
+        _.forEach(arr, function (o) {
+            if (o.hasOwnProperty(key) && o[key] === val) {
+                res.push(o);
+                return false;
+            }
+            if (_.isObject(o)) {
+                getActiveNodeHierarchy(o, key, val, res);
+            }
+            if (res.length) {
+                if (_.isPlainObject(o)) {
+                    res.push(o);
+                }
+                return false;
             }
         });
         return res;
