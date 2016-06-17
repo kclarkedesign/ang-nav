@@ -140,7 +140,7 @@
         $scope.mainMenuItems = [];
         self.mainMenuItems = $scope.mainMenuItems;
         self.skipDisplayTiles = false;
-        
+
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
             self.savedPrograms = [];
@@ -313,11 +313,13 @@
                             subfolders = locationPath.substring(1).split('/');
                             self.fetchResults(subfolders[0], false);
                         } else {
-                            subfolders = locationPath.substring(1).split('/');
-                            var rootFolder = subfolders[0];
-                            //if logo clicked to reset let's just skip this
-                            if (rootFolder.length > 0) {
-                                self.fetchResults(rootFolder, true);
+                            if (self.DefaultFilterNodeNum === self.ActiveFilterNodeNum) {
+                                subfolders = locationPath.substring(1).split('/');
+                                var rootFolder = subfolders[0];
+                                //if logo clicked to reset let's just skip this
+                                if (rootFolder.length > 0) {
+                                    self.fetchResults(rootFolder, true);
+                                }
                             }
                         }
                         self.buildCurrentObj();
@@ -359,8 +361,10 @@
             adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
         }
         var classIndex = _.findIndex(self.allClasses, { 'Name': interest });
-        var classesByInterest = [self.allClasses[classIndex]];
-        self.getValues(classesByInterest, 0, self.navsDict[interest]);
+        if (classIndex >= 0) {
+            var classesByInterest = [self.allClasses[classIndex]];
+            self.getValues(classesByInterest, 0, self.navsDict[interest]);
+        }
     };
 
     NavListController.prototype.printAllReport = function () {
@@ -504,11 +508,28 @@
         var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
         var curLevel = level || 0;
         var storedMenu = menuArray || [];
-        var arrCategory = items || self.arrCategory[curLevel];
+        var arrCategory;
+        if (_.isUndefined(items)) {
+            if (self.DefaultFilterNodeNum === self.ActiveFilterNodeNum) {
+                arrCategory = self.arrCategory[curLevel];
+            } else {
+                _.forEach(self.arrCategory, function (arr) {
+                    var foundLevel = _.filter(arr, { 'NodeID': self.ActiveFilterNodeNum });
+                    if (!_.isUndefined(foundLevel)) {
+                        arrCategory = foundLevel;
+                        return false;
+                    }
+                });
+            }
+        } else {
+            arrCategory = items;
+        }
         var urlToBuild = names || [];
         _.forEach(arrCategory, function (ac) {
             var tmp = { text: ac.Name, level: curLevel };
-            urlToBuild.push(ac.Name);
+            if (ac.NodeID !== self.ActiveFilterNodeNum || self.ActiveFilterNodeNum === self.DefaultFilterNodeNum) {
+                urlToBuild.push(ac.Name);
+            }
             var finalUrl = baseUrl + '#';
             for (var i = 0; i < urlToBuild.length; i++) {
                 finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
@@ -1273,7 +1294,7 @@
         try {
             if (locationPath.length && locationPath !== '/') {
                 self.lastLocationPath = self.location.path();
-                var subfolders = locationPath.substring(1).split('/');
+                var subfolders = _.compact(locationPath.substring(1).split('/'));
                 var findChild, foundChildParent, findObj, foundChild;
                 self.activeBreadcrumb = [];
                 var topmostNodeFound = false;
@@ -1397,7 +1418,13 @@
         switch (urlMethod) {
             case 'parse':
                 var folderPosition = locationPath.indexOf('/' + currentId + '/');
-                locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
+                if (folderPosition >= 0) {
+                    locationPath = locationPath.substr(0, folderPosition + currentId.length + 1);
+                } else {
+                    var hiddenPath = self.getLocationPath();
+                    folderPosition = hiddenPath.indexOf('/' + currentId + '/');
+                    locationPath = hiddenPath.substr(0, folderPosition);
+                }
                 newLocationPath = fixUrl(locationPath + locationPathRemoved);
                 break;
             case 'build':
