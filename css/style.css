@@ -69,8 +69,8 @@ html.mm-blocking body {
     -moz-osx-font-smoothing: grayscale;
 }
 .mm-arrow:after,
-.mm-next:after, 
-.mm-prev:before {
+.mm-next:after 
+/*.mm-prev:before*/ {
 	content: "\f067";
 	border: none;
 	height: 14px;

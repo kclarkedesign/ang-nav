@@ -186,8 +186,10 @@
                 "extensions": ["multiline", "pageshadow", "panelshadow"],
                 "setSelected": true,
                 "navbars": [{
-                    content: ["breadcrumbs"]
+                    content: ["prev", "title"]
                 }],
+                dragOpen: true,
+                dragClose: true,
                 "scrollBugFix": {
                     fix: true
                 }
