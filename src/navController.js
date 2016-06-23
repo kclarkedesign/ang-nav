@@ -229,7 +229,7 @@
         $timeout(function () {
             self.progressbar.complete();
         }, 2000);
-
+        
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
@@ -241,6 +241,7 @@
                 locationPath = locationObj.path;
                 var locationRemoved = locationObj.removed;
                 var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
+                $scope.$broadcast("urlChanged", locationPath);
                 //if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
                 switch (self.JumpNav.Type) {
                     case 'linkTo':
