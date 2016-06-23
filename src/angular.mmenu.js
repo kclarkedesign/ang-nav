@@ -118,54 +118,72 @@ angular.module('angular-mmenu', [])
             } else {
                 console.error('angular mmenu could not be reinitialized due to missing init api method.');
             }
-            //-djf if menu closing, display selected on top in case "subcategories" was clicked but nothing selected
+            //-djf start
             var mmenuApi = newMenu.data('mmenu');
             buildUpMenuFromScratch(mmenuApi, window.location.hash);
+            // if menu closing, display selected on top in case "subcategories" was clicked but nothing selected
             mmenuApi.bind('closing', function () {
                 var lastPanelSelected = $("div.mm-opened").has("li.mm-selected").last();
                 var lastPanelOpened = $("div.mm-opened").last();
                 if (lastPanelSelected.length) {
                     if (lastPanelOpened.prop("id") !== lastPanelSelected.prop("id")) {
                         lastPanelOpened.removeClass("mm-highest mm-current mm-iconpanel-1 mm-opened").addClass("mm-hidden");
-                        lastPanelSelected.addClass("mm-highest mm-current");
-                        $("div#mm-0").removeClass("mm-subopened");
+                        lastPanelSelected.addClass("mm-highest mm-current").removeClass("mm-subopened");
                     }
                 }
             });
-            //-djf if "subcategories" is clicked, open up to subcategories when mmenu displays
+            var whichButtonWasClicked;
+            mmenuApi.bind('opening', function () {
+                // due to some weirdness with how menu is displaying for subcategories
+                // we will manually set all the parent categories to being grayed out when mmenu is opening
+                $("div.mm-opened:not(:last)").addClass("mm-subopened");
+            });
+            mmenuApi.bind('opened', function () {
+                //if "subcategories" button was clicked, then open the subcategory panel for viewing
+                if (whichButtonWasClicked === "subs") {
+                    var nextPanelId = $("a#mmenuSubs").attr("sub-to-open");
+                    if (typeof nextPanelId !== "undefined") {
+                        this.openPanel($('div.mm-panel' + nextPanelId));
+                    }
+                }
+            });
+            // if "subcategories" is clicked, open up to subcategories when mmenu displays
             mmenuApi.bind('setSelected', function (li) {
                 setAttributeOnSubcategoriesButton(li);
             });
+            // button clicks manually controlled so we can see which has been clicked
             $("a#interest-list-mobile").click(function (e) {
+                whichButtonWasClicked = "interests";
                 e.preventDefault();
                 mmenuApi.open();
             });
             $("a#mmenuSubs").click(function (e) {
+                whichButtonWasClicked = "subs";
                 e.preventDefault();
                 mmenuApi.open();
-                var nextPanelId = $(this).attr("sub-to-open");
-                if (typeof nextPanelId !== "undefined") {
-                    buildUpMenuFromScratch(mmenuApi, window.location.hash);
-                    mmenuApi.openPanel($('div.mm-panel' + nextPanelId));
-                }
             });
+            // listen if this has been broadcasted
+            // if it has then the url is different so change the mmenu
             scope.$on("urlChanged", function (event, args) {
                 buildUpMenuFromScratch(mmenuApi, args);
             });
+            //-djf end
         };
+        //-djf start
         var buildUpMenuFromScratch = function (api, url) {
-            //-djf open menu to a panel indicated by URL
+            // open menu to a panel indicated by URL
             api.closeAllPanels();
             if (url.length && url !== "#/") {
                 var folderPath = url.split("/");
                 var panelToOpen;
                 var liToSelect;
+                var parentPanel;
                 for (var fp = 1; fp <= folderPath.length; fp++) {
                     if (fp === 1) {
                         panelToOpen = $("#mm-0");
                         liToSelect = panelToOpen.find("li").has('a:contains("' + decodeURI(folderPath[fp]) + '")');
                     } else {
-                        var parentPanel = panelToOpen.prop('id');
+                        parentPanel = panelToOpen.prop('id');
                         // find panel that has a child with a data-target that points to parent id 
                         // and that has a link that has the text of the parent
                         // and that has a link that has text from the URL
@@ -184,6 +202,8 @@ angular.module('angular-mmenu', [])
             }
         };
         var setAttributeOnSubcategoriesButton = function (li) {
+            // set the "sub-to-open" attribute on the "subcategories" button
+            // so we know which subcategory to open when clicked
             var nextPanelId = li.children("a.mm-next").attr("href");
             if (typeof nextPanelId === "undefined") {
                 $("a#mmenuSubs").removeAttr("sub-to-open");
@@ -191,6 +211,7 @@ angular.module('angular-mmenu', [])
                 $("a#mmenuSubs").attr("sub-to-open", nextPanelId);
             }
         };
+        //-djf end
         var linker = function (id, scope, attrs) {
             if (attrs.mmenuInvalidate !== null && attrs.mmenuInvalidate !== undefined && attrs.mmenuInvalidate !== '') {
                 scope[attrs.mmenuInvalidate] = function () {
