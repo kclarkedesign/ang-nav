@@ -433,6 +433,9 @@ width: 280px;
 	header .iconBtn-vertical.open .dropdown-toggle:after {
 		left: calc(45% - 12px);
 	}
+	.table {
+		display: block;
+	}
 }
 .interest-col {
     padding: 2px;
@@ -1291,6 +1294,11 @@ label.btn.active,
     padding: 15px 4px 15px 4px;
 }
 
+.item-options {
+    min-height: 40px;
+    /*padding-top: 10px;
+    padding-bottom: 20px;*/
+}
 
 /*** Animated Hamburger ***/
 
@@ -1734,7 +1742,8 @@ transform: rotate(-45deg);
   color: #fff;
 }
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {*/
+@media (max-width: 991px) {
 	.age-range {
 		border-right: none;
 	}
@@ -1786,12 +1795,13 @@ transform: rotate(-45deg);
 		right: 0;
 		z-index: 1;
 		position: relative;
-		width: 28px;
-		height: 24px;
+		width: auto;
+		height: 26px;
 		font-size: 11px;
-		padding: 6px;
+		padding: 4px 6px;
 		left: 0;
 		cursor: pointer;
+		display: inline-block;
 	}
 	.itemContents .bookmark:active {
 		color: #909192;
@@ -2430,7 +2440,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 }
 /* 14% = 100% (full-width row) divided by 7 */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
 	.header {
 		height: 50px;
 	}
@@ -2443,7 +2453,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.tileContainer .itemContents {
 		height: auto;
-		padding-bottom: 20px;
+		/*padding-bottom: 20px;*/
 		box-shadow: none;
 		border: 1px solid #E0E0E0;
 		border-top: 0;
@@ -2477,6 +2487,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.bookmark {
     	vertical-align: 0px; 
+	}
+	.tileImg {
+		padding: 10px 0 10px 10px;
 	}
 	sup {
     	top: -.2em;
@@ -2520,9 +2533,9 @@ input[type="date"]::-webkit-inner-spin-button{
 
 }
 @media (min-width: 768px) and (max-width: 992px) {
-	.tileContainer .itemContents {
+	/*.tileContainer .itemContents {
 		height: 450px;
-	}
+	}*/
 	#eventClassFinder.open>.dropdown-menu {
 		height: 220px;
 	}
@@ -2540,7 +2553,7 @@ input[type="date"]::-webkit-inner-spin-button{
 	.teach {
 		display: none;
 	}
-	#tileImg {
+	.tileImg {
 		width: 40%;
 	}
 	.item-details {
@@ -2585,14 +2598,20 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.classTitleMobile a {
 		display: block;
-		font-size: 11px;
-		line-height: 1.4;
+		/*font-size: 11px;
+		line-height: 1.4;*/
 	}
 	.classDateMobile {
   		font-size: 11px;
   		line-height: 1.2;
 	}
 	
+	
+}
+@media (max-width: 467px) {
+	.tileImg {
+		padding: 0;
+	}
 }
 @media (max-width: 360px) {
 	.classTitleMobile {

@@ -614,8 +614,8 @@
 								</div>
 								<!-- For below Medium screen sizes -->
 								<div id="isoContainerMobile" ng-cloak class="hidden-md hidden-lg hidden-xl ng-cloak" infinite-scroll="navListCtrl.loadMore('mobile')" infinite-scroll-distance="1">
-									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-6 col-md-3" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
-										<div class="itemContents hidden-xs">
+									<div ng-repeat="classInfo in navListCtrl.onscreenResults | limitTo: navListCtrl.limit" toggle-slide class="itemBox mixFirst col-xs-12 col-sm-12 col-md-12" ng-class="{'col-lg-6 featured': classInfo.Featured, 'col-lg-3': !classInfo.Featured}">
+										<!-- <div class="itemContents hidden-xs">
 											<a ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">
 												<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="300" />
 											</a>
@@ -639,33 +639,36 @@
 													<a class="getLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
 											</div>
-										</div>										
-										<div class="itemContents visible-xs">
+										</div> -->										
+										<!-- <div class="itemContents visible-xs"> -->
+										<div class="itemContents">
 											<div class="container-fluid">
 												<div class="row">
-													<div id="tileImg" class="col-xs-5 no-p">
+													<div id="" class="tileImg col-xs-12 col-sm-5">
 														<a ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">
 															<img ng-src="http://www.92y.org{{classInfo.Img}}" border="0" alt="{{classInfo.Title}}" width="" class="" />
 														</a>
 													</div>
-													<div class="item-details col-xs-7 pull-right pt10">
+													<div class="item-details col-xs-12 col-sm-7 pull-right pt10">
 														<div class="classTitleMobile">
 															<a class="classTitleLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">{{classInfo.Title}}</a>
 														</div>
-														<div class="classDateMobile">{{classInfo.FriendlyDate}}</div>
+														<!-- <div class="classDateMobile hidden-xs">{{classInfo.FriendlyDate}}</div> -->
 														<div class="warning" ng-bind-html="classInfo.Warning | unsafe"></div>
-														<div class="contentWrapMobile">
-															<div class="shortDescriptionMobile hidden-xs hidden-sm" ng-bind-html="classInfo.Desc | unsafe"></div>
-															
-														</div>
+														
 
 													</div>
-													<div class="item-details col-xs-7 pull-right pb10">
+													<div class="item-details item-options col-xs-12 col-sm-7 pull-right">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
 														</a>
+													</div>
+													<div class="item-details col-xs-12 col-sm-7 pull-right">
+														<div class="contentWrapMobile">
+															<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -848,7 +851,7 @@
 																				<i class="fa fa-times fa-lg"></i>
 																			</a>
 																		</div>
-																		<div id="tileImg" class="col-xs-12 no-p">
+																		<div id="" class="tileImg col-xs-12 no-p">
 																			<a ng-href="{{savedProgram.Url}}" target="{{savedProgram.UrlTarget}}">
 																				<img ng-src="http://www.92y.org{{savedProgram.Img}}" border="0" alt="{{savedProgram.Title}}" width="300">
 																			</a>
