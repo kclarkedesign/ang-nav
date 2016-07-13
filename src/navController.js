@@ -2220,7 +2220,7 @@
             inProgress = false;
         }
 
-        var shortDescription = "<div class='shortDescTxt pb10'>" + arr.ShortDesc + "</div>";
+        var shortDescription = "<div class='shortDescTxt hidden-xs pb10'>" + arr.ShortDesc + "</div>";
         var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
         var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
             return arr.Instructor_name.replace(/\s{2,}/g, ' ');
@@ -2274,8 +2274,8 @@
                     }
                     if (packageNo === 0) {
                         if (ind === 0) {
-                            shortDesc += "<div class='expand-collapse-container " + ((ind + 1) === performances.length ? "" : "collapse") + "'>"
-                            shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='schedule mt5'><tbody><tr>";
+                            shortDesc += "<div class='expand-collapse-container table-responsive " + ((ind + 1) === performances.length ? "" : "collapse") + "'>"
+                            shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='table table-striped schedule mt5'><tbody><tr>";
                             if (itemType.toLowerCase() === 'class') {
                                 shortDesc += "<th width='185'>Start Date</th><th>Day" + (dowArr.length > 1 ? "s" : "") + "</th>" +
                                     "<th>Session" + (numSessions > 1 ? "s" : "") + "</th><th>Price</th>" +
@@ -2285,10 +2285,10 @@
                             }
                             shortDesc += "</tr>";
                         }
-                        shortDesc += "<tr><td>" + futureDate + "</td>";
+                        shortDesc += "<tr><td class='futureDate'>" + futureDate + "</td>";
                         if (itemType.toLowerCase() === 'class') {
-                            shortDesc += "<td>" + daysOfWeek + "</td><td>" + numSessions + "</td>" +
-                                "<td>" + fromPrice + "</td><td>" + classInstructors + "</td>";
+                            shortDesc += "<td class='days-week'>" + daysOfWeek + "</td><td class='session-count'>" + numSessions + "</td>" +
+                                "<td class='price-amt'>" + fromPrice + "</td><td class='instructors'>" + classInstructors + "</td>";
                         } else {
                             shortDesc += "<td>" + fromPrice + "</td>";
                         }
@@ -2300,7 +2300,7 @@
                         }
                     } else {
                         if (ind === 0) {
-                            shortDesc += "<div class='expand-collapse-container collapse'><table cellpadding='0' cellspacing='0' class='schedule schedule-subs mt5'><tbody><tr>";
+                            shortDesc += "<div class='expand-collapse-container collapse'><table cellpadding='0' cellspacing='0' class='table table-striped schedule schedule-subs mt5'><tbody><tr>";
                         }
                         shortDesc += "<td width='100'><img src=\"http://www.92y.org" + p.thumbnail + "\" border=\"0\" alt=\"" + p.title + "\" / style=\"width: 105px;\">";
                         shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no + "' target='_blank'>" + p.title + "</a><span class='futureDate'>" + futureDate + "</span></td>";
