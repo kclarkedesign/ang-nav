@@ -1010,7 +1010,7 @@
         self.displaySearchResults = [];
         var searchTerm = isGlobal ? self.textboxGlobalSearch : self.textboxSearch;
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
-            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + searchTerm + '/', self.navCache, 'globalSearch').then(function (data) {
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + _.deburr(searchTerm) + '/', self.navCache, 'globalSearch').then(function (data) {
                 var results = data.data;
                 if (results.length) {
                     _.forEach(results, function (result) {
@@ -2025,7 +2025,7 @@
     };
 
     var getRank = function (itemToSearchIn, searchItem) {
-        var entirePhrase = searchItem.trim().toLowerCase();
+        var entirePhrase = _.deburr(searchItem.trim().toLowerCase());
         var spacesInPhrase = entirePhrase.match(/\s/g);
         var countSpaces = 0;
         if (spacesInPhrase != null) {
@@ -2037,7 +2037,7 @@
                 return word;
             }
         });
-        var item = itemToSearchIn.toLowerCase();
+        var item = _.deburr(itemToSearchIn.toLowerCase());
         if (item.indexOf(entirePhrase) >= 0) {
             //if exact phrase is found and phrase is more than one word
             if (countSpaces > 0) {
