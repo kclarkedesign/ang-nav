@@ -86,13 +86,14 @@
                     'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your'];
 
     var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress', 'angular-mmenu']);
-    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig, ngProgressFactory) {
+    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, $cookies, navConfig, ngProgressFactory) {
         var self = this;
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
         self.arrCategory = [];
         self.location = $location;
         self.timeout = $timeout;
         self.cookieStore = $cookieStore;
+        self.cookies = $cookies;
         self.JumpNav = {};
         self.navsDict = {};
         self.onscreenResults = [];
@@ -125,7 +126,10 @@
         self.affixed = false;
         self.scrollingUp = false;
         self.environment = "desktop";
+        self.introOpened = false;
+        self.displayIntro = false;
         self.navOpened = false;
+        self.searchOpened = false;
         self.printedReport = [];
         self.virtualPageUrl = '';
         self.virtualPageTitle = '';
@@ -150,6 +154,18 @@
         if (_.isUndefined(self.savedSearches)) {
             self.savedSearches = [];
         }
+
+        //self.introScreen = self.cookies.get('introScreen');
+        if (_.isUndefined(self.introScreen)) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 1);
+            self.cookies.put('introScreen', 'visited', {'expires': expireDate});
+            console.log("I'm new here!");
+            self.displayIntro = true;
+        }
+        // } else {
+        //     self.displayIntro = false;
+        // }
 
         self.eventClassDropdown = {
             isopen: false
@@ -577,14 +593,14 @@
                 if (subLevelName.indexOf("__") > 0) {
                     subLevelName = undefined;
                     self.eventClassDropdown.isopen = true;
-                    self.navOpened = true;
+                    //self.introOpened = true;
                 } else {
                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                     subLevelId = foundLevel.NodeID;
                 }
             } else {
                 self.eventClassDropdown.isopen = true;
-                self.navOpened = true;
+                //self.introOpened = true;
             }
         } else {
             //if interest link clicked
@@ -978,7 +994,7 @@
 
     NavListController.prototype.prepareSearchRedirect = function (slName) {
         var self = this;
-        self.navOpened = false;
+        self.searchOpened = false;
         if (!_.isUndefined(self.textboxGlobalSearch)) {
             self.searchTerm = self.textboxGlobalSearch;
         }
@@ -2486,7 +2502,7 @@
         return progressBar;
     } ]);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'progressBar'];
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('enableContainer', function () {
@@ -2618,6 +2634,34 @@
         };
     });
 
+    // angular.element(document).ready(function() {
+    //     angular.element("#filterSidebar").mmenu({
+    //         // options
+    //         offCanvas: {
+    //             position: "right",
+    //             zposition: "front"
+    //         },
+    //         "extensions": ["pageshadow"],
+    //         dragOpen: true,
+    //         dragClose: true,
+    //         "scrollBugFix": {
+    //             fix: true
+    //         }
+    //     }, {
+    //         // configuration
+    //         offCanvas: {
+    //             pageSelector: "#site-container"
+    //         }
+    //     });
+
+    //     var refineMenuApi = angular.element("#filterSidebar").data("mmenu");
+
+    //     angular.element("#filterSidebarBtn").click(function() {
+    //         refineMenuApi.open();
+    //     });
+
+    // });
+
     navApp.directive('filterSidebarClose', function () {
         return function (scope, element) {
             element.bind("click", function (e) {
@@ -2668,17 +2712,17 @@
     });
 
     //Close these sidebars when they are clicked
-    navApp.directive('browseSidebar', function ($timeout) {
-        return function (scope, element) {
-            element.bind("click", function () {
-                angular.element("#browseSidebar, #filterSidebar").removeClass('in');
-                angular.element("body").removeClass('sidebar-open');
-                $timeout(function () {
-                    angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
-                }, 50);
-            });
-        };
-    });
+    // navApp.directive('browseSidebar', function ($timeout) {
+    //     return function (scope, element) {
+    //         element.bind("click", function () {
+    //             angular.element("#browseSidebar, #filterSidebar").removeClass('in');
+    //             angular.element("body").removeClass('sidebar-open');
+    //             $timeout(function () {
+    //                 angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+    //             }, 50);
+    //         });
+    //     };
+    // });
 
     navApp.directive('closeSubmit', function ($timeout) {
         return function (scope, element) {

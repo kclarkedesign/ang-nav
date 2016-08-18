@@ -41,7 +41,8 @@ body {
 }
 
 body.sidebar-open,
-body.mainnav-open {
+body.mainnav-open,
+body.intro-open {
 	overflow-y: hidden !important;
 	height: 100%;
 	width: 100%;
@@ -82,9 +83,8 @@ html.mm-blocking body {
 .center {
 	text-align: center;
 }
-#hor-menu,
 #main-navigation {
-	background: #fff;
+/*	background: #fff;*/
 	background-color: #000000;
 }
 .dropdown-header {
@@ -389,6 +389,102 @@ width: 280px;
 	top: calc(600% - 40px);
 	right: 0;
 	background-color: #333;
+}
+.full-screen-overlay.in {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0px;
+	z-index: 1501;
+	bottom: 0;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.9);
+	display: block;
+}
+#intro-overlay {
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.75);
+}
+#welcome-area .welcome-msg {
+    color: #333;
+}
+.welcome-msg {
+	position: relative;
+    top: 250px;
+    color: #fff;
+    font-size: 1.9em;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.welcome-msg span {
+	display: inline-block;
+}
+/*.instruction-text {
+    font-size: .5em;
+    margin: 0 auto;
+    max-width: 441px;
+}*/
+.instruction-text {
+    font-size: .6em;
+    max-width: 441px;
+    display: block;
+    width: 60%;
+    position: absolute;
+    top: 0;
+}
+.intro-open #interest-list-mobile:after {
+	content: " ";
+	background: url(/img/welcome-arrow_white_text.svg) no-repeat 0 0;
+	height: 62px;
+	display: block;
+	background-size: contain;
+	left: -96px;
+	top: 50px;
+	position: absolute;
+	width: 140px;
+}
+.intro-open #browseBtns {
+	z-index: 4;
+}
+/*.intro-open #mm-blocker {
+	z-index: 5;
+	left: 0;
+}*/
+.intro-open #mmenuSubs .tooltip,
+.intro-open #filterSidebarBtn .tooltip {
+	color: #fff;
+	opacity: 1;
+	margin: 10px 0 0;
+	left: 12px;
+	right: 6px;
+	padding-top: 2px;
+	visibility: visible;
+
+}
+.intro-open #filterSidebarBtn.active {
+    color: #333;
+    border-color: #adadad;
+    box-shadow: none;
+    background: -webkit-linear-gradient(#FBFBFB, #E9E9E9);
+    background: -o-linear-gradient(#FBFBFB, #E9E9E9);
+    background: -moz-linear-gradient(#FBFBFB, #E9E9E9);
+    background: linear-gradient(#FBFBFB, #E9E9E9);
+}
+#browseBtns .tooltip-inner {
+	display: block;
+	width: 100%;
+	max-width: none;
+	display: block;
+	width: 100%;
+	max-width: none;
+	background: url(/img/welcome-arrow_white-center.svg) no-repeat center -3px;
+	padding-top: 42px;
+	background-size: 12px;
+	font-size: 14px;
+	line-height: 1.3;
+}
+#browseBtns .tooltip {
+	visibility: hidden;
 }
 /*** Mega Nav  ***/
 .navbar-nav>li>.dropdown-menu {
@@ -2675,16 +2771,6 @@ input[type="date"]::-webkit-inner-spin-button{
 	.navbar-text {
 		float: none;
 		/*margin: 15px 0;*/
-	}
-	#hor-menu {
-		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0px;
-		z-index: 1;
-		bottom: 0;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.9);
 	}
 	.scrollable {
 		position: relative;
