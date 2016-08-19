@@ -128,6 +128,8 @@
         self.environment = "desktop";
         self.introOpened = false;
         self.displayIntro = false;
+        self.displayInterestIntro = false;
+        self.displayBrowseBtnsIntro = false;
         self.navOpened = false;
         self.searchOpened = false;
         self.printedReport = [];
@@ -160,8 +162,11 @@
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 1);
             self.cookies.put('introScreen', 'visited', {'expires': expireDate});
+            self.cookies.put('interestIntro', 'seen', {'expires': expireDate});
+            // self.cookies.put('browseBtnIntro', 'seen', {'expires': expireDate});
             console.log("I'm new here!");
             self.displayIntro = true;
+            self.displayInterestIntro = true;
         }
         // } else {
         //     self.displayIntro = false;
@@ -597,6 +602,19 @@
                 } else {
                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                     subLevelId = foundLevel.NodeID;
+                    //self.browseIntros = self.cookies.get('browseIntros');
+                    if (_.isUndefined(self.browseIntros)) {
+                        var expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 1);
+                        self.cookies.put('browseIntros', 'visited', {'expires': expireDate});
+                        // self.cookies.put('interestIntro', 'seen', {'expires': expireDate});
+                        // self.cookies.put('browseBtnIntro', 'seen', {'expires': expireDate});
+                        console.log("Show me the browse intro!");
+                        //self.displayIntro = true;
+                        //self.displayInterestIntro = true;
+                        self.displayBrowseBtnsIntro = true;
+                        
+                    }
                 }
             } else {
                 self.eventClassDropdown.isopen = true;
