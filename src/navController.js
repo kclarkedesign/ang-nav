@@ -157,20 +157,19 @@
             self.savedSearches = [];
         }
 
-        //self.introScreen = self.cookies.get('introScreen');
+        self.introScreen = self.cookies.get('introScreen');
         if (_.isUndefined(self.introScreen)) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 1);
-            self.cookies.put('introScreen', 'visited', {'expires': expireDate});
-            self.cookies.put('interestIntro', 'seen', {'expires': expireDate});
-            // self.cookies.put('browseBtnIntro', 'seen', {'expires': expireDate});
-            console.log("I'm new here!");
+            self.displayIntro = true;
+        }
+        self.interestIntro = self.cookies.get('interestIntro');
+        if (_.isUndefined(self.interestIntro)) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 1);
             self.displayIntro = true;
             self.displayInterestIntro = true;
         }
-        // } else {
-        //     self.displayIntro = false;
-        // }
 
         self.eventClassDropdown = {
             isopen: false
@@ -209,7 +208,7 @@
                 "navbars": [{
                     content: ["prev", "title"]
                 }],
-                dragOpen: true,
+                // dragOpen: true,
                 dragClose: true,
                 "scrollBugFix": {
                     fix: true
@@ -602,18 +601,14 @@
                 } else {
                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                     subLevelId = foundLevel.NodeID;
-                    //self.browseIntros = self.cookies.get('browseIntros');
-                    if (_.isUndefined(self.browseIntros)) {
+                    self.browseBtnIntro = self.cookies.get('browseBtnIntro');
+                    if (_.isUndefined(self.browseBtnIntro)) {
                         var expireDate = new Date();
                         expireDate.setDate(expireDate.getDate() + 1);
-                        self.cookies.put('browseIntros', 'visited', {'expires': expireDate});
-                        // self.cookies.put('interestIntro', 'seen', {'expires': expireDate});
-                        // self.cookies.put('browseBtnIntro', 'seen', {'expires': expireDate});
-                        console.log("Show me the browse intro!");
-                        //self.displayIntro = true;
-                        //self.displayInterestIntro = true;
+                        self.displayIntro = true;
                         self.displayBrowseBtnsIntro = true;
-                        
+                    } else {
+                        self.displayBrowseBtnsIntro = false;
                     }
                 }
             } else {
@@ -1905,6 +1900,16 @@
         }
     };
 
+    NavListController.prototype.addIntroCookies = function () {
+        var self = this;
+        var expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + 1);
+        self.cookies.put('introScreen', 'displayed', {'expires': expireDate});
+        self.cookies.put('interestIntro', 'clicked', {'expires': expireDate});
+        self.cookies.put('browseBtnIntro', 'clicked', {'expires': expireDate});
+        self.displayIntro = false;
+    }
+
     var pluckAllKeys = function (obj, res) {
         var res = res || [];
         _.forOwn(obj, function (v, k) {
@@ -2652,33 +2657,35 @@
         };
     });
 
-    // angular.element(document).ready(function() {
-    //     angular.element("#filterSidebar").mmenu({
-    //         // options
-    //         offCanvas: {
-    //             position: "right",
-    //             zposition: "front"
-    //         },
-    //         "extensions": ["pageshadow"],
-    //         dragOpen: true,
-    //         dragClose: true,
-    //         "scrollBugFix": {
-    //             fix: true
-    //         }
-    //     }, {
-    //         // configuration
-    //         offCanvas: {
-    //             pageSelector: "#site-container"
-    //         }
-    //     });
+    navApp.directive('closeIntroOverlay', function () {
+        return function (scope, element, attr) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                var $body = angular.element("body");
+                if (!$body.hasClass('intro-closed')) {
+                    if (!$body.hasClass('browseIntro-shown') && !$body.hasClass('interestIntro-shown')) {
+                        $body.addClass("intro-closed");
+                        scope.$apply(function () {
+                            scope.navListCtrl.addIntroCookies();
+                        });
+                    }
+                }
+            });
+        };
+    });
 
-    //     var refineMenuApi = angular.element("#filterSidebar").data("mmenu");
-
-    //     angular.element("#filterSidebarBtn").click(function() {
-    //         refineMenuApi.open();
-    //     });
-
-    // });
+    navApp.directive('swipeCloseRight', function () {
+        return function (scope, element) {
+            var hammertime = new Hammer(element[0]);
+            // hammertime.set({ threshold: 100 });
+            hammertime.on('swiperight', function(e) {
+                e.preventDefault();
+                angular.element(element).removeClass('in');
+                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                angular.element("body").removeClass('sidebar-open');
+            });
+        };
+    });
 
     navApp.directive('filterSidebarClose', function () {
         return function (scope, element) {

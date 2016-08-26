@@ -136,7 +136,7 @@ angular.module('angular-mmenu', [])
             mmenuApi.bind('opening', function () {
                 // due to some weirdness with how menu is displaying for subcategories
                 // we will manually set all the parent categories to being grayed out when mmenu is opening
-                $("div.mm-opened:not(:last)").addClass("mm-subopened");
+                // $("div.mm-opened:not(:last)").addClass("mm-subopened");
             });
             mmenuApi.bind('opened', function () {
                 //if "subcategories" button was clicked, then open the subcategory panel for viewing
