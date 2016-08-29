@@ -40,10 +40,10 @@ body {
   background-color: #E9E9E9;
 }
 
-body.sidebar-open,
-body.mainnav-open,
-body.intro-open {
-	overflow-y: hidden !important;
+:not(.mm-opened) body.sidebar-open,
+:not(.mm-opened) body.mainnav-open,
+:not(.mm-opened) body.intro-open {
+	overflow: hidden !important;
 	height: 100%;
 	width: 100%;
 }
@@ -446,7 +446,7 @@ width: 280px;
 }
 .intro-open.interestIntro-shown #interest-list-mobile:after {
 	content: " ";
-	background: url(/img/welcome-arrow_white_text.svg) no-repeat 0 0;
+	background: url(../img/welcome-arrow_white_text.svg) no-repeat 0 0;
 	height: 62px;
 	display: block;
 	background-size: contain;
@@ -497,7 +497,7 @@ width: 280px;
 	display: block;
 	width: 100%;
 	max-width: none;
-	background: url(/img/welcome-arrow_white-center.svg) no-repeat center -3px;
+	background: url(../img/welcome-arrow_white-center.svg) no-repeat center -3px;
 	padding-top: 42px;
 	background-size: 12px;
 	font-size: 14px;
@@ -511,8 +511,10 @@ width: 280px;
     color: #fff;
     border: 2px solid;
     position: absolute;
-    top: 53px;
+    top: 52px;
     right: 10px;
+    padding-bottom: 3px;
+    padding-top: 3px;
 }
 /*** Mega Nav  ***/
 .navbar-nav>li>.dropdown-menu {
@@ -557,9 +559,9 @@ width: 280px;
 	header .iconBtn-vertical.open .dropdown-toggle:after {
 		left: calc(45% - 12px);
 	}
-	.table {
+	/*.table {
 		display: block;
-	}
+	}*/
 }
 .interest-col {
     padding: 2px;
@@ -2209,10 +2211,13 @@ transform: rotate(-45deg);
 
 .expand-collapse-container {
     overflow-x: auto;
+    border-top: none;
+    border-bottom: none;
 }
 .expand-collapse-container .table-striped>tbody>tr:nth-of-type(odd) {
     background: #fff;
 }
+
 #refine-bar {
   background-color: #EFF0F2;
   border-bottom: 1px solid #BDC3C7;
@@ -3292,8 +3297,11 @@ a .removable:hover {
 .schedule-subs td {
     vertical-align: top;
     padding-right: 14px;
-    max-width: 140px;
+    width: 130px;
     padding-bottom: 14px;
+    display: inline-block;
+    overflow: hidden;
+    height: 170px;
 }
 .schedule-subs td a {
     font-weight: bold;
@@ -3309,5 +3317,6 @@ a .removable:hover {
 }
 .partof {
 	padding-top: 10px;
+	padding-bottom: 10px;
 	font-weight: bold;
 }
