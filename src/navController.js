@@ -162,6 +162,16 @@
             self.displayIntro = true;
             self.displayInterestIntro = true;
         }
+        self.browseBtnIntro = self.cookies.get('browseBtnIntro');
+        if (_.isUndefined(self.browseBtnIntro)) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 1);
+            self.displayIntro = true;
+            self.displayBrowseBtnsIntro = true;
+        } 
+        // else {
+        //     self.displayBrowseBtnsIntro = false;
+        // }
 
         self.eventClassDropdown = {
             isopen: false
@@ -593,15 +603,6 @@
                 } else {
                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                     subLevelId = foundLevel.NodeID;
-                    self.browseBtnIntro = self.cookies.get('browseBtnIntro');
-                    if (_.isUndefined(self.browseBtnIntro)) {
-                        var expireDate = new Date();
-                        expireDate.setDate(expireDate.getDate() + 1);
-                        self.displayIntro = true;
-                        self.displayBrowseBtnsIntro = true;
-                    } else {
-                        self.displayBrowseBtnsIntro = false;
-                    }
                 }
             } else {
                 self.eventClassDropdown.isopen = true;
@@ -2280,7 +2281,7 @@
                     if (packageNo === 0) {
                         if (ind === 0) {
                             shortDesc += "<div class='expand-collapse-container table-responsive " + ((ind + 1) === performances.length ? "" : "collapse") + "'>"
-                            shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='table table-striped schedule mt5'><tbody><tr>";
+                            shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='table table-striped schedule'><tbody><tr>";
                             if (itemType.toLowerCase() === 'class') {
                                 shortDesc += "<th width='185'>Start Date</th><th>Day" + (dowArr.length > 1 ? "s" : "") + "</th>" +
                                     "<th>Session" + (numSessions > 1 ? "s" : "") + "</th><th>Price</th>" +
