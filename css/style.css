@@ -2742,6 +2742,9 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 467px) {
 	.tileImg {
 		padding: 0;
+		
+	}
+	.savedProdItem .tileImg {
 		max-width: 100px;
 	}
 }
