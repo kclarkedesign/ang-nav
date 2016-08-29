@@ -2742,6 +2742,7 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 467px) {
 	.tileImg {
 		padding: 0;
+		max-width: 100px;
 	}
 }
 @media (max-width: 360px) {
