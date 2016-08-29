@@ -174,7 +174,8 @@ angular.module('angular-mmenu', [])
             // open menu to a panel indicated by URL
             api.closeAllPanels();
             if (url.length && url !== "#/") {
-                var folderPath = url.split("/");
+                var cleanedUrl = seperateSlicersFromUrl(url).path;
+                var folderPath = cleanedUrl.split("/");
                 var panelToOpen;
                 var liToSelect;
                 var parentPanel;
