@@ -41,7 +41,8 @@ body {
 }
 
 body.sidebar-open,
-body.mainnav-open {
+body.mainnav-open,
+body.intro-open {
 	overflow-y: hidden !important;
 	height: 100%;
 	width: 100%;
@@ -82,9 +83,8 @@ html.mm-blocking body {
 .center {
 	text-align: center;
 }
-#hor-menu,
 #main-navigation {
-	background: #fff;
+/*	background: #fff;*/
 	background-color: #000000;
 }
 .dropdown-header {
@@ -349,14 +349,14 @@ width: 280px;
 	height: 50px;
 }
 .sidebarHeading {
-  width: 100%;
-  display: block;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 20px;
-  position: relative;
-  line-height: 24px;
+	width: 100%;
+	display: block;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 20px;
+	position: relative;
+	line-height: 24px;
 }
 #savedSidebarClose,
 #filterClose {
@@ -367,6 +367,14 @@ width: 280px;
     color: #fff;
     white-space: nowrap;
     width: 90px;
+}
+.close-row {
+	text-align: right;
+	padding: 18px 10px 5px;
+}
+.close-row #mainNavBtnTwo {
+	color: #fff;
+	white-space: nowrap;
 }
 #savedPrograms img {
   width: 100%;
@@ -389,6 +397,122 @@ width: 280px;
 	top: calc(600% - 40px);
 	right: 0;
 	background-color: #333;
+}
+.intro-open .full-screen-overlay.in,
+.search-open .full-screen-overlay.in {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0px;
+	z-index: 1501;
+	bottom: 0;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.9);
+	display: block;
+}
+.search-open .full-screen-overlay.in {
+	z-index: 1502;
+}
+#intro-overlay {
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.75);
+}
+#welcome-area .welcome-msg {
+    color: #333;
+}
+.welcome-msg {
+	position: relative;
+    top: 270px;
+    color: #fff;
+    font-size: 1.9em;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.welcome-msg span {
+	display: inline-block;
+}
+/*.instruction-text {
+    font-size: .5em;
+    margin: 0 auto;
+    max-width: 441px;
+}*/
+.instruction-text {
+    font-size: .6em;
+    max-width: 441px;
+    display: block;
+    width: 60%;
+    position: absolute;
+    top: 0;
+}
+.intro-open.interestIntro-shown #interest-list-mobile:after {
+	content: " ";
+	background: url(/img/welcome-arrow_white_text.svg) no-repeat 0 0;
+	height: 62px;
+	display: block;
+	background-size: contain;
+	left: -96px;
+	top: 50px;
+	position: absolute;
+	width: 140px;
+}
+.intro-open.browseIntro-shown #browseBtns {
+	z-index: 4;
+}
+.search-open.browseIntro-shown #browseBtns {
+	z-index: 3;
+}
+/*.intro-open #mm-blocker {
+	z-index: 5;
+	left: 0;
+}*/
+/*html.mm-blocking #mm-blocker {
+    display: block;
+    left: 0;
+    z-index: 4;
+}*/
+.intro-open.browseIntro-shown #mmenuSubs .tooltip,
+.intro-open.browseIntro-shown #filterSidebarBtn .tooltip {
+	color: #fff;
+	opacity: 1;
+	margin: 10px 0 0;
+	left: 12px;
+	right: 6px;
+	padding-top: 2px;
+	visibility: visible;
+
+}
+.intro-open #filterSidebarBtn.active {
+    color: #333;
+    border-color: #adadad;
+    box-shadow: none;
+    background: -webkit-linear-gradient(#FBFBFB, #E9E9E9);
+    background: -o-linear-gradient(#FBFBFB, #E9E9E9);
+    background: -moz-linear-gradient(#FBFBFB, #E9E9E9);
+    background: linear-gradient(#FBFBFB, #E9E9E9);
+}
+#browseBtns .tooltip-inner {
+	display: block;
+	width: 100%;
+	max-width: none;
+	display: block;
+	width: 100%;
+	max-width: none;
+	background: url(/img/welcome-arrow_white-center.svg) no-repeat center -3px;
+	padding-top: 42px;
+	background-size: 12px;
+	font-size: 14px;
+	line-height: 1.3;
+}
+#browseBtns .tooltip {
+	visibility: hidden;
+}
+.btn-intro {
+	background: transparent;
+    color: #fff;
+    border: 2px solid;
+    position: absolute;
+    top: 53px;
+    right: 10px;
 }
 /*** Mega Nav  ***/
 .navbar-nav>li>.dropdown-menu {
@@ -2086,7 +2210,9 @@ transform: rotate(-45deg);
 .expand-collapse-container {
     overflow-x: auto;
 }
-
+.expand-collapse-container .table-striped>tbody>tr:nth-of-type(odd) {
+    background: #fff;
+}
 #refine-bar {
   background-color: #EFF0F2;
   border-bottom: 1px solid #BDC3C7;
@@ -2675,16 +2801,6 @@ input[type="date"]::-webkit-inner-spin-button{
 	.navbar-text {
 		float: none;
 		/*margin: 15px 0;*/
-	}
-	#hor-menu {
-		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0px;
-		z-index: 1;
-		bottom: 0;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.9);
 	}
 	.scrollable {
 		position: relative;

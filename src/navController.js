@@ -86,13 +86,14 @@
                     'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your'];
 
     var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress', 'angular-mmenu']);
-    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, navConfig, ngProgressFactory) {
+    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, $cookies, navConfig, ngProgressFactory) {
         var self = this;
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
         self.arrCategory = [];
         self.location = $location;
         self.timeout = $timeout;
         self.cookieStore = $cookieStore;
+        self.cookies = $cookies;
         self.JumpNav = {};
         self.navsDict = {};
         self.onscreenResults = [];
@@ -125,7 +126,12 @@
         self.affixed = false;
         self.scrollingUp = false;
         self.environment = "desktop";
+        self.introOpened = false;
+        self.displayIntro = false;
+        self.displayInterestIntro = false;
+        self.displayBrowseBtnsIntro = false;
         self.navOpened = false;
+        self.searchOpened = false;
         self.printedReport = [];
         self.virtualPageUrl = '';
         self.virtualPageTitle = '';
@@ -149,6 +155,20 @@
         self.savedSearches = self.cookieStore.get('savedSearches');
         if (_.isUndefined(self.savedSearches)) {
             self.savedSearches = [];
+        }
+
+        self.introScreen = self.cookies.get('introScreen');
+        if (_.isUndefined(self.introScreen)) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 1);
+            self.displayIntro = true;
+        }
+        self.interestIntro = self.cookies.get('interestIntro');
+        if (_.isUndefined(self.interestIntro)) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 1);
+            self.displayIntro = true;
+            self.displayInterestIntro = true;
         }
 
         self.eventClassDropdown = {
@@ -188,7 +208,7 @@
                 "navbars": [{
                     content: ["prev", "title"]
                 }],
-                dragOpen: true,
+                // dragOpen: true,
                 dragClose: true,
                 "scrollBugFix": {
                     fix: true
@@ -577,14 +597,23 @@
                 if (subLevelName.indexOf("__") > 0) {
                     subLevelName = undefined;
                     self.eventClassDropdown.isopen = true;
-                    self.navOpened = true;
+                    //self.introOpened = true;
                 } else {
                     var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
                     subLevelId = foundLevel.NodeID;
+                    self.browseBtnIntro = self.cookies.get('browseBtnIntro');
+                    if (_.isUndefined(self.browseBtnIntro)) {
+                        var expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 1);
+                        self.displayIntro = true;
+                        self.displayBrowseBtnsIntro = true;
+                    } else {
+                        self.displayBrowseBtnsIntro = false;
+                    }
                 }
             } else {
                 self.eventClassDropdown.isopen = true;
-                self.navOpened = true;
+                //self.introOpened = true;
             }
         } else {
             //if interest link clicked
@@ -978,7 +1007,7 @@
 
     NavListController.prototype.prepareSearchRedirect = function (slName) {
         var self = this;
-        self.navOpened = false;
+        self.searchOpened = false;
         if (!_.isUndefined(self.textboxGlobalSearch)) {
             self.searchTerm = self.textboxGlobalSearch;
         }
@@ -1871,6 +1900,16 @@
         }
     };
 
+    NavListController.prototype.addIntroCookies = function () {
+        var self = this;
+        var expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + 1);
+        self.cookies.put('introScreen', 'displayed', {'expires': expireDate});
+        self.cookies.put('interestIntro', 'clicked', {'expires': expireDate});
+        self.cookies.put('browseBtnIntro', 'clicked', {'expires': expireDate});
+        self.displayIntro = false;
+    }
+
     var pluckAllKeys = function (obj, res) {
         var res = res || [];
         _.forOwn(obj, function (v, k) {
@@ -2486,7 +2525,7 @@
         return progressBar;
     } ]);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', 'navConfig', 'progressBar'];
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('enableContainer', function () {
@@ -2618,6 +2657,36 @@
         };
     });
 
+    navApp.directive('closeIntroOverlay', function () {
+        return function (scope, element, attr) {
+            element.bind("click", function (e) {
+                e.preventDefault();
+                var $body = angular.element("body");
+                if (!$body.hasClass('intro-closed')) {
+                    if (!$body.hasClass('browseIntro-shown') && !$body.hasClass('interestIntro-shown')) {
+                        $body.addClass("intro-closed");
+                        scope.$apply(function () {
+                            scope.navListCtrl.addIntroCookies();
+                        });
+                    }
+                }
+            });
+        };
+    });
+
+    navApp.directive('swipeCloseRight', function () {
+        return function (scope, element) {
+            var hammertime = new Hammer(element[0]);
+            // hammertime.set({ threshold: 100 });
+            hammertime.on('swiperight', function(e) {
+                e.preventDefault();
+                angular.element(element).removeClass('in');
+                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                angular.element("body").removeClass('sidebar-open');
+            });
+        };
+    });
+
     navApp.directive('filterSidebarClose', function () {
         return function (scope, element) {
             element.bind("click", function (e) {
@@ -2668,17 +2737,17 @@
     });
 
     //Close these sidebars when they are clicked
-    navApp.directive('browseSidebar', function ($timeout) {
-        return function (scope, element) {
-            element.bind("click", function () {
-                angular.element("#browseSidebar, #filterSidebar").removeClass('in');
-                angular.element("body").removeClass('sidebar-open');
-                $timeout(function () {
-                    angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
-                }, 50);
-            });
-        };
-    });
+    // navApp.directive('browseSidebar', function ($timeout) {
+    //     return function (scope, element) {
+    //         element.bind("click", function () {
+    //             angular.element("#browseSidebar, #filterSidebar").removeClass('in');
+    //             angular.element("body").removeClass('sidebar-open');
+    //             $timeout(function () {
+    //                 angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+    //             }, 50);
+    //         });
+    //     };
+    // });
 
     navApp.directive('closeSubmit', function ($timeout) {
         return function (scope, element) {
