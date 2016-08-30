@@ -168,7 +168,7 @@
             expireDate.setDate(expireDate.getDate() + 1);
             self.displayIntro = true;
             self.displayBrowseBtnsIntro = true;
-        } 
+        }
         // else {
         //     self.displayBrowseBtnsIntro = false;
         // }
@@ -251,7 +251,7 @@
         $timeout(function () {
             self.progressbar.complete();
         }, 2000);
-        
+
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
@@ -1897,9 +1897,9 @@
         var self = this;
         var expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 1);
-        self.cookies.put('introScreen', 'displayed', {'expires': expireDate});
-        self.cookies.put('interestIntro', 'clicked', {'expires': expireDate});
-        self.cookies.put('browseBtnIntro', 'clicked', {'expires': expireDate});
+        self.cookies.put('introScreen', 'displayed', { 'expires': expireDate });
+        self.cookies.put('interestIntro', 'clicked', { 'expires': expireDate });
+        self.cookies.put('browseBtnIntro', 'clicked', { 'expires': expireDate });
         self.displayIntro = false;
     }
 
@@ -2232,6 +2232,7 @@
             return arr.Instructor_name.replace(/\s{2,}/g, ' ');
         });
         var teachers = instructors.toString();
+        var isAPackage = arr.IsFixedPackage || arr.IsCYOPackage;
 
         if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
             if (teachers.length && futurePerfCount > 1) {
@@ -2350,7 +2351,7 @@
         if (!_.startsWith(arrUrl, 'http')) {
             arrUrl = 'http://www.92y.org' + arrUrl;
             urlTarget = '_self';
-            if (itemType.toLowerCase() === 'event' && isMobile == true) {
+            if (itemType.toLowerCase() === 'event' && isMobile == true && !isAPackage) {
                 arrUrl = 'http://m.92y.org' + '/Event/' + prodNo;
             }
         }
@@ -2645,7 +2646,7 @@
         return function (scope, element) {
             var hammertime = new Hammer(element[0]);
             // hammertime.set({ threshold: 100 });
-            hammertime.on('swiperight', function(e) {
+            hammertime.on('swiperight', function (e) {
                 e.preventDefault();
                 angular.element(element).removeClass('in');
                 angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
