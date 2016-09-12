@@ -541,6 +541,9 @@ width: 280px;
     box-shadow: none;
     -webkit-box-shadow: none;
 }
+.savedProdItem .tileImg {
+	max-width: 100px;
+}
 @media (min-width: 768px) {
 	/* Nav down arrow */
 	header .open .dropdown-toggle:after {
@@ -2174,7 +2177,7 @@ transform: rotate(-45deg);
 }
 .classTitleMobile {
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 14px;
 }
 .classDate {
 	font-size: 12px;
@@ -2592,7 +2595,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.classDateMobile,
 	.shortDescriptionMobile {
-		font-size: 11px;
+		font-size: 12px;
+		line-height: 20px;
 	}
 	.itemBox {
 		padding: 0 15px;
@@ -2614,7 +2618,8 @@ input[type="date"]::-webkit-inner-spin-button{
   		float: none;
 	}
 	.item-details {
-	  	line-height: 16px;
+	  	line-height: 1.3;
+	  	padding-bottom: 4px;
 	}
 	.bookmark {
     	vertical-align: 0px; 
@@ -2624,6 +2629,11 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	sup {
     	top: -.2em;
+	}
+	.classTitle, 
+	.classDate, 
+	.warning {
+		padding: 6px 0 0;
 	}
 }
 @media (min-width: 992px) {
@@ -2744,15 +2754,12 @@ input[type="date"]::-webkit-inner-spin-button{
 		padding: 0;
 		
 	}
-	.savedProdItem .tileImg {
-		max-width: 100px;
-	}
 }
 @media (max-width: 360px) {
 	.classTitleMobile {
 		font-weight: bold;
-		line-height: 16px;
-		font-size: 12px;
+		/*line-height: 16px;
+		font-size: 12px;*/
 		width: auto;
 		overflow: hidden;
 	}
@@ -2760,8 +2767,8 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 300px) {
 	.classTitleMobile {
 		font-weight: bold;
-		line-height: 16px;
-		font-size: 12px;
+		line-height: inherit;
+		font-size: inherit;
 	}
 	.warning {
 		font-size: 11px;
@@ -3303,7 +3310,6 @@ a .removable:hover {
     padding-right: 14px;
     width: 130px;
     padding-bottom: 14px;
-    display: inline-block;
     overflow: hidden;
     height: 170px;
 }

@@ -187,9 +187,11 @@
 								</div>
 
 								<ul id="action-container" class="nav navbar-nav navbar-right">
-									<li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
+									<!-- FOR WISHLIST -->
+									<!-- <li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
-									</li>
+									</li> -->
+									<!-- END FOR WISHLIST -->
 									<!-- <li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake" ng-show="navListCtrl.onscreenResults.length > 0">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li> -->
@@ -631,13 +633,15 @@
 												<div class="getTickets">
 													<a class="getLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
-												<div class="getMore">
-														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
-															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
-															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
-															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</a>
-												</div>
+												<!-- FOR Wishlist -->
+												<!-- <div class="getMore">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
+														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
+														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
+													</a>
+												</div> -->
+												<!-- End FOR Wishlist -->
 											</div>
 										</div>
 										
@@ -689,13 +693,15 @@
 														
 
 													</div>
-													<div class="item-details item-options col-xs-12 col-sm-7 pull-right">
+													<!-- FOR WISHLIST -->
+													<!-- <div class="item-details item-options col-xs-12 col-sm-7 pull-right">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
 														</a>
-													</div>
+													</div> -->
+													<!-- END FOR WISHLIST -->
 													<div class="item-details col-xs-12 col-sm-7 pull-right">
 														<div class="contentWrapMobile">
 															<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
@@ -840,7 +846,7 @@
 						</nav>
 						<!-- End Filter Sidebar -->
 						<!-- Saved Sidebar -->
-						<div id="savedSidebar" swipe-close-right class="no-p">
+						<!-- <div id="savedSidebar" swipe-close-right class="no-p">
 							<div id="floatCartBtn" class="notifications dropdown inactive">
 								<a href="javascript:;" data-toggle="dropdown">
 									<i class="fa fa-shopping-cart"></i>
@@ -896,7 +902,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
+						<!-- End Saved Sidebar -->
 					</div>
 				</div>
 				<div class="qp-ui-mask-modal" mask-modal></div>
