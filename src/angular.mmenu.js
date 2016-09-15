@@ -155,12 +155,12 @@ angular.module('angular-mmenu', [])
             $("a#interest-list-mobile").click(function (e) {
                 whichButtonWasClicked = "interests";
                 e.preventDefault();
-                mmenuApi.open();
+                setTimeout(function () { mmenuApi.open(); }, 1);
             });
             $("a#mmenuSubs").click(function (e) {
                 whichButtonWasClicked = "subs";
                 e.preventDefault();
-                mmenuApi.open();
+                setTimeout(function () { mmenuApi.open(); }, 1);
             });
             // listen if this has been broadcasted
             // if it has then the url is different so change the mmenu

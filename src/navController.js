@@ -168,7 +168,7 @@
             expireDate.setDate(expireDate.getDate() + 1);
             self.displayIntro = true;
             self.displayBrowseBtnsIntro = true;
-        } 
+        }
         // else {
         //     self.displayBrowseBtnsIntro = false;
         // }
@@ -251,7 +251,7 @@
         $timeout(function () {
             self.progressbar.complete();
         }, 2000);
-        
+
         $scope.$watch(function () {
             return self.location.path();
         }, function (locationPath) {
@@ -339,7 +339,7 @@
                             self.fetchResults(subfolders[0], false);
                         } else {
                             if (self.DefaultFilterNodeNum === self.ActiveFilterNodeNum) {
-                                subfolders = locationPath.substring(1).split('/');
+                                subfolders = decodeURI(locationPath).substring(1).split('/');
                                 var rootFolder = subfolders[0];
                                 //if logo clicked to reset let's just skip this
                                 if (rootFolder.length > 0) {
@@ -555,16 +555,24 @@
             if (ac.NodeID !== self.ActiveFilterNodeNum || self.ActiveFilterNodeNum === self.DefaultFilterNodeNum) {
                 urlToBuild.push(ac.Name);
             }
-            var finalUrl = baseUrl + '#';
-            for (var i = 0; i < urlToBuild.length; i++) {
-                finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
-            }
             tmp.href = function () {
-                var locationPath = self.location.path();
-                var locationObj = seperateSlicersFromUrl(locationPath);
-                var locationSlicers = locationObj.removed;
-                window.location.href = encodeURI(finalUrl.trim()) + locationSlicers;
-            };
+                if (this.length > 1) {
+                    //if sub area clicked
+                    var finalUrl = '';
+                    for (var i = 0; i < this.length; i++) {
+                        finalUrl += '/' + this[i].replace(/\//g, '%2F');
+                    }
+                    var locationPath = self.location.path();
+                    var locationObj = seperateSlicersFromUrl(locationPath);
+                    var locationSlicers = locationObj.removed;
+                    self.location.path(encodeURI(finalUrl.trim()) + locationSlicers);
+                    self.applyScope();
+                } else {
+                    //if interest area clicked
+                    var sl = _.find(self.allClasses, { 'Name': this[0] });
+                    self.getInterestItems(self.interestClicked, sl);
+                }
+            } .bind(_.clone(urlToBuild));
             if (typeof lastObject === 'undefined' || tmp.level === lastObject.level) {
                 storedMenu.push(tmp);
             } else {
@@ -601,7 +609,7 @@
                     self.eventClassDropdown.isopen = true;
                     //self.introOpened = true;
                 } else {
-                    var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                    var foundLevel = _.find(self.allClasses, { 'Name': decodeURI(subLevelName) });
                     subLevelId = foundLevel.NodeID;
                 }
             } else {
@@ -1319,7 +1327,7 @@
         try {
             if (locationPath.length && locationPath !== '/') {
                 self.lastLocationPath = self.location.path();
-                var subfolders = _.compact(locationPath.substring(1).split('/'));
+                var subfolders = _.compact(decodeURI(locationPath).substring(1).split('/'));
                 var findChild, foundChildParent, findObj, foundChild;
                 self.activeBreadcrumb = [];
                 var topmostNodeFound = false;
@@ -1897,9 +1905,9 @@
         var self = this;
         var expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 1);
-        self.cookies.put('introScreen', 'displayed', {'expires': expireDate});
-        self.cookies.put('interestIntro', 'clicked', {'expires': expireDate});
-        self.cookies.put('browseBtnIntro', 'clicked', {'expires': expireDate});
+        self.cookies.put('introScreen', 'displayed', { 'expires': expireDate });
+        self.cookies.put('interestIntro', 'clicked', { 'expires': expireDate });
+        self.cookies.put('browseBtnIntro', 'clicked', { 'expires': expireDate });
         self.displayIntro = false;
     }
 
@@ -2232,6 +2240,7 @@
             return arr.Instructor_name.replace(/\s{2,}/g, ' ');
         });
         var teachers = instructors.toString();
+        var isAPackage = arr.IsFixedPackage || arr.IsCYOPackage;
 
         if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
             if (teachers.length && futurePerfCount > 1) {
@@ -2350,7 +2359,7 @@
         if (!_.startsWith(arrUrl, 'http')) {
             arrUrl = 'http://www.92y.org' + arrUrl;
             urlTarget = '_self';
-            if (itemType.toLowerCase() === 'event' && isMobile == true) {
+            if (itemType.toLowerCase() === 'event' && isMobile == true && !isAPackage) {
                 arrUrl = 'http://m.92y.org' + '/Event/' + prodNo;
             }
         }
@@ -2645,7 +2654,7 @@
         return function (scope, element) {
             var hammertime = new Hammer(element[0]);
             // hammertime.set({ threshold: 100 });
-            hammertime.on('swiperight', function(e) {
+            hammertime.on('swiperight', function (e) {
                 e.preventDefault();
                 angular.element(element).removeClass('in');
                 angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
