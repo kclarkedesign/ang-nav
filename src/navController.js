@@ -339,7 +339,7 @@
                             self.fetchResults(subfolders[0], false);
                         } else {
                             if (self.DefaultFilterNodeNum === self.ActiveFilterNodeNum) {
-                                subfolders = locationPath.substring(1).split('/');
+                                subfolders = decodeURI(locationPath).substring(1).split('/');
                                 var rootFolder = subfolders[0];
                                 //if logo clicked to reset let's just skip this
                                 if (rootFolder.length > 0) {
@@ -555,16 +555,24 @@
             if (ac.NodeID !== self.ActiveFilterNodeNum || self.ActiveFilterNodeNum === self.DefaultFilterNodeNum) {
                 urlToBuild.push(ac.Name);
             }
-            var finalUrl = baseUrl + '#';
-            for (var i = 0; i < urlToBuild.length; i++) {
-                finalUrl += '/' + urlToBuild[i].replace(/\//g, '%2F');
-            }
             tmp.href = function () {
-                var locationPath = self.location.path();
-                var locationObj = seperateSlicersFromUrl(locationPath);
-                var locationSlicers = locationObj.removed;
-                window.location.href = encodeURI(finalUrl.trim()) + locationSlicers;
-            };
+                if (this.length > 1) {
+                    //if sub area clicked
+                    var finalUrl = '';
+                    for (var i = 0; i < this.length; i++) {
+                        finalUrl += '/' + this[i].replace(/\//g, '%2F');
+                    }
+                    var locationPath = self.location.path();
+                    var locationObj = seperateSlicersFromUrl(locationPath);
+                    var locationSlicers = locationObj.removed;
+                    self.location.path(encodeURI(finalUrl.trim()) + locationSlicers);
+                    self.applyScope();
+                } else {
+                    //if interest area clicked
+                    var sl = _.find(self.allClasses, { 'Name': this[0] });
+                    self.getInterestItems(self.interestClicked, sl);
+                }
+            } .bind(_.clone(urlToBuild));
             if (typeof lastObject === 'undefined' || tmp.level === lastObject.level) {
                 storedMenu.push(tmp);
             } else {
@@ -601,7 +609,7 @@
                     self.eventClassDropdown.isopen = true;
                     //self.introOpened = true;
                 } else {
-                    var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
+                    var foundLevel = _.find(self.allClasses, { 'Name': decodeURI(subLevelName) });
                     subLevelId = foundLevel.NodeID;
                 }
             } else {
@@ -1319,7 +1327,7 @@
         try {
             if (locationPath.length && locationPath !== '/') {
                 self.lastLocationPath = self.location.path();
-                var subfolders = _.compact(locationPath.substring(1).split('/'));
+                var subfolders = _.compact(decodeURI(locationPath).substring(1).split('/'));
                 var findChild, foundChildParent, findObj, foundChild;
                 self.activeBreadcrumb = [];
                 var topmostNodeFound = false;
