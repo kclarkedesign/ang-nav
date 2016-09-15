@@ -124,7 +124,7 @@ html.mm-blocking body {
 }
 .header .brand .navbar-brand img {
 	max-height: 50px;
-	margin-right: 15px;
+	/*margin-right: 15px;*/
 }
 .header .nav>li>a:hover, 
 .header .nav>li>a:focus, 
