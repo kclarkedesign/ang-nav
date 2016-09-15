@@ -217,7 +217,7 @@
 					</div>
 				</div>
 			</header>
-			<div class="container-fluid" style="height: 100%">
+			<div class="container-fluid" ng-class="navListCtrl.activeBreadcrumb.length > 0 ? '' : 'icon-bg'" style="height: 100%">
 				<div class="row" style="background: #ffffff;">
 					<div ng-cloak id="main-area">
 						<section class="main-content">
@@ -463,17 +463,17 @@
 
 					<!--- Scrollable Browse Nav (for small Mobile) -->
 					<div ng-cloak class="filter-browse-container pt10 pl10 pr10 pb5 collapse visible-xs visible-sm visible-md">
-						<!-- <div id="welcome-area">
+						<div ng-class="(navListCtrl.displayIntro ? 'hidden-xs hidden-sm' : '')+' '+(navListCtrl.activeBreadcrumb.length > 0 ? 'collapse' : '')" id="root-welcome-area">
 							<div class="welcome-arrow">
 							</div>
-							<div class="instruction-text">
+							<!-- <div class="instruction-text">
 								<span>Tap this Interests Icon to browse all interest areas</span>
-							</div>
+							</div> -->
 							<div class="welcome-msg text-center">
-								<span>Welcome to the 92Y's 
-								Program&nbsp;Finder!</span>
+								<span>Welcome to the 92Y's Program&nbsp;Finder!</span>
 							</div>
-						</div> -->
+							<div class="text-center">Tap the Interests Icon to browse all interest&nbsp;areas</div>
+						</div>
 						<div class="filter-content container pl10 pr10">
 							<ol class="breadcrumb mb5 pl5 hidden-xs hidden-sm hidden-md">
 								<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
