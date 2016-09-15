@@ -140,6 +140,11 @@ html.mm-blocking body {
     background-size: 110px;
     min-height: 550px;
 }
+/*.index-instruction {
+    padding-top: 70px;
+    background: url(../img/welcome-arrow.svg) no-repeat 20% 0px;
+    background-size: 20px;
+}*/
 .filter-browse-container {
 	background-color: #fff;
 	border-bottom: 6px solid #ADADAD;
