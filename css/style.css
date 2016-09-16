@@ -121,10 +121,11 @@ html.mm-blocking body {
 	margin-left: -15px;
 	z-index: 1;
     position: relative;
+	padding-right: 5px;
 }
 .header .brand .navbar-brand img {
 	max-height: 50px;
-	margin-right: 15px;
+	/*margin-right: 15px;*/
 }
 .header .nav>li>a:hover, 
 .header .nav>li>a:focus, 
@@ -135,6 +136,16 @@ html.mm-blocking body {
 #mainNavSidebar .nav>li>a:focus {
 	background-color: #8EBADF;
 }
+.icon-bg {
+    background: url(../img/welcome-icons.svg) repeat -4px 32%;
+    background-size: 110px;
+    min-height: 550px;
+}
+/*.index-instruction {
+    padding-top: 70px;
+    background: url(../img/welcome-arrow.svg) no-repeat 20% 0px;
+    background-size: 20px;
+}*/
 .filter-browse-container {
 	background-color: #fff;
 	border-bottom: 6px solid #ADADAD;
@@ -370,7 +381,7 @@ width: 280px;
 }
 .close-row {
 	text-align: right;
-	padding: 18px 10px 5px;
+	padding: 12px 7px 5px 5px;
 }
 .close-row #mainNavBtnTwo {
 	color: #fff;
@@ -403,18 +414,21 @@ width: 280px;
 	position: fixed;
 	left: 0;
 	right: 0;
-	top: 0px;
 	z-index: 1501;
 	bottom: 0;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.9);
 	display: block;
 }
+.intro-open .full-screen-overlay.in {
+	top: 50px;
+}
 .search-open .full-screen-overlay.in {
+	top: 0px;
 	z-index: 1502;
 }
 #intro-overlay {
-    z-index: -1;
+    z-index: 0;
     background: rgba(0, 0, 0, 0.75);
 }
 #welcome-area .welcome-msg {
@@ -422,8 +436,16 @@ width: 280px;
 }
 .welcome-msg {
 	position: relative;
-    top: 270px;
+    top: 220px;
     color: #fff;
+    font-size: 1.9em;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+#root-welcome-area .welcome-msg {
+	position: initial;
+    /*top: 270px;*/
+    color: #333;
     font-size: 1.9em;
     margin: 0 auto;
     padding: 0 15px;
@@ -454,12 +476,6 @@ width: 280px;
 	top: 50px;
 	position: absolute;
 	width: 140px;
-}
-.intro-open.browseIntro-shown #browseBtns {
-	z-index: 4;
-}
-.search-open.browseIntro-shown #browseBtns {
-	z-index: 3;
 }
 /*.intro-open #mm-blocker {
 	z-index: 5;
@@ -509,10 +525,12 @@ width: 280px;
 .btn-intro {
 	background: transparent;
     color: #fff;
-    border: 2px solid;
+    /*border: 2px solid;*/
+    border: none;
     position: absolute;
-    top: 52px;
-    right: 10px;
+    top: -40px;
+    /*right: 10px;*/
+    right: 0;
     padding-bottom: 3px;
     padding-top: 3px;
 }
@@ -540,6 +558,9 @@ width: 280px;
     width: 100%;
     box-shadow: none;
     -webkit-box-shadow: none;
+}
+.savedProdItem .tileImg {
+	max-width: 100px;
 }
 @media (min-width: 768px) {
 	/* Nav down arrow */
@@ -1932,6 +1953,12 @@ transform: rotate(-45deg);
 	.itemContents .bookmark:active {
 		color: #909192;
 	}
+	.intro-open.browseIntro-shown #browseBtns {
+		z-index: 4;
+	}
+	.search-open.browseIntro-shown #browseBtns {
+		z-index: 3;
+	}
 }
 @media (max-width: 480px) {
 	.breadcrumb a {
@@ -2174,7 +2201,7 @@ transform: rotate(-45deg);
 }
 .classTitleMobile {
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 14px;
 }
 .classDate {
 	font-size: 12px;
@@ -2488,6 +2515,7 @@ input[type="date"]::-webkit-inner-spin-button{
 #site-brand-menu>.navbar-nav>li>a {
     padding: 7px 0 7px 0;
     min-width: 62px;
+    z-index: 1;
 }
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -2592,7 +2620,8 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	.classDateMobile,
 	.shortDescriptionMobile {
-		font-size: 11px;
+		font-size: 12px;
+		line-height: 20px;
 	}
 	.itemBox {
 		padding: 0 15px;
@@ -2614,7 +2643,8 @@ input[type="date"]::-webkit-inner-spin-button{
   		float: none;
 	}
 	.item-details {
-	  	line-height: 16px;
+	  	line-height: 1.3;
+	  	padding-bottom: 4px;
 	}
 	.bookmark {
     	vertical-align: 0px; 
@@ -2624,6 +2654,11 @@ input[type="date"]::-webkit-inner-spin-button{
 	}
 	sup {
     	top: -.2em;
+	}
+	.classTitle, 
+	.classDate, 
+	.warning {
+		padding: 6px 0 0;
 	}
 }
 @media (min-width: 992px) {
@@ -2744,15 +2779,12 @@ input[type="date"]::-webkit-inner-spin-button{
 		padding: 0;
 		
 	}
-	.savedProdItem .tileImg {
-		max-width: 100px;
-	}
 }
 @media (max-width: 360px) {
 	.classTitleMobile {
 		font-weight: bold;
-		line-height: 16px;
-		font-size: 12px;
+		/*line-height: 16px;
+		font-size: 12px;*/
 		width: auto;
 		overflow: hidden;
 	}
@@ -2760,8 +2792,8 @@ input[type="date"]::-webkit-inner-spin-button{
 @media (max-width: 300px) {
 	.classTitleMobile {
 		font-weight: bold;
-		line-height: 16px;
-		font-size: 12px;
+		line-height: inherit;
+		font-size: inherit;
 	}
 	.warning {
 		font-size: 11px;
@@ -3303,7 +3335,6 @@ a .removable:hover {
     padding-right: 14px;
     width: 130px;
     padding-bottom: 14px;
-    display: inline-block;
     overflow: hidden;
     height: 170px;
 }

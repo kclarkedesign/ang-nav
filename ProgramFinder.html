@@ -70,7 +70,7 @@
 								<div id="site-brand-menu">
 								    <a href="/" id="logo-anchor" class="navbar-brand">
 								        <img src="img/sitelogo_92Y-1.png" alt=""/>
-								        <span class="label nav-label-beta navbar-text">Beta</span>
+								        <!-- <span class="label nav-label-beta navbar-text">Beta</span> -->
 								    </a>
 								    <ul class="nav navbar-nav navbar-left hidden-md hidden-lg">
 								        <li>
@@ -187,9 +187,11 @@
 								</div>
 
 								<ul id="action-container" class="nav navbar-nav navbar-right">
-									<li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
+									<!-- FOR WISHLIST -->
+									<!-- <li id="navSavedBtn" wish-list ng-class="{'active': navListCtrl.savedSearches.length || navListCtrl.savedPrograms.length}" class="notifications dropdown shake">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-heart"></i><span class="btnTitle">Wish List</span></a>
-									</li>
+									</li> -->
+									<!-- END FOR WISHLIST -->
 									<!-- <li id="filterSidebarBtn" filter-sidebar ng-class="{'active': navListCtrl.isFilterEnabled()}" class="nav navbar-nav filter hidden-lg shake" ng-show="navListCtrl.onscreenResults.length > 0">
 										<a href="javascript:;" data-toggle="dropdown"><span class="bubble"></span><i class="fa fa-filter fa-lg"></i><span class="btnTitle">Refine</span></a>
 									</li> -->
@@ -215,7 +217,7 @@
 					</div>
 				</div>
 			</header>
-			<div class="container-fluid" style="height: 100%">
+			<div class="container-fluid" ng-class="navListCtrl.activeBreadcrumb.length > 0 ? '' : 'icon-bg'" style="height: 100%">
 				<div class="row" style="background: #ffffff;">
 					<div ng-cloak id="main-area">
 						<section class="main-content">
@@ -461,17 +463,18 @@
 
 					<!--- Scrollable Browse Nav (for small Mobile) -->
 					<div ng-cloak class="filter-browse-container pt10 pl10 pr10 pb5 collapse visible-xs visible-sm visible-md">
-						<!-- <div id="welcome-area">
+						<div ng-class="(navListCtrl.displayIntro ? 'hidden-xs hidden-sm' : '')+' '+(navListCtrl.activeBreadcrumb.length > 0 ? 'collapse' : '')" id="root-welcome-area">
 							<div class="welcome-arrow">
 							</div>
-							<div class="instruction-text">
+							<!-- <div class="instruction-text">
 								<span>Tap this Interests Icon to browse all interest areas</span>
-							</div>
+							</div> -->
+							<div class="index-instruction text-center">Tap the Interests Icon to browse all interest&nbsp;areas</div>
 							<div class="welcome-msg text-center">
-								<span>Welcome to the 92Y's 
-								Program&nbsp;Finder!</span>
+								<span>Welcome to the 92Y's Program&nbsp;Finder!</span>
 							</div>
-						</div> -->
+							
+						</div>
 						<div class="filter-content container pl10 pr10">
 							<ol class="breadcrumb mb5 pl5 hidden-xs hidden-sm hidden-md">
 								<li class="" ng-class="{'defaultBc': navListCtrl.activeBreadcrumb.length === 1, 'bcChain': $last}" ng-repeat="bc in navListCtrl.getBreadcrumbs(false)">
@@ -503,7 +506,7 @@
 													Refine
 													<!-- <span class="caret"></span> -->
 													<!-- <span class="bubble"></span> -->
-													<span class="tooltip bottom hidden-md" role="tooltip"><span class="tooltip-inner">Tap this button to refine your results</span> </span>
+													<span class="tooltip bottom hidden-md" role="tooltip"><span class="tooltip-inner">Tap this button to refine by age, keyword &amp; more</span> </span>
 												</button>
 											</div>
 										</div>
@@ -631,13 +634,15 @@
 												<div class="getTickets">
 													<a class="getLink" ng-href="{{classInfo.Url}}" target="{{classInfo.UrlTarget}}">Learn More <i class="fa fa-arrow-right"></i></a>
 												</div>
-												<div class="getMore">
-														<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
-															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
-															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
-															<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
-														</a>
-												</div>
+												<!-- FOR Wishlist -->
+												<!-- <div class="getMore">
+													<a class="bookmark wishList" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget);" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">
+														<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i> 
+														<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
+														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)">Saved</span>
+													</a>
+												</div> -->
+												<!-- End FOR Wishlist -->
 											</div>
 										</div>
 										
@@ -689,13 +694,15 @@
 														
 
 													</div>
-													<div class="item-details item-options col-xs-12 col-sm-7 pull-right">
+													<!-- FOR WISHLIST -->
+													<!-- <div class="item-details item-options col-xs-12 col-sm-7 pull-right">
 														<a class="bookmark" ng-click="navListCtrl.saveProgram(classInfo.Title, classInfo.Img, classInfo.Url, classInfo.UrlTarget); toggle = !toggle">
 															<i class="fa fa-heart fa-lg" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}"></i>
 															<span ng-hide="navListCtrl.checkProgramSaved(classInfo.Title)">Wish List</span>
 														<span ng-show="navListCtrl.checkProgramSaved(classInfo.Title)" ng-class="{'active': navListCtrl.checkProgramSaved(classInfo.Title)}">Saved</span>
 														</a>
-													</div>
+													</div> -->
+													<!-- END FOR WISHLIST -->
 													<div class="item-details col-xs-12 col-sm-7 pull-right">
 														<div class="contentWrapMobile">
 															<div class="shortDescriptionMobile" ng-bind-html="classInfo.Desc | unsafe"></div>
@@ -840,7 +847,7 @@
 						</nav>
 						<!-- End Filter Sidebar -->
 						<!-- Saved Sidebar -->
-						<div id="savedSidebar" swipe-close-right class="no-p">
+						<!-- <div id="savedSidebar" swipe-close-right class="no-p">
 							<div id="floatCartBtn" class="notifications dropdown inactive">
 								<a href="javascript:;" data-toggle="dropdown">
 									<i class="fa fa-shopping-cart"></i>
@@ -896,7 +903,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
+						<!-- End Saved Sidebar -->
 					</div>
 				</div>
 				<div class="qp-ui-mask-modal" mask-modal></div>
