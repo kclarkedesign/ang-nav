@@ -2506,8 +2506,6 @@
 
     navApp.directive('enableContainer', function () {
         function link(scope, element) {
-            var divNoJs = element.children('#nojs');
-            divNoJs.css('display', 'none');
             var divTiles = element.children('#tiles');
             divTiles.css('display', '');
         }
