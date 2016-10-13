@@ -2679,7 +2679,7 @@ input[type="date"]::-webkit-inner-spin-button{
 		visibility: visible;
 	}
 	.iconBtn-vertical.open>.dropdown-menu {
-		height: 220px;
+		height: 430px;
     	padding-top: 16px;
 		opacity: 1;
 		visibility: visible;
@@ -3349,9 +3349,20 @@ a .removable:hover {
     line-height: 16px;
     display: block;
     padding: 5px 0 0;
+    font-size: 12px;
+    color: black;
+    font-weight: normal;
 }
 .partof {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	font-weight: bold;
+}
+.globalSearchProductTitle 
+{
+    display: inline-block;
+    width: 105px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
