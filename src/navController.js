@@ -138,6 +138,7 @@
         $scope.mainMenuItems = [];
         self.mainMenuItems = $scope.mainMenuItems;
         self.skipDisplayTiles = false;
+        self.onscreenSearchResults = [];
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -199,6 +200,9 @@
 
         self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
             self.getInterestItems(self.getAllInitialClasses, data);
+            self.allTopLevels = _.map(data.data, function (kw) {
+                return { Name: kw.Name, Keywords: kw.Keywords.toLowerCase(), NodeID: kw.NodeID };
+            });
             //build mmenu
             $scope.mainMenuOptions = {
                 navbar: {
@@ -358,6 +362,7 @@
                 self.limit = self.origLimit;
                 self.affixed = false;
                 self.showNoGlobalResults = false;
+                self.onscreenSearchResults = [];
                 self.progressbar.set(self.progressbar.status() + 4);
                 $timeout(function () {
                     self.progressbar.complete();
@@ -373,6 +378,9 @@
             self.isFetching = true;
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
                 self.getInterestItems(self.getAllInitialClasses, data);
+                self.allTopLevels = _.map(data.data, function (kw) {
+                    return { Name: kw.Name, Keywords: kw.Keywords.toLowerCase(), NodeID: NodeID };
+                });
                 self.skipDisplayTiles = false;
             }, function (respData) {
                 if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
@@ -595,6 +603,7 @@
         var self = this;
         var subLevelName;
         var subLevelId;
+        self.clearSearch(true);
         if (_.isUndefined(arg.Name)) {
             //if page load
             self.allClasses = [];
@@ -625,15 +634,15 @@
         if (!_.isUndefined(subLevelName)) {
             if (_.isUndefined(self.navsDict[subLevelName])) {
                 self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                    self.navsDict[subLevelName] = items.data;
+                    self.navsDict[subLevelName] = items;
                     func(self, arg, true);
                 });
             } else {
                 self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
                     self.navCache.remove(subLevelName);
-                    self.navsDict[subLevelName] = items.data;
+                    self.navsDict[subLevelName] = items;
                     self.navCache.put(subLevelName, {
-                        itemData: items.data
+                        itemData: items
                     });
                     func(self, arg);
                 });
@@ -1027,6 +1036,7 @@
     NavListController.prototype.clearSearch = function (all) {
         var self = this;
         self.displaySearchResults = [];
+        self.onscreenSearchResults = [];
         self.showNoGlobalResults = false;
         self.textboxGlobalSearch = '';
         if (all) {
@@ -1038,61 +1048,42 @@
         var self = this;
         self.showNoGlobalResults = false;
         self.displaySearchResults = [];
+        self.onscreenSearchResults = [];
         var searchTerm = isGlobal ? self.textboxGlobalSearch : self.textboxSearch;
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
-            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + _.deburr(searchTerm) + '/', self.navCache, 'globalSearch').then(function (data) {
-                var results = data.data;
-                if (results.length) {
-                    _.forEach(results, function (result) {
-                        var interestAreas = _.uniq(result.InterestAreas);
-                        var keywords = _.uniq(result.Keywords);
-                        var lcKeywords = _.map(keywords, function (kw) {
-                            return kw.toLowerCase();
-                        });
-                        _.forEach(interestAreas, function (interest, indx) {
-                            var sublevel = _.find(self.allClasses, function (ac) {
-                                if (_.isUndefined(ac.JSONDataURL)) {
-                                    logErrorToServer('JSON not showing.');
-                                } else {
-                                    return ac.JSONDataURL.toLowerCase().indexOf('/' + interest) > 0;
-                                }
-                            });
-                            if (_.isUndefined(sublevel)) {
-                                logErrorToServer('JSON for "' + interest + '" not found.');
-                            } else {
-                                var subLevelName = sublevel.Name;
-                                var subLevelKeywords = sublevel.Keywords.toLowerCase();
-                                var slkwarr = subLevelKeywords.split(',');
-                                if (_.intersection(slkwarr, lcKeywords).length) {
-                                    if (!_.isUndefined(sublevel)) {
-                                        //note: might have to revisit this 
-                                        //we shouldn't have to hit up the json again to get the classes - the search json above should take care of it
-                                        //this was made to prevent a positive hit from the search but no classes when we went to actual link
-                                        //var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-                                        //var subLevelId = foundLevel.NodeID;
-                                        //self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                                        //self.navsDict[subLevelName] = items.data;
-                                        var absUrl = self.location.absUrl().toLowerCase();
-                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
-                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
-                                            self.displaySearchResults.push({
-                                                searchTerm: searchTerm,
-                                                interestArea: subLevelName,
-                                                href: encodeURI(href)
-                                            });
-                                        }
-                                        //});
-                                    }
-                                } else {
-                                    logErrorToServer('Global search "' + searchTerm + '" found results in "' + subLevelName + '" but does not have keywords "' + subLevelKeywords + '" to show up there.');
-                                }
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/categories/json/dayplanit', self.navCache, 'globalSearch').then(function (data) {
+                var allData = data.data;
+                var filteredData = checkListContainsWords(allData, _.deburr(searchTerm));
+                if (filteredData.length > 0) {
+                    var absUrl = self.location.absUrl().toLowerCase();
+                    var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                    _.forEach(filteredData, function (fd) {
+                        var fdKeywords = _.uniq(_.map(fd.CategoryProductionKeywords, function (kw) {
+                            return kw.keyword.toLowerCase();
+                        }));
+                        var allTopLevelKeywords = _.map(self.allTopLevels, 'Keywords');
+                        var interestAreas = _.intersection(fdKeywords, allTopLevelKeywords);
+                        _.forEach(interestAreas, function (ia) {
+                            var subLevel = _.find(self.allTopLevels, { 'Keywords': ia });
+                            var subLevelName = subLevel.Name;
+                            var subLevelNodeId = subLevel.NodeID;
+                            var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                            if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                self.displaySearchResults.push({
+                                    searchTerm: searchTerm,
+                                    interestArea: subLevelName,
+                                    href: encodeURI(href)
+                                });
                             }
-                            if ((indx + 1) === interestAreas.length) {
-                                self.showGlobalSpinner = false;
-                                self.showNoGlobalResults = self.displaySearchResults.length ? false : true;
+                            var prodNo = fd.ProductionSeasonNumber === 0 ? fd.PackageNo : fd.ProductionSeasonNumber;
+                            var foundClass = _.find(self.onscreenSearchResults, { 'ProdNo': prodNo });
+                            if (_.isUndefined(foundClass)) {
+                                var classInfoObj = formatDataFromJson(fd, subLevelNodeId);
+                                self.onscreenSearchResults.push(classInfoObj);
                             }
                         });
+                        self.showGlobalSpinner = false;
+                        self.showNoGlobalResults = self.displaySearchResults.length ? false : true;
                     });
                 } else {
                     //search finds no results
@@ -1909,7 +1900,7 @@
         self.cookies.put('interestIntro', 'clicked', { 'expires': expireDate });
         self.cookies.put('browseBtnIntro', 'clicked', { 'expires': expireDate });
         self.displayIntro = false;
-    }
+    };
 
     var pluckAllKeys = function (obj, res) {
         var res = res || [];
@@ -2028,7 +2019,23 @@
         if (!_.isUndefined(searchVal) && searchVal.length) {
             var filteredNavs = [];
             _.forEach(results, function (result) {
-                if (getRank(result.Title, searchVal) > 0 || getRank(result.DescText, searchVal) > 0 || getRank(result.Teachers, searchVal) > 0 || getRank(result.KeyWord.toString(), searchVal) > 0) {
+                var descText = result.DescText || result.ShortDesc;
+                var teachers;
+                if (_.isUndefined(result.Teachers)) {
+                    var instructors = _.map(result.ProdSeasonInstructors, function (arr) {
+                        return arr.Instructor_name.replace(/\s{2,}/g, ' ');
+                    });
+                    teachers = instructors.toString();
+                } else {
+                    teachers = result.Teachers;
+                }
+                var keyWord;
+                if (_.isUndefined(result.KeyWord)) {
+                    keyWord = _.pluck(result.CategoryProductionKeywords, 'keyword');
+                } else {
+                    keyWord = result.KeyWord;
+                }
+                if (getRank(result.Title, searchVal) > 0 || getRank(descText, searchVal) > 0 || getRank(teachers, searchVal) > 0 || getRank(keyWord.toString(), searchVal) > 0) {
                     filteredNavs.push(result);
                 }
             });
@@ -2039,50 +2046,52 @@
     };
 
     var getRank = function (itemToSearchIn, searchItem) {
-        var entirePhrase = _.deburr(searchItem.trim().toLowerCase());
-        var spacesInPhrase = entirePhrase.match(/\s/g);
-        var countSpaces = 0;
-        if (spacesInPhrase != null) {
-            countSpaces = spacesInPhrase.length;
-        }
-        var splitPhrase = entirePhrase.split(' ');
-        var strippedPhraseArr = _.filter(splitPhrase, function (word) {
-            if (!_.includes(STOPWORDS, word.toLowerCase())) {
-                return word;
+        if (itemToSearchIn.length > 0) {
+            var entirePhrase = _.deburr(searchItem.trim().toLowerCase());
+            var spacesInPhrase = entirePhrase.match(/\s/g);
+            var countSpaces = 0;
+            if (spacesInPhrase != null) {
+                countSpaces = spacesInPhrase.length;
             }
-        });
-        var item = _.deburr(itemToSearchIn.toLowerCase());
-        if (item.indexOf(entirePhrase) >= 0) {
-            //if exact phrase is found and phrase is more than one word
-            if (countSpaces > 0) {
-                return 1;
-            } else {
-                //if exact phrase is found and phrase is just one word
-                //then strip it to insure it's not matching a common word
-                if (!_.includes(STOPWORDS, item.toLowerCase())) {
-                    return 1;
-                }
-            }
-        }
-        if (strippedPhraseArr.length) {
-            //strip item of weird characters
-            var cleanedItem = item.replace(/[^\w\s]/gi, ' ');
-            //divide string into an array using whitespace removing any empty elements
-            var itemList = _.compact(cleanedItem.split(' '));
-            var itemCount = 0;
-            _.forEach(strippedPhraseArr, function (word) {
-                if (_.includes(itemList, word.toLowerCase())) {
-                    ++itemCount;
+            var splitPhrase = entirePhrase.split(' ');
+            var strippedPhraseArr = _.filter(splitPhrase, function (word) {
+                if (!_.includes(STOPWORDS, word.toLowerCase())) {
+                    return word;
                 }
             });
-            //if all parts of the phrase are found
-            if (itemCount === strippedPhraseArr.length) {
-                return 2;
+            var item = _.deburr(itemToSearchIn.toLowerCase());
+            if (item.indexOf(entirePhrase) >= 0) {
+                //if exact phrase is found and phrase is more than one word
+                if (countSpaces > 0) {
+                    return 1;
+                } else {
+                    //if exact phrase is found and phrase is just one word
+                    //then strip it to insure it's not matching a common word
+                    if (!_.includes(STOPWORDS, item.toLowerCase())) {
+                        return 1;
+                    }
+                }
             }
-            //if any parts of the phrase are found
-            //if (itemCount > 0) {
-            //    return 3;
-            //}
+            if (strippedPhraseArr.length) {
+                //strip item of weird characters
+                var cleanedItem = item.replace(/[^\w\s]/gi, ' ');
+                //divide string into an array using whitespace removing any empty elements
+                var itemList = _.compact(cleanedItem.split(' '));
+                var itemCount = 0;
+                _.forEach(strippedPhraseArr, function (word) {
+                    if (_.includes(itemList, word.toLowerCase())) {
+                        ++itemCount;
+                    }
+                });
+                //if all parts of the phrase are found
+                if (itemCount === strippedPhraseArr.length) {
+                    return 2;
+                }
+                //if any parts of the phrase are found
+                //if (itemCount > 0) {
+                //    return 3;
+                //}
+            }
         }
         return 0;
     };
@@ -2152,13 +2161,14 @@
         if (!_.isUndefined(keywords) && keywords.length) {
             filteredNavs = _.filter(navArr, function (navs) {
                 var isSlicing = false;
+                var navKeywords;
                 if (navs.CategoryProductionKeywords) {
                     // when page first loads
-                    var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
+                    navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
                         return catprod.keyword.toLowerCase().trim();
                     });
                 } else {
-                    var navKeywords = _.map(navs.KeyWord, function (catprod) {
+                    navKeywords = _.map(navs.KeyWord, function (catprod) {
                         return catprod.toLowerCase().trim();
                     });
                     isSlicing = true;
@@ -2432,20 +2442,22 @@
     TileInfoService.prototype.getItems = function (subLevelId, levels, cache) {
         var self = this;
         var foundLevel = _.find(levels, { 'NodeID': subLevelId });
-        var jsonFile = foundLevel.JSONDataURL;
+        var topLevelKeyword = foundLevel.Keywords.toLowerCase();
 
-        if (_.isUndefined(jsonFile) || jsonFile === '') {
+        if (_.isUndefined(topLevelKeyword) || topLevelKeyword === '') {
             return self.getItemsById(subLevelId);
             //return self.q.when([]);
         } else {
-            return self.http.get(jsonFile, { cache: self.cacheFactory.get(cache.info().id), timeout: 4000 }).then(function (data) {
+
+            return self.http.get('/webservices/categoryproduction.svc/categories/json/dayplanit', { cache: self.cacheFactory.get(cache.info().id), timeout: 4000 }).then(function (data) {
                 if (_.isUndefined(data.data) || data.data.length === 0) {
                     return self.getItemsById(subLevelId);
                 }
+                var items = filterListByKeywords(data.data, [topLevelKeyword]);
                 cache.put(foundLevel.Name, {
-                    itemData: data.data
+                    itemData: items
                 });
-                return data;
+                return items;
             }, function (error) {
                 return self.getItemsById(subLevelId);
             });

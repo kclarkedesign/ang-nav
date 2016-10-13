@@ -127,6 +127,26 @@
 	                                                            </span>
 	                                                            <span class="s-interestArea" ng-bind-html="sr.interestArea | unsafe"></span>
 	                                                        </a>
+	                                                        <div class="contentWrap" ng-show="navListCtrl.onscreenSearchResults.length > 0">
+	                                                            <div>
+	                                                                <div class="expand-collapse-container collapse" style="display: block;">
+	                                                                    <table cellpadding="0" cellspacing="0" class="table table-striped schedule schedule-subs mt5">
+	                                                                        <tbody>
+	                                                                            <tr>
+	                                                                                <td width="100" ng-repeat="srch in navListCtrl.onscreenSearchResults">
+	                                                                                    <a ng-href="{{srch.Url}}" target="{{srch.UrlTarget}}">
+	                                                                                        <img ng-src="http://www.92y.org{{srch.Img}}" border="0" alt="{{srch.Title}}" style="width: 105px;"/>
+                                                                                        </a>
+	                                                                                    <br />
+                                                                                        <a ng-href="{{srch.Url}}" target="{{srch.UrlTarget}}" ng-class="{ globalSearchProductTitle: srch.Title.length > 50 }">{{srch.Title}}</a>
+	                                                                                    <span class="futureDate">{{srch.FriendlyDate}}</span>
+	                                                                                </td>
+	                                                                            </tr>
+	                                                                        </tbody>
+	                                                                    </table>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
 	                                                    </div>
 	                                                </div>
 	                                            </li>
@@ -178,10 +198,30 @@
 	                                                            </div>
 	                                                        </div>
 	                                                    </li>
+	                                                    <li class="container" style="margin: auto;">
+	                                                        <div class="contentWrap" ng-show="navListCtrl.onscreenSearchResults.length > 0">
+	                                                            <div>
+	                                                                <div class="expand-collapse-container collapse" style="display: block;">
+	                                                                    <table cellpadding="0" cellspacing="0" class="table table-striped schedule schedule-subs mt5">
+	                                                                        <tbody>
+	                                                                            <tr>
+	                                                                                <td width="100" ng-repeat="srch in navListCtrl.onscreenSearchResults">
+	                                                                                    <a ng-href="{{srch.Url}}" target="{{srch.UrlTarget}}">
+	                                                                                        <img ng-src="http://www.92y.org{{srch.Img}}" border="0" alt="{{srch.Title}}" style="width: 105px;"/>
+                                                                                        </a>
+	                                                                                    <br />
+                                                                                        <a ng-href="{{srch.Url}}" target="{{srch.UrlTarget}}" ng-class="{ globalSearchProductTitle: srch.Title.length > 50 }">{{srch.Title}}</a>
+	                                                                                    <span class="futureDate">{{srch.FriendlyDate}}</span>
+	                                                                                </td>
+	                                                                            </tr>
+	                                                                        </tbody>
+	                                                                    </table>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </li>
 	                                                </ul>
 	                                            </li>
-
-												
 	                                        </ul>
 	                                    </div>
 	                                </div>
@@ -608,6 +648,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
+
 	                        <div class="col-md-12 col-lg-12 pl0 pr0">
 	                            <!-- For Medium, Large and Xlarge screen sizes -->
 	                            <div id="isoContainer" ng-cloak class="hidden-xs hidden-sm ng-cloak" infinite-scroll="navListCtrl.loadMore('desktop')" infinite-scroll-distance="1" infinite-scroll-target-container="#bottomContainer">
