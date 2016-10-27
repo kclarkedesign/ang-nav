@@ -1262,9 +1262,9 @@
                 self.textboxSearch = self.searchTerm;
             }
             self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
-            if (self.onscreenResults.length === 0 && !self.isFetching) {
-                self.fetchSearchResults(false);
-            }
+//            if (self.onscreenResults.length === 0 && !self.isFetching) {
+//                self.fetchSearchResults(false);
+//            }
 
             // var sortBy;
             // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
