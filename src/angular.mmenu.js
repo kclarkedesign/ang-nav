@@ -173,32 +173,34 @@ angular.module('angular-mmenu', [])
         var buildUpMenuFromScratch = function (api, url) {
             // open menu to a panel indicated by URL
             api.closeAllPanels();
-            if (url.length && url !== "#/") {
-                var cleanedUrl = seperateSlicersFromUrl(url).path;
-                var folderPath = cleanedUrl.split("/");
-                var panelToOpen;
-                var liToSelect;
-                var parentPanel;
-                for (var fp = 1; fp <= folderPath.length; fp++) {
-                    if (fp === 1) {
-                        panelToOpen = $("#mm-0");
-                        liToSelect = panelToOpen.find("li").has('a:contains("' + decodeURI(folderPath[fp]) + '")');
-                    } else {
-                        parentPanel = panelToOpen.prop('id');
-                        // find panel that has a child with a data-target that points to parent id 
-                        // and that has a link that has the text of the parent
-                        // and that has a link that has text from the URL
-                        if (fp < folderPath.length) {
-                            panelToOpen = $('div.mm-panel')
-                                .has('a.mm-btn[data-target="#' + parentPanel + '"]')
-                                .has('a.mm-title:contains("' + decodeURI(folderPath[fp - 1]) + '")')
-                                .has('a:contains("' + decodeURI(folderPath[fp]) + '")');
-                            liToSelect = panelToOpen.find("li").has('a:contains("' + decodeURI(folderPath[fp]) + '")');
-                        }
-                    }
+            var cleanedUrl = seperateSlicersFromUrl(url).path;
+            var folderPath = cleanedUrl.split("/");
+            folderPath[0] = "All Programs";
+            folderPath = _.compact(folderPath);
+            var panelToOpen;
+            var liToSelect;
+            var parentPanel;
+            for (var fp = 0; fp < folderPath.length; fp++) {
+                if (fp === 0) {
+                    panelToOpen = $("#mm-0");
+                    liToSelect = panelToOpen.find("li");
                     api.openPanel(panelToOpen);
                     api.setSelected(liToSelect, true);
                     setAttributeOnSubcategoriesButton(liToSelect);
+                } else {
+                    parentPanel = panelToOpen.prop('id');
+                    // find panel that has a child with a data-target that points to parent id 
+                    // and that has a link that has the text of the parent
+                    // and that has a link that has text from the URL
+                    if (fp < folderPath.length) {
+                        panelToOpen = $('div.mm-panel').has('a.mm-btn[data-target="#' + parentPanel + '"]')
+                            .has('a.mm-title:contains("' + decodeURI(folderPath[fp - 1]) + '")')
+                            .has('a:contains("' + decodeURI(folderPath[fp]) + '")');
+                        liToSelect = panelToOpen.find("li").has('a:contains("' + decodeURI(folderPath[fp]) + '")');
+                        api.openPanel(panelToOpen);
+                        api.setSelected(liToSelect, true);
+                        setAttributeOnSubcategoriesButton(liToSelect);
+                    }
                 }
             }
         };
