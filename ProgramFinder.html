@@ -734,61 +734,70 @@
 <!--	                                            <input id="mobileSearchText" type="text" class="form-control col-md-12" placeholder="Filter by Instructor, Title or Keyword" ng-model="navListCtrl.textboxSearch" ng-change="navListCtrl.searchByWord()" ng-class="{'active': navListCtrl.textboxSearch.length && !navListCtrl.showSpinner, 'spinnerInTextbox': navListCtrl.showSpinner}">-->
 <!--	                                            <a class="glyphicon glyphicon-remove-sign form-control-feedback form-control-clear" ng-click="navListCtrl.clearSearch(true);navListCtrl.modifyUrlSearch(true)" style="pointer-events: auto; text-decoration: none;cursor: pointer; text-align: left;"></a>-->
 <!--	                                        </div>-->
-<!--	                                    </div>-->
-	                                    <div id="dateRow" class="row">
+	                                    <!-- </div>-->
+	                                    <div id="dateTimeRow" class="row" run-accordion accordion-div="dateRows">
 	                                        <div class="col-xs-12 pt10">
 	                                            <div role="separator" class="divider"></div>
-	                                            <label class="dropdown-header pl0 fw-normal">Date:</label>
-	                                        </div>
-	                                        <div class="col-xs-12">
-	                                            <p class="input-group">
-	                                                <input type="text" placeholder="Starts On" class="form-control" datepicker-popup="M/d/yyyy" min-date="navListCtrl.minBegDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.sdateSlice" close-text="Close" is-open="navListCtrl.opened.start" show-weeks="false" ng-change="navListCtrl.slicerPicked('sdate');" ng-click="navListCtrl.openCalendar($event, 'start')" />
-	                                                <span class="input-group-btn">
-	                                                    <button type="button" class="btn btn-default cal-btn" ng-click="navListCtrl.openCalendar($event, 'start')">
-	                                                        <i class="glyphicon glyphicon-calendar"></i>
-	                                                    </button>
-	                                                </span>
-	                                            </p>
-	                                        </div>
-	                                        <div class="col-xs-12">
-	                                            <p class="input-group mb0">
-	                                                <input type="text" placeholder="Ends By" class="form-control" datepicker-popup="M/d/yyyy" min-date="navListCtrl.minEndDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.edateSlice" close-text="Close" is-open="navListCtrl.opened.end" show-weeks="false" ng-change="navListCtrl.slicerPicked('edate');" ng-click="navListCtrl.openCalendar($event, 'end')" />
-	                                                <span class="input-group-btn">
-	                                                    <button type="button" class="btn btn-default cal-btn" ng-click="navListCtrl.openCalendar($event, 'end')">
-	                                                        <i class="glyphicon glyphicon-calendar"></i>
-	                                                    </button>
-	                                                </span>
-	                                            </p>
+	                                            <label class="dropdown-header pl0 fw-normal col-xs-10">Date/Time:</label>
+                                                <i class="indicator glyphicon glyphicon-chevron-down pull-right col-xs-2 mt15"></i> 
 	                                        </div>
 	                                    </div>
-	                                    <div id="timeRow" class="row">
-	                                        <div class="col-xs-12">
-	                                            <div role="separator" class="divider"></div>
-	                                            <label class="dropdown-header pl0 fw-normal">Time:</label>
-	                                        </div>
-	                                        <div class="col-xs-12">
-	                                            <input id="anyTimeMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.timeSlice === '' ? navListCtrl.timeSlice = 'all' : navListCtrl.slicerPicked('time')" ng-true-value="'all'" ng-false-value="''">
-	                                            <label class="checkbox fw-normal" for="anyTime">Any</label>
-	                                            <span ng-repeat="time in navListCtrl.times">
-	                                                <input id="{{time}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('time', time)" value="'{{time}}'" ng-checked="navListCtrl.timeSlice.indexOf(time) > -1">
-	                                                <label class="checkbox fw-normal " for="{{time}}Slice" ng-bind-html="time.charAt(0).toUpperCase() + time.slice(1) | unsafe"></label>
-	                                            </span>
-	                                        </div>
-	                                    </div>
-	                                    <div id="daysRow" class="row">
-	                                        <div class="col-xs-12">
-	                                            <div role="separator" class="divider"></div>
-	                                            <label class="dropdown-header pl0 fw-normal">Days:</label>
-	                                        </div>
-	                                        <div id="daysOfWeek" class="col-xs-12">
-	                                            <input id="anyDayMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.daySlice === '' ? navListCtrl.daySlice = 'all' : navListCtrl.slicerPicked('day')" ng-true-value="'all'" ng-false-value="''">
-	                                            <label class="checkbox fw-normal" for="anyDay">Any</label>
-	                                            <span ng-repeat="day in navListCtrl.days">
-	                                                <input id="{{day}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1">
-	                                                <label class="checkbox fw-normal" for="{{day}}Slice" ng-bind-html="day.substr(0,3) | unsafe"></label>
-	                                            </span>
-	                                        </div>
-	                                    </div>
+                                        <div id="dateRows">
+                                            <div id="dateRow" class="row">
+                                                <div class="col-xs-12">
+                                                    <div role="separator" class="divider"></div>
+                                                    <label class="dropdown-header pl0 fw-normal">Date:</label>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <p class="input-group">
+                                                        <input type="text" placeholder="Starts On" class="form-control" datepicker-popup="M/d/yyyy" min-date="navListCtrl.minBegDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.sdateSlice" close-text="Close" is-open="navListCtrl.opened.start" show-weeks="false" ng-change="navListCtrl.slicerPicked('sdate');" ng-click="navListCtrl.openCalendar($event, 'start')" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default cal-btn" ng-click="navListCtrl.openCalendar($event, 'start')">
+                                                                <i class="glyphicon glyphicon-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <p class="input-group mb0">
+                                                        <input type="text" placeholder="Ends By" class="form-control" datepicker-popup="M/d/yyyy" min-date="navListCtrl.minEndDate" max-date="navListCtrl.maxDate" ng-model="navListCtrl.edateSlice" close-text="Close" is-open="navListCtrl.opened.end" show-weeks="false" ng-change="navListCtrl.slicerPicked('edate');" ng-click="navListCtrl.openCalendar($event, 'end')" />
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default cal-btn" ng-click="navListCtrl.openCalendar($event, 'end')">
+                                                                <i class="glyphicon glyphicon-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div id="timeRow" class="row">
+                                                <div class="col-xs-12">
+                                                    <div role="separator" class="divider"></div>
+                                                    <label class="dropdown-header pl0 fw-normal">Time:</label>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <input id="anyTimeMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.timeSlice" ng-change="navListCtrl.timeSlice === '' ? navListCtrl.timeSlice = 'all' : navListCtrl.slicerPicked('time')" ng-true-value="'all'" ng-false-value="''">
+                                                    <label class="checkbox fw-normal" for="anyTime">Any</label>
+                                                    <span ng-repeat="time in navListCtrl.times">
+                                                        <input id="{{time}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('time', time)" value="'{{time}}'" ng-checked="navListCtrl.timeSlice.indexOf(time) > -1">
+                                                        <label class="checkbox fw-normal " for="{{time}}Slice" ng-bind-html="time.charAt(0).toUpperCase() + time.slice(1) | unsafe"></label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div id="daysRow" class="row">
+                                                <div class="col-xs-12">
+                                                    <div role="separator" class="divider"></div>
+                                                    <label class="dropdown-header pl0 fw-normal">Days:</label>
+                                                </div>
+                                                <div id="daysOfWeek" class="col-xs-12">
+                                                    <input id="anyDayMobile" type="checkbox" class="selectAll" ng-model="navListCtrl.daySlice" ng-change="navListCtrl.daySlice === '' ? navListCtrl.daySlice = 'all' : navListCtrl.slicerPicked('day')" ng-true-value="'all'" ng-false-value="''">
+                                                    <label class="checkbox fw-normal" for="anyDay">Any</label>
+                                                    <span ng-repeat="day in navListCtrl.days">
+                                                        <input id="{{day}}SliceMobile" type="checkbox" class="selectAll" ng-click="navListCtrl.slicerPicked('day', day)" value="'{{day}}'" ng-checked="navListCtrl.daySlice.indexOf(day) > -1">
+                                                        <label class="checkbox fw-normal" for="{{day}}Slice" ng-bind-html="day.substr(0,3) | unsafe"></label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
 	                                    <div id="programTypeRow" class="row">
 	                                        <div class="col-xs-12">
 	                                            <div role="separator" class="divider"></div>
