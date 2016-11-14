@@ -2509,6 +2509,19 @@
     NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
 
+    navApp.directive('runAccordion', function () {
+        return {
+            link: function (scope, element, attrs) {
+                var divId = "#" + attrs.accordionDiv;
+                angular.element(divId).slideToggle();
+                element.bind("click", function (e) {
+                    angular.element(divId).slideToggle();
+                    $(this).find("i").toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+                });
+            }
+        };
+    });
+
     navApp.directive('enableContainer', function () {
         function link(scope, element) {
             var divTiles = element.children('#tiles');
