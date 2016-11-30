@@ -472,10 +472,10 @@ width: 280px;
 	height: 62px;
 	display: block;
 	background-size: contain;
-	left: -96px;
-	top: 50px;
-	position: absolute;
-	width: 140px;
+	left: -76px;
+    top: 50px;
+    position: absolute;
+    width: 135px;
 }
 /*.intro-open #mm-blocker {
 	z-index: 5;
