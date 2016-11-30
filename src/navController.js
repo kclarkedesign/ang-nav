@@ -78,7 +78,7 @@
                     'who', 'whom', 'why', 'will', 'with', 'would', 'yet', 'you', 'your'];
 
     var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress', 'angular-mmenu']);
-    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, $cookies, navConfig, ngProgressFactory) {
+    var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, $cookies, navConfig, ngProgressFactory, $exceptionHandler) {
         var self = this;
         self.DefaultFilterNodeNum = Number(navConfig.DefaultFilterNodeNum);
         self.ActiveFilterNodeNum = Number(navConfig.ActiveFilterNodeNum);
@@ -125,7 +125,7 @@
         self.chunkLevels = [];
         self.affixed = false;
         self.scrollingUp = false;
-        self.environment = "desktop";
+        self.environment = 'desktop';
         self.introOpened = false;
         self.displayIntro = false;
         self.displayInterestIntro = false;
@@ -208,18 +208,18 @@
             //build mmenu
             $scope.mainMenuOptions = {
                 navbar: {
-                    title: "All Programs"
+                    title: 'All Programs'
                 },
-                "iconPanels": true,
-                "extensions": ["multiline", "pageshadow", "panelshadow"],
-                "setSelected": true,
-                "navbars": [{
-                    content: ["prev", "title"]
+                'iconPanels': true,
+                'extensions': ['multiline', 'pageshadow', 'panelshadow'],
+                'setSelected': true,
+                'navbars': [{
+                    content: ['prev', 'title']
                 }],
                 dragClose: true,
-                "scrollBugFix": { fix: true }
+                'scrollBugFix': { fix: true }
             };
-            $scope.mainMenuParams = { offCanvas: { pageSelector: "#site-container"} };
+            $scope.mainMenuParams = { offCanvas: { pageSelector: '#site-container' } };
 
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/categories/json/dayplanit', self.navCache, 'allProducts').then(function (data) {
                 self.allProducts = data.data;
@@ -232,13 +232,15 @@
                 self.displayTiles();
             }, function (respData) {
                 if (self.allProducts.length === 0) {
-                    self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
+                    self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID }];
+                    $exceptionHandler('HTTP error: ' + respData.status + ' (' + respData.statusText + ') for ' + respData.config.url);
                 }
             });
 
         }, function (respData) {
             if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
-                self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
+                self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID }];
+                $exceptionHandler('HTTP error: ' + respData.status + ' (' + respData.statusText + ') for ' + respData.config.url);
             }
         });
 
@@ -282,7 +284,7 @@
                 locationPath = locationObj.path;
                 var locationRemoved = locationObj.removed;
                 var numOfSlashesLocation = (locationPath.match(/\//g) || []).length;
-                $scope.$broadcast("urlChanged", locationPath);
+                $scope.$broadcast('urlChanged', locationPath);
                 //if JumpNav is empty then we know back or forward button was used otherwise it will be set by one of the links
                 switch (self.JumpNav.Type) {
                     case 'linkTo':
@@ -1003,7 +1005,7 @@
             location = self.location;
             locationPath = location.path();
         } else {
-            locationPath = "/";
+            locationPath = '/';
             self.activeBreadcrumb = [];
             self.currentObj = {
                 Level: 0,
@@ -1137,6 +1139,7 @@
 
     NavListController.prototype.displayTiles = function () {
         var self = this;
+        self.sendToCanopyTracking();
         var onscreenResultsQueue = [];
         if (self.currentObj.NodeID === self.ActiveFilterNodeNum) {
             //if logo is clicked to reset the entire page
@@ -1182,6 +1185,43 @@
                 });
             }
             self.getClassesByNodeId(onscreenResultsQueue);
+        }
+    };
+
+    NavListController.prototype.sendToCanopyTracking = function () {
+        var self = this;
+        var subfolders = _.map(self.activeBreadcrumb, 'Name');
+        var intrstParam, subcatParam, ageParam, typeParam;
+        if (subfolders.length) {
+            intrstParam = subfolders.shift();
+            if (subfolders.length) {
+                intrstParam = subfolders.shift();
+            }
+            subcatParam = subfolders.join(', ');
+            if (self.ageSlice === self.initAgeSlice) {
+                ageParam = self.ageSlice;
+            } else {
+                ageParam = self.ageSlice.join(', ');
+            }
+            typeParam = self.typeSlice;
+
+            var canopyData = {
+                'interest': intrstParam
+            };
+            if (subcatParam !== '') {
+                canopyData['subcategory'] = subcatParam;
+            }
+            if (ageParam !== 'all') {
+                canopyData['age'] = ageParam;
+            }
+            if (typeParam !== 'all') {
+                canopyData['type'] = typeParam;
+            }
+
+            tracker.trackUnstructEvent({
+                schema: "iglu:com.canopylabs.178cead812/program-finder/jsonschema/1-0-0",
+                data: canopyData
+            });
         }
     };
 
@@ -1296,7 +1336,7 @@
             self.initialized = true;
         }
         catch (err) {
-            logErrorToServer(err);
+            $exceptionHandler(err);
         }
     };
 
@@ -1371,7 +1411,7 @@
                 var topmostNodeFound = false;
                 _.forEachRight(subfolders, function (folder, index) {
                     if (folder.length) {
-                        folder = folder.replace(/%2F/i, "/");
+                        folder = folder.replace(/%2F/i, '/');
                         if (_.isUndefined(foundChildParent)) {
                             if (index === 0) {
                                 //if this is only one level above then we can safely assume there are no duplicate children
@@ -1444,7 +1484,7 @@
             self.populateSlicers(locationSlicers);
         }
         catch (err) {
-            logErrorToServer(err);
+            $exceptionHandler(err);
         }
     };
 
@@ -1526,7 +1566,7 @@
                 newLocationPath = fixUrl(locationPathRemoved);
                 break;
             case 'jump':
-                var folderSplit = locationPath.split("/");
+                var folderSplit = locationPath.split('/');
                 var newLocation = '';
                 for (var x = 0; x <= jumpTo; x++) {
                     newLocation += ('/' + folderSplit[x]);
@@ -2276,7 +2316,7 @@
         if (pushToBottom && featured) {
             featured = false;
         }
-        var itemType = itemTypes.length ? itemTypes[0] : "";
+        var itemType = itemTypes.length ? itemTypes[0] : '';
         var mainImage = arr.MainImage;
         var image = mainImage.length === 0 ? '/_ui/uptown/img/default_lrg_516x311.jpg' : mainImage.substring(mainImage.indexOf('/'));
         var begDate = arr.NextPerformanceDateTime || arr.FirstDate;
@@ -2284,10 +2324,10 @@
         var yearNumber = begDate.getFullYear();
 
         var futurePerfCount = Number(arr.FuturePerformanceCount);
-        var startDate = futurePerfCount > 1 ? "Multiple dates/times" : formatDateOutput(begDate);
+        var startDate = futurePerfCount > 1 ? 'Multiple dates/times' : formatDateOutput(begDate);
 
-        var sortDate1 = "";
-        var sortDate2 = "";
+        var sortDate1 = '';
+        var sortDate2 = '';
         var warning = arr.ProdStatus;
         var inProgress;
         if (pushToBottom || begDate < new Date()) {
@@ -2298,11 +2338,11 @@
             pushToBottom = true;
         } else {
             sortDate1 = begDate;
-            sortDate2 = "";
+            sortDate2 = '';
             inProgress = false;
         }
 
-        var shortDescription = "<div class='shortDescTxt hidden-xs pb10'>" + arr.ShortDesc + "</div>";
+        var shortDescription = '<div class="shortDescTxt hidden-xs pb10">' + arr.ShortDesc + '</div>';
         var shortDesc = shortDescription.replace(/<p>/g, '').replace(/<\/p>/g, '<br />');
         var instructors = _.map(arr.ProdSeasonInstructors, function (arr) {
             return arr.Instructor_name.replace(/\s{2,}/g, ' ');
@@ -2312,15 +2352,15 @@
 
         if (isActualNumber(futurePerfCount) && futurePerfCount > 0) {
             if (teachers.length && futurePerfCount > 1) {
-                shortDesc += "<div class='teach'><b>Instructor" + (instructors.length > 1 ? "s" : "") + ":</b>&nbsp;&nbsp;" + teachers.replace(/,/g, ", ") + "</div>";
+                shortDesc += '<div class="teach"><b>Instructor' + (instructors.length > 1 ? 's' : '') + ':</b>&nbsp;&nbsp;' + teachers.replace(/,/g, ', ') + '</div>';
             }
             var performances = arr.FuturePerformances;
             if (performances.length > 0) {
                 if (performances.length > 1) {
                     if (packageNo === 0) {
-                        shortDesc += "<a class='expand-collapse'>" + "Multiple Dates/Times (" + performances.length + ")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+                        shortDesc += '<a class="expand-collapse">' + 'Multiple Dates/Times (' + performances.length + ')' + ' <i class="fa fa-lg fa-caret-down"></i></a>';
                     } else {
-                        shortDesc += "<a class='expand-collapse'>" + "This Subscription Includes (" + performances.length + ")" + " <i class='fa fa-lg fa-caret-down'></i></a>";
+                        shortDesc += '<a class="expand-collapse">' + 'This Subscription Includes (' + performances.length + ')' + ' <i class="fa fa-lg fa-caret-down"></i></a>';
                     }
                 }
                 _.forEach(performances, function (p, ind) {
@@ -2357,40 +2397,41 @@
                     }
                     if (packageNo === 0) {
                         if (ind === 0) {
-                            shortDesc += "<div class='expand-collapse-container table-responsive " + ((ind + 1) === performances.length ? "" : "collapse") + "'>"
-                            shortDesc += "<table width='100%'cellpadding='0' cellspacing='0' class='table table-striped schedule'><tbody><tr>";
+                            shortDesc += '<div class="expand-collapse-container table-responsive ' + ((ind + 1) === performances.length ? '' : 'collapse') + '">';
+                            shortDesc += '<table width="100%" cellpadding="0" cellspacing="0" class="table table-striped schedule"><tbody><tr>';
                             if (itemType.toLowerCase() === 'class') {
-                                shortDesc += "<th width='185'>Start Date</th><th>Day" + (dowArr.length > 1 ? "s" : "") + "</th>" +
-                                    "<th>Session" + (numSessions > 1 ? "s" : "") + "</th><th>Price</th>" +
-                                    "<th>" + (teachers.length ? "Instructor" + (teachArr.length > 1 ? "s" : "") : "") + "</th>";
+                                shortDesc += '<th width="185">Start Date</th><th>Day' + (dowArr.length > 1 ? 's' : '') + '</th>' +
+                                    '<th>Session' + (numSessions > 1 ? 's' : '') + '</th><th>Price</th>' +
+                                    '<th>' + (teachers.length ? 'Instructor' + (teachArr.length > 1 ? 's' : '') : '') + '</th>';
                             } else {
-                                shortDesc += "<th width='185'>Date</th><th>Price</th>";
+                                shortDesc += '<th width="185">Date</th><th>Price</th>';
                             }
-                            shortDesc += "</tr>";
+                            shortDesc += '</tr>';
                         }
-                        shortDesc += "<tr><td class='futureDate'>" + futureDate + "</td>";
+                        shortDesc += '<tr><td class="futureDate">' + futureDate + '</td>';
                         if (itemType.toLowerCase() === 'class') {
-                            shortDesc += "<td class='days-week'>" + daysOfWeek + "</td><td class='session-count'>" + numSessions + "</td>" +
-                                "<td class='price-amt'>" + fromPrice + "</td><td class='instructors'>" + classInstructors + "</td>";
+                            shortDesc += '<td class="days-week">' + daysOfWeek + '</td><td class="session-count">' + numSessions + '</td>' +
+                                '<td class="price-amt">' + fromPrice + '</td><td class="instructors">' + classInstructors + '</td>';
                         } else {
-                            shortDesc += "<td>" + fromPrice + "</td>";
+                            shortDesc += '<td>' + fromPrice + '</td>';
                         }
-                        shortDesc += "</tr>";
+                        shortDesc += '</tr>';
 
                         //Closes the table and expand/collapse div
                         if ((ind + 1) === performances.length) {
-                            shortDesc += "</tbody></table></div>";
+                            shortDesc += '</tbody></table></div>';
                         }
                     } else {
                         if (ind === 0) {
-                            shortDesc += "<div class='expand-collapse-container collapse'><table cellpadding='0' cellspacing='0' class='table table-striped schedule schedule-subs mt5'><tbody><tr>";
+                            shortDesc += '<div class="expand-collapse-container collapse"><table cellpadding="0" cellspacing="0" class="table table-striped schedule schedule-subs mt5"><tbody><tr>';
                         }
-                        shortDesc += "<td width='100'><img src=\"http://www.92y.org" + p.thumbnail + "\" border=\"0\" alt=\"" + p.title + "\" / style=\"width: 105px;\">";
-                        shortDesc += "<br /><a href='http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=" + p.perf_no + "' target='_blank'>" + p.title + "</a><span class='futureDate'>" + futureDate + "</span></td>";
+                        shortDesc += '<td width="100"><img src="http://www.92y.org' + p.thumbnail + '" border="0" alt="' + p.title + '" style="width: 105px;"><br />';
+                        shortDesc += '<a href="http://www.92y.org/tickets/production.aspx?ba=1&performanceNumber=' + p.perf_no + '" target="_blank">' + p.title + '</a>';
+                        shortDesc += '<span class="futureDate">' + futureDate + '</span></td>';
 
                         //Closes the table and expand/collapse div
                         if ((ind + 1) === performances.length) {
-                            shortDesc += "</tr></tbody></table></div>";
+                            shortDesc += '</tr></tbody></table></div>';
                         }
                     }
                 });
@@ -2398,7 +2439,7 @@
         }
 
         if (arr.ThisIsPartOfSeries && arr.ThisIsPartOfSeries.length) {
-            shortDesc += "<div class='partof'>This is part of:  ";
+            shortDesc += '<div class="partof">This is part of:  ';
             var moreLinks = [];
             _.forEach(arr.ThisIsPartOfSeries, function (series, index) {
                 if ((index + 1) <= arr.ThisIsPartOfSeries.length) {
@@ -2415,11 +2456,11 @@
                 shortDesc += ', and <a class="expand-collapse mt5"> more (' + moreLinks.length + ') <i class="fa fa-lg fa-caret-down"></i></a>';
                 shortDesc += '<div class="expand-collapse-container collapse">';
                 _.forEach(moreLinks, function (ml) {
-                    shortDesc += "<div class='morelink'>" + ml + "</div>";
+                    shortDesc += '<div class="morelink">' + ml + '</div>';
                 });
-                shortDesc += "</div>";
+                shortDesc += '</div>';
             }
-            shortDesc += "</div>";
+            shortDesc += '</div>';
         }
 
         var arrUrl = arr.URL;
@@ -2463,19 +2504,19 @@
     };
 
     var formatDateOutput = function (uglyDate, short) {
-        var dayAbbr = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
-        var monthAbbr = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        var dayAbbr = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+        var monthAbbr = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
         var dateHour = uglyDate.getHours();
         var yearNumber = uglyDate.getFullYear();
-        var ampm = dateHour < 12 ? "AM" : "PM";
+        var ampm = dateHour < 12 ? 'AM' : 'PM';
         if (dateHour == 0) {
             dateHour = 12;
         }
         if (dateHour > 12) {
             dateHour = dateHour - 12;
         }
-        var dateMinute = uglyDate.getMinutes() > 0 ? ":" + (uglyDate.getMinutes().toString().length === 1 ? "0" + uglyDate.getMinutes() : uglyDate.getMinutes()) : "";
-        var prettyDate = short ? monthAbbr[uglyDate.getMonth()] + " " + uglyDate.getDate() + " " + yearNumber : dayAbbr[uglyDate.getDay()] + ", " + monthAbbr[uglyDate.getMonth()] + " " + uglyDate.getDate() + ", " + yearNumber + ", " + dateHour + dateMinute + " " + ampm;
+        var dateMinute = uglyDate.getMinutes() > 0 ? ':' + (uglyDate.getMinutes().toString().length === 1 ? '0' + uglyDate.getMinutes() : uglyDate.getMinutes()) : '';
+        var prettyDate = short ? monthAbbr[uglyDate.getMonth()] + ' ' + uglyDate.getDate() + ' ' + yearNumber : dayAbbr[uglyDate.getDay()] + ', ' + monthAbbr[uglyDate.getMonth()] + ' ' + uglyDate.getDate() + ', ' + yearNumber + ', ' + dateHour + dateMinute + ' ' + ampm;
         return prettyDate;
     };
 
@@ -2499,24 +2540,24 @@
     navApp.service('tileInfoSrv', TileInfoService);
 
     //Added so we can inject our customized progress bar into NavListController
-    navApp.factory("progressBar", ['ngProgressFactory', function (ngProgressFactory) {
+    navApp.factory('progressBar', ['ngProgressFactory', function (ngProgressFactory) {
         //Creates new instance, sets the color, then returns progress bar instance as a variable
         var progressBar = ngProgressFactory.createInstance();
         progressBar.setColor('#C747B8');
         return progressBar;
     } ]);
 
-    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar'];
+    NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar', '$exceptionHandler'];
     navApp.controller('NavListController', NavListController);
 
     navApp.directive('runAccordion', function () {
         return {
             link: function (scope, element, attrs) {
-                var divId = "#" + attrs.accordionDiv;
+                var divId = '#' + attrs.accordionDiv;
                 angular.element(divId).slideToggle();
-                element.bind("click", function (e) {
+                element.bind('click', function (e) {
                     angular.element(divId).slideToggle();
-                    $(this).find("i").toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+                    $(this).find('i').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
                 });
             }
         };
@@ -2544,7 +2585,7 @@
     //Added to the top level interest navigation
     navApp.directive('progressBarIncrement', function ($timeout, progressBar) {
         return function (scope, element, attrs) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
                 progressBar.set(progressBar.status() + 4);
                 $timeout(function () {
@@ -2563,7 +2604,7 @@
                 }, function (newValue, oldValue) {
                     var winHeight = angular.element(window).height();
                     var headerHeight;
-                    if (attrs.skipHeader == "true") {
+                    if (attrs.skipHeader == 'true') {
                         headerHeight = 0;
                     } else {
                         headerHeight = angular.element('header').height();
@@ -2594,7 +2635,7 @@
                     return scope.navListCtrl.affixed;
                 }, function (newValue, oldValue) {
                     if (newValue === false) {
-                        angular.element("#bottomContainer").scrollTop(0);
+                        angular.element('#bottomContainer').scrollTop(0);
                     }
                 });
             }
@@ -2603,7 +2644,7 @@
 
     navApp.directive('enableSearchEnter', function () {
         return function (scope, element, attrs) {
-            element.bind("keydown keypress", function (event) {
+            element.bind('keydown keypress', function (event) {
                 if (event.which === 13) {
                     scope.$apply(function () {
                         scope.navListCtrl.searchGlobal();
@@ -2617,9 +2658,9 @@
     navApp.directive('toggleSlide', function ($timeout) {
         return function (scope, element) {
             $timeout(function () {
-                var expandBtn = angular.element(element).find("a.expand-collapse");
+                var expandBtn = angular.element(element).find('a.expand-collapse');
                 expandBtn.bind('click', function () {
-                    angular.element(this).next(".expand-collapse-container").slideToggle('800');
+                    angular.element(this).next('.expand-collapse-container').slideToggle('800');
                 });
             });
         };
@@ -2627,36 +2668,36 @@
 
     navApp.directive('browseButton', function () {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("#browseSidebar").toggleClass('in');
-                angular.element("body").toggleClass('sidebar-open');
-                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
-                angular.element("#filterSidebar, #savedSidebar").removeClass('in inMobile');
+                angular.element('#browseSidebar').toggleClass('in');
+                angular.element('body').toggleClass('sidebar-open');
+                angular.element('.qp-ui-mask-modal').addClass('qp-ui-mask-visible');
+                angular.element('#filterSidebar, #savedSidebar').removeClass('in inMobile');
             });
         };
     });
 
     navApp.directive('filterSidebar', function () {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("body").toggleClass('sidebar-open');
-                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
-                angular.element("#filterSidebar").toggleClass('in');
-                angular.element("#browseSidebar, #savedSidebar").removeClass('in inMobile');
+                angular.element('body').toggleClass('sidebar-open');
+                angular.element('.qp-ui-mask-modal').addClass('qp-ui-mask-visible');
+                angular.element('#filterSidebar').toggleClass('in');
+                angular.element('#browseSidebar, #savedSidebar').removeClass('in inMobile');
             });
         };
     });
 
     navApp.directive('closeIntroOverlay', function () {
         return function (scope, element, attr) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                var $body = angular.element("body");
+                var $body = angular.element('body');
                 if (!$body.hasClass('intro-closed')) {
                     if (!$body.hasClass('browseIntro-shown') && !$body.hasClass('interestIntro-shown')) {
-                        $body.addClass("intro-closed");
+                        $body.addClass('intro-closed');
                         scope.$apply(function () {
                             scope.navListCtrl.addIntroCookies();
                         });
@@ -2673,44 +2714,44 @@
             hammertime.on('swiperight', function (e) {
                 e.preventDefault();
                 angular.element(element).removeClass('in');
-                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
-                angular.element("body").removeClass('sidebar-open');
+                angular.element('.qp-ui-mask-modal').removeClass('qp-ui-mask-visible');
+                angular.element('body').removeClass('sidebar-open');
             });
         };
     });
 
     navApp.directive('filterSidebarClose', function () {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("#filterSidebar").removeClass('in');
-                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
-                angular.element("body").removeClass('sidebar-open');
+                angular.element('#filterSidebar').removeClass('in');
+                angular.element('.qp-ui-mask-modal').removeClass('qp-ui-mask-visible');
+                angular.element('body').removeClass('sidebar-open');
             });
         };
     });
 
     navApp.directive('wishList', function () {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("#navSavedBtn, #floatSavedBtn").toggleClass('out');
-                angular.element("#savedSidebar").toggleClass('in');
-                angular.element("#site-container").toggleClass('out-left');
-                angular.element("body").toggleClass('sidebar-open');
-                angular.element(".qp-ui-mask-modal").addClass('qp-ui-mask-visible');
-                angular.element("#browseSidebar, #filterSidebar").removeClass('in inMobile');
+                angular.element('#navSavedBtn, #floatSavedBtn').toggleClass('out');
+                angular.element('#savedSidebar').toggleClass('in');
+                angular.element('#site-container').toggleClass('out-left');
+                angular.element('body').toggleClass('sidebar-open');
+                angular.element('.qp-ui-mask-modal').addClass('qp-ui-mask-visible');
+                angular.element('#browseSidebar, #filterSidebar').removeClass('in inMobile');
             });
         };
     });
 
     navApp.directive('wishListClose', function () {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("#savedSidebar").removeClass('in');
-                angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
-                angular.element("body").removeClass('sidebar-open');
+                angular.element('#savedSidebar').removeClass('in');
+                angular.element('.qp-ui-mask-modal').removeClass('qp-ui-mask-visible');
+                angular.element('body').removeClass('sidebar-open');
             });
         };
     });
@@ -2718,11 +2759,11 @@
     //Clicking modal window closes sidebar and removes self
     navApp.directive('maskModal', function ($timeout) {
         return function (scope, element) {
-            element.bind("click", function () {
-                angular.element("body").toggleClass('sidebar-open');
-                angular.element("#browseSidebar, #filterSidebar, #savedSidebar").removeClass('in inMobile');
+            element.bind('click', function () {
+                angular.element('body').toggleClass('sidebar-open');
+                angular.element('#browseSidebar, #filterSidebar, #savedSidebar').removeClass('in inMobile');
                 $timeout(function () {
-                    angular.element(".qp-ui-mask-modal").toggleClass('qp-ui-mask-visible');
+                    angular.element('.qp-ui-mask-modal').toggleClass('qp-ui-mask-visible');
                 }, 50);
             });
         };
@@ -2743,12 +2784,12 @@
 
     navApp.directive('closeSubmit', function ($timeout) {
         return function (scope, element) {
-            element.bind("click", function (e) {
+            element.bind('click', function (e) {
                 e.preventDefault();
-                angular.element("#browseSidebar, #filterSidebar").removeClass('in');
-                angular.element("body").removeClass('sidebar-open');
+                angular.element('#browseSidebar, #filterSidebar').removeClass('in');
+                angular.element('body').removeClass('sidebar-open');
                 $timeout(function () {
-                    angular.element(".qp-ui-mask-modal").removeClass('qp-ui-mask-visible');
+                    angular.element('.qp-ui-mask-modal').removeClass('qp-ui-mask-visible');
                 }, 50);
             });
         };
@@ -2800,10 +2841,11 @@
     } ]);
 
     navApp.config(function ($provide) {
-        $provide.decorator("$exceptionHandler", function ($delegate) {
+        $provide.decorator('$exceptionHandler', function ($delegate) {
             return function (exception, cause) {
-                $delegate(exception, cause);
-                logErrorToServer(exception, cause);
+                var exObj = _.isString(exception) ? { message: exception } : exception;
+                $delegate(exObj, cause);
+                logErrorToServer(exObj, cause);
             };
         });
     });
