@@ -80,8 +80,16 @@
     var navApp = angular.module('artNavApp', ['infinite-scroll', 'ui.bootstrap', 'ngScrollSpy', 'ngTouch', 'ngCookies', 'angular-cache', 'angulartics', 'nav.config', 'ngProgress', 'angular-mmenu']);
     var NavListController = function ($scope, tileInfoSrv, $location, $timeout, $window, $cookieStore, $cookies, navConfig, ngProgressFactory) {
         var self = this;
+        self.DefaultFilterNodeNum = Number(navConfig.DefaultFilterNodeNum);
+        self.ActiveFilterNodeNum = Number(navConfig.ActiveFilterNodeNum);
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
-        self.arrCategory = [];
+        self.arrCategory = [[{
+            Level: 0,
+            Name: 'All Programs',
+            NodeID: self.ActiveFilterNodeNum,
+            Current: true,
+            FeaturedItemsHeader: ''
+        }]];
         self.location = $location;
         self.timeout = $timeout;
         self.cookieStore = $cookieStore;
@@ -138,6 +146,7 @@
         $scope.mainMenuItems = [];
         self.mainMenuItems = $scope.mainMenuItems;
         self.skipDisplayTiles = false;
+        self.allProducts = [];
 
         self.savedPrograms = self.cookieStore.get('savedPrograms');
         if (_.isUndefined(self.savedPrograms)) {
@@ -169,16 +178,10 @@
             self.displayIntro = true;
             self.displayBrowseBtnsIntro = true;
         }
-        // else {
-        //     self.displayBrowseBtnsIntro = false;
-        // }
 
         self.eventClassDropdown = {
             isopen: false
         };
-
-        self.DefaultFilterNodeNum = Number(navConfig.DefaultFilterNodeNum);
-        self.ActiveFilterNodeNum = Number(navConfig.ActiveFilterNodeNum);
 
         self.tileInfoSrv = tileInfoSrv;
 
@@ -198,11 +201,14 @@
         })(self.tileInfoSrv.cacheFactory);
 
         self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
-            self.getInterestItems(self.getAllInitialClasses, data);
+            var parentdata = data;
+            self.allTopLevels = _.map(data.data, function (kw) {
+                return { Name: kw.Name, Keywords: kw.Keywords.toLowerCase(), NodeID: kw.NodeID };
+            });
             //build mmenu
             $scope.mainMenuOptions = {
                 navbar: {
-                    title: "All Interests"
+                    title: "All Programs"
                 },
                 "iconPanels": true,
                 "extensions": ["multiline", "pageshadow", "panelshadow"],
@@ -210,13 +216,26 @@
                 "navbars": [{
                     content: ["prev", "title"]
                 }],
-                // dragOpen: true,
                 dragClose: true,
-                "scrollBugFix": {
-                    fix: true
-                }
+                "scrollBugFix": { fix: true }
             };
             $scope.mainMenuParams = { offCanvas: { pageSelector: "#site-container"} };
+
+            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/categories/json/dayplanit', self.navCache, 'allProducts').then(function (data) {
+                self.allProducts = data.data;
+                _.forEach(self.allTopLevels, function (lev) {
+                    var items = filterListByKeywords(self.allProducts, [lev.Keywords]);
+                    self.navsDict[lev.Name] = items;
+                });
+                self.getInterestItems(self.getAllInitialClasses, parentdata);
+                self.buildCurrentObj();
+                self.displayTiles();
+            }, function (respData) {
+                if (self.allProducts.length === 0) {
+                    self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
+                }
+            });
+
         }, function (respData) {
             if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
                 self.allClasses = [{ Name: 'Error loading data.  Please refresh or come back later.', NodeID: ERRORLOADINGNODEID}];
@@ -373,6 +392,9 @@
             self.isFetching = true;
             self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/FilterNodes/' + self.DefaultFilterNodeNum + '/', self.navCache, 'navigation').then(function (data) {
                 self.getInterestItems(self.getAllInitialClasses, data);
+                self.allTopLevels = _.map(data.data, function (kw) {
+                    return { Name: kw.Name, Keywords: kw.Keywords.toLowerCase(), NodeID: kw.NodeID };
+                });
                 self.skipDisplayTiles = false;
             }, function (respData) {
                 if (!self.allClasses.length || (self.allClasses.length && self.allClasses[0].Name === '')) {
@@ -383,12 +405,12 @@
             });
         }
         if (adjustArr) {
-            adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+            //            adjustLevelArray(self.arrCategory, 1, self.arrCategory.length, true);
         }
         var classIndex = _.findIndex(self.allClasses, { 'Name': interest });
         if (classIndex >= 0) {
             var classesByInterest = [self.allClasses[classIndex]];
-            self.getValues(classesByInterest, 0, self.navsDict[interest]);
+            self.getValues(classesByInterest, 1, self.navsDict[interest]);
         }
     };
 
@@ -488,12 +510,21 @@
         return self.chunkLevels;
     };
 
+    NavListController.prototype.navigateTo = function (subLevel) {
+        var self = this;
+        if (subLevel.Level === 1) {
+            self.getInterestItems(self.interestClicked, subLevel);
+        } else {
+            self.setCurrent(subLevel);
+        }
+    };
+
     NavListController.prototype.getAllInitialClasses = function (self) {
         var locationPath = self.getLocationPath();
         if (locationPath.length && locationPath !== '/') {
             var match = locationPath.match(/^\/(.+?)(\/|$)/);
-            var interestFolder = match[1];
-            self.getValues(self.allClasses, 0, self.navsDict[interestFolder]);
+            var interestFolder = decodeURI(match[1]);
+            self.getValues(self.allClasses, 1, self.navsDict[interestFolder]);
             if (self.mainMenuItems.length === 0) {
                 var builtMobileMenu = self.buildMobileMenu();
                 self.mainMenuItems.push.apply(self.mainMenuItems, builtMobileMenu);
@@ -521,7 +552,7 @@
 
     NavListController.prototype.getAllForMobileMenuFromHomepage = function () {
         var self = this;
-        self.getValues(self.allClasses, 0, []);
+        self.getValues(self.allClasses, 1, []);
         var builtMobileMenu = self.buildMobileMenu();
         self.mainMenuItems.length = 0;
         self.mainMenuItems.push.apply(self.mainMenuItems, builtMobileMenu);
@@ -529,8 +560,6 @@
 
     NavListController.prototype.buildMobileMenu = function (menuArray, level, items, lastObject, names) {
         var self = this;
-        var absUrl = self.location.absUrl().toLowerCase();
-        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
         var curLevel = level || 0;
         var storedMenu = menuArray || [];
         var arrCategory;
@@ -552,7 +581,7 @@
         var urlToBuild = names || [];
         _.forEach(arrCategory, function (ac) {
             var tmp = { text: ac.Name, level: curLevel };
-            if (ac.NodeID !== self.ActiveFilterNodeNum || self.ActiveFilterNodeNum === self.DefaultFilterNodeNum) {
+            if (ac.NodeID !== self.ActiveFilterNodeNum) {
                 urlToBuild.push(ac.Name);
             }
             tmp.href = function () {
@@ -565,12 +594,17 @@
                     var locationPath = self.location.path();
                     var locationObj = seperateSlicersFromUrl(locationPath);
                     var locationSlicers = locationObj.removed;
-                    self.location.path(encodeURI(finalUrl.trim()) + locationSlicers);
+                    self.location.path(finalUrl.trim() + locationSlicers);
                     self.applyScope();
                 } else {
                     //if interest area clicked
                     var sl = _.find(self.allClasses, { 'Name': this[0] });
-                    self.getInterestItems(self.interestClicked, sl);
+                    if (_.isUndefined(sl)) {
+                        self.setCurrent(0);
+                    } else {
+                        self.getInterestItems(self.interestClicked, sl);
+                    }
+                    self.applyScope();
                 }
             } .bind(_.clone(urlToBuild));
             if (typeof lastObject === 'undefined' || tmp.level === lastObject.level) {
@@ -594,49 +628,41 @@
     NavListController.prototype.getInterestItems = function (func, arg) {
         var self = this;
         var subLevelName;
-        var subLevelId;
+        self.clearSearch(true);
         if (_.isUndefined(arg.Name)) {
             //if page load
             self.allClasses = [];
             self.allClasses.push.apply(self.allClasses, arg.data);
             var locationPath = self.getLocationPath();
+            var locationObj = seperateSlicersFromUrl(locationPath);
+            locationPath = locationObj.path;
             if (locationPath.length && locationPath !== '/') {
                 var match = locationPath.match(/^\/(.+?)(\/|$)/);
-                subLevelName = match[1];
+                subLevelName = decodeURI(match[1]);
                 //if user comes to site with filters in url but no interest area picked
-                if (subLevelName.indexOf("__") > 0) {
-                    subLevelName = undefined;
-                    self.eventClassDropdown.isopen = true;
-                    //self.introOpened = true;
-                } else {
-                    var foundLevel = _.find(self.allClasses, { 'Name': decodeURI(subLevelName) });
-                    subLevelId = foundLevel.NodeID;
-                }
-            } else {
-                self.eventClassDropdown.isopen = true;
-                //self.introOpened = true;
+                //                if (subLevelName.indexOf("__") > 0) {
+                //                    subLevelName = undefined;
+                //                    self.eventClassDropdown.isopen = true;
+                //                }
+                //            } else {
+                //                self.eventClassDropdown.isopen = true;
             }
         } else {
             //if interest link clicked
             subLevelName = arg.Name;
-            subLevelId = arg.NodeID;
         }
-
         if (!_.isUndefined(subLevelName)) {
             if (_.isUndefined(self.navsDict[subLevelName])) {
-                self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                    self.navsDict[subLevelName] = items.data;
-                    func(self, arg, true);
-                });
+                //                self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/categories/json/dayplanit', self.navCache, 'allProducts').then(function(data) {
+                //                    self.allProducts = data.data;
+                //                    _.forEach(self.allTopLevels, function(lev) {
+                //                        var items = filterListByKeywords(self.allProducts, [lev.Keywords]);
+                //                        self.navsDict[lev.Name] = items;
+                //                    });
+                //                    func(self, arg, true);
+                //                });
             } else {
-                self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                    self.navCache.remove(subLevelName);
-                    self.navsDict[subLevelName] = items.data;
-                    self.navCache.put(subLevelName, {
-                        itemData: items.data
-                    });
-                    func(self, arg);
-                });
+                func(self, arg, true);
             }
         } else {
             self.getAllForMobileMenuFromHomepage();
@@ -645,11 +671,11 @@
 
     NavListController.prototype.interestCompiled = function (self, subLevel, printNow) {
         var currentName = subLevel.Name;
-        adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+        //        adjustLevelArray(self.arrCategory, 1, self.arrCategory.length, true);
 
         var classIndex = _.findIndex(self.allClasses, { 'Name': currentName });
         var classesByInterest = [self.allClasses[classIndex]];
-        self.getValues(classesByInterest, 0, self.navsDict[currentName]);
+        self.getValues(classesByInterest, 1, self.navsDict[currentName]);
         if (printNow) {
             self.printStatus = 'Printing ' + self.printNum + ' of ' + self.allClasses.length + ' reports';
             self.printNum++;
@@ -673,11 +699,11 @@
             self.navCache.removeAll();
             location.reload();
         }
-        adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+        //        adjustLevelArray(self.arrCategory, 1, self.arrCategory.length, true);
 
         var classIndex = _.findIndex(self.allClasses, { 'Name': currentName });
         var classesByInterest = [self.allClasses[classIndex]];
-        self.getValues(classesByInterest, 0, self.navsDict[currentName]);
+        self.getValues(classesByInterest, 1, self.navsDict[currentName]);
 
         var locationPath = self.location.path();
         var locationObj = seperateSlicersFromUrl(locationPath);
@@ -691,7 +717,8 @@
         if (_.isUndefined(self.lastLocationPath)) {
             self.lastLocationPath = '';
         }
-        self.currentObj.Level = 0;
+        self.activeBreadcrumb.push(_.clone(self.currentObj));
+        self.currentObj.Level = 1;
         self.currentObj.Name = currentName;
         self.currentObj.NodeID = currentId;
         self.currentObj.Current = true;
@@ -971,7 +998,21 @@
     NavListController.prototype.modifyUrlSearch = function (fromLink) {
         var self = this;
         var location = self.location;
-        var locationPath = location.path();
+        var locationPath;
+        if (fromLink) {
+            location = self.location;
+            locationPath = location.path();
+        } else {
+            locationPath = "/";
+            self.activeBreadcrumb = [];
+            self.currentObj = {
+                Level: 0,
+                Name: 'All Programs',
+                NodeID: self.ActiveFilterNodeNum,
+                Current: true,
+                FeaturedItemsHeader: ''
+            };
+        }
         locationPath = rewriteUrlLocation(SEARCHSLICEURL, self.textboxSearch, locationPath);
         location.path(locationPath);
 
@@ -1038,72 +1079,53 @@
         var self = this;
         self.showNoGlobalResults = false;
         self.displaySearchResults = [];
+        self.onscreenSearchResults = [];
         var searchTerm = isGlobal ? self.textboxGlobalSearch : self.textboxSearch;
         if (!_.isUndefined(searchTerm) && searchTerm.length) {
-            self.tileInfoSrv.getAll('/webservices/categoryproduction.svc/Search/' + _.deburr(searchTerm) + '/', self.navCache, 'globalSearch').then(function (data) {
-                var results = data.data;
-                if (results.length) {
-                    _.forEach(results, function (result) {
-                        var interestAreas = _.uniq(result.InterestAreas);
-                        var keywords = _.uniq(result.Keywords);
-                        var lcKeywords = _.map(keywords, function (kw) {
-                            return kw.toLowerCase();
-                        });
-                        _.forEach(interestAreas, function (interest, indx) {
-                            var sublevel = _.find(self.allClasses, function (ac) {
-                                if (_.isUndefined(ac.JSONDataURL)) {
-                                    logErrorToServer('JSON not showing.');
-                                } else {
-                                    return ac.JSONDataURL.toLowerCase().indexOf('/' + interest) > 0;
-                                }
-                            });
-                            if (_.isUndefined(sublevel)) {
-                                logErrorToServer('JSON for "' + interest + '" not found.');
-                            } else {
-                                var subLevelName = sublevel.Name;
-                                var subLevelKeywords = sublevel.Keywords.toLowerCase();
-                                var slkwarr = subLevelKeywords.split(',');
-                                if (_.intersection(slkwarr, lcKeywords).length) {
-                                    if (!_.isUndefined(sublevel)) {
-                                        //note: might have to revisit this 
-                                        //we shouldn't have to hit up the json again to get the classes - the search json above should take care of it
-                                        //this was made to prevent a positive hit from the search but no classes when we went to actual link
-                                        //var foundLevel = _.find(self.allClasses, { 'Name': subLevelName });
-                                        //var subLevelId = foundLevel.NodeID;
-                                        //self.tileInfoSrv.getItems(subLevelId, self.allClasses, self.navCache).then(function (items) {
-                                        //self.navsDict[subLevelName] = items.data;
-                                        var absUrl = self.location.absUrl().toLowerCase();
-                                        var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
-                                        var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
-                                        if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
-                                            self.displaySearchResults.push({
-                                                searchTerm: searchTerm,
-                                                interestArea: subLevelName,
-                                                href: encodeURI(href)
-                                            });
-                                        }
-                                        //});
-                                    }
-                                } else {
-                                    logErrorToServer('Global search "' + searchTerm + '" found results in "' + subLevelName + '" but does not have keywords "' + subLevelKeywords + '" to show up there.');
-                                }
+            if (self.allProducts.length > 0) {
+                var filteredData = checkListContainsWords(self.allProducts, _.deburr(searchTerm));
+                if (filteredData.length > 0) {
+                    var absUrl = self.location.absUrl().toLowerCase();
+                    var baseUrl = absUrl.substring(0, absUrl.indexOf(SCRIPTNAME.toLowerCase())) + SCRIPTNAME;
+                    _.forEach(filteredData, function (fd) {
+                        var fdKeywords = _.uniq(_.map(fd.CategoryProductionKeywords, function (kw) {
+                            return kw.keyword.toLowerCase();
+                        }));
+                        var allTopLevelKeywords = _.map(self.allTopLevels, 'Keywords');
+                        var interestAreas = _.intersection(fdKeywords, allTopLevelKeywords);
+                        _.forEach(interestAreas, function (ia) {
+                            var subLevel = _.find(self.allTopLevels, { 'Keywords': ia });
+                            var subLevelName = subLevel.Name;
+                            var subLevelNodeId = subLevel.NodeID;
+                            var href = baseUrl + '#/' + subLevelName + '/search__' + searchTerm;
+                            if (_.isUndefined(_.find(self.displaySearchResults, { 'interestArea': subLevelName }))) {
+                                self.displaySearchResults.push({
+                                    searchTerm: searchTerm,
+                                    interestArea: subLevelName,
+                                    href: encodeURI(href)
+                                });
                             }
-                            if ((indx + 1) === interestAreas.length) {
-                                self.showGlobalSpinner = false;
-                                self.showNoGlobalResults = self.displaySearchResults.length ? false : true;
+                            var prodNo = fd.ProductionSeasonNumber === 0 ? fd.PackageNo : fd.ProductionSeasonNumber;
+                            var foundClass = _.find(self.onscreenSearchResults, { 'ProdNo': prodNo });
+                            if (_.isUndefined(foundClass)) {
+                                var classInfoObj = formatDataFromJson(fd, subLevelNodeId);
+                                self.onscreenSearchResults.push(classInfoObj);
                             }
                         });
+                        self.showGlobalSpinner = false;
+                        self.showNoGlobalResults = self.displaySearchResults.length ? false : true;
                     });
+                    self.applyScope();
                 } else {
                     //search finds no results
                     self.showGlobalSpinner = false;
                     self.showNoGlobalResults = isGlobal;
                 }
-            }, function (reason) {
-                //search throws error
+            } else {
+                //no products from page load
                 self.showGlobalSpinner = false;
                 self.showNoGlobalResults = isGlobal;
-            });
+            };
         } else {
             self.showGlobalSpinner = false;
             self.showNoGlobalResults = false;
@@ -1116,13 +1138,24 @@
     NavListController.prototype.displayTiles = function () {
         var self = this;
         var onscreenResultsQueue = [];
-        if (_.isUndefined(self.currentObj.NodeID)) {
+        if (self.currentObj.NodeID === self.ActiveFilterNodeNum) {
             //if logo is clicked to reset the entire page
             self.onscreenResults = [];
-            self.activeBreadcrumb = [];
-            adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
+            //            self.activeBreadcrumb = [];
+            //            adjustLevelArray(self.arrCategory, 0, self.arrCategory.length, true);
             self.initialized = false;
             self.microsites = [];
+
+
+            _.forEach(self.allProducts, function (res) {
+                var prodNo = res.ProductionSeasonNumber === 0 ? res.PackageNo : res.ProductionSeasonNumber;
+                var foundClass = _.find(onscreenResultsQueue, { 'ProdNo': prodNo });
+                if (_.isUndefined(foundClass)) {
+                    var classInfoObj = formatDataFromJson(res, self.currentObj.NodeID);
+                    onscreenResultsQueue.push(classInfoObj);
+                }
+            });
+            self.getClassesByNodeId(onscreenResultsQueue);
         } else {
             var foundNode = findNodeDeep(self.classesByNodeId, self.currentObj.NodeID);
             if (foundNode.results.length) {
@@ -1159,9 +1192,14 @@
             self.virtualPageUrl = locationPath;
             var breadcrumbs = self.getBreadcrumbs(false);
             if (breadcrumbs.length) {
-                self.virtualPageTitle = (self.getBreadcrumbs(false))[0].Name;
+                self.virtualPageTitle = breadcrumbs[0].Name;
             } else {
-                self.virtualPageTitle = (self.getBreadcrumbs(true)).Name;
+                breadcrumbs = self.getBreadcrumbs(true);
+                if (!_.isUndefined(breadcrumbs) && breadcrumbs.length) {
+                    self.virtualPageTitle = breadcrumbs.Name;
+                } else {
+                    self.virtualPageTitle = 'Program Finder Init';
+                }
             }
 
             //		var lastLocationPath = self.lastLocationPath;
@@ -1224,9 +1262,9 @@
                 self.textboxSearch = self.searchTerm;
             }
             self.onscreenResults = checkListContainsWords(self.onscreenResults, self.searchTerm);
-            if (self.onscreenResults.length === 0 && !self.isFetching) {
-                self.fetchSearchResults(false);
-            }
+//            if (self.onscreenResults.length === 0 && !self.isFetching) {
+//                self.fetchSearchResults(false);
+//            }
 
             // var sortBy;
             // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
@@ -1340,8 +1378,8 @@
                                 findObj = { 'Name': folder };
                             } else {
                                 //this is to safeguard against multiple children of the same name
-                                var findAllPossibleChildren = _.where(self.arrCategory[index], { 'Name': folder });
-                                var findAllPossibleParents = _.where(self.arrCategory[index - 1], { 'Name': subfolders[index - 1] });
+                                var findAllPossibleChildren = _.where(self.arrCategory[index + 1], { 'Name': folder });
+                                var findAllPossibleParents = _.where(self.arrCategory[index], { 'Name': subfolders[index - 1] });
                                 _.forEach(findAllPossibleChildren, function (kids, index) {
                                     var parentId = kids.Parent;
                                     var foundParent = _.where(findAllPossibleParents, { NodeID: parentId });
@@ -1355,7 +1393,7 @@
                         } else {
                             findObj = { 'Name': folder, NodeID: foundChildParent };
                         }
-                        findChild = _.where(self.arrCategory[index], findObj);
+                        findChild = _.where(self.arrCategory[index + 1], findObj);
                         foundChild = findChild[0];
                         if (_.isUndefined(foundChild)) {
                             //this condition would happen with someone mangling the URL such as "/School of the Arts/Ceramics/School of the Arts"
@@ -1383,10 +1421,24 @@
                         }
                     }
                 });
+                self.activeBreadcrumb.push({
+                    Level: 0,
+                    Name: 'All Programs',
+                    NodeID: self.ActiveFilterNodeNum,
+                    Current: true,
+                    FeaturedItemsHeader: ''
+                });
                 self.activeBreadcrumb.reverse();
             } else {
-                self.currentObj = {};
                 self.activeBreadcrumb = [];
+                self.currentObj = {
+                    Level: 0,
+                    Name: 'All Programs',
+                    NodeID: self.ActiveFilterNodeNum,
+                    Current: true,
+                    FeaturedItemsHeader: ''
+                };
+                self.activeBreadcrumb.push(self.currentObj);
                 self.lastLocationPath = '';
             }
             self.populateSlicers(locationSlicers);
@@ -1437,7 +1489,7 @@
         var location = self.location;
         var locationPath = location.path();
         var locationObj = seperateSlicersFromUrl(locationPath);
-        locationPath = locationObj.path;
+        locationPath = decodeURI(locationObj.path);
         var locationPathRemoved = locationObj.removed;
         if (!_.isUndefined(globalSearch)) {
             locationPathRemoved = '/search__' + globalSearch;
@@ -1753,7 +1805,6 @@
             self.textboxSearch = '';
             self.searchTerm = '';
         }
-        //var sliceBy = clearWhich.indexOf('datetime') >= 0 && clearWhich.indexOf('age') >=0 ? 'datetimeage' : clearWhich;
         self.sliceBy(clearWhich);
     };
 
@@ -1890,13 +1941,8 @@
         // User-agent search for common mobile device header text, (common OR lesser common devices AND does it have "mobi", if found then this is a mobile device
         if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
             || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4)) && /Mobi/i.test(navigator.userAgent)) {
-            //Sets isMobile to true
-            //alert("Mobile Device detected: " + navigator.userAgent);
             isMobile = true;
-
         } else {
-            //Sets isMobile to false
-            //alert("Not a Mobile Device: " + navigator.userAgent);
             isMobile = false;
         }
     };
@@ -1909,7 +1955,7 @@
         self.cookies.put('interestIntro', 'clicked', { 'expires': expireDate });
         self.cookies.put('browseBtnIntro', 'clicked', { 'expires': expireDate });
         self.displayIntro = false;
-    }
+    };
 
     var pluckAllKeys = function (obj, res) {
         var res = res || [];
@@ -2028,7 +2074,26 @@
         if (!_.isUndefined(searchVal) && searchVal.length) {
             var filteredNavs = [];
             _.forEach(results, function (result) {
-                if (getRank(result.Title, searchVal) > 0 || getRank(result.DescText, searchVal) > 0 || getRank(result.Teachers, searchVal) > 0 || getRank(result.KeyWord.toString(), searchVal) > 0) {
+                var descText = result.DescText;
+                if (_.isUndefined(descText)) {
+                    descText = result.ShortDesc;
+                }
+                var teachers;
+                if (_.isUndefined(result.Teachers)) {
+                    var instructors = _.map(result.ProdSeasonInstructors, function (arr) {
+                        return arr.Instructor_name.replace(/\s{2,}/g, ' ');
+                    });
+                    teachers = instructors.toString();
+                } else {
+                    teachers = result.Teachers;
+                }
+                var keyWord;
+                if (_.isUndefined(result.KeyWord)) {
+                    keyWord = _.pluck(result.CategoryProductionKeywords, 'keyword');
+                } else {
+                    keyWord = result.KeyWord;
+                }
+                if (getRank(result.Title, searchVal) > 0 || getRank(descText, searchVal) > 0 || getRank(teachers, searchVal) > 0 || getRank(keyWord.toString(), searchVal) > 0) {
                     filteredNavs.push(result);
                 }
             });
@@ -2039,50 +2104,52 @@
     };
 
     var getRank = function (itemToSearchIn, searchItem) {
-        var entirePhrase = _.deburr(searchItem.trim().toLowerCase());
-        var spacesInPhrase = entirePhrase.match(/\s/g);
-        var countSpaces = 0;
-        if (spacesInPhrase != null) {
-            countSpaces = spacesInPhrase.length;
-        }
-        var splitPhrase = entirePhrase.split(' ');
-        var strippedPhraseArr = _.filter(splitPhrase, function (word) {
-            if (!_.includes(STOPWORDS, word.toLowerCase())) {
-                return word;
+        if (itemToSearchIn.length > 0) {
+            var entirePhrase = _.deburr(searchItem.trim().toLowerCase());
+            var spacesInPhrase = entirePhrase.match(/\s/g);
+            var countSpaces = 0;
+            if (spacesInPhrase != null) {
+                countSpaces = spacesInPhrase.length;
             }
-        });
-        var item = _.deburr(itemToSearchIn.toLowerCase());
-        if (item.indexOf(entirePhrase) >= 0) {
-            //if exact phrase is found and phrase is more than one word
-            if (countSpaces > 0) {
-                return 1;
-            } else {
-                //if exact phrase is found and phrase is just one word
-                //then strip it to insure it's not matching a common word
-                if (!_.includes(STOPWORDS, item.toLowerCase())) {
-                    return 1;
-                }
-            }
-        }
-        if (strippedPhraseArr.length) {
-            //strip item of weird characters
-            var cleanedItem = item.replace(/[^\w\s]/gi, ' ');
-            //divide string into an array using whitespace removing any empty elements
-            var itemList = _.compact(cleanedItem.split(' '));
-            var itemCount = 0;
-            _.forEach(strippedPhraseArr, function (word) {
-                if (_.includes(itemList, word.toLowerCase())) {
-                    ++itemCount;
+            var splitPhrase = entirePhrase.split(' ');
+            var strippedPhraseArr = _.filter(splitPhrase, function (word) {
+                if (!_.includes(STOPWORDS, word.toLowerCase())) {
+                    return word;
                 }
             });
-            //if all parts of the phrase are found
-            if (itemCount === strippedPhraseArr.length) {
-                return 2;
+            var item = _.deburr(itemToSearchIn.toLowerCase());
+            if (item.indexOf(entirePhrase) >= 0) {
+                //if exact phrase is found and phrase is more than one word
+                if (countSpaces > 0) {
+                    return 1;
+                } else {
+                    //if exact phrase is found and phrase is just one word
+                    //then strip it to insure it's not matching a common word
+                    if (!_.includes(STOPWORDS, item.toLowerCase())) {
+                        return 1;
+                    }
+                }
             }
-            //if any parts of the phrase are found
-            //if (itemCount > 0) {
-            //    return 3;
-            //}
+            if (strippedPhraseArr.length) {
+                //strip item of weird characters
+                var cleanedItem = item.replace(/[^\w\s]/gi, ' ');
+                //divide string into an array using whitespace removing any empty elements
+                var itemList = _.compact(cleanedItem.split(' '));
+                var itemCount = 0;
+                _.forEach(strippedPhraseArr, function (word) {
+                    if (_.includes(itemList, word.toLowerCase())) {
+                        ++itemCount;
+                    }
+                });
+                //if all parts of the phrase are found
+                if (itemCount === strippedPhraseArr.length) {
+                    return 2;
+                }
+                //if any parts of the phrase are found
+                //if (itemCount > 0) {
+                //    return 3;
+                //}
+            }
         }
         return 0;
     };
@@ -2152,13 +2219,14 @@
         if (!_.isUndefined(keywords) && keywords.length) {
             filteredNavs = _.filter(navArr, function (navs) {
                 var isSlicing = false;
+                var navKeywords;
                 if (navs.CategoryProductionKeywords) {
                     // when page first loads
-                    var navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
+                    navKeywords = _.map(navs.CategoryProductionKeywords, function (catprod) {
                         return catprod.keyword.toLowerCase().trim();
                     });
                 } else {
-                    var navKeywords = _.map(navs.KeyWord, function (catprod) {
+                    navKeywords = _.map(navs.KeyWord, function (catprod) {
                         return catprod.toLowerCase().trim();
                     });
                     isSlicing = true;
@@ -2428,69 +2496,6 @@
             return data;
         });
     };
-
-    TileInfoService.prototype.getItems = function (subLevelId, levels, cache) {
-        var self = this;
-        var foundLevel = _.find(levels, { 'NodeID': subLevelId });
-        var jsonFile = foundLevel.JSONDataURL;
-
-        if (_.isUndefined(jsonFile) || jsonFile === '') {
-            return self.getItemsById(subLevelId);
-            //return self.q.when([]);
-        } else {
-            return self.http.get(jsonFile, { cache: self.cacheFactory.get(cache.info().id), timeout: 4000 }).then(function (data) {
-                if (_.isUndefined(data.data) || data.data.length === 0) {
-                    return self.getItemsById(subLevelId);
-                }
-                cache.put(foundLevel.Name, {
-                    itemData: data.data
-                });
-                return data;
-            }, function (error) {
-                return self.getItemsById(subLevelId);
-            });
-        }
-    };
-
-    TileInfoService.prototype.getItemsById = function (subLevelId) {
-        var self = this;
-        var jsonFile;
-        switch (subLevelId) {
-            case 28220:
-                jsonFile = 'items/CatProdPkg_School_Of_Arts.json';
-                break;
-            case 28271:
-                jsonFile = 'items/CatProdPkg_Talks.json';
-                break;
-            case 28279:
-                jsonFile = 'items/CatProdPkg_Special_Events.json';
-                break;
-            case 28275:
-                jsonFile = 'items/CatProdPkg_Concerts_Performances.json';
-                break;
-            case 28273:
-                jsonFile = 'items/CatProdPkg_Continuing_Education.json';
-                break;
-            case 28272:
-                jsonFile = 'items/CatProdPkg_Health_Fitness.json';
-                break;
-            case 28274:
-                jsonFile = 'items/CatProdPkg_Jewish_Life.json';
-                break;
-            case 28276:
-                jsonFile = 'items/CatProdPkg_Literary.json';
-                break;
-            case 28277:
-                jsonFile = 'items/CatProdPkg_Kids_Family.json';
-                break;
-        }
-        return self.http.get(jsonFile).then(function (data) {
-            return data;
-        }, function (error) {
-            return { data: [] };
-        });
-    };
-
     navApp.service('tileInfoSrv', TileInfoService);
 
     //Added so we can inject our customized progress bar into NavListController
@@ -2504,10 +2509,21 @@
     NavListController.$inject = ['$scope', 'tileInfoSrv', '$location', '$timeout', '$window', '$cookieStore', '$cookies', 'navConfig', 'progressBar'];
     navApp.controller('NavListController', NavListController);
 
+    navApp.directive('runAccordion', function () {
+        return {
+            link: function (scope, element, attrs) {
+                var divId = "#" + attrs.accordionDiv;
+                angular.element(divId).slideToggle();
+                element.bind("click", function (e) {
+                    angular.element(divId).slideToggle();
+                    $(this).find("i").toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+                });
+            }
+        };
+    });
+
     navApp.directive('enableContainer', function () {
         function link(scope, element) {
-            var divNoJs = element.children('#nojs');
-            divNoJs.css('display', 'none');
             var divTiles = element.children('#tiles');
             divTiles.css('display', '');
         }
