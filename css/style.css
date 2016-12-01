@@ -1232,6 +1232,12 @@ a {
     color: #337AB7;
     z-index: 3;
 }
+#dateTimeRow .accordion-toggle {
+	padding: 12px 20px 0 16px;
+}
+#dateTimeRow .accordion-toggle .glyphicon-chevron-down {
+	margin-top: 2px;
+}
 .accordion-toggle,
 .accordion-toggle .dropdown-header{
 	cursor: pointer;
@@ -2616,9 +2622,9 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 /* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 991px) {
-	.header {
+	/*.header {
 		height: 50px;
-	}
+	}*/
 	.top-nav .navbar-left 
 	{
 	    float: left;
