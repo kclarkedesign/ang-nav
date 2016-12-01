@@ -87,6 +87,9 @@ html.mm-blocking body {
 /*	background: #fff;*/
 	background-color: #000000;
 }
+#search-navbar {
+	background-color: #8EBADF;
+}
 .dropdown-header {
 	cursor: default;
 }
@@ -133,7 +136,8 @@ html.mm-blocking body {
 .header .nav .open>a:hover, 
 .header .nav .open>a:focus,
 #mainNavSidebar .nav>li>a:hover,
-#mainNavSidebar .nav>li>a:focus {
+#mainNavSidebar .nav>li>a:focus,
+.search-open #search-mobile {
 	background-color: #8EBADF;
 }
 .icon-bg {
@@ -279,7 +283,7 @@ width: 280px;
 }
 #searchText.form-control.active,
 #searchGlobal.form-control.active {
-	background: none;
+	background: #fff;
 }
 #mobileSearchText.form-control.active {
 	/*background: #fff;*/
@@ -289,6 +293,7 @@ width: 280px;
 }
 #mobile-searchGlobal {
     padding: 6px 26px 6px 12px;
+    margin: 10px 0px 11px 0;
 }
 #searchText.form-control.spinnerInTextbox,
 #mobileSearchText.form-control.spinnerInTextbox {
@@ -307,6 +312,8 @@ width: 280px;
 	padding-right: 24px;
 }
 #searchGlobal.form-control {
+	margin-top: 7px;
+	min-width: 300px;
 	padding: 6px 30px;
 	background: #fff 4px/19px url(http://www.92y.org/92StreetY/media/MICROSITES/search-iconizer.png) no-repeat;
 }
@@ -416,7 +423,7 @@ width: 280px;
 	right: 0;
 	z-index: 1501;
 	bottom: 0;
-	height: 100px;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.9);
 	display: block;
 }
@@ -697,6 +704,9 @@ width: 280px;
     text-decoration: none;
     color: #23527c;
     background-color: #D8ECFD;
+}
+.search-open #search-mobile {
+	color: #23527c;
 }
 .mega-dropdown-menu .dropdown-header {
     color: #8C8E8E;
@@ -1222,7 +1232,16 @@ a {
     color: #337AB7;
     z-index: 3;
 }
-
+#dateTimeRow .accordion-toggle {
+	padding: 12px 20px 0 16px;
+}
+#dateTimeRow .accordion-toggle .glyphicon-chevron-down {
+	margin-top: 2px;
+}
+.accordion-toggle,
+.accordion-toggle .dropdown-header{
+	cursor: pointer;
+}
 #programType label.active {
 	color: #fff;
 }
@@ -1959,6 +1978,9 @@ transform: rotate(-45deg);
 	.search-open.browseIntro-shown #browseBtns {
 		z-index: 3;
 	}
+	.search-open #bottomContainer {
+	    margin-top: 58px;
+	}
 }
 @media (max-width: 480px) {
 	.breadcrumb a {
@@ -2600,9 +2622,9 @@ input[type="date"]::-webkit-inner-spin-button{
 }
 /* 14% = 100% (full-width row) divided by 7 */
 @media (max-width: 991px) {
-	.header {
+	/*.header {
 		height: 50px;
-	}
+	}*/
 	.top-nav .navbar-left 
 	{
 	    float: left;
@@ -2659,6 +2681,9 @@ input[type="date"]::-webkit-inner-spin-button{
 	.classDate, 
 	.warning {
 		padding: 6px 0 0;
+	}
+	#search-overlay {
+		width: 100%;
 	}
 }
 @media (min-width: 992px) {

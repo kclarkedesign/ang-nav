@@ -740,47 +740,47 @@
                 self.microsites = _.clone(MICROSITELIST);
                 if (currentUrl.indexOf('/Dance') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Fine Art & Design') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Ceramics') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
                 if (currentUrl.indexOf('/Music') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'jewelry' }),
-						_.find(self.microsites, { 'id': 'ceramics' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'jewelry' }),
+                        _.find(self.microsites, { 'id': 'ceramics' })
+                    );
                 }
                 if (currentUrl.indexOf('/Jewelry') >= 0) {
                     _.pull(self.microsites,
-						_.find(self.microsites, { 'id': 'fineart' }),
-						_.find(self.microsites, { 'id': 'dance' }),
-						_.find(self.microsites, { 'id': 'ceramics' }),
-						_.find(self.microsites, { 'id': 'music' }),
-						_.find(self.microsites, { 'id': 'instruct' })
-					);
+                        _.find(self.microsites, { 'id': 'fineart' }),
+                        _.find(self.microsites, { 'id': 'dance' }),
+                        _.find(self.microsites, { 'id': 'ceramics' }),
+                        _.find(self.microsites, { 'id': 'music' }),
+                        _.find(self.microsites, { 'id': 'instruct' })
+                    );
                 }
             } else {
                 var subFolderPresent = false;
@@ -1242,27 +1242,27 @@
                 }
             }
 
-            //		var lastLocationPath = self.lastLocationPath;
-            //		lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
-            //		var lastLocArr = lastLocationPath.split("/");
+            //      var lastLocationPath = self.lastLocationPath;
+            //      lastLocationPath = seperateSlicersFromUrl(lastLocationPath).path;
+            //      var lastLocArr = lastLocationPath.split("/");
 
-            //		var locationParts = seperateSlicersFromUrl(locationPath);
-            //		locationPath = locationParts.path;
-            //		var locationPathRemoved = locationParts.removed;
-            //		var locArr = locationPath.split("/");
+            //      var locationParts = seperateSlicersFromUrl(locationPath);
+            //      locationPath = locationParts.path;
+            //      var locationPathRemoved = locationParts.removed;
+            //      var locArr = locationPath.split("/");
 
             //note:  until we get a proper top-down pattern with the keywords, we can't use this code
             // if (_.difference(locArr, lastLocArr).length === 1) {
-            // 	if (self.onscreenResults.length) {
-            // 		_.forEach(_.clone(self.onscreenResults), function (arr) {
-            // 			var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
-            // 			if (_.isUndefined(checkPropExists)) {
-            // 				_.pull(self.onscreenResults, arr);
-            // 			}
-            // 		});
-            // 	} else {
-            // 		self.onscreenResults = _.clone(onscreenResultsQueue);
-            // 	}
+            //  if (self.onscreenResults.length) {
+            //      _.forEach(_.clone(self.onscreenResults), function (arr) {
+            //          var checkPropExists = _.find(onscreenResultsQueue, { 'ProdNo': arr.ProdNo });
+            //          if (_.isUndefined(checkPropExists)) {
+            //              _.pull(self.onscreenResults, arr);
+            //          }
+            //      });
+            //  } else {
+            //      self.onscreenResults = _.clone(onscreenResultsQueue);
+            //  }
             // } else {
             self.onscreenResults = _.clone(onscreenResultsQueue);
             // }
@@ -1309,24 +1309,24 @@
             // var sortBy;
             // var sortUrlLocation = locationPathRemoved.indexOf(SORTSLICEURL);
             // if (sortUrlLocation < 0) {
-            // 	sortBy = 'all';
+            //  sortBy = 'all';
             // } else {
-            // 	var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
-            // 	if (endSlashLocation < 0) {
-            // 		endSlashLocation = locationPathRemoved.length;
-            // 	}
-            // 	sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
+            //  var endSlashLocation = locationPathRemoved.indexOf("/", sortUrlLocation + 1);
+            //  if (endSlashLocation < 0) {
+            //      endSlashLocation = locationPathRemoved.length;
+            //  }
+            //  sortBy = locationPathRemoved.substring(sortUrlLocation + 7, endSlashLocation);
             // }
             // switch (sortBy) {
-            // 	case 'progress':
-            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
-            // 		break;
-            // 	case 'featured':
-            // 		self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
-            // 		break;
-            // 	default:
-            // 		self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
-            // 		break;
+            //  case 'progress':
+            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['InProgress', 'SortDate1', 'SortDate2'], [false, true, true]);
+            //      break;
+            //  case 'featured':
+            //      self.onscreenResults = _.sortByOrder(self.onscreenResults, ['Featured', 'SortDate1', 'SortDate2'], [false, true, true]);
+            //      break;
+            //  default:
+            //      self.onscreenResults = _.sortByAll(self.onscreenResults, ['SortDate1', 'SortDate2']);
+            //      break;
             // }
             // self.sortOrder = sortBy;
 
@@ -1817,7 +1817,7 @@
             delete self.edateSlice;
         }
         return (self.sdateSlice === self.initSdateSlice && self.edateSlice === self.initEdateSlice && _.isEqual(self.daySlice, self.initDaySlice)
-		    && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
+            && _.isEqual(self.timeSlice, self.initTimeSlice) && (_.isUndefined(self.dateApplyClicked) || !self.dateApplyClicked));
     };
 
     NavListController.prototype.checkAgeInit = function () {
@@ -1955,8 +1955,8 @@
                 break;
             default:
                 enabled = (!self.checkDateInit() && self.initialized) ||
-				(!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
-				(!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
+                (!_.isUndefined(self.typeSlice) && self.typeSlice !== 'all') || (!self.checkAgeInit() && self.initialized) ||
+                (!_.isUndefined(self.textboxSearch) && self.textboxSearch !== '');
         }
         return enabled;
     };
@@ -2558,6 +2558,25 @@
                 element.bind('click', function (e) {
                     angular.element(divId).slideToggle();
                     $(this).find('i').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+                });
+            }
+        };
+    });
+
+    navApp.directive('fieldFocus', function ($timeout) {
+        return {
+            link: function (scope, element, attrs) {
+                element.bind('click', function (e) {
+                    e.preventDefault();
+                    var $body = angular.element('body');
+                    var inputId = '#' + attrs.focusInput;
+                    $timeout(function(){
+                        if ($body.hasClass('search-open')) {
+                            e.preventDefault();
+                            angular.element(inputId).focus();
+                            console.log("clicked");
+                        }
+                    }, 0);
                 });
             }
         };
