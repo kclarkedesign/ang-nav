@@ -83,13 +83,14 @@
         self.DefaultFilterNodeNum = Number(navConfig.DefaultFilterNodeNum);
         self.ActiveFilterNodeNum = Number(navConfig.ActiveFilterNodeNum);
         self.allClasses = [{ Name: '', NodeID: LOADINGNODEID}];
-        self.arrCategory = [[{
+        self.allProgramsObj = {
             Level: 0,
             Name: 'All Programs',
             NodeID: self.ActiveFilterNodeNum,
             Current: true,
             FeaturedItemsHeader: ''
-        }]];
+        };
+        self.arrCategory = [[_.clone(self.allProgramsObj)]];
         self.location = $location;
         self.timeout = $timeout;
         self.cookieStore = $cookieStore;
@@ -719,7 +720,7 @@
         if (_.isUndefined(self.lastLocationPath)) {
             self.lastLocationPath = '';
         }
-        self.activeBreadcrumb.push(_.clone(self.currentObj));
+        self.activeBreadcrumb.push(_.clone(self.allProgramsObj));
         self.currentObj.Level = 1;
         self.currentObj.Name = currentName;
         self.currentObj.NodeID = currentId;
@@ -1007,13 +1008,7 @@
         } else {
             locationPath = '/';
             self.activeBreadcrumb = [];
-            self.currentObj = {
-                Level: 0,
-                Name: 'All Programs',
-                NodeID: self.ActiveFilterNodeNum,
-                Current: true,
-                FeaturedItemsHeader: ''
-            };
+            self.currentObj = _.clone(self.allProgramsObj);
         }
         locationPath = rewriteUrlLocation(SEARCHSLICEURL, self.textboxSearch, locationPath);
         location.path(locationPath);
@@ -1461,23 +1456,11 @@
                         }
                     }
                 });
-                self.activeBreadcrumb.push({
-                    Level: 0,
-                    Name: 'All Programs',
-                    NodeID: self.ActiveFilterNodeNum,
-                    Current: true,
-                    FeaturedItemsHeader: ''
-                });
+                self.activeBreadcrumb.push(_.clone(self.allProgramsObj));
                 self.activeBreadcrumb.reverse();
             } else {
                 self.activeBreadcrumb = [];
-                self.currentObj = {
-                    Level: 0,
-                    Name: 'All Programs',
-                    NodeID: self.ActiveFilterNodeNum,
-                    Current: true,
-                    FeaturedItemsHeader: ''
-                };
+                self.currentObj = _.clone(self.allProgramsObj);
                 self.activeBreadcrumb.push(self.currentObj);
                 self.lastLocationPath = '';
             }
